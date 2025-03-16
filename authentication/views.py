@@ -103,8 +103,8 @@ def home_view(request):
             df = pd.read_excel(file_path)
             
             # Validate columns
-            if 'Email' not in df.columns or 'Pass' not in df.columns or 'PassApp' not in df.columns:
-                messages.error(request, 'Excel file must contain Email, Pass, and PassApp columns')
+            if 'Email' not in df.columns or 'Pass' not in df.columns or 'PassFree' not in df.columns or 'PassTexNow' not in df.columns:
+                messages.error(request, 'Excel file must contain Email, Pass, PassFree, and PassTexNow columns')
             else:
                 # Get MongoDB collection
                 excel_data_collection, _ = get_collection_handle('excel_data')
@@ -641,7 +641,7 @@ def export_emails(request):
     
     # Viết header
     headers = [
-        'STT', 'Email', 'Pass', 'PassApp', 'Trạng thái', 
+        'STT', 'Email', 'Pass', 'PassFree', 'PassTexNow', 'Trạng thái', 
         'Ngày import', 'Người import', 'Nhân viên xử lý', 'Thời gian xử lý',
         'Kiểm tra viên', 'Thời gian kiểm tra'
     ]
@@ -677,7 +677,8 @@ def export_emails(request):
             record.get('stt', ''),
             record.get('Email', ''),
             record.get('Pass', ''),
-            record.get('PassApp', ''),
+            record.get('PassFree', ''),
+            record.get('PassTexNow', ''),
             record.get('status', ''),
             imported_at,
             record.get('imported_by', ''),
@@ -690,7 +691,7 @@ def export_emails(request):
             worksheet.write(row, col, value, cell_format)
     
     # Điều chỉnh độ rộng cột
-    column_widths = [8, 30, 15, 15, 15, 15, 20, 20, 20, 20, 20]
+    column_widths = [8, 30, 15, 15, 15, 15, 15, 20, 20, 20, 20, 20]
     for i, width in enumerate(column_widths):
         worksheet.set_column(i, i, width)
     

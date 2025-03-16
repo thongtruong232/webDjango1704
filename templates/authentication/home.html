@@ -85,7 +85,8 @@
                             <th>STT</th>
                             <th>Email</th>
                             <th>Pass</th>
-                            <th>PassApp</th>
+                            <th>PassFree</th>
+                            <th>PassTexNow</th>
                             <th>Trạng thái</th>
                             <th>Time</th>
                             {% if can_update_status %}
@@ -108,7 +109,8 @@
                                 </div>
                             </td>
                             <td>{{ item.Pass }}</td>
-                            <td>{{ item.PassApp }}</td>
+                            <td>{{ item.PassFree }}</td>
+                            <td>{{ item.PassTexNow }}</td>
                             <td>
                                 <span class="status-badge status-{{ item.status|slugify }}">
                                     {{ item.status }}
