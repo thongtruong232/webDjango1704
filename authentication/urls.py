@@ -10,4 +10,5 @@ urlpatterns = [
     path('update-user-role/', views.update_user_role, name='update_user_role'),
     path('create-sample-users/', views.create_sample_users, name='create_sample_users'),
     path('create-user/', views.create_user, name='create_user'),
+    path('export-emails/', views.export_emails, name='export_emails'),
 ] 

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -15,6 +15,8 @@ from .permissions import (
     ROLES, get_allowed_status_updates
 )
 from .models import User
+import xlsxwriter
+from io import BytesIO
 
 def login_view(request):
     if request.method == 'POST':
@@ -99,6 +101,7 @@ def home_view(request):
                         record['imported_at'] = timezone.now().isoformat()
                         record['imported_by'] = str(request.user.id)
                         record['assigned_to'] = None
+                        record['assigned_to_kiemtra'] = None  # Thêm trường mới cho kiemtra
                         record['stt'] = next_stt
                         new_records.append(record)
                         next_stt += 1
@@ -165,13 +168,42 @@ def home_view(request):
             ]
         }).sort('imported_at', -1)
     elif user_role == 'kiemtra':
-        # Chỉ hiển thị email có trạng thái "Đã đăng ký" cho kiemtra
+        # Chỉ hiển thị email có trạng thái "Đã đăng ký" và chưa được gán hoặc đã gán cho user kiemtra này
         total_records = excel_data_collection.count_documents({
-            'status': 'Đã đăng ký'
+            'status': 'Đã đăng ký',
+            '$or': [
+                {'assigned_to_kiemtra': None},
+                {'assigned_to_kiemtra': str(request.user.id)}
+            ]
         })
+        
+        # Lấy danh sách email và gán cho kiemtra này
         cursor = excel_data_collection.find({
-            'status': 'Đã đăng ký'
+            'status': 'Đã đăng ký',
+            '$or': [
+                {'assigned_to_kiemtra': None},
+                {'assigned_to_kiemtra': str(request.user.id)}
+            ]
         }).sort('imported_at', -1).skip(skip).limit(per_page)
+        
+        # Cập nhật assigned_to_kiemtra cho các email được hiển thị
+        email_ids = []
+        for doc in cursor:
+            email_ids.append(doc['_id'])
+        
+        if email_ids:
+            excel_data_collection.update_many(
+                {
+                    '_id': {'$in': email_ids},
+                    'assigned_to_kiemtra': None  # Chỉ cập nhật những email chưa được gán
+                },
+                {'$set': {'assigned_to_kiemtra': str(request.user.id)}}
+            )
+        
+        # Lấy lại cursor sau khi đã gán
+        cursor = excel_data_collection.find({
+            '_id': {'$in': email_ids}
+        }).sort('imported_at', -1)
     else:
         # Hiển thị tất cả email cho admin
         total_records = excel_data_collection.count_documents({})
@@ -211,7 +243,9 @@ def home_view(request):
         'is_nhanvien': user_role == 'nhanvien',
         'current_page': page,
         'total_pages': total_pages,
-        'has_more': (page * per_page) < total_records,
+        'has_more': (page * per_page) < total_records if user_role == 'nhanvien' else (
+            (page * per_page) < total_records if user_role == 'kiemtra' else False
+        ),
         'page_range': page_range,
         'start_index': (page - 1) * per_page
     }
@@ -480,3 +514,73 @@ def create_user(request):
         'success': False,
         'message': 'Phương thức không được hỗ trợ'
     })
+
+@login_required
+@role_required('admin')
+def export_emails(request):
+    # Lấy danh sách trạng thái được chọn
+    selected_statuses = request.GET.getlist('status')
+    
+    # Nếu không có trạng thái nào được chọn, xuất tất cả
+    excel_data_collection, client = get_collection_handle('excel_data')
+    
+    # Tạo query dựa trên trạng thái được chọn
+    query = {}
+    if selected_statuses:
+        query['status'] = {'$in': selected_statuses}
+    
+    # Lấy dữ liệu từ MongoDB
+    cursor = excel_data_collection.find(query).sort('stt', 1)
+    
+    # Tạo file Excel trong bộ nhớ
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet()
+    
+    # Định dạng cho header
+    header_format = workbook.add_format({
+        'bold': True,
+        'bg_color': '#f8f9fa',
+        'border': 1
+    })
+    
+    # Viết header
+    headers = ['STT', 'Email', 'Pass', 'Trạng thái', 'Ngày import', 'Người import']
+    for col, header in enumerate(headers):
+        worksheet.write(0, col, header, header_format)
+    
+    # Định dạng cho các ô dữ liệu
+    cell_format = workbook.add_format({
+        'border': 1
+    })
+    
+    # Viết dữ liệu
+    for row, record in enumerate(cursor, start=1):
+        worksheet.write(row, 0, record.get('stt', ''), cell_format)
+        worksheet.write(row, 1, record.get('Email', ''), cell_format)
+        worksheet.write(row, 2, record.get('Pass', ''), cell_format)
+        worksheet.write(row, 3, record.get('status', ''), cell_format)
+        worksheet.write(row, 4, record.get('imported_at', '')[:10], cell_format)  # Chỉ lấy ngày
+        worksheet.write(row, 5, record.get('imported_by', ''), cell_format)
+    
+    # Điều chỉnh độ rộng cột
+    worksheet.set_column(0, 0, 8)  # STT
+    worksheet.set_column(1, 1, 30)  # Email
+    worksheet.set_column(2, 2, 15)  # Pass
+    worksheet.set_column(3, 3, 15)  # Trạng thái
+    worksheet.set_column(4, 4, 15)  # Ngày import
+    worksheet.set_column(5, 5, 20)  # Người import
+    
+    # Đóng workbook
+    workbook.close()
+    
+    # Chuẩn bị response
+    output.seek(0)
+    response = HttpResponse(
+        output.read(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename=danh_sach_email.xlsx'
+    
+    client.close()
+    return response
