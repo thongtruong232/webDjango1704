@@ -157,7 +157,11 @@ def home_view(request):
         if email_ids:
             excel_data_collection.update_many(
                 {'_id': {'$in': email_ids}},
-                {'$set': {'assigned_to': str(request.user.id)}}
+                {'$set': {
+                    'assigned_to': str(request.user.id),
+                    'nhanvien_assigned_to': request.user.username,
+                    'nhanvien_assigned_at': timezone.now().isoformat()
+                }}
             )
         
         # Lấy lại cursor sau khi đã gán
@@ -197,7 +201,11 @@ def home_view(request):
                     '_id': {'$in': email_ids},
                     'assigned_to_kiemtra': None  # Chỉ cập nhật những email chưa được gán
                 },
-                {'$set': {'assigned_to_kiemtra': str(request.user.id)}}
+                {'$set': {
+                    'assigned_to_kiemtra': str(request.user.id),
+                    'kiemtra_assigned_to': request.user.username,
+                    'kiemtra_assigned_at': timezone.now().isoformat()
+                }}
             )
         
         # Lấy lại cursor sau khi đã gán
@@ -330,16 +338,35 @@ def update_status(request):
         # Get MongoDB collection
         excel_data_collection, client = get_collection_handle('excel_data')
         
+        # Get user role
+        users_collection, _ = get_collection_handle('users')
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        user_role = user_data.get('role', 'nhanvien') if user_data else 'nhanvien'
+
+        # Prepare update data based on user role
+        update_data = {
+            'status': new_status,
+            'updated_at': timezone.now().isoformat(),
+            'updated_by': str(request.user.id),
+            'updated_by_username': request.user.username
+        }
+
+        # Add role-specific timestamps
+        if user_role == 'nhanvien':
+            update_data.update({
+                'nhanvien_assigned_to': request.user.username,
+                'nhanvien_assigned_at': timezone.now().isoformat()
+            })
+        elif user_role == 'kiemtra':
+            update_data.update({
+                'kiemtra_assigned_to': request.user.username,
+                'kiemtra_assigned_at': timezone.now().isoformat()
+            })
+
         # Update the record
         result = excel_data_collection.update_one(
             {'_id': ObjectId(record_id)},
-            {
-                '$set': {
-                    'status': new_status,
-                    'updated_at': timezone.now().isoformat(),
-                    'updated_by': str(request.user.id)
-                }
-            }
+            {'$set': update_data}
         )
         
         client.close()
@@ -545,7 +572,12 @@ def export_emails(request):
     })
     
     # Viết header
-    headers = ['STT', 'Email', 'Pass', 'PassApp', 'Trạng thái', 'Ngày import', 'Người import']
+    headers = [
+        'STT', 'Email', 'Pass', 'PassApp', 'Trạng thái', 
+        'Ngày import', 'Người import', 'Nhân viên xử lý', 'Thời gian xử lý',
+        'Kiểm tra viên', 'Thời gian kiểm tra'
+    ]
+    
     for col, header in enumerate(headers):
         worksheet.write(0, col, header, header_format)
     
@@ -556,22 +588,26 @@ def export_emails(request):
     
     # Viết dữ liệu
     for row, record in enumerate(cursor, start=1):
-        worksheet.write(row, 0, record.get('stt', ''), cell_format)
-        worksheet.write(row, 1, record.get('Email', ''), cell_format)
-        worksheet.write(row, 2, record.get('Pass', ''), cell_format)
-        worksheet.write(row, 3, record.get('PassApp', ''), cell_format)
-        worksheet.write(row, 4, record.get('status', ''), cell_format)
-        worksheet.write(row, 5, record.get('imported_at', '')[:10], cell_format)  # Chỉ lấy ngày
-        worksheet.write(row, 6, record.get('imported_by', ''), cell_format)
+        data = [
+            record.get('stt', ''),
+            record.get('Email', ''),
+            record.get('Pass', ''),
+            record.get('PassApp', ''),
+            record.get('status', ''),
+            record.get('imported_at', '')[:10],
+            record.get('imported_by', ''),
+            record.get('nhanvien_assigned_to', ''),
+            record.get('nhanvien_assigned_at', '')[:19].replace('T', ' ') if record.get('nhanvien_assigned_at') else '',
+            record.get('kiemtra_assigned_to', ''),
+            record.get('kiemtra_assigned_at', '')[:19].replace('T', ' ') if record.get('kiemtra_assigned_at') else ''
+        ]
+        for col, value in enumerate(data):
+            worksheet.write(row, col, value, cell_format)
     
     # Điều chỉnh độ rộng cột
-    worksheet.set_column(0, 0, 8)   # STT
-    worksheet.set_column(1, 1, 30)  # Email
-    worksheet.set_column(2, 2, 15)  # Pass
-    worksheet.set_column(3, 3, 15)  # PassApp
-    worksheet.set_column(4, 4, 15)  # Trạng thái
-    worksheet.set_column(5, 5, 15)  # Ngày import
-    worksheet.set_column(6, 6, 20)  # Người import
+    column_widths = [8, 30, 15, 15, 15, 15, 20, 20, 20, 20, 20]
+    for i, width in enumerate(column_widths):
+        worksheet.set_column(i, i, width)
     
     # Đóng workbook
     workbook.close()
