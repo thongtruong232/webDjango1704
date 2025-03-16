@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Website{% endblock %}</title>
+    <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap5.min.css">
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <style>
+        /* Status colors */
         .status-unused {
             color: #198754;
             font-weight: bold;
@@ -31,24 +34,56 @@
             color: #ffc107;
             font-weight: bold;
         }
-        {% block extra_css %}{% endblock %}
+        /* Table styles */
+        .table th {
+            background-color: #f8f9fa;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,0,0,.075);
+        }
+        /* Navbar styles */
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .badge {
+            font-size: 0.9em;
+        }
     </style>
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">My Website</a>
-            <div class="navbar-nav">
-                {% if user_data.role == 'admin' %}
-                <a class="nav-link" href="{% url 'manage_users' %}">Quản lý người dùng</a>
-                {% endif %}
-            </div>
-            <div class="navbar-nav ms-auto">
-                <span class="navbar-text me-3">
-                    Welcome, {{ user.username }}! 
-                    <span class="badge bg-info">{{ user_data.role|default:"nhanvien"|title }}</span>
-                </span>
-                <a href="{% url 'logout' %}" class="btn btn-outline-light">Logout</a>
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fas fa-envelope me-2"></i>Email Manager
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto">
+                    {% if user_data.role == 'admin' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'manage_users' %}">
+                            <i class="fas fa-users me-1"></i>Quản lý người dùng
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="navbar-nav">
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user me-1"></i>
+                        {{ user.username }}
+                        <span class="badge bg-info ms-1">{{ user_data.role|default:"nhanvien"|title }}</span>
+                    </span>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-light">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
@@ -67,11 +102,21 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    
+    <script>
+    // Thêm class cho các cell trạng thái
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('td:nth-child(4)').forEach(cell => {
+            const status = cell.textContent.trim();
+            cell.classList.add('status-' + status.toLowerCase().replace(/\s+/g, '-'));
+        });
+    });
+    </script>
     
     {% block extra_js %}{% endblock %}
 </body>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from django.contrib.auth import login, authenticate, logout, get_user_model
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .mongodb import get_collection_handle
@@ -14,7 +14,7 @@ from .permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
 )
-from django.contrib.auth.models import User
+from .models import User
 
 def login_view(request):
     if request.method == 'POST':
@@ -49,6 +49,7 @@ def home_view(request):
     # Get user data from MongoDB
     users_collection, client = get_collection_handle('users')
     user_data = users_collection.find_one({'user_id': str(request.user.id)})
+    user_role = user_data.get('role', 'nhanvien') if user_data else 'nhanvien'
     
     # Handle Excel file upload
     if request.method == 'POST' and request.FILES.get('excel_file'):
@@ -74,6 +75,13 @@ def home_view(request):
                 # Get MongoDB collection
                 excel_data_collection, _ = get_collection_handle('excel_data')
                 
+                # Lấy số thứ tự lớn nhất hiện tại
+                last_record = excel_data_collection.find_one(
+                    {},
+                    sort=[('stt', -1)]
+                )
+                next_stt = (last_record.get('stt', 0) if last_record else 0) + 1
+                
                 # Convert DataFrame to list of dictionaries
                 records = df.to_dict('records')
                 new_records = []
@@ -90,7 +98,10 @@ def home_view(request):
                         record['status'] = 'Chưa sử dụng'
                         record['imported_at'] = timezone.now().isoformat()
                         record['imported_by'] = str(request.user.id)
+                        record['assigned_to'] = None
+                        record['stt'] = next_stt
                         new_records.append(record)
+                        next_stt += 1
                 
                 if new_records:
                     # Insert only non-duplicate records
@@ -113,9 +124,58 @@ def home_view(request):
             if os.path.exists(file_path):
                 os.remove(file_path)
     
-    # Fetch all Excel data
+    # Fetch Excel data based on user role
     excel_data_collection, _ = get_collection_handle('excel_data')
-    cursor = excel_data_collection.find().sort('imported_at', -1)
+    
+    # Xử lý phân trang
+    page = int(request.GET.get('page', 1))
+    per_page = 10
+    skip = (page - 1) * per_page
+    
+    # Nếu là nhân viên, chỉ hiển thị email chưa sử dụng và chưa được gán
+    if user_role == 'nhanvien':
+        # Đếm tổng số records chưa được gán và có trạng thái "Chưa sử dụng"
+        total_records = excel_data_collection.count_documents({
+            'status': 'Chưa sử dụng',
+            'assigned_to': None
+        })
+        
+        # Lấy danh sách email và gán cho nhân viên này
+        cursor = excel_data_collection.find({
+            'status': 'Chưa sử dụng',
+            'assigned_to': None
+        }).sort('imported_at', -1).skip(skip).limit(per_page)
+        
+        # Cập nhật assigned_to cho các email được hiển thị
+        email_ids = []
+        for doc in cursor:
+            email_ids.append(doc['_id'])
+        
+        if email_ids:
+            excel_data_collection.update_many(
+                {'_id': {'$in': email_ids}},
+                {'$set': {'assigned_to': str(request.user.id)}}
+            )
+        
+        # Lấy lại cursor sau khi đã gán
+        cursor = excel_data_collection.find({
+            '$or': [
+                {'assigned_to': str(request.user.id), 'status': 'Chưa sử dụng'},
+                {'_id': {'$in': email_ids}}
+            ]
+        }).sort('imported_at', -1)
+    elif user_role == 'kiemtra':
+        # Chỉ hiển thị email có trạng thái "Đã đăng ký" cho kiemtra
+        total_records = excel_data_collection.count_documents({
+            'status': 'Đã đăng ký'
+        })
+        cursor = excel_data_collection.find({
+            'status': 'Đã đăng ký'
+        }).sort('imported_at', -1).skip(skip).limit(per_page)
+    else:
+        # Hiển thị tất cả email cho admin
+        total_records = excel_data_collection.count_documents({})
+        cursor = excel_data_collection.find().sort('imported_at', -1).skip(skip).limit(per_page)
     
     # Convert MongoDB cursor to list and process _id
     excel_data = []
@@ -128,12 +188,32 @@ def home_view(request):
     
     client.close()
     
+    # Tính toán phạm vi trang hiển thị
+    total_pages = (total_records + per_page - 1) // per_page
+    page_range = []
+    
+    if total_pages <= 5:
+        page_range = range(1, total_pages + 1)
+    else:
+        if page <= 3:
+            page_range = range(1, 6)
+        elif page >= total_pages - 2:
+            page_range = range(total_pages - 4, total_pages + 1)
+        else:
+            page_range = range(page - 2, page + 3)
+    
     context = {
         'user_data': user_data,
         'excel_data': excel_data,
         'can_import': can_manage_users(request.user.id),
         'can_update_status': can_update_status(request.user.id),
-        'allowed_status_updates': get_allowed_status_updates(request.user.id)
+        'allowed_status_updates': get_allowed_status_updates(request.user.id),
+        'is_nhanvien': user_role == 'nhanvien',
+        'current_page': page,
+        'total_pages': total_pages,
+        'has_more': (page * per_page) < total_records,
+        'page_range': page_range,
+        'start_index': (page - 1) * per_page
     }
     return render(request, 'authentication/home.html', context)
 
@@ -253,7 +333,6 @@ def create_sample_users(request):
         messages.error(request, 'Bạn không có quyền tạo user mẫu')
         return redirect('home')
         
-    User = get_user_model()
     users_collection, client = get_collection_handle('users')
     
     # Define sample users
@@ -293,29 +372,32 @@ def create_sample_users(request):
             existing_users.append(user_data['username'])
             continue
             
-        # Create Django user
-        user = User.objects.create_user(
-            username=user_data['username'],
-            email=user_data['email'],
-            password=user_data['password']
-        )
-        
-        # Store additional user data in MongoDB
-        mongo_user_data = {
-            'user_id': str(user.id),
-            'username': user.username,
-            'email': user.email,
-            'role': user_data['role'],
-            'created_at': timezone.now().isoformat()
-        }
-        
-        users_collection.update_one(
-            {'user_id': str(user.id)},
-            {'$set': mongo_user_data},
-            upsert=True
-        )
-        
-        created_users.append(user_data['username'])
+        try:
+            # Create Django user
+            user = User.objects.create_user(
+                username=user_data['username'],
+                email=user_data['email'],
+                password=user_data['password']
+            )
+            
+            # Store additional user data in MongoDB
+            mongo_user_data = {
+                'user_id': str(user.id),
+                'username': user.username,
+                'email': user.email,
+                'role': user_data['role'],
+                'created_at': timezone.now().isoformat()
+            }
+            
+            users_collection.update_one(
+                {'user_id': str(user.id)},
+                {'$set': mongo_user_data},
+                upsert=True
+            )
+            
+            created_users.append(user_data['username'])
+        except Exception as e:
+            messages.error(request, f'Error creating user {user_data["username"]}: {str(e)}')
     
     client.close()
     
@@ -387,6 +469,8 @@ def create_user(request):
             })
             
         except Exception as e:
+            # Log the error for debugging
+            print(f"Error creating user: {str(e)}")
             return JsonResponse({
                 'success': False,
                 'message': str(e)

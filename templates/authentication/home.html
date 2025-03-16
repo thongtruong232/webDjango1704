@@ -1,43 +1,52 @@
 {% extends 'authentication/base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Trang chủ{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% if can_import %}
-    <div class="col-md-12 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h3>Import Excel Data</h3>
-            </div>
-            <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="excel_file" class="form-label">Choose Excel File</label>
-                        <input type="file" class="form-control" id="excel_file" name="excel_file" accept=".xlsx,.xls" required>
-                        <div class="form-text">File must contain Email and Pass columns</div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Import Data</button>
-                </form>
-            </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Import dữ liệu từ Excel</h5>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="file" class="form-control" name="excel_file" accept=".xlsx,.xls">
+                </div>
+                <button type="submit" class="btn btn-primary">Import</button>
+            </form>
         </div>
     </div>
     {% endif %}
 
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h3>Imported Data</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">Danh sách Email</h5>
+                {% if is_nhanvien and has_more %}
+                <button id="loadMoreBtn" class="btn btn-primary">
+                    <i class="fas fa-sync-alt"></i> Cấp Email mới
+                </button>
+                {% endif %}
             </div>
-            <div class="card-body">
-                <table id="dataTable" class="table table-striped table-bordered">
+            
+            <div class="table-responsive">
+                <table id="emailTable" class="table table-striped">
                     <thead>
                         <tr>
+                            <th>STT</th>
                             <th>Email</th>
-                            <th>Password</th>
+                            <th>Pass</th>
                             <th>Trạng thái</th>
-                            <th>Thời gian import</th>
                             {% if can_update_status %}
                             <th>Thao tác</th>
                             {% endif %}
@@ -46,27 +55,21 @@
                     <tbody>
                         {% for item in excel_data %}
                         <tr>
+                            <td>{{ item.stt }}</td>
                             <td>{{ item.Email }}</td>
                             <td>{{ item.Pass }}</td>
-                            <td class="status-cell" data-record-id="{{ item.id }}">
-                                <span class="status-text {% if item.status == 'Chưa sử dụng' %}status-unused
-                                                       {% elif item.status == 'Đã đăng ký' %}status-registered
-                                                       {% elif item.status == 'Email lỗi' %}status-error
-                                                       {% elif item.status == 'Đã kiểm tra' %}status-checked
-                                                       {% elif item.status == 'Kiểm tra lỗi' %}status-check-error{% endif %}">
-                                    {{ item.status|default:"Chưa sử dụng" }}
-                                </span>
-                            </td>
-                            <td>{{ item.imported_at|slice:":19"|default:"-" }}</td>
+                            <td>{{ item.status }}</td>
                             {% if can_update_status %}
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                         Cập nhật trạng thái
                                     </button>
                                     <ul class="dropdown-menu">
                                         {% for status in allowed_status_updates %}
-                                        <li><a class="dropdown-item update-status" href="#" data-status="{{ status }}">{{ status }}</a></li>
+                                        <li><a class="dropdown-item update-status" href="#" 
+                                            data-record-id="{{ item.id }}" 
+                                            data-status="{{ status }}">{{ status }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -77,100 +80,206 @@
                     </tbody>
                 </table>
             </div>
+
+            {% if not is_nhanvien %}
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="text-muted">
+                    Trang {{ current_page }} / {{ total_pages }}
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0">
+                        {% if current_page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1" aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ current_page|add:'-1' }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for p in page_range %}
+                            {% if p == current_page %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ p }}</span>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if current_page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ current_page|add:'1' }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ total_pages }}" aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
+
+<!-- Template cho thông báo -->
+<template id="alertTemplate">
+    <div class="alert alert-dismissible fade show" role="alert">
+        <span class="alert-message"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+</template>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    $(document).ready(function() {
-        // Initialize DataTable
-        var table = $('#dataTable').DataTable({
-            "pageLength": 10,
-            "order": [[3, "desc"]], // Sort by import time by default
-            "language": {
-                "search": "Tìm kiếm:",
-                "lengthMenu": "Hiển thị _MENU_ dòng",
-                "info": "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
-                "infoEmpty": "Hiển thị 0 đến 0 của 0 dòng",
-                "infoFiltered": "(lọc từ _MAX_ dòng)",
-                "paginate": {
-                    "first": "Đầu",
-                    "last": "Cuối",
-                    "next": "Sau",
-                    "previous": "Trước"
+// Khởi tạo các biến từ Django context
+window.APP_CONFIG = {
+    isNhanvien: '{{ is_nhanvien }}'.toLowerCase() === 'true',
+    currentPage: parseInt('{{ current_page }}'),
+    totalPages: parseInt('{{ total_pages }}'),
+    csrfToken: '{{ csrf_token }}',
+    updateStatusUrl: '{% url "update_status" %}',
+    homeUrl: '{% url "home" %}'
+};
+
+// Hàm hiển thị thông báo
+function showAlert(message, type) {
+    const template = document.getElementById('alertTemplate');
+    const alert = template.content.cloneNode(true);
+    const alertDiv = alert.querySelector('.alert');
+    alertDiv.classList.add(`alert-${type}`);
+    alert.querySelector('.alert-message').textContent = message;
+    
+    const container = document.querySelector('.container');
+    container.insertBefore(alertDiv, container.firstChild);
+    
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
+
+// Hàm cập nhật trạng thái
+function updateStatus(recordId, newStatus, link) {
+    const formData = new URLSearchParams();
+    formData.append('record_id', recordId);
+    formData.append('status', newStatus);
+    
+    fetch(APP_CONFIG.updateStatusUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': APP_CONFIG.csrfToken
+        },
+        body: formData.toString()
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const row = link.closest('tr');
+            const statusCell = row.querySelector('td:nth-child(4)');
+            statusCell.textContent = newStatus;
+            
+            if (APP_CONFIG.isNhanvien && newStatus !== 'Chưa sử dụng') {
+                row.style.transition = 'opacity 0.4s';
+                row.style.opacity = '0';
+                setTimeout(() => row.remove(), 400);
+            }
+            
+            showAlert('Cập nhật trạng thái thành công', 'success');
+        } else {
+            showAlert(`Lỗi: ${data.message}`, 'danger');
+        }
+    })
+    .catch(() => {
+        showAlert('Có lỗi xảy ra khi cập nhật trạng thái', 'danger');
+    });
+}
+
+// Hàm tải thêm email
+function loadMoreEmails() {
+    let currentPage = APP_CONFIG.currentPage;
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+            currentPage++;
+            fetch(`${APP_CONFIG.homeUrl}?page=${currentPage}`)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newRows = doc.querySelectorAll('#emailTable tbody tr');
+                    
+                    const tbody = document.querySelector('#emailTable tbody');
+                    newRows.forEach(row => {
+                        tbody.appendChild(row.cloneNode(true));
+                    });
+                    
+                    if (currentPage >= APP_CONFIG.totalPages) {
+                        this.style.display = 'none';
+                    }
+                    
+                    // Thêm lại event listeners cho các nút mới
+                    attachUpdateStatusListeners();
+                });
+        });
+    }
+}
+
+// Hàm gắn event listeners cho các nút cập nhật trạng thái
+function attachUpdateStatusListeners() {
+    document.querySelectorAll('.update-status').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const recordId = this.dataset.recordId;
+            const newStatus = this.dataset.status;
+            updateStatus(recordId, newStatus, this);
+        });
+    });
+}
+
+// Khởi tạo khi trang đã load
+document.addEventListener('DOMContentLoaded', function() {
+    // Khởi tạo DataTable cho các role không phải nhân viên
+    if (!APP_CONFIG.isNhanvien) {
+        $('#emailTable').DataTable({
+            pageLength: 10,
+            order: [[0, "asc"]],
+            language: {
+                search: "Tìm kiếm:",
+                lengthMenu: "Hiển thị _MENU_ dòng",
+                info: "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+                infoEmpty: "Hiển thị 0 đến 0 của 0 dòng",
+                infoFiltered: "(lọc từ _MAX_ dòng)",
+                paginate: {
+                    first: "Đầu",
+                    last: "Cuối",
+                    next: "Sau",
+                    previous: "Trước"
                 }
             }
         });
-
-        // Handle status update
-        $('.update-status').click(function(e) {
-            e.preventDefault();
-            var link = $(this);
-            var newStatus = link.data('status');
-            var cell = link.closest('tr').find('.status-cell');
-            var recordId = cell.data('record-id');
-
-            $.ajax({
-                url: '{% url "update_status" %}',
-                type: 'POST',
-                data: {
-                    'record_id': recordId,
-                    'status': newStatus,
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function(response) {
-                    if (response.success) {
-                        // Update the status text and class
-                        var statusSpan = cell.find('.status-text');
-                        statusSpan.text(newStatus);
-                        
-                        // Remove all status classes and add the appropriate one
-                        statusSpan.removeClass('status-unused status-registered status-error status-checked status-check-error');
-                        
-                        if (newStatus === 'Chưa sử dụng') {
-                            statusSpan.addClass('status-unused');
-                        } else if (newStatus === 'Đã đăng ký') {
-                            statusSpan.addClass('status-registered');
-                        } else if (newStatus === 'Email lỗi') {
-                            statusSpan.addClass('status-error');
-                        } else if (newStatus === 'Đã kiểm tra') {
-                            statusSpan.addClass('status-checked');
-                        } else if (newStatus === 'Kiểm tra lỗi') {
-                            statusSpan.addClass('status-check-error');
-                        }
-                        
-                        // Show success message
-                        var alert = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                                    'Cập nhật trạng thái thành công' +
-                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                    '</div>');
-                        $('.container').first().prepend(alert);
-                        
-                        // Auto dismiss the alert after 3 seconds
-                        setTimeout(function() {
-                            alert.alert('close');
-                        }, 3000);
-                    } else {
-                        // Show error message
-                        var alert = $('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                                    'Lỗi: ' + response.message +
-                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                    '</div>');
-                        $('.container').first().prepend(alert);
-                    }
-                },
-                error: function() {
-                    // Show error message
-                    var alert = $('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                                'Có lỗi xảy ra khi cập nhật trạng thái' +
-                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                '</div>');
-                    $('.container').first().prepend(alert);
-                }
-            });
-        });
-    });
+    }
+    
+    // Gắn event listeners
+    attachUpdateStatusListeners();
+    
+    // Khởi tạo tính năng tải thêm email cho nhân viên
+    if (APP_CONFIG.isNhanvien) {
+        loadMoreEmails();
+    }
+});
 </script>
 {% endblock %} 
