@@ -185,10 +185,10 @@
 
 <!-- Template cho thông báo -->
 <template id="alertTemplate">
-    <div class="alert alert-dismissible fade show" role="alert">
+    <!-- <div class="alert alert-dismissible fade show" role="alert">
         <span class="alert-message"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+    </div> -->
 </template>
 {% endblock %}
 
@@ -235,18 +235,18 @@ function attachCopyListeners() {
 
 // Hàm hiển thị thông báo
 function showAlert(message, type) {
-    const template = document.getElementById('alertTemplate');
-    const alert = template.content.cloneNode(true);
-    const alertDiv = alert.querySelector('.alert');
-    alertDiv.classList.add(`alert-${type}`);
-    alert.querySelector('.alert-message').textContent = message;
+    // const template = document.getElementById('alertTemplate');
+    // const alert = template.content.cloneNode(true);
+    // const alertDiv = alert.querySelector('.alert');
+    // alertDiv.classList.add(`alert-${type}`);
+    // alert.querySelector('.alert-message').textContent = message;
     
-    const container = document.querySelector('.container');
-    container.insertBefore(alertDiv, container.firstChild);
+    // const container = document.querySelector('.container');
+    // container.insertBefore(alertDiv, container.firstChild);
     
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 1000);
+    // setTimeout(() => {
+    //     alertDiv.remove();
+    // }, 1000);
 }
 
 // Hàm cập nhật trạng thái
