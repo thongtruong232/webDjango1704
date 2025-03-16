@@ -96,7 +96,16 @@
                         {% for item in excel_data %}
                         <tr>
                             <td>{{ item.stt }}</td>
-                            <td>{{ item.Email }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2">{{ item.Email }}</span>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
+                                            data-clipboard-text="{{ item.Email }}"
+                                            title="Copy email">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
                             <td>{{ item.Pass }}</td>
                             <td>{{ item.PassApp }}</td>
                             <td>{{ item.status }}</td>
@@ -196,6 +205,34 @@ window.APP_CONFIG = {
     homeUrl: '{% url "home" %}'
 };
 
+// Hàm copy vào clipboard
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        showAlert('Đã copy email vào clipboard', 'success');
+    }).catch(err => {
+        showAlert('Không thể copy email: ' + err, 'danger');
+    });
+}
+
+// Gắn sự kiện cho các nút copy
+function attachCopyListeners() {
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const textToCopy = this.getAttribute('data-clipboard-text');
+            copyToClipboard(textToCopy);
+            
+            // Hiệu ứng khi click
+            this.classList.add('btn-success');
+            this.classList.remove('btn-outline-secondary');
+            setTimeout(() => {
+                this.classList.remove('btn-success');
+                this.classList.add('btn-outline-secondary');
+            }, 1000);
+        });
+    });
+}
+
 // Hàm hiển thị thông báo
 function showAlert(message, type) {
     const template = document.getElementById('alertTemplate');
@@ -281,6 +318,7 @@ function loadMoreEmails() {
                     
                     // Thêm lại event listeners cho các nút mới
                     attachUpdateStatusListeners();
+                    attachCopyListeners();
                     // Cập nhật số trang hiện tại
                     APP_CONFIG.currentPage = currentPage;
                 });
@@ -325,6 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Gắn event listeners
     attachUpdateStatusListeners();
+    attachCopyListeners();
     
     // Khởi tạo tính năng tải thêm email cho nhân viên và kiemtra
     if (APP_CONFIG.isNhanvien || APP_CONFIG.isKiemtra) {
