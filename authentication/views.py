@@ -17,6 +17,15 @@ from .permissions import (
 from .models import User
 import xlsxwriter
 from io import BytesIO
+import pytz
+from datetime import datetime, timedelta
+
+# Định nghĩa múi giờ GMT+7
+TIMEZONE = pytz.timezone('Asia/Bangkok')
+
+def get_current_time():
+    """Lấy thời gian hiện tại theo múi giờ GMT+7"""
+    return timezone.now().astimezone(TIMEZONE)
 
 def login_view(request):
     if request.method == 'POST':
@@ -46,8 +55,31 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
     return render(request, 'authentication/login.html')
 
+def check_and_delete_expired_emails():
+    """Kiểm tra và xóa các email hết hạn (3600 giây không thay đổi trạng thái)"""
+    excel_data_collection, client = get_collection_handle('excel_data')
+    
+    # Tính thời điểm 1 giờ trước
+    expiration_time = get_current_time() - timedelta(seconds=3600)
+    
+    # Tìm và xóa các email đã hết hạn
+    result = excel_data_collection.delete_many({
+        'status': 'Chưa sử dụng',
+        'imported_at': {
+            '$lt': expiration_time.isoformat()
+        }
+    })
+    
+    client.close()
+    return result.deleted_count
+
 @login_required
 def home_view(request):
+    # Kiểm tra và xóa email hết hạn trước khi hiển thị trang
+    deleted_count = check_and_delete_expired_emails()
+    if deleted_count > 0:
+        messages.warning(request, f'Đã xóa {deleted_count} email hết hạn (không sử dụng trong 1 giờ)')
+    
     # Get user data from MongoDB
     users_collection, client = get_collection_handle('users')
     user_data = users_collection.find_one({'user_id': str(request.user.id)})
@@ -98,10 +130,10 @@ def home_view(request):
                         duplicate_emails.append(record['Email'])
                     else:
                         record['status'] = 'Chưa sử dụng'
-                        record['imported_at'] = timezone.now().isoformat()
+                        record['imported_at'] = get_current_time().isoformat()
                         record['imported_by'] = str(request.user.id)
                         record['assigned_to'] = None
-                        record['assigned_to_kiemtra'] = None  # Thêm trường mới cho kiemtra
+                        record['assigned_to_kiemtra'] = None
                         record['stt'] = next_stt
                         new_records.append(record)
                         next_stt += 1
@@ -160,7 +192,7 @@ def home_view(request):
                 {'$set': {
                     'assigned_to': str(request.user.id),
                     'nhanvien_assigned_to': request.user.username,
-                    'nhanvien_assigned_at': timezone.now().isoformat()
+                    'nhanvien_assigned_at': get_current_time().isoformat()
                 }}
             )
         
@@ -199,12 +231,12 @@ def home_view(request):
             excel_data_collection.update_many(
                 {
                     '_id': {'$in': email_ids},
-                    'assigned_to_kiemtra': None  # Chỉ cập nhật những email chưa được gán
+                    'assigned_to_kiemtra': None
                 },
                 {'$set': {
                     'assigned_to_kiemtra': str(request.user.id),
                     'kiemtra_assigned_to': request.user.username,
-                    'kiemtra_assigned_at': timezone.now().isoformat()
+                    'kiemtra_assigned_at': get_current_time().isoformat()
                 }}
             )
         
@@ -219,11 +251,31 @@ def home_view(request):
     
     # Convert MongoDB cursor to list and process _id
     excel_data = []
+    current_time = get_current_time()
     for doc in cursor:
         # Create a new dict without _id
         processed_doc = {k: v for k, v in doc.items() if not k.startswith('_')}
         # Add id field
         processed_doc['id'] = str(doc['_id'])
+        
+        # Tính thời gian sống của email
+        if doc.get('imported_at') and doc.get('status') == 'Chưa sử dụng':
+            imported_time = timezone.datetime.fromisoformat(doc['imported_at'])
+            time_diff = current_time - imported_time.astimezone(TIMEZONE)
+            remaining_seconds = max(3600 - time_diff.total_seconds(), 0)
+            
+            # Chuyển đổi thành phút và giây
+            remaining_minutes = int(remaining_seconds // 60)
+            remaining_secs = int(remaining_seconds % 60)
+            
+            processed_doc['remaining_time'] = {
+                'minutes': remaining_minutes,
+                'seconds': remaining_secs,
+                'total_seconds': int(remaining_seconds)
+            }
+        else:
+            processed_doc['remaining_time'] = None
+            
         excel_data.append(processed_doc)
     
     client.close()
@@ -301,7 +353,7 @@ def logout_view(request):
         users_collection, client = get_collection_handle('users')
         users_collection.update_one(
             {'user_id': str(request.user.id)},
-            {'$set': {'last_logout': timezone.now().isoformat()}}
+            {'$set': {'last_logout': get_current_time().isoformat()}}
         )
         client.close()
         
@@ -346,7 +398,7 @@ def update_status(request):
         # Prepare update data based on user role
         update_data = {
             'status': new_status,
-            'updated_at': timezone.now().isoformat(),
+            'updated_at': get_current_time().isoformat(),
             'updated_by': str(request.user.id),
             'updated_by_username': request.user.username
         }
@@ -355,12 +407,12 @@ def update_status(request):
         if user_role == 'nhanvien':
             update_data.update({
                 'nhanvien_assigned_to': request.user.username,
-                'nhanvien_assigned_at': timezone.now().isoformat()
+                'nhanvien_assigned_at': get_current_time().isoformat()
             })
         elif user_role == 'kiemtra':
             update_data.update({
                 'kiemtra_assigned_to': request.user.username,
-                'kiemtra_assigned_at': timezone.now().isoformat()
+                'kiemtra_assigned_at': get_current_time().isoformat()
             })
 
         # Update the record
@@ -447,7 +499,7 @@ def create_sample_users(request):
                 'username': user.username,
                 'email': user.email,
                 'role': user_data['role'],
-                'created_at': timezone.now().isoformat()
+                'created_at': get_current_time().isoformat()
             }
             
             users_collection.update_one(
@@ -513,7 +565,7 @@ def create_user(request):
                 'username': username,
                 'email': email,
                 'role': role,
-                'created_at': timezone.now().isoformat()
+                'created_at': get_current_time().isoformat()
             }
             
             users_collection.update_one(
@@ -588,18 +640,35 @@ def export_emails(request):
     
     # Viết dữ liệu
     for row, record in enumerate(cursor, start=1):
+        # Chuyển đổi thời gian từ ISO format sang múi giờ GMT+7
+        imported_at = record.get('imported_at', '')
+        nhanvien_time = record.get('nhanvien_assigned_at', '')
+        kiemtra_time = record.get('kiemtra_assigned_at', '')
+
+        if imported_at:
+            imported_at = timezone.datetime.fromisoformat(imported_at).astimezone(TIMEZONE)
+            imported_at = imported_at.strftime('%Y-%m-%d %H:%M:%S')
+        
+        if nhanvien_time:
+            nhanvien_time = timezone.datetime.fromisoformat(nhanvien_time).astimezone(TIMEZONE)
+            nhanvien_time = nhanvien_time.strftime('%Y-%m-%d %H:%M:%S')
+            
+        if kiemtra_time:
+            kiemtra_time = timezone.datetime.fromisoformat(kiemtra_time).astimezone(TIMEZONE)
+            kiemtra_time = kiemtra_time.strftime('%Y-%m-%d %H:%M:%S')
+
         data = [
             record.get('stt', ''),
             record.get('Email', ''),
             record.get('Pass', ''),
             record.get('PassApp', ''),
             record.get('status', ''),
-            record.get('imported_at', '')[:10],
+            imported_at,
             record.get('imported_by', ''),
             record.get('nhanvien_assigned_to', ''),
-            record.get('nhanvien_assigned_at', '')[:19].replace('T', ' ') if record.get('nhanvien_assigned_at') else '',
+            nhanvien_time,
             record.get('kiemtra_assigned_to', ''),
-            record.get('kiemtra_assigned_at', '')[:19].replace('T', ' ') if record.get('kiemtra_assigned_at') else ''
+            kiemtra_time
         ]
         for col, value in enumerate(data):
             worksheet.write(row, col, value, cell_format)

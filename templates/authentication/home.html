@@ -87,6 +87,7 @@
                             <th>Pass</th>
                             <th>PassApp</th>
                             <th>Trạng thái</th>
+                            <th>Time</th>
                             {% if can_update_status %}
                             <th>Thao tác</th>
                             {% endif %}
@@ -108,7 +109,20 @@
                             </td>
                             <td>{{ item.Pass }}</td>
                             <td>{{ item.PassApp }}</td>
-                            <td>{{ item.status }}</td>
+                            <td>
+                                <span class="status-badge status-{{ item.status|slugify }}">
+                                    {{ item.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if item.remaining_time and item.status == 'Chưa sử dụng' %}
+                                    <span class="remaining-time" data-seconds="{{ item.remaining_time.total_seconds }}">
+                                        {{ item.remaining_time.minutes }}:{{ item.remaining_time.seconds|stringformat:"02d" }}
+                                    </span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             {% if can_update_status %}
                             <td>
                                 <div class="dropdown">
@@ -369,6 +383,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (APP_CONFIG.isNhanvien || APP_CONFIG.isKiemtra) {
         loadMoreEmails();
     }
+
+    // Cập nhật thời gian sống mỗi giây
+    function updateRemainingTimes() {
+        document.querySelectorAll('.remaining-time').forEach(function(element) {
+            let seconds = parseInt(element.dataset.seconds);
+            if (seconds > 0) {
+                seconds--;
+                element.dataset.seconds = seconds;
+                let minutes = Math.floor(seconds / 60);
+                let remainingSeconds = seconds % 60;
+                element.textContent = minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+            } else {
+                element.textContent = '0:00';
+            }
+        });
+    }
+    
+    // Cập nhật mỗi giây
+    setInterval(updateRemainingTimes, 1000);
 });
 </script>
 {% endblock %} 
