@@ -258,23 +258,39 @@ def home_view(request):
         # Add id field
         processed_doc['id'] = str(doc['_id'])
         
-        # Tính thời gian sống của email
-        if doc.get('imported_at') and doc.get('status') == 'Chưa sử dụng':
+        # Tính thời gian cho email
+        if doc.get('imported_at'):
             imported_time = timezone.datetime.fromisoformat(doc['imported_at'])
             time_diff = current_time - imported_time.astimezone(TIMEZONE)
-            remaining_seconds = max(3600 - time_diff.total_seconds(), 0)
             
-            # Chuyển đổi thành phút và giây
-            remaining_minutes = int(remaining_seconds // 60)
-            remaining_secs = int(remaining_seconds % 60)
-            
-            processed_doc['remaining_time'] = {
-                'minutes': remaining_minutes,
-                'seconds': remaining_secs,
-                'total_seconds': int(remaining_seconds)
-            }
+            if user_role == 'kiemtra':
+                # Với user kiemtra: tính thời gian tăng dần từ lúc import
+                elapsed_seconds = int(time_diff.total_seconds())
+                elapsed_minutes = int(elapsed_seconds // 60)
+                elapsed_secs = int(elapsed_seconds % 60)
+                
+                processed_doc['time_info'] = {
+                    'minutes': elapsed_minutes,
+                    'seconds': elapsed_secs,
+                    'total_seconds': elapsed_seconds,
+                    'type': 'elapsed'  # Đánh dấu là thời gian tăng dần
+                }
+            elif doc.get('status') == 'Chưa sử dụng':
+                # Với các user khác: tính thời gian đếm ngược nếu trạng thái là "Chưa sử dụng"
+                remaining_seconds = max(3600 - time_diff.total_seconds(), 0)
+                remaining_minutes = int(remaining_seconds // 60)
+                remaining_secs = int(remaining_seconds % 60)
+                
+                processed_doc['time_info'] = {
+                    'minutes': remaining_minutes,
+                    'seconds': remaining_secs,
+                    'total_seconds': int(remaining_seconds),
+                    'type': 'remaining'  # Đánh dấu là thời gian đếm ngược
+                }
+            else:
+                processed_doc['time_info'] = None
         else:
-            processed_doc['remaining_time'] = None
+            processed_doc['time_info'] = None
             
         excel_data.append(processed_doc)
     

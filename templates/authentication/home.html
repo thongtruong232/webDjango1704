@@ -115,9 +115,11 @@
                                 </span>
                             </td>
                             <td>
-                                {% if item.remaining_time and item.status == 'Chưa sử dụng' %}
-                                    <span class="remaining-time" data-seconds="{{ item.remaining_time.total_seconds }}">
-                                        {{ item.remaining_time.minutes }}:{{ item.remaining_time.seconds|stringformat:"02d" }}
+                                {% if item.time_info %}
+                                    <span class="{% if item.time_info.type == 'elapsed' %}elapsed-time{% else %}remaining-time{% endif %}" 
+                                          data-seconds="{{ item.time_info.total_seconds }}"
+                                          data-type="{{ item.time_info.type }}">
+                                        {{ item.time_info.minutes }}:{{ item.time_info.seconds|stringformat:"02d" }}
                                     </span>
                                 {% else %}
                                     -
@@ -384,8 +386,9 @@ document.addEventListener('DOMContentLoaded', function() {
         loadMoreEmails();
     }
 
-    // Cập nhật thời gian sống mỗi giây
-    function updateRemainingTimes() {
+    // Cập nhật thời gian mỗi giây
+    function updateTimes() {
+        // Cập nhật thời gian đếm ngược
         document.querySelectorAll('.remaining-time').forEach(function(element) {
             let seconds = parseInt(element.dataset.seconds);
             if (seconds > 0) {
@@ -398,10 +401,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.textContent = '0:00';
             }
         });
+
+        // Cập nhật thời gian tăng dần
+        document.querySelectorAll('.elapsed-time').forEach(function(element) {
+            let seconds = parseInt(element.dataset.seconds);
+            seconds++;
+            element.dataset.seconds = seconds;
+            let minutes = Math.floor(seconds / 60);
+            let elapsedSeconds = seconds % 60;
+            element.textContent = minutes + ':' + (elapsedSeconds < 10 ? '0' : '') + elapsedSeconds;
+        });
     }
     
     // Cập nhật mỗi giây
-    setInterval(updateRemainingTimes, 1000);
+    setInterval(updateTimes, 1000);
 });
 </script>
 {% endblock %} 
