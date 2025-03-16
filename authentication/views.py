@@ -71,8 +71,8 @@ def home_view(request):
             df = pd.read_excel(file_path)
             
             # Validate columns
-            if 'Email' not in df.columns or 'Pass' not in df.columns:
-                messages.error(request, 'Excel file must contain Email and Pass columns')
+            if 'Email' not in df.columns or 'Pass' not in df.columns or 'PassApp' not in df.columns:
+                messages.error(request, 'Excel file must contain Email, Pass, and PassApp columns')
             else:
                 # Get MongoDB collection
                 excel_data_collection, _ = get_collection_handle('excel_data')
@@ -545,7 +545,7 @@ def export_emails(request):
     })
     
     # Viết header
-    headers = ['STT', 'Email', 'Pass', 'Trạng thái', 'Ngày import', 'Người import']
+    headers = ['STT', 'Email', 'Pass', 'PassApp', 'Trạng thái', 'Ngày import', 'Người import']
     for col, header in enumerate(headers):
         worksheet.write(0, col, header, header_format)
     
@@ -559,17 +559,19 @@ def export_emails(request):
         worksheet.write(row, 0, record.get('stt', ''), cell_format)
         worksheet.write(row, 1, record.get('Email', ''), cell_format)
         worksheet.write(row, 2, record.get('Pass', ''), cell_format)
-        worksheet.write(row, 3, record.get('status', ''), cell_format)
-        worksheet.write(row, 4, record.get('imported_at', '')[:10], cell_format)  # Chỉ lấy ngày
-        worksheet.write(row, 5, record.get('imported_by', ''), cell_format)
+        worksheet.write(row, 3, record.get('PassApp', ''), cell_format)
+        worksheet.write(row, 4, record.get('status', ''), cell_format)
+        worksheet.write(row, 5, record.get('imported_at', '')[:10], cell_format)  # Chỉ lấy ngày
+        worksheet.write(row, 6, record.get('imported_by', ''), cell_format)
     
     # Điều chỉnh độ rộng cột
-    worksheet.set_column(0, 0, 8)  # STT
+    worksheet.set_column(0, 0, 8)   # STT
     worksheet.set_column(1, 1, 30)  # Email
     worksheet.set_column(2, 2, 15)  # Pass
-    worksheet.set_column(3, 3, 15)  # Trạng thái
-    worksheet.set_column(4, 4, 15)  # Ngày import
-    worksheet.set_column(5, 5, 20)  # Người import
+    worksheet.set_column(3, 3, 15)  # PassApp
+    worksheet.set_column(4, 4, 15)  # Trạng thái
+    worksheet.set_column(5, 5, 15)  # Ngày import
+    worksheet.set_column(6, 6, 20)  # Người import
     
     # Đóng workbook
     workbook.close()

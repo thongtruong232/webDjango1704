@@ -85,6 +85,7 @@
                             <th>STT</th>
                             <th>Email</th>
                             <th>Pass</th>
+                            <th>PassApp</th>
                             <th>Trạng thái</th>
                             {% if can_update_status %}
                             <th>Thao tác</th>
@@ -97,6 +98,7 @@
                             <td>{{ item.stt }}</td>
                             <td>{{ item.Email }}</td>
                             <td>{{ item.Pass }}</td>
+                            <td>{{ item.PassApp }}</td>
                             <td>{{ item.status }}</td>
                             {% if can_update_status %}
                             <td>
@@ -207,7 +209,7 @@ function showAlert(message, type) {
     
     setTimeout(() => {
         alertDiv.remove();
-    }, 3000);
+    }, 1000);
 }
 
 // Hàm cập nhật trạng thái
