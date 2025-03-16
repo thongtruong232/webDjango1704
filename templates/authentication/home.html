@@ -3,6 +3,26 @@
 {% block title %}Trang chủ{% endblock %}
 
 {% block content %}
+<style>
+/* CSS cho cột Email */
+#emailTable td:nth-child(2) {
+    font-size: 150%;
+}
+
+/* CSS cho cột PassFree */
+#emailTable td:nth-child(4) .me-2 {
+    font-weight: bold;
+    color: #0066cc;
+}
+
+/* CSS cho cột STT */
+#emailTable td:nth-child(1),
+#emailTable th:nth-child(1) {
+    text-align: center;
+    font-size: 120%;
+}
+</style>
+
 <div class="container mt-4">
     {% if messages %}
         {% for message in messages %}
@@ -87,7 +107,9 @@
                             <th>Pass</th>
                             <th>PassFree</th>
                             <th>PassTexNow</th>
+                            {% if not is_nhanvien and user_data.role != 'kiemtra' %}
                             <th>Trạng thái</th>
+                            {% endif %}
                             <th>Time</th>
                             {% if can_update_status %}
                             <th>Thao tác</th>
@@ -108,13 +130,42 @@
                                     </button>
                                 </div>
                             </td>
-                            <td>{{ item.Pass }}</td>
-                            <td>{{ item.PassFree }}</td>
-                            <td>{{ item.PassTexNow }}</td>
                             <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2">{{ item.Pass }}</span>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
+                                            data-clipboard-text="{{ item.Pass }}"
+                                            title="Copy pass">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2">{{ item.PassFree }}</span>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
+                                            data-clipboard-text="{{ item.PassFree }}"
+                                            title="Copy pass free">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <span class="me-2">{{ item.PassTexNow }}</span>
+                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
+                                            data-clipboard-text="{{ item.PassTexNow }}"
+                                            title="Copy pass texnow">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                {% if not is_nhanvien and user_data.role != 'kiemtra' %}
                                 <span class="status-badge status-{{ item.status|slugify }}">
                                     {{ item.status }}
                                 </span>
+                                {% endif %}
                             </td>
                             <td>
                                 {% if item.time_info %}
