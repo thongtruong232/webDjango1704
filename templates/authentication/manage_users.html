@@ -1,0 +1,258 @@
+{% extends 'authentication/base.html' %}
+
+{% block title %}Quản lý người dùng{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Quản lý người dùng</h2>
+    <div>
+        <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#createUserModal">
+            <i class="fas fa-user-plus"></i> Tạo user mới
+        </button>
+        {% if user.is_superuser %}
+        <a href="{% url 'create_sample_users' %}" class="btn btn-primary">Tạo user mẫu</a>
+        {% endif %}
+    </div>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="card mb-4">
+    <div class="card-body">
+        <table id="usersTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Quyền hiện tại</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role|default:"nhanvien" }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cập nhật quyền
+                            </button>
+                            <ul class="dropdown-menu">
+                                {% for role in roles %}
+                                <li><a class="dropdown-item update-role" href="#" 
+                                      data-user-id="{{ user.user_id }}" 
+                                      data-role="{{ role }}">{{ role }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal tạo user mới -->
+<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createUserModalLabel">Tạo user mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createUserForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="form-text">Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Quyền</label>
+                        <select class="form-select" id="role" name="role" required>
+                            {% for role in roles %}
+                            <option value="{{ role }}">{{ role }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="createUserBtn">Tạo user</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    $('#usersTable').DataTable({
+        "pageLength": 10,
+        "order": [[0, "asc"]],
+        "language": {
+            "search": "Tìm kiếm:",
+            "lengthMenu": "Hiển thị _MENU_ dòng",
+            "info": "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
+            "infoEmpty": "Hiển thị 0 đến 0 của 0 dòng",
+            "infoFiltered": "(lọc từ _MAX_ dòng)",
+            "paginate": {
+                "first": "Đầu",
+                "last": "Cuối",
+                "next": "Sau",
+                "previous": "Trước"
+            }
+        }
+    });
+
+    // Xử lý tạo user mới
+    $('#createUserBtn').click(function() {
+        var form = $('#createUserForm');
+        var formData = {
+            username: $('#username').val(),
+            email: $('#email').val(),
+            password: $('#password').val(),
+            role: $('#role').val(),
+            csrfmiddlewaretoken: form.find('input[name=csrfmiddlewaretoken]').val()
+        };
+
+        $.ajax({
+            url: '{% url "create_user" %}',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Thêm user mới vào bảng
+                    var newRow = '<tr>' +
+                        '<td>' + formData.username + '</td>' +
+                        '<td>' + formData.email + '</td>' +
+                        '<td>' + formData.role + '</td>' +
+                        '<td>' +
+                        '<div class="dropdown">' +
+                        '<button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">' +
+                        'Cập nhật quyền' +
+                        '</button>' +
+                        '<ul class="dropdown-menu">' +
+                        {% for role in roles %}
+                        '<li><a class="dropdown-item update-role" href="#" data-user-id="' + response.user_id + '" data-role="{{ role }}">{{ role }}</a></li>' +
+                        {% endfor %}
+                        '</ul>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>';
+                    
+                    $('#usersTable').DataTable().row.add($(newRow)).draw();
+                    
+                    // Đóng modal và reset form
+                    $('#createUserModal').modal('hide');
+                    form[0].reset();
+                    
+                    // Hiển thị thông báo thành công
+                    var alert = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                'Tạo user thành công' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>');
+                    $('.container').first().prepend(alert);
+                    
+                    // Tự động ẩn thông báo sau 3 giây
+                    setTimeout(function() {
+                        alert.alert('close');
+                    }, 3000);
+                } else {
+                    // Hiển thị thông báo lỗi
+                    var alert = $('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                'Lỗi: ' + response.message +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>');
+                    $('.container').first().prepend(alert);
+                }
+            },
+            error: function() {
+                // Hiển thị thông báo lỗi
+                var alert = $('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            'Có lỗi xảy ra khi tạo user' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            '</div>');
+                $('.container').first().prepend(alert);
+            }
+        });
+    });
+
+    // Xử lý cập nhật quyền
+    $('.update-role').click(function(e) {
+        e.preventDefault();
+        var link = $(this);
+        var userId = link.data('user-id');
+        var newRole = link.data('role');
+        
+        $.ajax({
+            url: '{% url "update_user_role" %}',
+            type: 'POST',
+            data: {
+                'user_id': userId,
+                'role': newRole,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Cập nhật hiển thị quyền trong bảng
+                    link.closest('tr').find('td:eq(2)').text(newRole);
+                    
+                    // Hiển thị thông báo thành công
+                    var alert = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                'Cập nhật quyền thành công' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>');
+                    $('.container').first().prepend(alert);
+                    
+                    // Tự động ẩn thông báo sau 3 giây
+                    setTimeout(function() {
+                        alert.alert('close');
+                    }, 3000);
+                } else {
+                    // Hiển thị thông báo lỗi
+                    var alert = $('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                'Lỗi: ' + response.message +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>');
+                    $('.container').first().prepend(alert);
+                }
+            },
+            error: function() {
+                // Hiển thị thông báo lỗi
+                var alert = $('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            'Có lỗi xảy ra khi cập nhật quyền' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            '</div>');
+                $('.container').first().prepend(alert);
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 
