@@ -65,7 +65,14 @@
                     {% if user_data.role == 'admin' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'manage_users' %}">
-                            <i class="fas fa-users me-1"></i>Quản lý người dùng
+                            <i class="fas fa-users"></i> Quản lý người dùng
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if user_data.role == 'admin' or user_data.role == 'quanly' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'work_management' %}">
+                            <i class="fas fa-chart-line"></i> Thống kê công việc
                         </a>
                     </li>
                     {% endif %}

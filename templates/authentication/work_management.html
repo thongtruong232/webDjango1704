@@ -1,0 +1,162 @@
+{% extends 'authentication/base.html' %}
+
+{% block title %}Quản lý công việc{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Bộ lọc thời gian -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Bộ lọc thời gian</h5>
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Chọn kiểu thống kê:</label>
+                    <select name="stats_type" class="form-select" id="statsType">
+                        <option value="day" {% if stats_type == 'day' %}selected{% endif %}>Theo ngày</option>
+                        <option value="week" {% if stats_type == 'week' %}selected{% endif %}>Theo tuần</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Từ ngày:</label>
+                    <input type="date" class="form-control" name="start_date" value="{{ start_date|date:'Y-m-d' }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Đến ngày:</label>
+                    <input type="date" class="form-control" name="end_date" value="{{ end_date|date:'Y-m-d' }}">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> Lọc dữ liệu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Thống kê tổng quan -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Thống kê nhân viên đăng ký</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nhân viên</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-center">Tỷ lệ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stat in nhanvien_stats %}
+                                <tr>
+                                    <td>{{ stat.username }}</td>
+                                    <td class="text-center">{{ stat.count }}</td>
+                                    <td class="text-center">{{ stat.percentage }}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Thống kê kiểm tra viên</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Kiểm tra viên</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-center">Tỷ lệ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stat in kiemtra_stats %}
+                                <tr>
+                                    <td>{{ stat.username }}</td>
+                                    <td class="text-center">{{ stat.count }}</td>
+                                    <td class="text-center">{{ stat.percentage }}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Biểu đồ thống kê</h5>
+            <canvas id="workChart"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Dữ liệu cho biểu đồ
+    const chartData = {
+        labels: {{ chart_labels|safe }},
+        datasets: [
+            {
+                label: 'Đăng ký',
+                data: {{ nhanvien_data|safe }},
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            },
+            {
+                label: 'Kiểm tra',
+                data: {{ kiemtra_data|safe }},
+                borderColor: 'rgb(255, 99, 132)',
+                tension: 0.1
+            }
+        ]
+    };
+
+    // Cấu hình biểu đồ
+    const config = {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Thống kê số lượng email theo thời gian'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Số lượng email'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: '{% if stats_type == "day" %}Ngày{% else %}Tuần{% endif %}'
+                    }
+                }
+            }
+        }
+    };
+
+    // Khởi tạo biểu đồ
+    const ctx = document.getElementById('workChart').getContext('2d');
+    new Chart(ctx, config);
+});
+</script>
+{% endblock %} 

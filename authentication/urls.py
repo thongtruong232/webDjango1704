@@ -11,4 +11,7 @@ urlpatterns = [
     path('create-sample-users/', views.create_sample_users, name='create_sample_users'),
     path('create-user/', views.create_user, name='create_user'),
     path('export-emails/', views.export_emails, name='export_emails'),
+    path('work-management/', views.work_management, name='work_management'),
+    path('change-user-password/', views.change_user_password, name='change_user_password'),
+    path('delete-user/', views.delete_user, name='delete_user'),
 ] 
