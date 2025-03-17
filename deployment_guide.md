@@ -46,7 +46,7 @@ Thêm các biến môi trường sau:
 
 ```
 DEBUG=False
-SECRET_KEY=your-secret-key
+SECRET_KEY=cf)(y15*ghfsm=yur5nvb6jyznfk0b-dj1%_b8@%7ck7wj-l$x
 ALLOWED_HOSTS=your-domain.com,www.your-domain.com
 MONGO_URI=mongodb://username:password@host:port/database
 ```
