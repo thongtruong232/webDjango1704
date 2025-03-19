@@ -82,7 +82,8 @@ DATABASES = {
     }
 }
 
-MONGODB_URI = 'mongodb://localhost:27017/'
+MONGODB_URI = 'mongodb://huen:Huen1988@mongodb:27017/'
+# MONGODB_URI = 'mongodb://localhost:27017/'
 MONGODB_DATABASE = 'your_database_name'
 
 

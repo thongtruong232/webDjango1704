@@ -14,4 +14,5 @@ urlpatterns = [
     path('work-management/', views.work_management, name='work_management'),
     path('change-user-password/', views.change_user_password, name='change_user_password'),
     path('delete-user/', views.delete_user, name='delete_user'),
+    path('work-time-stats/', views.work_time_stats, name='work_time_stats'),
 ] 

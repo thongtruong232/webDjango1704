@@ -328,7 +328,7 @@ function updateStatus(recordId, newStatus, link) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': APP_CONFIG.csrfToken
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
         },
         body: formData.toString()
     })

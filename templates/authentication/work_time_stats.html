@@ -1,0 +1,100 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Thống kê thời gian làm việc</h2>
+
+    <!-- Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Từ ngày</label>
+                    <input type="date" name="start_date" class="form-control" value="{{ start_date|date:'Y-m-d' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Đến ngày</label>
+                    <input type="date" name="end_date" class="form-control" value="{{ end_date|date:'Y-m-d' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Nhân viên</label>
+                    <select name="user_id" class="form-select">
+                        <option value="">Tất cả</option>
+                        {% for user in users %}
+                        <option value="{{ user.id }}" {% if selected_user == user.id|stringformat:"s" %}selected{% endif %}>
+                            {{ user.username }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Lọc</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Statistics Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nhân viên</th>
+                            <th>Số phiên đăng nhập</th>
+                            <th>Tổng thời gian (giờ)</th>
+                            <th>Thời gian trung bình/phiên (giờ)</th>
+                            <th>Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in stats %}
+                        <tr>
+                            <td>{{ stat.user.username }}</td>
+                            <td>{{ stat.total_sessions }}</td>
+                            <td>{{ stat.total_hours }}</td>
+                            <td>{{ stat.average_session }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#details-{{ stat.user.id }}">
+                                    Xem chi tiết
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="collapse" id="details-{{ stat.user.id }}">
+                                    <div class="card card-body">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Thời gian đăng nhập</th>
+                                                    <th>Thời gian đăng xuất</th>
+                                                    <th>Thời gian làm việc</th>
+                                                    <th>IP</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for activity in stat.activities %}
+                                                <tr>
+                                                    <td>{{ activity.login_time|date:"d/m/Y H:i" }}</td>
+                                                    <td>{{ activity.logout_time|date:"d/m/Y H:i"|default:"Chưa đăng xuất" }}</td>
+                                                    <td>{{ activity.session_duration|default:"-" }}</td>
+                                                    <td>{{ activity.ip_address }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

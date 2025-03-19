@@ -14,7 +14,7 @@ from .permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
 )
-from .models import User
+from .models import User, UserActivity
 import xlsxwriter
 from io import BytesIO
 import pytz
@@ -34,27 +34,21 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
-            # Store additional user data in MongoDB
-            users_collection, client = get_collection_handle('users')
-            user_data = users_collection.find_one({'user_id': str(user.id)})
-            user_data = {
-                'user_id': str(user.id),
-                'username': user.username,
-                'email': user.email,
-                'last_login': user.last_login.isoformat() if user.last_login else None,
-                'role': user_data.get('role', 'nhanvien') if user_data else 'nhanvien'  # Preserve existing role or set default
-            }
-            users_collection.update_one(
-                {'user_id': str(user.id)},
-                {'$set': user_data},
-                upsert=True
+            
+            # Ghi lại thời gian login
+            UserActivity.objects.create(
+                user=user,
+                ip_address=request.META.get('REMOTE_ADDR'),
+                user_agent=request.META.get('HTTP_USER_AGENT')
             )
-            client.close()
+            
             return redirect('home')
         else:
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, 'Tên đăng nhập hoặc mật khẩu không đúng')
+    
     return render(request, 'authentication/login.html')
 
 def check_and_delete_expired_emails():
@@ -367,18 +361,20 @@ def update_user_role(request):
 
 def logout_view(request):
     if request.user.is_authenticated:
-        # Update last logout time in MongoDB
-        users_collection, client = get_collection_handle('users')
-        users_collection.update_one(
-            {'user_id': str(request.user.id)},
-            {'$set': {'last_logout': get_current_time().isoformat()}}
-        )
-        client.close()
-        
-        # Perform Django logout
-        logout(request)
-        messages.success(request, 'You have been successfully logged out.')
+        # Cập nhật thời gian logout cho session gần nhất
+        try:
+            last_activity = UserActivity.objects.filter(
+                user=request.user,
+                logout_time__isnull=True
+            ).latest('login_time')
+            
+            last_activity.logout_time = timezone.now()
+            last_activity.calculate_duration()
+            last_activity.save()
+        except UserActivity.DoesNotExist:
+            pass
     
+    logout(request)
     return redirect('login')
 
 @login_required
@@ -981,3 +977,61 @@ def delete_user(request):
         'success': False,
         'message': 'Phương thức không được hỗ trợ'
     })
+
+@login_required
+@role_required(['admin', 'quanly'])
+def work_time_stats(request):
+    # Lấy thông tin filter từ request
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    user_id = request.GET.get('user_id')
+
+    # Xử lý ngày tháng
+    if not end_date:
+        end_date = timezone.now().date()
+    else:
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+    
+    if not start_date:
+        start_date = end_date - timedelta(days=30)
+    else:
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+
+    # Query cơ bản
+    activities = UserActivity.objects.filter(
+        login_time__date__gte=start_date,
+        login_time__date__lte=end_date
+    )
+
+    # Lọc theo user nếu được chọn
+    if user_id:
+        activities = activities.filter(user_id=user_id)
+
+    # Tính toán thống kê
+    stats = []
+    for user in User.objects.all():
+        user_activities = activities.filter(user=user)
+        total_sessions = user_activities.count()
+        total_duration = sum(
+            (activity.session_duration or timedelta()).total_seconds()
+            for activity in user_activities
+            if activity.session_duration
+        )
+        
+        stats.append({
+            'user': user,
+            'total_sessions': total_sessions,
+            'total_hours': round(total_duration / 3600, 2),
+            'average_session': round(total_duration / total_sessions / 3600, 2) if total_sessions > 0 else 0,
+            'activities': user_activities.order_by('-login_time')
+        })
+
+    context = {
+        'stats': stats,
+        'start_date': start_date,
+        'end_date': end_date,
+        'selected_user': user_id,
+        'users': User.objects.all()
+    }
+    
+    return render(request, 'authentication/work_time_stats.html', context)

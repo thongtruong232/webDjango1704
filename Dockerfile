@@ -1,5 +1,5 @@
-# Sử dụng Python 3.9 làm base image
-FROM python:3.9-slim
+# Sử dụng Python 3.10 làm base image
+FROM python:3.10-slim
 
 # Thiết lập biến môi trường
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 8000
 
 # Chạy gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "WebDjango.wsgi:application"] 
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "webproject.wsgi:application"] 
