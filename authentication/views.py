@@ -623,16 +623,32 @@ def create_user(request):
     })
 
 @login_required
-@role_required('admin')
+@role_required(['admin', 'quanly'])
 def export_emails(request):
+    # Lấy thông tin ngày xử lý từ request
+    process_date = request.GET.get('process_date')
+    
     # Lấy danh sách trạng thái được chọn
     selected_statuses = request.GET.getlist('status')
     
     # Nếu không có trạng thái nào được chọn, xuất tất cả
     excel_data_collection, client = get_collection_handle('excel_data')
     
-    # Tạo query dựa trên trạng thái được chọn
+    # Tạo query dựa trên trạng thái được chọn và ngày
     query = {}
+    
+    # Thêm điều kiện ngày xử lý nếu có
+    if process_date:
+        # Tạo khoảng thời gian cho ngày được chọn (từ 00:00:00 đến 23:59:59)
+        start_time = f"{process_date}T00:00:00Z"
+        end_time = f"{process_date}T23:59:59Z"
+        
+        # Tìm các bản ghi được xử lý trong ngày (dựa vào thời gian cập nhật)
+        query['updated_at'] = {
+            '$gte': start_time,
+            '$lte': end_time
+        }
+    
     if selected_statuses:
         query['status'] = {'$in': selected_statuses}
     

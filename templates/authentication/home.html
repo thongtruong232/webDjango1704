@@ -47,30 +47,37 @@
                         <button type="submit" class="btn btn-primary">Import</button>
                     </form>
                 </div>
+                {% if user_data.role == 'admin' or user_data.role == 'quanly' %}
                 <div class="col-md-6">
                     <h5 class="card-title">Xuất dữ liệu</h5>
                     <form id="exportForm" method="get" action="{% url 'export_emails' %}">
                         <div class="mb-3">
+                            <label class="form-label">Ngày xử lý</label>
+                            <input type="date" class="form-control" name="process_date">
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Chọn trạng thái:</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="status" value="Chưa sử dụng" id="statusUnused">
-                                <label class="form-check-label" for="statusUnused">Chưa sử dụng</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="status" value="Đã đăng ký" id="statusRegistered">
-                                <label class="form-check-label" for="statusRegistered">Đã đăng ký</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="status" value="Email lỗi" id="statusError">
-                                <label class="form-check-label" for="statusError">Email lỗi</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="status" value="Đã kiểm tra" id="statusChecked">
-                                <label class="form-check-label" for="statusChecked">Đã kiểm tra</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="status" value="Kiểm tra lỗi" id="statusCheckError">
-                                <label class="form-check-label" for="statusCheckError">Kiểm tra lỗi</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="status" value="Chưa sử dụng" id="statusUnused">
+                                    <label class="form-check-label" for="statusUnused">Chưa sử dụng</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="status" value="Đã đăng ký" id="statusRegistered">
+                                    <label class="form-check-label" for="statusRegistered">Đã đăng ký</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="status" value="Email lỗi" id="statusError">
+                                    <label class="form-check-label" for="statusError">Email lỗi</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="status" value="Đã kiểm tra" id="statusChecked">
+                                    <label class="form-check-label" for="statusChecked">Đã kiểm tra</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="status" value="Kiểm tra lỗi" id="statusCheckError">
+                                    <label class="form-check-label" for="statusCheckError">Kiểm tra lỗi</label>
+                                </div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success">
@@ -78,6 +85,7 @@
                         </button>
                     </form>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -304,18 +312,20 @@ function attachCopyListeners() {
 
 // Hàm hiển thị thông báo
 function showAlert(message, type) {
-    // const template = document.getElementById('alertTemplate');
-    // const alert = template.content.cloneNode(true);
-    // const alertDiv = alert.querySelector('.alert');
-    // alertDiv.classList.add(`alert-${type}`);
-    // alert.querySelector('.alert-message').textContent = message;
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
     
-    // const container = document.querySelector('.container');
-    // container.insertBefore(alertDiv, container.firstChild);
+    const container = document.querySelector('.container');
+    container.insertBefore(alertDiv, container.firstChild);
     
-    // setTimeout(() => {
-    //     alertDiv.remove();
-    // }, 1000);
+    setTimeout(() => {
+        alertDiv.classList.remove('show');
+        setTimeout(() => alertDiv.remove(), 150);
+    }, 3000);
 }
 
 // Hàm cập nhật trạng thái
@@ -328,7 +338,7 @@ function updateStatus(recordId, newStatus, link) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            'X-CSRFToken': APP_CONFIG.csrfToken
         },
         body: formData.toString()
     })
@@ -336,14 +346,31 @@ function updateStatus(recordId, newStatus, link) {
     .then(data => {
         if (data.success) {
             const row = link.closest('tr');
-            const statusCell = row.querySelector('td:nth-child(4)');
-            statusCell.textContent = newStatus;
+            
+            // Cập nhật trạng thái nếu có cột trạng thái
+            const statusBadge = row.querySelector('.status-badge');
+            if (statusBadge) {
+                statusBadge.textContent = newStatus;
+                statusBadge.className = `status-badge status-${newStatus.toLowerCase().replace(/\s+/g, '-')}`;
+            }
             
             // Ẩn dòng sau khi cập nhật trạng thái cho cả nhanvien và kiemtra
             if (APP_CONFIG.isNhanvien || APP_CONFIG.isKiemtra) {
-                row.style.transition = 'opacity 0.4s';
+                row.style.transition = 'all 0.4s ease';
                 row.style.opacity = '0';
-                setTimeout(() => row.remove(), 400);
+                row.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    row.remove();
+                    // Kiểm tra nếu không còn dòng nào
+                    const tbody = document.querySelector('#emailTable tbody');
+                    if (tbody.children.length === 0) {
+                        // Tự động click nút "Cấp Email mới" hoặc "Kiểm tra tiếp theo"
+                        const loadMoreBtn = document.getElementById('loadMoreBtn');
+                        if (loadMoreBtn) {
+                            loadMoreBtn.click();
+                        }
+                    }
+                }, 400);
             }
             
             showAlert('Cập nhật trạng thái thành công', 'success');
@@ -351,7 +378,8 @@ function updateStatus(recordId, newStatus, link) {
             showAlert(`Lỗi: ${data.message}`, 'danger');
         }
     })
-    .catch(() => {
+    .catch(error => {
+        console.error('Error:', error);
         showAlert('Có lỗi xảy ra khi cập nhật trạng thái', 'danger');
     });
 }
