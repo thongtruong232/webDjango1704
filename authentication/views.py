@@ -539,13 +539,27 @@ def create_sample_users(request):
 @role_required('admin')
 def create_user(request):
     if request.method == 'POST':
+        # Debug logging
+        print("Creating user...")
+        print("POST data:", request.POST)
+        
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
         role = request.POST.get('role')
         
+        print(f"Username: {username}")
+        print(f"Email: {email}")
+        print(f"Role: {role}")
+        
         # Kiểm tra dữ liệu đầu vào
         if not all([username, email, password, role]) or role not in ROLES:
+            print("Invalid data:", {
+                'username': bool(username),
+                'email': bool(email),
+                'password': bool(password),
+                'role': role in ROLES
+            })
             return JsonResponse({
                 'success': False,
                 'message': 'Dữ liệu không hợp lệ'

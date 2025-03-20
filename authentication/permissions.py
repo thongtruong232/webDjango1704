@@ -23,6 +23,7 @@ def get_user_role(user_id):
     """Get user role from MongoDB"""
     users_collection, client = get_collection_handle('users')
     user_data = users_collection.find_one({'user_id': str(user_id)})
+    print(user_data)
     client.close()
     return user_data.get('role', 'nhanvien') if user_data else 'nhanvien'
 
@@ -53,6 +54,7 @@ def role_required(required_roles):
 def can_manage_users(user_id):
     """Check if user can manage other users"""
     user_role = get_user_role(user_id)
+    print(user_role)
     return user_role in ['admin', 'quanly']
 
 def can_update_status(user_id):

@@ -73,6 +73,7 @@
             </div>
             <div class="modal-body">
                 <form id="createUserForm">
+                    {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label">Username</label>
                         <input type="text" class="form-control" name="username" required>
@@ -185,10 +186,24 @@ $(document).ready(function() {
     });
 
     // Xử lý tạo user mới
-    $('#createUserBtn').click(function() {
+    $('#createUserBtn').click(function(e) {
+        e.preventDefault();
+        
         const form = $('#createUserForm');
+        
+        // Validate form
+        if (!form[0].checkValidity()) {
+            form[0].reportValidity();
+            return;
+        }
+        
         const formData = new FormData(form[0]);
-        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+        // Debug logging
+        console.log('Form data:');
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
         
         $.ajax({
             url: '{% url "create_user" %}',
@@ -197,15 +212,20 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(response) {
+                console.log('Response:', response);
                 if (response.success) {
                     showAlert('success', 'Tạo user thành công!');
+                    $('#createUserModal').modal('hide');
                     setTimeout(() => window.location.reload(), 1000);
                 } else {
                     showAlert('danger', response.message || 'Có lỗi xảy ra!');
                 }
             },
-            error: function() {
-                showAlert('danger', 'Có lỗi xảy ra!');
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Status:', status);
+                console.error('Response:', xhr.responseText);
+                showAlert('danger', 'Có lỗi xảy ra khi tạo user: ' + error);
             }
         });
     });
@@ -292,15 +312,22 @@ $(document).ready(function() {
             </div>
         `;
         
+        // Xóa alert cũ nếu có
+        $('.alert').remove();
+        
+        // Thêm alert mới
         const alertContainer = $('.container').first();
         alertContainer.prepend(alertHtml);
         
-        if (reload) {
+        // Tự động đóng alert sau 5 giây nếu là thành công
+        if (type === 'success') {
             setTimeout(() => {
-                $('.alert').alert('close');
-                if (type === 'success') {
-                    window.location.reload();
-                }
+                $('.alert').fadeOut('slow', function() {
+                    $(this).remove();
+                    if (reload) {
+                        window.location.reload();
+                    }
+                });
             }, 2000);
         }
     }
