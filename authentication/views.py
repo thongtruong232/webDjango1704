@@ -657,7 +657,7 @@ def export_emails(request):
     
     # Tạo file Excel trong bộ nhớ
     output = BytesIO()
-    workbook = xlsxwriter.Workbook(output)
+    workbook = xlsxwriter.Workbook(output, {'nan_inf_to_errors': True})
     worksheet = workbook.add_worksheet()
     
     # Định dạng cho header
