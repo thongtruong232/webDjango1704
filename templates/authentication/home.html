@@ -259,7 +259,7 @@
                     </thead>
                     <tbody>
                         {% for item in excel_data %}
-                        <tr>
+                        <tr data-record-id="{{ item.mongo_id }}">
                             <td>{{ forloop.counter }}</td>
                             <td>{{ item.Email }}</td>
                             <td>{{ item.Pass }}</td>
@@ -291,8 +291,8 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         {% for status in allowed_status_updates %}
-                                        <li><a class="dropdown-item update-status" href="#" 
-                                            data-record-id="{{ item.id|default:item.mongo_id }}" 
+                                        <li><a class="dropdown-item update-status" href="javascript:void(0)" 
+                                            data-record-id="{{ item.mongo_id }}" 
                                             data-status="{{ status }}">{{ status }}</a></li>
                                         {% endfor %}
                                     </ul>
@@ -318,55 +318,7 @@
                     </tbody>
                 </table>
             </div>
-
-            {% if not is_nhanvien %}
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="text-muted">
-                    Trang {{ current_page }} / {{ total_pages }}
-                </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination mb-0">
-                        {% if current_page > 1 %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1" aria-label="First">
-                                <span aria-hidden="true">&laquo;&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ current_page|add:'-1' }}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% for p in page_range %}
-                            {% if p == current_page %}
-                            <li class="page-item active">
-                                <span class="page-link">{{ p }}</span>
-                            </li>
-                            {% else %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ p }}">{{ p }}</a>
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if current_page < total_pages %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ current_page|add:'1' }}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ total_pages }}" aria-label="Last">
-                                <span aria-hidden="true">&raquo;&raquo;</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            </div>
-            {% endif %}
+            
         </div>
     </div>
 </div>
@@ -390,6 +342,7 @@ window.APP_CONFIG = {
     totalPages: parseInt('{{ total_pages }}'),
     csrfToken: '{{ csrf_token }}',
     updateStatusUrl: '{% url "update_status" %}',
+    updateCheckboxStatusUrl: '{% url "update_checkbox_status" %}',
     homeUrl: '{% url "home" %}',
     logoutUrl: '{% url "logout" %}'
 };
@@ -530,6 +483,46 @@ function updateStatus(recordId, newStatus, link) {
     });
 }
 
+// Hàm gắn event listeners cho các nút cập nhật trạng thái
+function attachUpdateStatusListeners() {
+    document.querySelectorAll('.update-status').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const recordId = this.getAttribute('data-record-id');
+            const newStatus = this.getAttribute('data-status');
+            
+            // Đóng dropdown
+            const dropdownMenu = this.closest('.dropdown-menu');
+            if (dropdownMenu) {
+                const dropdown = dropdownMenu.closest('.dropdown');
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                bootstrap.Dropdown.getInstance(dropdownToggle).hide();
+            }
+            
+            console.log('Click event:', {
+                recordId,
+                newStatus,
+                element: this
+            });
+            
+            if (!recordId) {
+                console.error('Record ID is missing from element:', this);
+                showAlert('Không tìm thấy ID của bản ghi', 'danger');
+                return;
+            }
+            
+            // Lưu vị trí scroll hiện tại
+            const scrollPosition = window.scrollY;
+            
+            updateStatus(recordId, newStatus, this);
+            
+            // Khôi phục vị trí scroll
+            window.scrollTo(0, scrollPosition);
+        });
+    });
+}
+
 // Hàm tải thêm email
 function loadMoreEmails() {
     let currentPage = APP_CONFIG.currentPage;
@@ -538,6 +531,8 @@ function loadMoreEmails() {
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener('click', function() {
             currentPage++;
+            const scrollPosition = window.scrollY;
+            
             fetch(`${APP_CONFIG.homeUrl}?page=${currentPage}`)
                 .then(response => response.text())
                 .then(html => {
@@ -564,41 +559,129 @@ function loadMoreEmails() {
                     attachCopyListeners();
                     // Cập nhật số trang hiện tại
                     APP_CONFIG.currentPage = currentPage;
+                    
+                    // Khôi phục vị trí scroll
+                    window.scrollTo(0, scrollPosition);
                 });
         });
     }
 }
 
-// Hàm gắn event listeners cho các nút cập nhật trạng thái
-function attachUpdateStatusListeners() {
-    document.querySelectorAll('.update-status').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const recordId = this.getAttribute('data-record-id');
-            const newStatus = this.getAttribute('data-status');
-            
-            console.log('Click event:', {
-                recordId,
-                newStatus,
-                element: this
-            });
-            
-            if (!recordId) {
-                console.error('Record ID is missing from element:', this);
-                showAlert('Không tìm thấy ID của bản ghi', 'danger');
-                return;
+// Hàm xử lý thay đổi trạng thái checkbox
+function handleCheckboxChange(checkbox) {
+    console.log('Checkbox change event triggered');
+    const row = checkbox.closest('tr');
+    const recordId = row.dataset.recordId;
+    const status = checkbox.value;
+    const isChecked = checkbox.checked;
+    
+    console.log('Checkbox data:', {
+        recordId,
+        status,
+        isChecked,
+        row: row
+    });
+    
+    if (!recordId) {
+        console.error('Không tìm thấy record ID');
+        showAlert('Không tìm thấy ID của bản ghi', 'danger');
+        checkbox.checked = !isChecked;
+        return;
+    }
+    
+    // Lưu vị trí scroll và row hiện tại
+    const scrollPosition = window.scrollY;
+    const rowIndex = row.rowIndex;
+    
+    // Gửi request cập nhật trạng thái
+    console.log('Sending update request to:', APP_CONFIG.updateCheckboxStatusUrl);
+    fetch(APP_CONFIG.updateCheckboxStatusUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': APP_CONFIG.csrfToken
+        },
+        body: JSON.stringify({
+            record_id: recordId,
+            status: status,
+            is_checked: isChecked
+        })
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        
+        if (data.success) {
+            showAlert(data.message, 'success');
+            // Cập nhật trạng thái hiển thị
+            const statusBadge = row.querySelector('.status-badge');
+            if (statusBadge) {
+                statusBadge.textContent = data.new_status || status;
+                statusBadge.className = `status-badge status-${(data.new_status || status).toLowerCase().replace(/\s+/g, '-')}`;
             }
             
-            updateStatus(recordId, newStatus, this);
-        });
+            // Nếu là nhân viên hoặc kiểm tra viên, ẩn dòng sau khi cập nhật
+            if (APP_CONFIG.isNhanvien || APP_CONFIG.isKiemtra) {
+                row.style.transition = 'all 0.4s ease';
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    row.remove();
+                    // Kiểm tra nếu không còn dòng nào
+                    const tbody = document.querySelector('#emailTable tbody');
+                    if (tbody.children.length === 0) {
+                        const loadMoreBtn = document.getElementById('loadMoreBtn');
+                        if (loadMoreBtn) {
+                            loadMoreBtn.click();
+                        }
+                    }
+                    // Khôi phục vị trí scroll
+                    window.scrollTo(0, scrollPosition);
+                }, 400);
+            } else {
+                // Khôi phục vị trí scroll cho các role khác
+                window.scrollTo(0, scrollPosition);
+            }
+        } else {
+            console.error('Update failed:', data.message);
+            showAlert(data.message, 'danger');
+            // Khôi phục trạng thái checkbox nếu có lỗi
+            checkbox.checked = !isChecked;
+            // Khôi phục vị trí scroll
+            window.scrollTo(0, scrollPosition);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('Có lỗi xảy ra khi cập nhật trạng thái', 'danger');
+        // Khôi phục trạng thái checkbox nếu có lỗi
+        checkbox.checked = !isChecked;
+        // Khôi phục vị trí scroll
+        window.scrollTo(0, scrollPosition);
     });
 }
 
-// Khởi tạo khi trang đã load
+// Gắn sự kiện cho các checkbox khi trang load
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, attaching checkbox event listeners');
+    
+    // Gắn sự kiện cho các checkbox trạng thái
+    const checkboxes = document.querySelectorAll('input[name="status"]');
+    console.log('Found checkboxes:', checkboxes.length);
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            console.log('Checkbox changed:', this);
+            handleCheckboxChange(this);
+        });
+    });
+    
     // Khởi tạo DataTable cho các role không phải nhân viên và kiemtra
     if (!APP_CONFIG.isNhanvien && !APP_CONFIG.isKiemtra) {
-        $('#emailTable').DataTable({
+        const table = $('#emailTable').DataTable({
             pageLength: 10,
             order: [[0, "asc"]],
             language: {
@@ -613,7 +696,69 @@ document.addEventListener('DOMContentLoaded', function() {
                     next: "Sau",
                     previous: "Trước"
                 }
-            }
+            },
+            // Tắt các tính năng scroll
+            scrollY: false,
+            scrollCollapse: false,
+            scrollX: false,
+            // Tắt tính năng tự động resize
+            autoWidth: false,
+            // Tắt tính năng tự động cập nhật
+            deferRender: false,
+            // Tắt tính năng tự động sắp xếp
+            orderCellsTop: false,
+            // Tắt tính năng tự động tìm kiếm
+            searchDelay: 0,
+            // Tắt tính năng tự động cập nhật trang
+            stateSave: false,
+            // Tắt tính năng tự động cập nhật DOM
+            processing: false,
+            // Tắt tính năng tự động cập nhật thông tin
+            info: true,
+            // Tắt tính năng tự động cập nhật phân trang
+            paging: true,
+            // Tắt tính năng tự động cập nhật sắp xếp
+            ordering: true,
+            // Tắt tính năng tự động cập nhật tìm kiếm
+            searching: true
+        });
+        
+        // Lưu vị trí scroll khi chuyển trang
+        table.on('page.dt', function() {
+            const scrollPosition = window.scrollY;
+            setTimeout(() => {
+                window.scrollTo(0, scrollPosition);
+            }, 100);
+        });
+        
+        // Lưu vị trí scroll khi tìm kiếm
+        table.on('search.dt', function() {
+            const scrollPosition = window.scrollY;
+            setTimeout(() => {
+                window.scrollTo(0, scrollPosition);
+            }, 100);
+        });
+        
+        // Lưu vị trí scroll khi sắp xếp
+        table.on('order.dt', function() {
+            const scrollPosition = window.scrollY;
+            setTimeout(() => {
+                window.scrollTo(0, scrollPosition);
+            }, 100);
+        });
+        
+        // Lưu vị trí scroll khi thay đổi số lượng hiển thị
+        table.on('length.dt', function() {
+            const scrollPosition = window.scrollY;
+            setTimeout(() => {
+                window.scrollTo(0, scrollPosition);
+            }, 100);
+        });
+        
+        // Cập nhật lại event listeners sau mỗi lần vẽ lại bảng
+        table.on('draw.dt', function() {
+            attachUpdateStatusListeners();
+            attachCopyListeners();
         });
     }
     

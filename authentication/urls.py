@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('login/', views.login_view, name='login'),
@@ -9,6 +8,7 @@ urlpatterns = [
     path('register_otp/', views.register_otp, name='register_otp'),
     path('logout/', views.logout_view, name='logout'),
     path('update-status/', views.update_status, name='update_status'),
+    path('update-checkbox-status/', views.update_checkbox_status, name='update_checkbox_status'),
     path('manage-users/', views.manage_users, name='manage_users'),
     path('update-user-role/', views.update_user_role, name='update_user_role'),
     path('create-sample-users/', views.create_sample_users, name='create_sample_users'),
@@ -23,4 +23,16 @@ urlpatterns = [
     path('update-activity/', views.update_activity, name='update_activity'),
     path('user-activity-stream/', views.user_activity_stream, name='user_activity_stream'),
     path('handle-browser-close/', views.handle_browser_close, name='handle_browser_close'),
+
+    # Employee url
+    path('create-mail/', views.create_email_view, name='create_email'),
+    path('work/', views.employee_work_view, name='employee_work'),
+    path('verifed/', views.employee_verified_view, name='employee_verified'),
+    path('api/update-status/', views.update_status_api_Tn, name='update_status_api'),
+    path('api/update-status-tf/', views.update_status_api_Tf, name='update_status_api_tf'),
+    path('create-password/', views.create_password_view, name='create_password'),
+    path('api/create-textnow/', views.create_textnow_api, name='create_textnow_api'),
+    path('api/create-textfree/', views.create_textfree_api, name='create_textfree_api'),
+    path('api/create-multiple-textnow/', views.create_multiple_textnow_api, name='create_multiple_textnow_api'),
+    path('api/create-multiple-textfree/', views.create_multiple_textfree_api, name='create_multiple_textfree_api'),
 ]

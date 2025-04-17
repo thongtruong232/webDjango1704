@@ -78,7 +78,8 @@ def login_view(request):
                                 user = User.objects.create_user(
                                     username=username,
                                     email=mongo_user['email'],
-                                    password=password
+                                    password=password,
+                                    role=mongo_user['role']
                                 )
                                 
                                 users_collection.update_one(
@@ -125,7 +126,6 @@ def verify_otp_view(request):
         session_otp = request.session.get('otp_code')
         pre_user_id = request.session.get('pre_otp_user')
         username = request.session.get('otp_username')
-        
         if not all([input_otp, session_otp, pre_user_id, username]):
             return JsonResponse({
                 'success': False,
@@ -246,12 +246,18 @@ def verify_otp_view(request):
                     
                     # Lưu session
                     request.session.save()
-                    
-                    return JsonResponse({
-                        'success': True,
-                        'redirect_url': '/home/',
-                        'message': 'Đăng nhập thành công'
-                    })
+                    if user.role in ['admin', 'quanly', 'nhanvien']:
+                        return JsonResponse({
+                            'success': True,
+                            'redirect_url': '/home/',
+                            'message': 'Đăng nhập thành công'
+                        })
+                    else:
+                        return JsonResponse({
+                            'success': True,
+                            'redirect_url': '/verifed/',
+                            'message': 'Đăng nhập thành công'
+                        })
                         
                 finally:
                     client.close()

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm Email Mới</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #f0f2f5;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 25px;
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+      margin-top: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-bottom: 5px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button[disabled] {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #fff;
+      border-top: 3px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .field-error {
+      color: #e63946;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>📧 Thêm Email Mới</h2>
+
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+  {% if form.errors %}
+    <div class="alert alert-danger">
+      ⚠️ Vui lòng kiểm tra lại các trường thông tin.
+    </div>
+  {% endif %}
+
+  <form id="emailForm" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    
+    {% for field in form %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.help_text %}
+        <small style="color: #6c757d;">{{ field.help_text }}</small>
+      {% endif %}
+      {% if field.errors %}
+        <div class="field-error">{{ field.errors|striptags }}</div>
+      {% endif %}
+    {% endfor %}
+
+    <button type="submit" id="submitBtn">
+      <span class="spinner" id="spinner"></span>
+      💾 Lưu Email
+    </button>
+  </form>
+</div>
+
+<script>
+  const subStatusMap = {
+    'chưa sử dụng': ['live 1h-3h','live 1h-5h','xả láng kích hoạt 7 day die'],
+    'đã sử dụng': ['Đã đăng ký', 'Đã đăng ký mail phụ','Email lỗi']
+  };
+
+  const statusField = document.querySelector('#id_status');
+  const subStatusField = document.querySelector('#id_sub_status');
+
+  if (statusField && subStatusField) {
+    function updateSubStatus() {
+      const selected = statusField.value;
+      const options = subStatusMap[selected] || [];
+
+      subStatusField.innerHTML = '';
+      options.forEach(val => {
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = val;
+        subStatusField.appendChild(opt);
+      });
+    }
+
+    statusField.addEventListener('change', updateSubStatus);
+    window.addEventListener('DOMContentLoaded', updateSubStatus);
+  }
+
+  // Spinner loading on form submit
+  const form = document.getElementById('emailForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const spinner = document.getElementById('spinner');
+
+  form.addEventListener('submit', function () {
+    spinner.style.display = 'inline-block';
+    submitBtn.setAttribute('disabled', 'true');
+  });
+</script>
+
+</body>
+</html>

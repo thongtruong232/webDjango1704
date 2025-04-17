@@ -1,0 +1,217 @@
+Internal Server Error: /verifed/
+Traceback (most recent call last):
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 105, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 117, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+"GET /verifed/ HTTP/1.1" 500 113306
+Internal Server Error: /verifed/
+Traceback (most recent call last):
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 105, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 117, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+"GET /verifed/ HTTP/1.1" 500 113327
+Internal Server Error: /verifed/
+Traceback (most recent call last):
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 105, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 117, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+"GET /verifed/ HTTP/1.1" 500 113466
+Internal Server Error: /verifed/
+Traceback (most recent call last):
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 105, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 117, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+"GET /verifed/ HTTP/1.1" 500 113607
+Internal Server Error: /verifed/
+Traceback (most recent call last):
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 105, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 117, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+"GET /verifed/ HTTP/1.1" 500 113327
+Internal Server Error: /verifed/
+Traceback (most recent call last):
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 105, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 117, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+"GET /verifed/ HTTP/1.1" 500 113327
+Internal Server Error: /verifed/
+Traceback (most recent call last):
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 105, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Program Files\Thong\hethong\WebDjango\authentication\views\employee_views.py", line 117, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Local\Programs\Python\Python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+"GET /verifed/ HTTP/1.1" 500 113327

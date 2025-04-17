@@ -2,14 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-import pytz
-import uuid
-from django.utils import timezone
-from django.core.serializers.json import DjangoJSONEncoder
-import json
-import logging
 
-# Use JSONField from django.db.models if Django >= 3.1
 try:
     from django.db.models import JSONField
 except ImportError:
@@ -25,6 +18,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    role = models.CharField(max_length=255, null=True, blank=True)
     def __str__(self):
         return self.username
 
@@ -39,7 +33,7 @@ class UserActivity(models.Model):
     is_active = models.BooleanField(null=True, default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
-
+    role = models.CharField(max_length=255, null=True, blank=True)
     class Meta:
         db_table = 'authentication_useractivity'
         verbose_name = 'User Activity'

@@ -23,6 +23,8 @@ import logging
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import re
+import json
+from bson.objectid import ObjectId
 
 # Định nghĩa múi giờ GMT+7
 TIMEZONE = pytz.timezone('Asia/Bangkok')
@@ -142,11 +144,6 @@ def create_user(request):
 
 @login_required
 def home_view(request):
-    # Kiểm tra và xóa email hết hạn trước khi hiển thị trang
-    # deleted_count = check_and_delete_expired_emails()
-    # if deleted_count > 0:
-    #     messages.warning(request, f'Đã xóa {deleted_count} email hết hạn (không sử dụng trong 1 giờ)')
-    
     # Get user data from MongoDB
     users_collection, client = get_collection_handle('users')
     if users_collection is None or client is None:
@@ -256,24 +253,60 @@ def home_view(request):
             
         # Get pagination parameters
         page = int(request.GET.get('page', 1))
-        per_page = 10 if user_role != 'admin' else -1
-        skip = (page - 1) * per_page if per_page > 0 else 0
+        
+        # Điều chỉnh số lượng bản ghi hiển thị dựa trên role
+        if user_role in ['admin', 'quanly']:
+            per_page = 50  # Hiển thị nhiều hơn cho admin và quanly
+        else:
+            per_page = 10  # Giữ nguyên cho các role khác
+            
+        skip = (page - 1) * per_page
         
         # Get total count
         total_records = excel_data_collection.count_documents({})
-        total_pages = (total_records + per_page - 1) // per_page if per_page > 0 else 1
+        total_pages = (total_records + per_page - 1) // per_page
         
         # Get records based on role
-        if user_role == 'admin':
-            cursor = excel_data_collection.find().sort('imported_at', -1)
-        else:
-            cursor = excel_data_collection.find().sort('imported_at', -1).skip(skip).limit(per_page)
+        cursor = excel_data_collection.find().sort('imported_at', -1).skip(skip).limit(per_page)
         
         # Convert cursor to list and add mongo_id
         excel_data = []
         for record in cursor:
             # Thêm mongo_id vào record
             record['mongo_id'] = str(record.get('_id'))
+            # Đảm bảo có trường status
+            if 'status' not in record:
+                record['status'] = 'Chưa sử dụng'
+            # Thêm thông tin thời gian
+            if 'imported_at' in record:
+                try:
+                    imported_time = datetime.fromisoformat(record['imported_at'].replace('Z', '+00:00'))
+                    current_time = get_current_time()
+                    time_diff = current_time - imported_time
+                    total_seconds = int(time_diff.total_seconds())
+                    
+                    if total_seconds < 0:
+                        # Thời gian còn lại
+                        record['time_info'] = {
+                            'type': 'remaining',
+                            'total_seconds': abs(total_seconds),
+                            'minutes': abs(total_seconds) // 60,
+                            'seconds': abs(total_seconds) % 60
+                        }
+                    else:
+                        # Thời gian đã trôi qua
+                        record['time_info'] = {
+                            'type': 'elapsed',
+                            'total_seconds': total_seconds,
+                            'minutes': total_seconds // 60,
+                            'seconds': total_seconds % 60
+                        }
+                except Exception as e:
+                    logger.error(f"Error processing time info: {str(e)}")
+                    record['time_info'] = None
+            else:
+                record['time_info'] = None
+                
             excel_data.append(record)
         
         excel_client.close()
@@ -285,6 +318,8 @@ def home_view(request):
         has_more = page < total_pages
         page_range = range(max(1, page - 2), min(total_pages + 1, page + 3))
         start_index = skip + 1
+        
+        logger.info(f"Retrieved {len(excel_data)} records for page {page}, total records: {total_records}")
         
         return render(request, 'authentication/home.html', {
             'user_data': user_data,
@@ -301,7 +336,7 @@ def home_view(request):
         })
         
     except Exception as e:
-        print(f"Error in home_view: {e}")
+        logger.error(f"Error in home_view: {str(e)}")
         messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
         return render(request, 'authentication/home.html', {
             'user_data': None,
@@ -791,4 +826,120 @@ def handle_browser_close(request):
         return JsonResponse({'success': False, 'message': str(e)})
     
     return JsonResponse({'success': False, 'message': 'User not authenticated'})
+
+@login_required
+def update_checkbox_status(request):
+    if request.method == 'POST':
+        try:
+            logger.info("Received checkbox status update request")
+            data = json.loads(request.body)
+            record_id = data.get('record_id')
+            status = data.get('status')
+            is_checked = data.get('is_checked')
+            
+            logger.info(f"Request data: record_id={record_id}, status={status}, is_checked={is_checked}")
+            
+            if not record_id or status is None or is_checked is None:
+                logger.error("Missing required data in request")
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Thiếu thông tin cần thiết'
+                })
+            
+            # Kiểm tra quyền cập nhật trạng thái
+            if not can_update_status(request.user.id):
+                logger.warning(f"User {request.user.id} does not have permission to update status")
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Bạn không có quyền cập nhật trạng thái'
+                })
+            
+            # Kết nối MongoDB
+            excel_data_collection, client = get_collection_handle('excel_data')
+            if excel_data_collection is None:
+                logger.error("Failed to connect to MongoDB")
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Không thể kết nối đến cơ sở dữ liệu'
+                })
+            
+            try:
+                # Chuyển đổi record_id thành ObjectId
+                try:
+                    object_id = ObjectId(record_id)
+                    logger.info(f"Converted record_id to ObjectId: {object_id}")
+                except Exception as e:
+                    logger.error(f"Invalid ObjectId format: {record_id}, error: {str(e)}")
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'ID không hợp lệ'
+                    })
+                
+                # Cập nhật trạng thái trong MongoDB
+                update_data = {
+                    'status': status,
+                    'updated_by': request.user.username,
+                    'updated_at': get_current_time().isoformat()
+                }
+                
+                logger.info(f"Updating record {object_id} with data: {update_data}")
+                
+                result = excel_data_collection.update_one(
+                    {'_id': object_id},
+                    {'$set': update_data}
+                )
+                
+                logger.info(f"Update result: matched={result.matched_count}, modified={result.modified_count}")
+                
+                if result.modified_count > 0:
+                    logger.info(f"Successfully updated status for record {object_id}")
+                    return JsonResponse({
+                        'success': True,
+                        'message': 'Cập nhật trạng thái thành công',
+                        'new_status': status
+                    })
+                else:
+                    # Thử tìm bản ghi để kiểm tra
+                    record = excel_data_collection.find_one({'_id': object_id})
+                    if not record:
+                        logger.error(f"Record not found: {object_id}")
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'Không tìm thấy bản ghi'
+                        })
+                    else:
+                        logger.warning(f"Record exists but not modified: {object_id}")
+                        return JsonResponse({
+                            'success': False,
+                            'message': 'Không thể cập nhật trạng thái'
+                        })
+                    
+            except Exception as e:
+                logger.error(f"Error updating status: {str(e)}")
+                return JsonResponse({
+                    'success': False,
+                    'message': f'Lỗi khi cập nhật trạng thái: {str(e)}'
+                })
+            finally:
+                if client:
+                    client.close()
+                    
+        except json.JSONDecodeError as e:
+            logger.error(f"Invalid JSON data: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': 'Dữ liệu không hợp lệ'
+            })
+        except Exception as e:
+            logger.error(f"Unexpected error: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': f'Lỗi: {str(e)}'
+            })
+    
+    logger.warning("Invalid request method")
+    return JsonResponse({
+        'success': False,
+        'message': 'Phương thức không được hỗ trợ'
+    })
 

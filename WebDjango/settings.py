@@ -161,7 +161,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',  # Chỉnh sửa nếu Redis chạy ở máy chủ khác
+        'LOCATION': 'redis://127.0.0.1:6380/1',  # Chỉnh sửa nếu Redis chạy ở máy chủ khác
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -174,7 +174,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('127.0.0.1', 6380)],
             "capacity": 1500,  # default 100
             "expiry": 10,  # default 60
             "prefix": "asgi:",  # default asgi:
@@ -183,6 +183,25 @@ CHANNEL_LAYERS = {
                 "http.response!*": 200,
                 re.compile(r"^websocket.send\!.+"): 200,
             },
+        },
+    },
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'django_error.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
         },
     },
 }
