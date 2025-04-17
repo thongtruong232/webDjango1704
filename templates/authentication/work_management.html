@@ -107,17 +107,17 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Dữ liệu cho biểu đồ
     const chartData = {
-        labels: {{ chart_labels|safe }},
+        labels: JSON.parse('{{ chart_labels|escapejs }}'),
         datasets: [
             {
                 label: 'Đăng ký',
-                data: {{ nhanvien_data|safe }},
+                data: JSON.parse('{{ nhanvien_data|escapejs }}'),
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
             },
             {
                 label: 'Kiểm tra',
-                data: {{ kiemtra_data|safe }},
+                data: JSON.parse('{{ kiemtra_data|escapejs }}'),
                 borderColor: 'rgb(255, 99, 132)',
                 tension: 0.1
             }

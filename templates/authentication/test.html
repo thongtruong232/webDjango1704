@@ -1,0 +1,11 @@
+<!-- authentication/manage_users.html -->
+<p>Username: {{ username }}</p>
+<p>Email: {{ email }}</p>
+<p>First Name: {{ first_name }}</p>
+<p>Last Name: {{ last_name }}</p>
+
+{% if is_authenticated %}
+    <p>User is authenticated</p>
+{% else %}
+    <p>User is not authenticated</p>
+{% endif %}

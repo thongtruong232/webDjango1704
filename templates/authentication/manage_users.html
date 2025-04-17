@@ -16,7 +16,7 @@
                 <thead>
                     <tr>
                         <th>Username</th>
-                        <th>Email</th>
+                        <!-- <th>Email</th> -->
                         <th>Role</th>
                         <th>Actions</th>
                     </tr>
@@ -25,7 +25,7 @@
                     {% for user in users %}
                     <tr>
                         <td>{{ user.username }}</td>
-                        <td>{{ user.email }}</td>
+                        <!-- <td>{{ user.email }}</td> -->
                         <td>
                             <select class="form-select form-select-sm role-select" 
                                     data-user-id="{{ user.user_id }}"
@@ -35,8 +35,10 @@
                                     {{ role|title }}
                                 </option>
                                 {% endfor %}
+                                
                             </select>
                         </td>
+
                         <td>
                             {% if user.username != request.user.username %}
                             <button class="btn btn-warning btn-sm change-password-btn" 
@@ -72,37 +74,334 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="createUserForm">
+                <form method="post" action="{% url 'register_otp' %}" id="register_submit">
                     {% csrf_token %}
                     <div class="mb-3">
+                        <div id="usernameError" class="alert alert-danger d-none" role="alert">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="error-message"></span>
+                                <button type="button" class="btn-close" onclick="closeError('usernameError')"></button>
+                            </div>
+                        </div>
                         <label class="form-label">Username</label>
-                        <input type="text" class="form-control" name="username" required>
+                        <input type="text" class="form-control" name="username_register" id="username_register" required>
                     </div>
+            
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="mb-3">
+                        <div id="passwordError" class="alert alert-danger d-none" role="alert">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="error-message"></span>
+                                <button type="button" class="btn-close" onclick="closeError('passwordError')"></button>
+                            </div>
+                        </div>
                         <label class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" required>
+                        <input type="password" class="form-control" name="password_register" id="password_register" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Role</label>
                         <select class="form-select" name="role" required>
                             {% for role in roles %}
-                            <option value="{{ role }}">{{ role|title }}</option>
+                                {% if role != 'admin' %}
+                                    <option value="{{ role }}">{{ role|title }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary" id="createUserBtn" >Tạo</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary" id="createUserBtn">Tạo</button>
+
+                <!-- Modal Nhập OTP -->
+                <div class="modal fade" id="otpModal_register" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nhập mã OTP</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" id="otpForm">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="otpInput" class="form-label">Mã OTP</label>
+                                        <input type="text" id="otpInput" name="otp" class="form-control" placeholder="Nhập mã OTP" required autofocus>
+                                        <div id="otpError" class="alert alert-danger d-none" role="alert">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="error-message"></span>
+                                                <button type="button" class="btn-close" onclick="closeError('otpError')"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" id="accept_create">Xác nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Loading -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mb-0">Đang xử lý, vui lòng đợi...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Alert -->
+<div class="modal fade" id="alertModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="alert-icon mb-3">
+                    <i class="fas fa-check-circle text-success" style="font-size: 3rem;"></i>
+                </div>
+                <p class="alert-message mb-0" style="font-size: 1.2rem;"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thư viện Bootstrap & jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Hàm đóng thông báo lỗi
+    function closeError(errorId) {
+        const errorDiv = document.getElementById(errorId);
+        errorDiv.classList.add('d-none');
+    }
+
+    // Hàm hiển thị thông báo lỗi
+    function showError(errorId, message) {
+        const errorDiv = document.getElementById(errorId);
+        const errorMessage = errorDiv.querySelector('.error-message');
+        errorMessage.textContent = message;
+        errorDiv.classList.remove('d-none');
+    }
+
+    // Hàm đóng loading modal
+    function closeLoadingModal() {
+        const loadingModal = bootstrap.Modal.getInstance(document.getElementById("loadingModal"));
+        if (loadingModal) {
+            loadingModal.hide();
+        }
+    }
+
+    // Hàm hiển thị loading modal
+    function showLoadingModal() {
+        const loadingModal = new bootstrap.Modal(document.getElementById("loadingModal"));
+        loadingModal.show();
+    }
+
+    document.getElementById("createUserBtn").addEventListener("click", function () {
+        const username = document.getElementById("username_register").value.trim();
+        const password = document.getElementById("password_register").value.trim();
+
+        // Xóa lỗi cũ
+        closeError('usernameError');
+        closeError('passwordError');
+
+        let isValid = true;
+
+        const usernameRegex = /^[a-zA-Z0-9]{4,20}$/;
+        const passwordRegex = /^[a-zA-Z0-9]{4,20}$/;
+
+        // Kiểm tra username
+        if (username === "") {
+            showError('usernameError', 'Vui lòng nhập tên đăng nhập.');
+            isValid = false;
+        } else if (username.length < 4 || username.length > 20) {
+            showError('usernameError', 'Tên đăng nhập phải từ 4 đến 20 ký tự.');
+            isValid = false;
+        }
+
+        // Kiểm tra password
+        if (password === "") {
+            showError('passwordError', 'Vui lòng nhập mật khẩu.');
+            isValid = false;
+        } else if (password.length < 4 || password.length > 20) {
+            showError('passwordError', 'Mật khẩu phải từ 4 đến 20 ký tự.');
+            isValid = false;
+        }
+        
+        // Nếu hợp lệ thì kiểm tra username tồn tại
+        if (isValid) {
+            const formData = new FormData();
+            formData.append('username_register', username);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            
+            // Gửi request kiểm tra username
+            fetch('{% url "check_username" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    showError('usernameError', 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác');
+                } else {
+                    // Nếu username chưa tồn tại, hiển thị loading và gửi OTP
+                    showLoadingModal();
+                    
+                    formData.append('password_register', password);
+                    formData.append('role', document.querySelector('select[name="role"]').value);
+                    
+                    // Gửi request tạo OTP
+                    return fetch('{% url "register_otp" %}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    });
+                }
+            })
+            .then(response => {
+                if (response) return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    closeLoadingModal();
+                    
+                    if (data.success) {
+                        // Nếu OTP được tạo thành công, hiển thị modal nhập OTP
+                        const otpModal = new bootstrap.Modal(document.getElementById("otpModal_register"));
+                        otpModal.show();
+                        
+                        // Focus vào input OTP khi modal hiển thị
+                        document.getElementById("otpModal_register").addEventListener('shown.bs.modal', function () {
+                            const otpInput = document.getElementById("otpInput");
+                            otpInput.focus();
+                            otpInput.select();
+                        });
+                    } else {
+                        showError('usernameError', data.message || 'Có lỗi xảy ra khi tạo OTP');
+                    }
+                }
+            })
+            .catch(error => {
+                closeLoadingModal();
+                console.error('Error:', error);
+                showError('usernameError', error.message || 'Có lỗi xảy ra');
+            });
+        }
+    });
+
+    // Xử lý nút Xác nhận OTP
+    document.getElementById('accept_create').addEventListener('click', function() {
+        const otpInput = document.getElementById('otpInput');
+        
+        // Reset error message
+        closeError('otpError');
+        
+        // Validate OTP
+        if (!otpInput.value.trim()) {
+            showError('otpError', 'Vui lòng nhập mã OTP');
+            otpInput.focus();
+            return;
+        }
+        
+        showLoadingModal();
+        
+        // Get form data
+        const formData = new FormData();
+        formData.append('otp', otpInput.value);
+        formData.append('username_register', document.getElementById('username_register').value);
+        formData.append('password_register', document.getElementById('password_register').value);
+        formData.append('role', document.querySelector('select[name="role"]').value);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+        // Send request to verify OTP and create account
+        fetch('{% url "verify_otp_view_register" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            closeLoadingModal();
+            
+            if (data.success) {
+                // Close OTP modal
+                const otpModal = bootstrap.Modal.getInstance(document.getElementById('otpModal_register'));
+                if (otpModal) {
+                    otpModal.hide();
+                }
+                
+                // Close create user modal
+                const createUserModal = bootstrap.Modal.getInstance(document.getElementById('createUserModal'));
+                if (createUserModal) {
+                    createUserModal.hide();
+                }
+                
+                // Show success message and redirect
+                showAlert('success', data.message || 'Tạo user thành công!');
+                if (data.redirect_url) {
+                    setTimeout(() => window.location.href = data.redirect_url, 1000);
+                }
+            } else {
+                showError('otpError', data.message || 'Mã OTP không đúng');
+                otpInput.focus();
+            }
+        })
+        .catch(error => {
+            closeLoadingModal();
+            console.error('Error:', error);
+            showError('otpError', 'Có lỗi xảy ra khi xác thực OTP');
+            otpInput.focus();
+        });
+    });
+
+    // Hàm hiển thị thông báo
+    function showAlert(type, message, reload = true) {
+        const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
+        const alertIcon = document.querySelector('.alert-icon i');
+        const alertMessage = document.querySelector('.alert-message');
+        
+        // Set icon and message based on type
+        if (type === 'success') {
+            alertIcon.className = 'fas fa-check-circle text-success';
+            alertIcon.style.fontSize = '3rem';
+        } else {
+            alertIcon.className = 'fas fa-exclamation-circle text-danger';
+            alertIcon.style.fontSize = '3rem';
+        }
+        
+        alertMessage.textContent = message;
+        alertModal.show();
+        
+        // Auto close after 2 seconds for success messages
+        if (type === 'success') {
+            setTimeout(() => {
+                alertModal.hide();
+                if (reload) {
+                    window.location.reload();
+                }
+            }, 2000);
+        }
+    }
+</script>
+
 
 <!-- Modal đổi mật khẩu -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1">
@@ -164,6 +463,8 @@ $(document).ready(function() {
         const userId = $(this).data('user-id');
         const newRole = $(this).val();
         
+        showLoadingModal();
+        
         $.ajax({
             url: '{% url "update_user_role" %}',
             type: 'POST',
@@ -173,6 +474,8 @@ $(document).ready(function() {
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function(response) {
+                closeLoadingModal();
+                
                 if (response.success) {
                     showAlert('success', 'Cập nhật role thành công!');
                 } else {
@@ -180,52 +483,8 @@ $(document).ready(function() {
                 }
             },
             error: function() {
+                closeLoadingModal();
                 showAlert('danger', 'Có lỗi xảy ra!');
-            }
-        });
-    });
-
-    // Xử lý tạo user mới
-    $('#createUserBtn').click(function(e) {
-        e.preventDefault();
-        
-        const form = $('#createUserForm');
-        
-        // Validate form
-        if (!form[0].checkValidity()) {
-            form[0].reportValidity();
-            return;
-        }
-        
-        const formData = new FormData(form[0]);
-        
-        // Debug logging
-        console.log('Form data:');
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-        
-        $.ajax({
-            url: '{% url "create_user" %}',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                console.log('Response:', response);
-                if (response.success) {
-                    showAlert('success', 'Tạo user thành công!');
-                    $('#createUserModal').modal('hide');
-                    setTimeout(() => window.location.reload(), 1000);
-                } else {
-                    showAlert('danger', response.message || 'Có lỗi xảy ra!');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                console.error('Status:', status);
-                console.error('Response:', xhr.responseText);
-                showAlert('danger', 'Có lỗi xảy ra khi tạo user: ' + error);
             }
         });
     });
@@ -247,6 +506,8 @@ $(document).ready(function() {
             showAlert('danger', 'Mật khẩu xác nhận không khớp!', false);
             return;
         }
+
+        showLoadingModal();
         
         $.ajax({
             url: '{% url "change_user_password" %}',
@@ -257,6 +518,8 @@ $(document).ready(function() {
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function(response) {
+                closeLoadingModal();
+                
                 if (response.success) {
                     showAlert('success', 'Đổi mật khẩu thành công!');
                     $('#changePasswordModal').modal('hide');
@@ -266,6 +529,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
+                closeLoadingModal();
                 showAlert('danger', 'Có lỗi xảy ra!', false);
             }
         });
@@ -282,6 +546,8 @@ $(document).ready(function() {
     $('#confirmDeleteBtn').click(function() {
         const userId = $('#deleteUserId').val();
         
+        showLoadingModal();
+        
         $.ajax({
             url: '{% url "delete_user" %}',
             type: 'POST',
@@ -290,6 +556,8 @@ $(document).ready(function() {
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
             success: function(response) {
+                closeLoadingModal();
+                
                 if (response.success) {
                     showAlert('success', 'Xóa user thành công!');
                     setTimeout(() => window.location.reload(), 1000);
@@ -298,39 +566,11 @@ $(document).ready(function() {
                 }
             },
             error: function() {
+                closeLoadingModal();
                 showAlert('danger', 'Có lỗi xảy ra!');
             }
         });
     });
-
-    // Hàm hiển thị thông báo
-    function showAlert(type, message, reload = true) {
-        const alertHtml = `
-            <div class="alert alert-${type} alert-dismissible fade show">
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        `;
-        
-        // Xóa alert cũ nếu có
-        $('.alert').remove();
-        
-        // Thêm alert mới
-        const alertContainer = $('.container').first();
-        alertContainer.prepend(alertHtml);
-        
-        // Tự động đóng alert sau 5 giây nếu là thành công
-        if (type === 'success') {
-            setTimeout(() => {
-                $('.alert').fadeOut('slow', function() {
-                    $(this).remove();
-                    if (reload) {
-                        window.location.reload();
-                    }
-                });
-            }, 2000);
-        }
-    }
 });
 </script>
 {% endblock %} 

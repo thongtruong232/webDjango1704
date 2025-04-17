@@ -1,0 +1,2 @@
+ERROR 2025-04-15 20:49:21,715 middleware 13412 20500 Error in ActivityTrackingMiddleware: settings.DATABASES is improperly configured. Please supply the ENGINE value. Check settings documentation for more details.
+ERROR 2025-04-15 20:49:25,021 middleware 13412 25040 Error in ActivityTrackingMiddleware: settings.DATABASES is improperly configured. Please supply the ENGINE value. Check settings documentation for more details.

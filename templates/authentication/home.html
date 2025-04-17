@@ -21,7 +21,60 @@
     text-align: center;
     font-size: 120%;
 }
+
+/* Tăng chiều dài card */
+.card.mb-4 {
+    width: calc(100% + 200px);
+    margin-left: -100px;
+    margin-right: -100px;
+}
+
+/* Tăng chiều dài card danh sách email */
+.card:not(.mb-4) {
+    width: calc(100% + 200px);
+    margin-left: -100px;
+    margin-right: -100px;
+}
+
+/* Căn giữa các nút copy */
+#emailTable td:nth-last-child(2),
+#emailTable td:last-child {
+    text-align: center;
+}
+
+#emailTable td:nth-last-child(2) .copy-btn,
+#emailTable td:last-child .copy-btn {
+    display: inline-block;
+    margin: 0 auto;
+}
+
+/* CSS cho thông báo */
+#alertContainer {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    pointer-events: none;
+}
+
+#alertContainer .alert {
+    display: inline-block;
+    margin: 0 auto;
+    pointer-events: auto;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* CSS cho nút cập nhật trạng thái */
+.btn-status-success {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+    color: white !important;
+}
 </style>
+
+<div id="alertContainer"></div>
 
 <div class="container mt-4">
     {% if messages %}
@@ -39,13 +92,90 @@
             <div class="row">
                 <div class="col-md-6">
                     <h5 class="card-title">Import dữ liệu từ Excel</h5>
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" id="importForm">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <input type="file" class="form-control" name="excel_file" accept=".xlsx,.xls">
+                            <input type="file" class="form-control" id="excelInput" name="excel_file" accept=".xlsx,.xls">
                         </div>
-                        <button type="submit" class="btn btn-primary">Import</button>
+                        <button type="submit" class="btn btn-primary" id="importBtn" disabled>Import</button>
                     </form>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const fileInput = document.getElementById("excelInput");
+                            const importBtn = document.getElementById("importBtn");
+                            const importForm = document.getElementById("importForm");
+                            let isSubmitting = false;
+                    
+                            fileInput.addEventListener("change", function() {
+                                if (fileInput.files.length > 0) {
+                                    importBtn.removeAttribute("disabled");
+                                } else {
+                                    importBtn.setAttribute("disabled", true);
+                                }
+                            });
+
+                            importForm.addEventListener("submit", function(e) {
+                                e.preventDefault();
+                                if (isSubmitting) return;
+                                
+                                isSubmitting = true;
+                                importBtn.setAttribute("disabled", true);
+                                importBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang import...';
+
+                                const formData = new FormData(this);
+                                fetch(window.location.href, {
+                                    method: 'POST',
+                                    body: formData,
+                                    headers: {
+                                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                                    }
+                                })
+                                .then(response => response.text())
+                                .then(text => {
+                                    let data;
+                                    try {
+                                        data = JSON.parse(text);
+                                    } catch (e) {
+                                        console.error('Failed to parse response:', text);
+                                        throw new Error('Invalid response format');
+                                    }
+                                    
+                                    if (data.success) {
+                                        // Đổi màu nút thành xanh để báo thành công
+                                        importBtn.classList.remove('btn-primary');
+                                        importBtn.classList.add('btn-success');
+                                        importBtn.innerHTML = '<i class="fas fa-check"></i> ' + data.message;
+                                        
+                                        // Sau 2 giây sẽ reload trang
+                                        setTimeout(() => {
+                                            window.location.reload();
+                                        }, 2000);
+                                    } else {
+                                        throw new Error(data.message || 'Import failed');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    importBtn.classList.remove('btn-primary');
+                                    importBtn.classList.add('btn-danger');
+                                    importBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Lỗi import';
+                                    showAlert(error.message || 'Có lỗi xảy ra khi import dữ liệu', 'danger');
+                                })
+                                .finally(() => {
+                                    isSubmitting = false;
+                                    // Sau 3 giây sẽ reset nút về trạng thái ban đầu nếu có lỗi
+                                    setTimeout(() => {
+                                        if (importBtn.classList.contains('btn-danger')) {
+                                            importBtn.classList.remove('btn-danger');
+                                            importBtn.classList.add('btn-primary');
+                                            importBtn.innerHTML = 'Import';
+                                            importBtn.removeAttribute('disabled');
+                                        }
+                                    }, 3000);
+                                });
+                            });
+                        });
+                    </script>
                 </div>
                 {% if user_data.role == 'admin' or user_data.role == 'quanly' %}
                 <div class="col-md-6">
@@ -53,7 +183,8 @@
                     <form id="exportForm" method="get" action="{% url 'export_emails' %}">
                         <div class="mb-3">
                             <label class="form-label">Ngày xử lý</label>
-                            <input type="date" class="form-control" name="process_date">
+                            <input type="date" class="form-control" name="process_date" min="1900-01-01"
+                            max="2100-12-31">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Chọn trạng thái:</label>
@@ -122,52 +253,18 @@
                             {% if can_update_status %}
                             <th>Thao tác</th>
                             {% endif %}
+                            <th>Copy Email</th>
+                            <th>Copy Full</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in excel_data %}
                         <tr>
-                            <td>{{ item.stt }}</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">{{ item.Email }}</span>
-                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
-                                            data-clipboard-text="{{ item.Email }}"
-                                            title="Copy email">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">{{ item.Pass }}</span>
-                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
-                                            data-clipboard-text="{{ item.Pass }}"
-                                            title="Copy pass">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">{{ item.PassFree }}</span>
-                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
-                                            data-clipboard-text="{{ item.PassFree }}"
-                                            title="Copy pass free">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">{{ item.PassTexNow }}</span>
-                                    <button class="btn btn-sm btn-outline-secondary copy-btn" 
-                                            data-clipboard-text="{{ item.PassTexNow }}"
-                                            title="Copy pass texnow">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
-                                </div>
-                            </td>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.Email }}</td>
+                            <td>{{ item.Pass }}</td>
+                            <td>{{ item.PassFree }}</td>
+                            <td>{{ item.PassTexNow }}</td>
                             <td>
                                 {% if not is_nhanvien and user_data.role != 'kiemtra' %}
                                 <span class="status-badge status-{{ item.status|slugify }}">
@@ -195,13 +292,27 @@
                                     <ul class="dropdown-menu">
                                         {% for status in allowed_status_updates %}
                                         <li><a class="dropdown-item update-status" href="#" 
-                                            data-record-id="{{ item.id }}" 
+                                            data-record-id="{{ item.id|default:item.mongo_id }}" 
                                             data-status="{{ status }}">{{ status }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
                             </td>
                             {% endif %}
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary copy-btn" 
+                                        data-clipboard-text="{{ item.Email }}"
+                                        title="Copy email">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary copy-btn" 
+                                        data-clipboard-text="{{ item.all_info_mail }}"
+                                        title="Copy full info">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -279,14 +390,13 @@ window.APP_CONFIG = {
     totalPages: parseInt('{{ total_pages }}'),
     csrfToken: '{{ csrf_token }}',
     updateStatusUrl: '{% url "update_status" %}',
-    homeUrl: '{% url "home" %}'
+    homeUrl: '{% url "home" %}',
+    logoutUrl: '{% url "logout" %}'
 };
 
 // Hàm copy vào clipboard
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        showAlert('Đã copy email vào clipboard', 'success');
-    }).catch(err => {
+    navigator.clipboard.writeText(text).catch(err => {
         showAlert('Không thể copy email: ' + err, 'danger');
     });
 }
@@ -330,9 +440,26 @@ function showAlert(message, type) {
 
 // Hàm cập nhật trạng thái
 function updateStatus(recordId, newStatus, link) {
+    console.log('Starting updateStatus:', { recordId, newStatus });
+    
+    if (!recordId) {
+        console.error('Record ID is missing');
+        showAlert('Không tìm thấy ID của bản ghi', 'danger');
+        return;
+    }
+    
+    // Tìm nút dropdown
+    const dropdownButton = link.closest('.dropdown').querySelector('.dropdown-toggle');
+    
+    // Thêm class để đổi màu nút
+    dropdownButton.classList.add('btn-status-success');
+    
     const formData = new URLSearchParams();
     formData.append('record_id', recordId);
     formData.append('status', newStatus);
+    
+    console.log('Sending request to:', APP_CONFIG.updateStatusUrl);
+    console.log('Request data:', formData.toString());
     
     fetch(APP_CONFIG.updateStatusUrl, {
         method: 'POST',
@@ -342,20 +469,36 @@ function updateStatus(recordId, newStatus, link) {
         },
         body: formData.toString()
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
     .then(data => {
+        console.log('Response data:', data);
+        
         if (data.success) {
             const row = link.closest('tr');
+            console.log('Updating UI for row:', row);
             
             // Cập nhật trạng thái nếu có cột trạng thái
             const statusBadge = row.querySelector('.status-badge');
             if (statusBadge) {
-                statusBadge.textContent = newStatus;
-                statusBadge.className = `status-badge status-${newStatus.toLowerCase().replace(/\s+/g, '-')}`;
+                console.log('Updating status badge:', {
+                    oldStatus: statusBadge.textContent,
+                    newStatus: data.new_status
+                });
+                statusBadge.textContent = data.new_status;
+                statusBadge.className = `status-badge status-${data.new_status.toLowerCase().replace(/\s+/g, '-')}`;
             }
+            
+            // Đổi màu nút trong 1 giây
+            setTimeout(() => {
+                dropdownButton.classList.remove('btn-status-success');
+            }, 1000);
             
             // Ẩn dòng sau khi cập nhật trạng thái cho cả nhanvien và kiemtra
             if (APP_CONFIG.isNhanvien || APP_CONFIG.isKiemtra) {
+                console.log('Hiding row for role:', APP_CONFIG.isNhanvien ? 'nhanvien' : 'kiemtra');
                 row.style.transition = 'all 0.4s ease';
                 row.style.opacity = '0';
                 row.style.transform = 'translateX(20px)';
@@ -364,7 +507,7 @@ function updateStatus(recordId, newStatus, link) {
                     // Kiểm tra nếu không còn dòng nào
                     const tbody = document.querySelector('#emailTable tbody');
                     if (tbody.children.length === 0) {
-                        // Tự động click nút "Cấp Email mới" hoặc "Kiểm tra tiếp theo"
+                        console.log('No rows left, triggering load more');
                         const loadMoreBtn = document.getElementById('loadMoreBtn');
                         if (loadMoreBtn) {
                             loadMoreBtn.click();
@@ -372,15 +515,18 @@ function updateStatus(recordId, newStatus, link) {
                     }
                 }, 400);
             }
-            
-            showAlert('Cập nhật trạng thái thành công', 'success');
         } else {
+            console.error('Update failed:', data.message);
             showAlert(`Lỗi: ${data.message}`, 'danger');
+            // Xóa class khi có lỗi
+            dropdownButton.classList.remove('btn-status-success');
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error in updateStatus:', error);
         showAlert('Có lỗi xảy ra khi cập nhật trạng thái', 'danger');
+        // Xóa class khi có lỗi
+        dropdownButton.classList.remove('btn-status-success');
     });
 }
 
@@ -428,8 +574,21 @@ function attachUpdateStatusListeners() {
     document.querySelectorAll('.update-status').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            const recordId = this.dataset.recordId;
-            const newStatus = this.dataset.status;
+            const recordId = this.getAttribute('data-record-id');
+            const newStatus = this.getAttribute('data-status');
+            
+            console.log('Click event:', {
+                recordId,
+                newStatus,
+                element: this
+            });
+            
+            if (!recordId) {
+                console.error('Record ID is missing from element:', this);
+                showAlert('Không tìm thấy ID của bản ghi', 'danger');
+                return;
+            }
+            
             updateStatus(recordId, newStatus, this);
         });
     });
@@ -496,6 +655,59 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Cập nhật mỗi giây
     setInterval(updateTimes, 1000);
+
+    // Cập nhật thời gian hoạt động cuối cùng mỗi 5 phút
+    let activityTimeout;
+    function updateLastActivity() {
+        // Clear timeout nếu có
+        if (activityTimeout) {
+            clearTimeout(activityTimeout);
+        }
+        
+        // Đặt timeout mới
+        activityTimeout = setTimeout(() => {
+            fetch('/update-activity/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': APP_CONFIG.csrfToken
+                }
+            }).catch(error => {
+                console.error('Error updating activity:', error);
+            });
+        }, 1000); // Chờ 1 giây trước khi gửi request
+    }
+
+    // Cập nhật lần đầu
+    updateLastActivity();
+    
+    // Cập nhật định kỳ mỗi 5 phút
+    setInterval(updateLastActivity, 5 * 60 * 1000);
+    
+    // Cập nhật khi có tương tác với trang
+    document.addEventListener('mousemove', updateLastActivity);
+    document.addEventListener('keypress', updateLastActivity);
+    document.addEventListener('click', updateLastActivity);
+});
+
+// Xử lý đăng xuất khi tắt trình duyệt
+window.addEventListener('beforeunload', function(e) {
+    // Chỉ đăng xuất khi đóng tab/trình duyệt, không đăng xuất khi refresh
+    if (e.target.activeElement === null) {
+        // Gửi request đăng xuất
+        fetch(window.APP_CONFIG.logoutUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': window.APP_CONFIG.csrfToken
+            },
+            body: new URLSearchParams({
+                'csrfmiddlewaretoken': window.APP_CONFIG.csrfToken
+            })
+        }).catch(error => {
+            console.error('Error during logout:', error);
+        });
+    }
 });
 </script>
 {% endblock %} 

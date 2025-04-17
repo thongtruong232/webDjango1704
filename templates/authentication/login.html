@@ -22,7 +22,7 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
-                        <form method="post">
+                        <form method="post" id="loginForm" action="{% url 'login' %}">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
@@ -39,5 +39,184 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Nhập OTP -->
+    <div class="modal fade" id="otpModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nhập mã OTP</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="otpError" class="alert alert-danger d-none"></div>
+                    <div id="otpSuccess" class="alert alert-success d-none"></div>
+                    <input type="text" id="otpInput" name="otp" class="form-control" placeholder="Nhập mã OTP">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="verifyOtpBtn">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Loading -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mb-0">Đang xử lý, vui lòng đợi...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thư viện Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lấy giá trị otp_required từ Django
+            const otpRequired = "{{ otp_required|yesno:'true,false' }}";
+    
+            if (otpRequired === "true") {
+                const otpModal = new bootstrap.Modal(document.getElementById('otpModal'));
+                otpModal.show();
+            }
+
+            // Xử lý form login
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                if (!username || !password) {
+                    alert('Vui lòng nhập đầy đủ thông tin');
+                    return;
+                }
+                
+                // Hiển thị loading
+                const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                loadingModal.show();
+                
+                // Gửi form
+                this.submit();
+            });
+
+            // Xử lý xác nhận OTP
+            document.getElementById('verifyOtpBtn').addEventListener('click', function() {
+                const otpInput = document.getElementById('otpInput');
+                const otpError = document.getElementById('otpError');
+                const otpSuccess = document.getElementById('otpSuccess');
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                // Reset error message
+                otpError.classList.add('d-none');
+                otpError.textContent = '';
+                otpSuccess.classList.add('d-none');
+                otpSuccess.textContent = '';
+
+                // Validate OTP input
+                if (!otpInput.value.trim()) {
+                    otpError.textContent = 'Vui lòng nhập mã OTP';
+                    otpError.classList.remove('d-none');
+                    return;
+                }
+
+                // Hiển thị loading
+                const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                loadingModal.show();
+
+                // Tạo form data
+                const formData = new FormData();
+                formData.append('otp', otpInput.value.trim());
+                formData.append('csrfmiddlewaretoken', csrfToken);
+
+                // Disable nút xác nhận
+                const verifyBtn = document.getElementById('verifyOtpBtn');
+                verifyBtn.disabled = true;
+                verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...';
+
+                // Gửi request
+                fetch('{% url "verify_otp" %}', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingModal.hide();
+                    
+                    if (data.success) {
+                        // Hiển thị thông báo thành công
+                        otpSuccess.textContent = data.message;
+                        otpSuccess.classList.remove('d-none');
+                        
+                        // Chuyển hướng ngay lập tức nếu có URL
+                        if (data.redirect_url) {
+                            window.location.href = data.redirect_url;
+                        } else {
+                            // Fallback về /home/ nếu không có URL
+                            window.location.href = '/home/';
+                        }
+                    } else {
+                        // Hiển thị lỗi
+                        otpError.textContent = data.message || 'Có lỗi xảy ra';
+                        otpError.classList.remove('d-none');
+                        // Enable lại nút xác nhận
+                        verifyBtn.disabled = false;
+                        verifyBtn.innerHTML = 'Xác nhận';
+                    }
+                })
+                .catch(error => {
+                    loadingModal.hide();
+                    console.error('Error:', error);
+                    otpError.textContent = 'Có lỗi xảy ra, vui lòng thử lại';
+                    otpError.classList.remove('d-none');
+                    // Enable lại nút xác nhận
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = 'Xác nhận';
+                });
+            });
+
+            // Xử lý nhấn Enter trong input OTP
+            document.getElementById('otpInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('verifyOtpBtn').click();
+                }
+            });
+
+            // Xử lý sự kiện đóng browser
+            window.addEventListener('beforeunload', function(e) {
+                // Chỉ gửi request nếu user đã đăng nhập
+                if (document.cookie.indexOf('sessionid') !== -1) {
+                    // Tạo form data
+                    const formData = new FormData();
+                    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+                    // Gửi request bất đồng bộ
+                    fetch('{% url "handle_browser_close" %}', {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'same-origin',
+                        keepalive: true  // Cho phép request tiếp tục sau khi trang đóng
+                    }).catch(error => {
+                        console.error('Error sending browser close event:', error);
+                    });
+                }
+            });
+        });
+    </script>
 </body>
-</html> 
+</html>

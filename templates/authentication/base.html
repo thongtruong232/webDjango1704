@@ -60,7 +60,7 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto">
                     {% if user_data.role == 'admin' %}
@@ -88,8 +88,9 @@
                 <div class="navbar-nav">
                     <span class="navbar-text me-3">
                         <i class="fas fa-user me-1"></i>
-                        {{ user.username }}
-                        <span class="badge bg-info ms-1">{{ user_data.role|default:"nhanvien"|title }}</span>
+                        {{ user_data.username }}
+                        <span class="badge bg-info ms-1">{{ user_data.role }}</span>
+                        <!-- |default:"nhanvien"|title -->
                     </span>
                     <a href="{% url 'logout' %}" class="btn btn-outline-light">
                         <i class="fas fa-sign-out-alt me-1"></i>Logout

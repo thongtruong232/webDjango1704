@@ -1,7 +1,51 @@
 {% extends 'authentication/base.html' %}
-
+{% load custom_filters %}
 {% block content %}
+<style>
+    .status-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+    .status-active {
+        background-color: #28a745;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    }
+    .status-inactive {
+        background-color: #dc3545;
+        box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+    }
+    .status-text {
+        display: inline-flex;
+        align-items: center;
+        font-weight: 500;
+    }
+    .status-active + .status-text {
+        color: #28a745;
+    }
+    .status-inactive + .status-text {
+        color: #dc3545;
+    }
+    .last-activity {
+        font-size: 0.9em;
+        color: #666;
+    }
+    .text-success {
+        color: #28a745;
+    }
+    .text-danger {
+        color: #dc3545;
+    }
+</style>
+
+
 <div class="container mt-4">
+    <!-- Hidden div to store user IDs -->
+    <div id="user-stats" data-user-ids="{% for stat in stats %}{{ stat.user.id }}{% if not forloop.last %},{% endif %}{% endfor %}"></div>
+
     <h2 class="mb-4">Thống kê thời gian làm việc</h2>
 
     <!-- Filter Form -->
@@ -10,25 +54,31 @@
             <form method="get" class="row g-3">
                 <div class="col-md-3">
                     <label class="form-label">Từ ngày</label>
-                    <input type="date" name="start_date" class="form-control" value="{{ start_date|date:'Y-m-d' }}">
+                    <input type="date" name="start_date" class="form-control" 
+                           value="{{ start_date|date:'Y-m-d' }}" 
+                           min="2025-01-01" 
+                           max="2025-12-31">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Đến ngày</label>
-                    <input type="date" name="end_date" class="form-control" value="{{ end_date|date:'Y-m-d' }}">
+                    <input type="date" name="end_date" class="form-control" 
+                           value="{{ end_date|date:'Y-m-d' }}" 
+                           min="2025-01-01" 
+                           max="2025-12-31">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Nhân viên</label>
                     <select name="user_id" class="form-select">
                         <option value="">Tất cả</option>
                         {% for user in users %}
-                        <option value="{{ user.id }}" {% if selected_user == user.id|stringformat:"s" %}selected{% endif %}>
+                        <option value="{{ user.user_id }}" {% if selected_user == user.user_id|stringformat:"s" %}selected{% endif %}>
                             {{ user.username }}
                         </option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <button type="submit" class="btn btn-primary" name="export" value="true">Xuất excel</button>
                 </div>
             </form>
         </div>
@@ -45,16 +95,23 @@
                             <th>Số phiên đăng nhập</th>
                             <th>Tổng thời gian (giờ)</th>
                             <th>Thời gian trung bình/phiên (giờ)</th>
+                            <th>Trạng thái hoạt động</th>
                             <th>Chi tiết</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for stat in stats %}
-                        <tr>
+                        <tr data-user-id="{{ stat.user.id }}">
                             <td>{{ stat.user.username }}</td>
                             <td>{{ stat.total_sessions }}</td>
                             <td>{{ stat.total_hours }}</td>
                             <td>{{ stat.average_session }}</td>
+                            <td class="activity-status">
+                                <span class="status-container" data-user-id="{{ stat.user.id }}">
+                                    <span class="status-indicator"></span>
+                                    <span class="status-text"></span>
+                                </span>
+                            </td>
                             <td>
                                 <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" 
                                         data-bs-target="#details-{{ stat.user.id }}">
@@ -63,7 +120,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div class="collapse" id="details-{{ stat.user.id }}">
                                     <div class="card card-body">
                                         <table class="table table-sm">
@@ -72,16 +129,19 @@
                                                     <th>Thời gian đăng nhập</th>
                                                     <th>Thời gian đăng xuất</th>
                                                     <th>Thời gian làm việc</th>
-                                                    <th>IP</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                {% for activity in stat.activities %}
-                                                <tr>
-                                                    <td>{{ activity.login_time|date:"d/m/Y H:i" }}</td>
-                                                    <td>{{ activity.logout_time|date:"d/m/Y H:i"|default:"Chưa đăng xuất" }}</td>
-                                                    <td>{{ activity.session_duration|default:"-" }}</td>
-                                                    <td>{{ activity.ip_address }}</td>
+                                            
+                                            <tbody id="activity-details-{{ stat.user.id }}">
+                                                {% for activity in stat.activities|dictsortreversed:"login_time" %}
+                                                <tr data-user-id="{{ stat.user.id }}" data-session-id="{{ activity.session_id }}">
+                                                    <td>{% if activity.login_time %}{{ activity.login_time|date:"d/m/Y H:i" }}{% else %}Chưa có dữ liệu{% endif %}</td>
+                                                    <td>{% if activity.logout_time %}{{ activity.logout_time|date:"d/m/Y H:i" }}{% else %}Chưa đăng xuất{% endif %}</td>
+                                                    <td>
+                                                        <span class="activity-duration" id="duration-{{ activity.session_id }}">
+                                                            {{ activity.session_duration|format_duration }}
+                                                        </span>
+                                                    </td>
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -97,4 +157,259 @@
         </div>
     </div>
 </div>
+
+<script>
+    let socket = null;
+    let reconnectAttempts = 0;
+    const maxReconnectAttempts = 5;
+    const statusContainers = new Map();
+
+    function connectWebSocket() {
+        if (socket) {
+            socket.close();
+        }
+
+        // Xác định protocol dựa trên protocol hiện tại của trang
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = `${wsProtocol}//${window.location.host}/ws/user_activity/`;
+        
+        // console.log('Current page protocol:', window.location.protocol);
+        // console.log('WebSocket protocol:', wsProtocol);
+        // console.log('Host:', window.location.host);
+        // console.log('Full WebSocket URL:', wsUrl);
+        
+        try {
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = function(e) {
+                // console.log('WebSocket connected successfully');
+                // console.log('Connection details:', e);
+                reconnectAttempts = 0;
+                // Yêu cầu trạng thái ban đầu
+                socket.send(JSON.stringify({type: 'get_initial_status'}));
+            };
+
+            socket.onmessage = function(e) {
+                try {
+                    const data = JSON.parse(e.data);
+                    // console.log('Received WebSocket message:', data);
+
+                    if (data.type === 'activity_status') {
+                        updateUserStatus(data);
+                    } else if (data.type === 'initial_status' && Array.isArray(data.statuses)) {
+                        data.statuses.forEach(status => {
+                            setTimeout(() => updateUserStatus(status), 0);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error processing message:', error);
+                }
+            };
+
+            socket.onclose = function(e) {
+                // console.log('WebSocket disconnected:', e.code, e.reason);
+                if (reconnectAttempts < maxReconnectAttempts) {
+                    reconnectAttempts++;
+                    // console.log(`Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})...`);
+                    setTimeout(connectWebSocket, 3000);
+                } else {
+                    console.error('Max reconnection attempts reached');
+                }
+            };
+
+            socket.onerror = function(e) {
+                console.error('WebSocket error:', e);
+            };
+        } catch (error) {
+            console.error('Error creating WebSocket:', error);
+        }
+    }
+
+    function updateUserStatus(data) {
+        if (!data || typeof data !== 'object') {
+            console.error('Invalid data received:', data);
+            return;
+        }
+
+        if (!data.user_id) {
+            console.error('Missing user_id in data:', data);
+            return;
+        }
+
+        // console.log('Processing update for user:', {
+        //     user_id: data.user_id,
+        //     is_active: data.is_active,
+        //     session_id: data.session_id,
+        //     logout_time: data.logout_time
+        // });
+
+        // Đợi DOM load xong
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => processStatusUpdate(data));
+            return;
+        }
+
+        processStatusUpdate(data);
+    }
+
+    function processStatusUpdate(data) {
+        // Kiểm tra xem container đã được tìm thấy trước đó chưa
+        let statusContainer = statusContainers.get(data.user_id);
+        
+        // Nếu chưa, thử tìm lại
+        if (!statusContainer) {
+            statusContainer = document.querySelector(`.status-container[data-user-id="${data.user_id}"]`);
+            if (statusContainer) {
+                statusContainers.set(data.user_id, statusContainer);
+            }
+        }
+
+        // if (!statusContainer) {
+        //     console.log(`Status container not found for user ${data.user_id}, will retry later`);
+        //     // Thử tìm lại sau 1 giây
+        //     setTimeout(() => {
+        //         const retryContainer = document.querySelector(`.status-container[data-user-id="${data.user_id}"]`);
+        //         if (retryContainer) {
+        //             statusContainers.set(data.user_id, retryContainer);
+        //             processStatusUpdate(data);
+        //         }
+        //     }, 1000);
+        //     return;
+        // }
+
+        const statusIndicator = statusContainer.querySelector('.status-indicator');
+        const statusText = statusContainer.querySelector('.status-text');
+
+        if (!statusIndicator || !statusText) {
+            console.warn(`Missing status elements for user ${data.user_id}`);
+            return;
+        }
+
+        const isActive = Boolean(data.is_active);
+
+        try {
+            // Cập nhật trạng thái chính
+            requestAnimationFrame(() => {
+                statusIndicator.className = `status-indicator ${isActive ? 'status-active' : 'status-inactive'}`;
+                statusText.textContent = isActive ? 'Đang hoạt động' : 'Đã đăng xuất';
+                statusText.className = `status-text ${isActive ? 'text-success' : 'text-danger'}`;
+            });
+
+            // Cập nhật session nếu có
+            if (data.session_id) {
+                updateSessionStatus(data);
+            }
+        } catch (error) {
+            console.error('Error updating status:', error);
+        }
+    }
+
+    function updateSessionStatus(data) {
+        const sessionRow = document.querySelector(`tr[data-session-id="${data.session_id}"]`);
+        if (!sessionRow) {
+            console.log(`Session row not found for session_id: ${data.session_id}`);
+            return;
+        }
+
+        // console.log('Updating session status with data:', {
+        //     session_id: data.session_id,
+        //     is_active: data.is_active,
+        //     logout_time: data.logout_time
+        // });
+
+        const isActive = Boolean(data.is_active);
+        const sessionStatus = sessionRow.querySelector('.status-indicator');
+        const sessionText = sessionRow.querySelector('.status-text');
+        const logoutTimeElement = document.getElementById(`logout-time-${data.session_id}`);
+
+        if (sessionStatus && sessionText) {
+            requestAnimationFrame(() => {
+                try {
+                    sessionStatus.className = `status-indicator ${isActive ? 'status-active' : 'status-inactive'}`;
+                    sessionText.textContent = isActive ? 'Đang hoạt động' : 'Đã đăng xuất';
+                    sessionText.className = `status-text ${isActive ? 'text-success' : 'text-danger'}`;
+
+                    // Cập nhật thời gian đăng xuất nếu có
+                    if (data.logout_time) {
+                        const logoutTime = new Date(data.logout_time);
+                        logoutTimeElement.innerHTML = logoutTime.toLocaleString('vi-VN', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    } else if (!isActive) {
+                        logoutTimeElement.innerHTML = '<span class="text-muted">Chưa có dữ liệu đăng xuất</span>';
+                    }
+                } catch (error) {
+                    console.error('Error updating session status:', error);
+                }
+            });
+        } else {
+            console.warn('Missing status elements for session:', data.session_id);
+        }
+    }
+
+    // Queue system
+    const updateQueue = new Map();
+    let isProcessingQueue = false;
+
+    function queueStatusUpdate(data) {
+        updateQueue.set(data.user_id, data);
+        if (!isProcessingQueue) {
+            setTimeout(processUpdateQueue, 100); // Đợi 100ms trước khi xử lý queue
+        }
+    }
+
+    function processUpdateQueue() {
+        if (updateQueue.size === 0) {
+            isProcessingQueue = false;
+            return;
+        }
+
+        isProcessingQueue = true;
+        // console.log('Processing update queue, size:', updateQueue.size);
+
+        const processedIds = [];
+        
+        updateQueue.forEach((data, userId) => {
+            try {
+                processStatusUpdate(data);
+                processedIds.push(userId);
+            } catch (error) {
+                console.error('Error processing queued update for user:', userId, error);
+            }
+        });
+
+        // Xóa các updates đã xử lý
+        processedIds.forEach(id => updateQueue.delete(id));
+
+        // Nếu còn updates trong queue, tiếp tục xử lý
+        if (updateQueue.size > 0) {
+            setTimeout(processUpdateQueue, 100);
+        } else {
+            isProcessingQueue = false;
+        }
+    }
+
+    // Khởi tạo khi DOM đã sẵn sàng
+    document.addEventListener('DOMContentLoaded', function() {
+        // console.log('DOM Content Loaded');
+        
+        // Lưu trữ tất cả các container vào Map
+        const containers = document.querySelectorAll('.status-container');
+        containers.forEach(container => {
+            const userId = container.getAttribute('data-user-id');
+            if (userId) {
+                statusContainers.set(userId, container);
+            }
+        });
+        
+        // console.log('Found status containers:', statusContainers.size);
+        
+        // Kết nối WebSocket
+        connectWebSocket();
+    });
+</script>
 {% endblock %} 
