@@ -25,6 +25,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def employee_verified_view(request):
     try:
+        print('Đã vào trang verified')
         # Lấy thông tin user từ MongoDB
         users_collection, client = get_collection_handle('users')
         if users_collection is None:
@@ -37,8 +38,12 @@ def employee_verified_view(request):
 
         try:
             # Lấy thông tin user
-            mongo_user = users_collection.find_one({'user_id': str(request.user.id)})
-            if not mongo_user:
+            user_data = users_collection.find_one({'user_id': str(request.user.id)})
+            # users_collection, client = get_collection_handle('users')
+            # user_role = mongo_user.get('role', 'nhanvien')
+            # print(f'User: {mongo_user}')
+            # print(f'Role của user: {user_role}')
+            if not user_data:
                 messages.error(request, 'Không tìm thấy thông tin người dùng')
                 return redirect('login')
 
@@ -99,7 +104,8 @@ def employee_verified_view(request):
             context = {
                 'textnow_accounts': processed_accounts,
                 'current_page': page,
-                'total_pages': total_pages
+                'total_pages': total_pages,
+                'user_data': user_data
             }
 
             return render(request, 'authentication/employee_verified.html', context)

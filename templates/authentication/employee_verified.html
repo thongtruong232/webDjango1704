@@ -1,459 +1,401 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Danh sách TextNow đã xác thực</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --success-color: #2ecc71;
-            --danger-color: #e74c3c;
-            --background-color: #f8f9fa;
-            --border-color: #dee2e6;
-        }
+{% extends 'authentication/base.html' %}
 
-        body {
-            background-color: var(--background-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+{% block title %}Danh sách TextNow đã xác thực{% endblock %}
 
-        .container {
-            max-width: calc(100% - 200px); 
-            padding: 10px;
-            margin: 0 100px; 
-        }
-
-        /* Table Styles */
-        .textnow-table {
-            max-height: calc(100vh - 250px); /* Chiều cao động dựa vào viewport */
-            overflow-y: auto;
-            overflow-x: auto;
-            position: relative;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-        }
-
-        .table {
-            min-width: 900px; /* Minimum width để đảm bảo nội dung không bị vỡ */
-            margin-bottom: 0;
-        }
-
-        .table th {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 500;
-            border: none;
-            padding: 10px;
-            white-space: nowrap;
-            position: sticky;
-            top: 0;
-            z-index: 2;
-            font-size: 14px;
-        }
-
-        .table td {
-            padding: 8px;
-            vertical-align: middle;
-            font-size: 14px;
-        }
-
-        .table tr:hover {
-            background-color: rgba(52, 152, 219, 0.05);
-        }
-
-        /* Status Badge Styles */
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-            font-size: 14px;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .status-success {
-            background-color: var(--success-color);
-            color: white;
-        }
-
-        .status-pending {
-            background-color: #f39c12;
-            color: white;
-        }
-
-        .status-error {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        /* Search and Filter Section */
-        .filters {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-input, .form-select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        /* Custom Scrollbar */
-        .textnow-table::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .textnow-table::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .textnow-table::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 3px;
-        }
-
-        .textnow-table::-webkit-scrollbar-thumb:hover {
-            background: var(--secondary-color);
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 1200px) {
-            .container {
-                max-width: calc(100% - 20px);
-                margin: 0 10px; 
-            }
-
-            .table th, .table td {
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .filters .row {
-                margin-bottom: -10px;
-            }
-
-            .filters .col-md-4,
-            .filters .col-md-3 {
-                margin-bottom: 10px;
-            }
-
-            .email-info-scroll {
-                max-width: 150px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            .d-flex.gap-3 {
-                gap: 0.5rem !important;
-            }
-
-            .btn {
-                padding: 6px 12px;
-                font-size: 14px;
-            }
-
-            .filters {
-                padding: 10px;
-            }
-
-            .status-badge {
-                padding: 4px 8px;
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .container {
-                padding: 5px;
-            }
-
-            .textnow-table {
-                max-height: calc(100vh - 200px);
-            }
-
-            .email-info-scroll {
-                max-width: 120px;
-            }
-
-            .table th, .table td {
-                padding: 6px;
-                font-size: 13px;
-            }
-        }
-
-        .email-info-scroll {
-            max-width: 500px; /* Giảm xuống cho mobile */
-            overflow-x: auto;
-            white-space: nowrap;
-            padding: 4px;
-            font-size: 13px;
-        }
-        .td-mail {
-            width:500px;
-        }
-        .email-info-item {
-            display: inline-block;
-            padding: 0 4px;
-        }
-
-        .email-info-separator {
-            color: #666;
-            padding: 0 4px;
-        }
-
-        .email-info-scroll::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .email-info-scroll::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .email-info-scroll::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 3px;
-        }
-
-        .email-info-scroll::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        .email-info-cell {
-          
-            overflow-x: auto;
-            white-space: nowrap;
-            padding: 5px !important;
-            /* Tùy chỉnh thanh scroll */
-            scrollbar-width: thin;
-            scrollbar-color: #888 #f1f1f1;
-        }
-
-        /* Tùy chỉnh thanh scroll cho Chrome/Safari/Edge */
-        .email-info-cell::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .email-info-cell::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .email-info-cell::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 3px;
-        }
-
-        .email-info-cell::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        /* Cải thiện buttons */
-        .btn {
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 80px;
-        }
-
-        /* Thêm loading indicator */
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container mt-4">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-            <h2 class="mb-0">Danh sách TextNow đã xác thực</h2>
-            <div class="d-flex gap-2">
-                <button id="exportBtn" class="btn btn-success">
-                    <i class="fas fa-file-excel me-1"></i> Xuất Excel
-                </button>
-                <button id="refreshBtn" class="btn btn-primary">
-                    <i class="fas fa-sync-alt me-1"></i> Làm mới
-                </button>
-            </div>
-        </div>
-
-        <div class="filters">
-            <div class="row g-2">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <input type="text" id="searchEmail" class="search-input" placeholder="Tìm kiếm theo email...">
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <select id="statusFilter" class="form-select">
-                        <option value="">Tất cả trạng thái</option>
-                        <option value="Thành công">Thành công</option>
-                        <option value="chưa recend link">Chưa recend link</option>
-                        <option value="mail lỗi">Mail lỗi</option>
-                        <option value="reg acc lỗi">Reg acc lỗi</option>
-                    </select>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <select id="supplierFilter" class="form-select">
-                        <option value="">Tất cả nhà cung cấp</option>
-                        <option value="Quân">QUÂN</option>
-                        <!-- Thêm các nhà cung cấp khác nếu có -->
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="textnow-table">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Email</th>
-                        <th>Password Email</th>
-                        <th>Password TextNow</th>
-                        <th>Trạng thái</th>
-                        <th>Nhà cung cấp</th>
-                        <th>Ngày tạo</th>
-                        <th>Chuỗi email</th>
-                        <th>action</th>
-                    </tr>
-                </thead>
-                <tbody id="textnowList">
-                    {% if textnow_accounts %}
-                        {% for account in textnow_accounts %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ account.email }}</td>
-                                <td>{{ account.password_email }}</td>
-                                <td>{{ account.password }}</td>
-                                <td>
-                                    <span class="status-badge {% if account.status_account == 'tạo acc thành công' %}status-success
-                                                           {% elif account.status_account == 'mail lỗi' or account.status_account == 'reg acc lỗi' %}status-error
-                                                           {% else %}status-pending{% endif %}">
-                                        {% if account.status_account == 'tạo acc thành công' %}
-                                            Thành công
-                                        {% else %}
-                                            {{ account.status_account }}
-                                        {% endif %}
-                                    </span>
-                                </td>
-                                <td>{{ account.supplier }}</td>
-                                <td>{{ account.created_at|date:"d/m/Y H:i" }}</td>
-                                <td class="td-mail">
-                                    <div class="email-info-scroll">
-                                        <span class="email-info-item">{{ account.email}}</span>
-                                        <span class="email-info-separator">|</span>
-                                        <span class="email-info-item">{{ account.password_email}}</span>
-                                        <span class="email-info-separator">|</span>
-                                        <span class="email-info-item">{{ account.refresh_token}}</span>
-                                        <span class="email-info-separator">|</span>
-                                        <span class="email-info-item">{{ account.client_id}}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button class="btn">coppy</button>
-
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="8" class="text-center">Không có dữ liệu</td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <h2 class="mb-0">Danh sách TextNow đã xác thực</h2>
+        <div class="d-flex gap-2">
+            <button id="exportBtn" class="btn btn-success">
+                <i class="fas fa-file-excel me-1"></i> Xuất Excel
+            </button>
+            <button id="refreshBtn" class="btn btn-primary">
+                <i class="fas fa-sync-alt me-1"></i> Làm mới
+            </button>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Xử lý tìm kiếm
-            $('#searchEmail').on('input', function() {
-                filterTable();
-            });
+    <div class="filters">
+        <div class="row g-2">
+            <div class="col-12 col-sm-6 col-md-4">
+                <input type="text" id="searchEmail" class="search-input" placeholder="Tìm kiếm theo email...">
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <select id="statusFilter" class="form-select">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="Thành công">Thành công</option>
+                    <option value="chưa recend link">Chưa recend link</option>
+                    <option value="mail lỗi">Mail lỗi</option>
+                    <option value="reg acc lỗi">Reg acc lỗi</option>
+                </select>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4">
+                <select id="supplierFilter" class="form-select">
+                    <option value="">Tất cả nhà cung cấp</option>
+                    <option value="Quân">QUÂN</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
-            // Xử lý lọc theo trạng thái
-            $('#statusFilter').change(function() {
-                filterTable();
-            });
+    <div class="textnow-table">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Email</th>
+                    <th>Password Email</th>
+                    <th>Password TextNow</th>
+                    <th>Trạng thái</th>
+                    <th>Nhà cung cấp</th>
+                    <th>Ngày tạo</th>
+                    <th>Chuỗi email</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="textnowList">
+                {% if textnow_accounts %}
+                    {% for account in textnow_accounts %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ account.email }}</td>
+                            <td>{{ account.password_email }}</td>
+                            <td>{{ account.password }}</td>
+                            <td>
+                                <span class="status-badge {% if account.status_account == 'tạo acc thành công' %}status-success
+                                                       {% elif account.status_account == 'mail lỗi' or account.status_account == 'reg acc lỗi' %}status-error
+                                                       {% else %}status-pending{% endif %}">
+                                    {% if account.status_account == 'tạo acc thành công' %}
+                                        Thành công
+                                    {% else %}
+                                        {{ account.status_account }}
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>{{ account.supplier }}</td>
+                            <td>{{ account.created_at|date:"d/m/Y H:i" }}</td>
+                            <td class="td-mail">
+                                <div class="email-info-scroll">
+                                    <span class="email-info-item">{{ account.email}}</span>
+                                    <span class="email-info-separator">|</span>
+                                    <span class="email-info-item">{{ account.password_email}}</span>
+                                    <span class="email-info-separator">|</span>
+                                    <span class="email-info-item">{{ account.refresh_token}}</span>
+                                    <span class="email-info-separator">|</span>
+                                    <span class="email-info-item">{{ account.client_id}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm copy-btn" data-email="{{ account.email }}" data-password="{{ account.password_email }}" data-refresh="{{ account.refresh_token }}" data-client="{{ account.client_id }}">
+                                    <i class="fas fa-copy me-1"></i> Copy
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">Không có dữ liệu</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-            // Xử lý lọc theo nhà cung cấp
-            $('#supplierFilter').change(function() {
-                filterTable();
-            });
+<style>
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2980b9;
+        --success-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --background-color: #f8f9fa;
+        --border-color: #dee2e6;
+    }
 
-            // Hàm lọc tổng hợp
-            function filterTable() {
-                const searchValue = $('#searchEmail').val().toLowerCase();
-                const statusValue = $('#statusFilter').val();
-                const supplierValue = $('#supplierFilter').val();
+    body {
+        background-color: var(--background-color);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-                $('#textnowList tr').each(function() {
-                    const row = $(this);
-                    const email = row.find('td:eq(1)').text().toLowerCase();
-                    const status = row.find('td:eq(4) .status-badge').text().trim();
-                    const supplier = row.find('td:eq(5)').text().trim();
+    .container {
+        max-width: calc(100% - 200px);
+        padding: 10px;
+        margin: 0 100px;
+    }
 
-                    // Kiểm tra điều kiện lọc
-                    const matchSearch = !searchValue || email.includes(searchValue);
-                    const matchStatus = !statusValue || status === statusValue;
-                    const matchSupplier = !supplierValue || supplier === supplierValue;
+    .textnow-table {
+        max-height: calc(100vh - 250px);
+        overflow-y: auto;
+        overflow-x: auto;
+        position: relative;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
 
-                    // Debug log
-                    console.log('Row:', {
-                        email: email,
-                        status: status,
-                        supplier: supplier,
-                        searchValue: searchValue,
-                        statusValue: statusValue,
-                        supplierValue: supplierValue,
-                        matchSearch: matchSearch,
-                        matchStatus: matchStatus,
-                        matchSupplier: matchSupplier
-                    });
+    .table {
+        min-width: 900px;
+        margin-bottom: 0;
+    }
 
-                    // Hiển thị hoặc ẩn dòng dựa trên kết quả lọc
-                    row.toggle(matchSearch && matchStatus && matchSupplier);
-                });
-            }
+    .table th {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 500;
+        border: none;
+        padding: 10px;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        font-size: 14px;
+    }
 
-            // Xử lý nút làm mới
-            $('#refreshBtn').click(function() {
-                // Reset các filter
-                $('#searchEmail').val('');
-                $('#statusFilter').val('');
-                $('#supplierFilter').val('');
-                // Hiển thị lại tất cả các dòng
-                $('#textnowList tr').show();
-            });
+    .table td {
+        padding: 8px;
+        vertical-align: middle;
+        font-size: 14px;
+    }
 
-            // Xử lý xuất Excel
-            $('#exportBtn').click(function() {
-                window.location.href = '/employee/export-textnow/';
-            });
+    .table tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 14px;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .status-success {
+        background-color: var(--success-color);
+        color: white;
+    }
+
+    .status-pending {
+        background-color: #f39c12;
+        color: white;
+    }
+
+    .status-error {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    .filters {
+        background-color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input, .form-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .textnow-table::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .textnow-table::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .textnow-table::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    .textnow-table::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary-color);
+    }
+
+    .email-info-scroll {
+        max-width: 500px;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 4px;
+        font-size: 13px;
+    }
+
+    .td-mail {
+        width: 500px;
+    }
+
+    .email-info-item {
+        display: inline-block;
+        padding: 0 4px;
+    }
+
+    .email-info-separator {
+        color: #666;
+        padding: 0 4px;
+    }
+
+    .email-info-scroll::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .email-info-scroll::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .email-info-scroll::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    .email-info-scroll::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .btn {
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+    }
+
+    @media (max-width: 1200px) {
+        .container {
+            max-width: calc(100% - 20px);
+            margin: 0 10px;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .filters .row {
+            margin-bottom: -10px;
+        }
+
+        .filters .col-md-4,
+        .filters .col-md-3 {
+            margin-bottom: 10px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        .d-flex.gap-3 {
+            gap: 0.5rem !important;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .filters {
+            padding: 10px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 5px;
+        }
+
+        .textnow-table {
+            max-height: calc(100vh - 200px);
+        }
+
+        .table th, .table td {
+            padding: 6px;
+            font-size: 13px;
+        }
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Xử lý tìm kiếm
+        $('#searchEmail').on('input', function() {
+            filterTable();
         });
-    </script>
-</body>
-</html>
+
+        // Xử lý lọc theo trạng thái
+        $('#statusFilter').change(function() {
+            filterTable();
+        });
+
+        // Xử lý lọc theo nhà cung cấp
+        $('#supplierFilter').change(function() {
+            filterTable();
+        });
+
+        // Hàm lọc tổng hợp
+        function filterTable() {
+            const searchValue = $('#searchEmail').val().toLowerCase();
+            const statusValue = $('#statusFilter').val();
+            const supplierValue = $('#supplierFilter').val();
+
+            $('#textnowList tr').each(function() {
+                const row = $(this);
+                const email = row.find('td:eq(1)').text().toLowerCase();
+                const status = row.find('td:eq(4) .status-badge').text().trim();
+                const supplier = row.find('td:eq(5)').text().trim();
+
+                const matchSearch = !searchValue || email.includes(searchValue);
+                const matchStatus = !statusValue || status === statusValue;
+                const matchSupplier = !supplierValue || supplier === supplierValue;
+
+                row.toggle(matchSearch && matchStatus && matchSupplier);
+            });
+        }
+
+        // Xử lý nút làm mới
+        $('#refreshBtn').click(function() {
+            $('#searchEmail').val('');
+            $('#statusFilter').val('');
+            $('#supplierFilter').val('');
+            $('#textnowList tr').show();
+        });
+
+        // Xử lý xuất Excel
+        $('#exportBtn').click(function() {
+            window.location.href = '/employee/export-textnow/';
+        });
+
+        // Xử lý nút copy
+        $('.copy-btn').click(function() {
+            const email = $(this).data('email');
+            const password = $(this).data('password');
+            const refresh = $(this).data('refresh');
+            const client = $(this).data('client');
+            
+            const textToCopy = `${email}|${password}|${refresh}|${client}`;
+            
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                const originalText = $(this).html();
+                $(this).html('<i class="fas fa-check me-1"></i> Đã copy');
+                setTimeout(() => {
+                    $(this).html(originalText);
+                }, 2000);
+            }.bind(this));
+        });
+    });
+</script>
+{% endblock %}

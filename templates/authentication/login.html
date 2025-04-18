@@ -128,10 +128,6 @@
                     return;
                 }
 
-                // Hiển thị loading
-                const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
-                loadingModal.show();
-
                 // Tạo form data
                 const formData = new FormData();
                 formData.append('otp', otpInput.value.trim());
@@ -155,9 +151,11 @@
                     return response.json();
                 })
                 .then(data => {
-                    loadingModal.hide();
-                    
                     if (data.success) {
+                        // Hiển thị loading khi OTP đúng
+                        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                        loadingModal.show();
+                        
                         // Hiển thị thông báo thành công
                         otpSuccess.textContent = data.message;
                         otpSuccess.classList.remove('d-none');
@@ -170,8 +168,8 @@
                             window.location.href = '/home/';
                         }
                     } else {
-                        // Hiển thị lỗi
-                        otpError.textContent = data.message || 'Có lỗi xảy ra';
+                        // Chỉ hiển thị thông báo lỗi khi OTP sai
+                        otpError.textContent = 'Mã OTP không đúng, thử lại';
                         otpError.classList.remove('d-none');
                         // Enable lại nút xác nhận
                         verifyBtn.disabled = false;
@@ -179,9 +177,9 @@
                     }
                 })
                 .catch(error => {
-                    loadingModal.hide();
                     console.error('Error:', error);
-                    otpError.textContent = 'Có lỗi xảy ra, vui lòng thử lại';
+                    // Chỉ hiển thị thông báo lỗi khi OTP sai
+                    otpError.textContent = 'Mã OTP không đúng, thử lại';
                     otpError.classList.remove('d-none');
                     // Enable lại nút xác nhận
                     verifyBtn.disabled = false;

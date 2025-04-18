@@ -165,7 +165,16 @@ def home_view(request):
     try:
         # Lấy user data một lần và sử dụng lại
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
-        user_role = user_data.get('role', 'nhanvien') if user_data else 'nhanvien'
+        if not user_data:
+            messages.error(request, 'Không tìm thấy thông tin người dùng')
+            return redirect('login')
+            
+        user_role = user_data.get('role', 'nhanvien')
+        
+        # Nếu là nhân viên, chuyển hướng về trang verified
+        if user_role == 'nhanvien':
+            print('Chuyển hướng về trang verified với role:', user_role)
+            return redirect('employee_verified')
         
         # Handle Excel file upload
         if request.method == 'POST' and request.FILES.get('excel_file'):

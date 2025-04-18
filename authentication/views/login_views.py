@@ -35,7 +35,29 @@ def get_current_time():
 
 
 def login_view(request):
+    
     if request.user.is_authenticated:
+        print('Đã đăng nhập')
+        # Kiểm tra role của user
+        users_collection, client = get_collection_handle('users')
+        if users_collection:
+            try:
+                user_data = users_collection.find_one({'user_id': str(request.user.id)})
+                if user_data:
+                    user_role = user_data.get('role')
+                    print(f'Role của user: {user_role}')
+                    if user_role == 'nhanvien':
+                        return redirect('employee_verified')
+                    else:
+                        return redirect('home')
+                else:
+                    # Nếu không tìm thấy user trong MongoDB, đăng xuất và chuyển về trang login
+                    logout(request)
+                    messages.error(request, 'Không tìm thấy thông tin người dùng')
+                    return redirect('login')
+            finally:
+                if client:
+                    client.close()
         return redirect('home')
         
     if request.method == 'POST':
@@ -135,7 +157,8 @@ def verify_otp_view(request):
         if input_otp != session_otp:
             return JsonResponse({
                 'success': False,
-                'message': 'Mã OTP không đúng, thử lại'
+                'message': 'Mã OTP không đúng, thử lại',
+                'show_loading': False
             })
         if input_otp == session_otp:
             try:
@@ -246,7 +269,27 @@ def verify_otp_view(request):
                     
                     # Lưu session
                     request.session.save()
-                    if user.role in ['admin', 'quanly', 'nhanvien']:
+                    # Lấy thông tin user từ MongoDB
+                    # users_collection, client = get_collection_handle('users')
+                    # mongo_user = users_collection.find_one({'user_id': str(user.id)})
+                    # user_role = mongo_user.get('role')
+
+                    # if mongo_user:
+                    #     print(f"=== Thông tin tài khoản vừa đăng nhập ===")
+                    #     print(f"Username: {mongo_user.get('username')}")
+                    #     print(f"User ID: {mongo_user.get('user_id')}")
+                    #     print(f"Role: {mongo_user.get('role')}")
+                    #     print(f"Email: {mongo_user.get('email')}")
+                    #     print(f"Last Login: {mongo_user.get('last_login')}")
+                    #     print(f"IP Address: {request.META.get('REMOTE_ADDR')}")
+                    #     print(f"User Agent: {request.META.get('HTTP_USER_AGENT')}")
+                    #     print("=====================================")
+                    # if client:
+                    #     client.close()
+
+                    user_role = mongo_user.get('role')
+
+                    if user_role in ['admin', 'quanly', 'kiemtra']:
                         return JsonResponse({
                             'success': True,
                             'redirect_url': '/home/',
@@ -255,7 +298,7 @@ def verify_otp_view(request):
                     else:
                         return JsonResponse({
                             'success': True,
-                            'redirect_url': '/verifed/',
+                            'redirect_url': '/verified/',
                             'message': 'Đăng nhập thành công'
                         })
                         
