@@ -264,18 +264,11 @@
             }
         }
 
-        // if (!statusContainer) {
-        //     console.log(`Status container not found for user ${data.user_id}, will retry later`);
-        //     // Thử tìm lại sau 1 giây
-        //     setTimeout(() => {
-        //         const retryContainer = document.querySelector(`.status-container[data-user-id="${data.user_id}"]`);
-        //         if (retryContainer) {
-        //             statusContainers.set(data.user_id, retryContainer);
-        //             processStatusUpdate(data);
-        //         }
-        //     }, 1000);
-        //     return;
-        // }
+        // Nếu không tìm thấy container, bỏ qua
+        if (!statusContainer) {
+            console.warn(`Status container not found for user ${data.user_id}`);
+            return;
+        }
 
         const statusIndicator = statusContainer.querySelector('.status-indicator');
         const statusText = statusContainer.querySelector('.status-text');
