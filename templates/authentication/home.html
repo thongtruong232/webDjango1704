@@ -243,17 +243,14 @@
                         <tr>
                             <th>STT</th>
                             <th>Email</th>
+                            <th>Pass Email</th>
                             <th>Pass</th>
-                            <th>PassFree</th>
-                            <th>PassTexNow</th>
-                            {% if not is_nhanvien and user_data.role != 'kiemtra' %}
-                            <th>Trạng thái</th>
-                            {% endif %}
+                            <th>Pass_TF</th>
+                            <th>Status_account</th>
+                            <th>Status_account_TF</th>
+                            <th>Supplier</th>
                             <th>Time</th>
-                            {% if can_update_status %}
-                            <th>Thao tác</th>
-                            {% endif %}
-                            <th>Copy Email</th>
+                            <th>Copy</th>
                             <th>Copy Full</th>
                         </tr>
                     </thead>
@@ -261,47 +258,45 @@
                         {% for item in excel_data %}
                         <tr data-record-id="{{ item.mongo_id }}">
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ item.Email }}</td>
-                            <td>{{ item.Pass }}</td>
-                            <td>{{ item.PassFree }}</td>
-                            <td>{{ item.PassTexNow }}</td>
+                            <td>{{ item.email }}</td>
+                            <td>{{ item.password_email }}</td>
+                            <td>{{ item.password }}</td>
+                            <td>{{ item.password_TF }}</td>
                             <td>
-                                {% if not is_nhanvien and user_data.role != 'kiemtra' %}
-                                <span class="status-badge status-{{ item.status|slugify }}">
-                                    {{ item.status }}
+                                <span class="status-badge status-{{ item.status_account|slugify }}">
+                                    {{ item.status_account }}
                                 </span>
-                                {% endif %}
                             </td>
                             <td>
+                                <span class="status-badge status-{{ item.status_account_TF|slugify }}">
+                                    {{ item.status_account_TF }}
+                                </span>
+                            </td>
+                            <td>{{ item.supplier }}</td>
+                            <td>
                                 {% if item.time_info %}
-                                    <span class="{% if item.time_info.type == 'elapsed' %}elapsed-time{% else %}remaining-time{% endif %}" 
-                                          data-seconds="{{ item.time_info.total_seconds }}"
+                                    <span class="{% if item.time_info.type == 'elapsed' %}elapsed-time{% else %}remaining-time{% endif %}"
+                                          data-days="{{ item.time_info.days }}"
+                                          data-hours="{{ item.time_info.hours }}"
                                           data-type="{{ item.time_info.type }}">
-                                        {{ item.time_info.minutes }}:{{ item.time_info.seconds|stringformat:"02d" }}
+                                        {% if item.time_info.days > 0 %}
+                                            {{ item.time_info.days }} ngày
+                                            {% if item.time_info.hours > 0 %}
+                                                {{ item.time_info.hours }} giờ
+                                            {% endif %}
+                                        {% elif item.time_info.hours > 0 %}
+                                            {{ item.time_info.hours }} giờ
+                                        {% else %}
+                                            0 giờ
+                                        {% endif %}
                                     </span>
                                 {% else %}
                                     -
                                 {% endif %}
                             </td>
-                            {% if can_update_status %}
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                        Cập nhật trạng thái
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        {% for status in allowed_status_updates %}
-                                        <li><a class="dropdown-item update-status" href="javascript:void(0)" 
-                                            data-record-id="{{ item.mongo_id }}" 
-                                            data-status="{{ status }}">{{ status }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </td>
-                            {% endif %}
                             <td>
                                 <button class="btn btn-sm btn-outline-secondary copy-btn" 
-                                        data-clipboard-text="{{ item.Email }}"
+                                        data-clipboard-text="{{ item.email }}"
                                         title="Copy email">
                                     <i class="fas fa-copy"></i>
                                 </button>
@@ -775,31 +770,64 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateTimes() {
         // Cập nhật thời gian đếm ngược
         document.querySelectorAll('.remaining-time').forEach(function(element) {
-            let seconds = parseInt(element.dataset.seconds);
-            if (seconds > 0) {
-                seconds--;
-                element.dataset.seconds = seconds;
-                let minutes = Math.floor(seconds / 60);
-                let remainingSeconds = seconds % 60;
-                element.textContent = minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+            let days = parseInt(element.dataset.days) || 0;
+            let hours = parseInt(element.dataset.hours) || 0;
+            
+            if (hours > 0) {
+                hours--;
+                if (hours < 0) {
+                    if (days > 0) {
+                        days--;
+                        hours = 23;
+                    } else {
+                        hours = 0;
+                    }
+                }
+            } else if (days > 0) {
+                days--;
+                hours = 23;
+            }
+
+            element.dataset.days = days;
+            element.dataset.hours = hours;
+
+            // Cập nhật hiển thị
+            if (days > 0) {
+                element.textContent = days + ' ngày ' + (hours > 0 ? hours + ' giờ' : '');
+            } else if (hours > 0) {
+                element.textContent = hours + ' giờ';
             } else {
-                element.textContent = '0:00';
+                element.textContent = '0 giờ';
             }
         });
 
         // Cập nhật thời gian tăng dần
         document.querySelectorAll('.elapsed-time').forEach(function(element) {
-            let seconds = parseInt(element.dataset.seconds);
-            seconds++;
-            element.dataset.seconds = seconds;
-            let minutes = Math.floor(seconds / 60);
-            let elapsedSeconds = seconds % 60;
-            element.textContent = minutes + ':' + (elapsedSeconds < 10 ? '0' : '') + elapsedSeconds;
+            let days = parseInt(element.dataset.days) || 0;
+            let hours = parseInt(element.dataset.hours) || 0;
+            
+            hours++;
+            if (hours >= 24) {
+                days++;
+                hours = 0;
+            }
+
+            element.dataset.days = days;
+            element.dataset.hours = hours;
+
+            // Cập nhật hiển thị
+            if (days > 0) {
+                element.textContent = days + ' ngày ' + (hours > 0 ? hours + ' giờ' : '');
+            } else if (hours > 0) {
+                element.textContent = hours + ' giờ';
+            } else {
+                element.textContent = '0 giờ';
+            }
         });
     }
     
-    // Cập nhật mỗi giây
-    setInterval(updateTimes, 1000);
+    // Cập nhật mỗi giờ (3600000 milliseconds)
+    setInterval(updateTimes, 3600000);
 
     // Cập nhật thời gian hoạt động cuối cùng mỗi 5 phút
     let activityTimeout;

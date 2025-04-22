@@ -123,29 +123,35 @@
                             <td colspan="6">
                                 <div class="collapse" id="details-{{ stat.user.id }}">
                                     <div class="card card-body">
-                                        <table class="table table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th>Thời gian đăng nhập</th>
-                                                    <th>Thời gian đăng xuất</th>
-                                                    <th>Thời gian làm việc</th>
-                                                </tr>
-                                            </thead>
-                                            
-                                            <tbody id="activity-details-{{ stat.user.id }}">
-                                                {% for activity in stat.activities|dictsortreversed:"login_time" %}
-                                                <tr data-user-id="{{ stat.user.id }}" data-session-id="{{ activity.session_id }}">
-                                                    <td>{% if activity.login_time %}{{ activity.login_time|date:"d/m/Y H:i" }}{% else %}Chưa có dữ liệu{% endif %}</td>
-                                                    <td>{% if activity.logout_time %}{{ activity.logout_time|date:"d/m/Y H:i" }}{% else %}Chưa đăng xuất{% endif %}</td>
-                                                    <td>
-                                                        <span class="activity-duration" id="duration-{{ activity.session_id }}">
-                                                            {{ activity.session_duration|format_duration }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Thời gian đăng nhập</th>
+                                                        <th>Thời gian đăng xuất</th>
+                                                        <th>Thời gian làm việc</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="activity-details-{{ stat.user.id }}">
+                                                    {% for activity in stat.activities|dictsortreversed:"login_time"|slice:":20" %}
+                                                    <tr data-user-id="{{ stat.user.id }}" data-session-id="{{ activity.session_id }}">
+                                                        <td>{% if activity.login_time %}{{ activity.login_time|date:"d/m/Y H:i" }}{% else %}Chưa có dữ liệu{% endif %}</td>
+                                                        <td>{% if activity.logout_time %}{{ activity.logout_time|date:"d/m/Y H:i" }}{% else %}Chưa đăng xuất{% endif %}</td>
+                                                        <td>
+                                                            <span class="activity-duration" id="duration-{{ activity.session_id }}">
+                                                                {{ activity.session_duration|format_duration }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            {% if stat.activities|length > 20 %}
+                                            <div class="text-muted text-center mt-2">
+                                                <small>Hiển thị 20 bản ghi gần nhất trong tổng số {{ stat.activities|length }} bản ghi</small>
+                                            </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </td>

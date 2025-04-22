@@ -13,7 +13,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import re
+import environ
 
+
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -85,11 +89,77 @@ DATABASES = {
     }
 }
 
-# MongoDB Configuration
-MONGODB_URI = 'mongodb+srv://admin:admin@cluster0.yosy3w4.mongodb.net/?retryWrites=true&w=majority'
-MONGODB_DATABASE = 'mongodbCloud'
-MONGODB_USERNAME = 'admin'
-MONGODB_PASSWORD = 'admin'
+# Session settings
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False  # Set to True in production
+SESSION_COOKIE_DOMAIN = None  # Set to your domain in production
+SESSION_COOKIE_AGE = 3600  # 1 hour
+SESSION_COOKIE_HTTPONLY = True
+SESSION_SAVE_EVERY_REQUEST = True  # Save session on every request
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session alive after browser close
+
+# CSRF settings
+CSRF_COOKIE_SECURE = False  # Set to True in production
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
+]
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'elivibes0124@gmail.com'
+EMAIL_HOST_PASSWORD = 'nxxr dxyg vffc kpjn'  # App Password from Gmail
+DEFAULT_FROM_EMAIL = 'elivibes0124@gmail.com'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Thư mục chứa static files đã collect
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Thư mục chứa static files source
+]
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Create necessary directories
+os.makedirs(os.path.join(BASE_DIR, 'logs'), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'media'), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'static'), exist_ok=True)  # Tạo thư mục static source
+os.makedirs(os.path.join(BASE_DIR, 'staticfiles'), exist_ok=True)  # Tạo thư mục static collected
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Login URL configuration
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
+
+AUTH_USER_MODEL = 'authentication.User'
+
+# Channel layer settings
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [os.getenv('REDIS_URL', 'redis://127.0.0.1:6379')],
+        },
+    },
+}
+
+# MongoDB settings
+MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb+srv://admin:admin@cluster0.yosy3w4.mongodb.net/?retryWrites=true&w=majority')
+MONGODB_DATABASE = os.getenv('MONGODB_DATABASE', 'mongodbCloud')
+MONGODB_USERNAME = os.getenv('MONGODB_USERNAME', 'admin')
+MONGODB_PASSWORD = os.getenv('MONGODB_PASSWORD', 'admin')
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -121,42 +191,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Login URL configuration
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'login'
-
-AUTH_USER_MODEL = 'authentication.User'
-
-# Mail otp
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'elivibes0124@gmail.com'
-EMAIL_HOST_PASSWORD = 'nxxr dxyg vffc kpjn'  # Dùng App Password nếu dùng Gmail
-
-# Session Configuration
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
 # Redis Configuration
 CACHES = {
     'default': {
@@ -170,22 +204,6 @@ CACHES = {
 
 # Channels Configuration
 ASGI_APPLICATION = 'WebDjango.asgi.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6380)],
-            "capacity": 1500,  # default 100
-            "expiry": 10,  # default 60
-            "prefix": "asgi:",  # default asgi:
-            "channel_capacity": {
-                "http.request": 200,
-                "http.response!*": 200,
-                re.compile(r"^websocket.send\!.+"): 200,
-            },
-        },
-    },
-}
 
 LOGGING = {
     'version': 1,

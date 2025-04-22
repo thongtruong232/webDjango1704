@@ -39,10 +39,6 @@ def employee_verified_view(request):
         try:
             # Lấy thông tin user
             user_data = users_collection.find_one({'user_id': str(request.user.id)})
-            # users_collection, client = get_collection_handle('users')
-            # user_role = mongo_user.get('role', 'nhanvien')
-            # print(f'User: {mongo_user}')
-            # print(f'Role của user: {user_role}')
             if not user_data:
                 messages.error(request, 'Không tìm thấy thông tin người dùng')
                 return redirect('login')
@@ -157,7 +153,7 @@ def create_email_view(request):
                         logger.info(f"Đọc được {len(raw_lines)} dòng từ file upload")
                     except Exception as e:
                         logger.error(f"Lỗi đọc file: {str(e)}", exc_info=True)
-                        messages.error(request, "❌ File upload không đúng định dạng hoặc bị lỗi")
+                        messages.error(request, "File upload không đúng định dạng hoặc bị lỗi")
                         return render(request, 'employee/create_mail.html', {'form': form})
 
                 elif cleaned_data.get('bulk_input'):
@@ -165,7 +161,7 @@ def create_email_view(request):
                     logger.info(f"Đọc được {len(raw_lines)} dòng từ bulk input")
 
                 if not raw_lines:
-                    messages.warning(request, "⚠️ Không có dữ liệu email nào được nhập")
+                    messages.warning(request, "Không có dữ liệu email nào được nhập")
                     return render(request, 'employee/create_mail.html', {'form': form})
 
                 # Tạo các email
@@ -211,9 +207,9 @@ def create_email_view(request):
                         continue
 
                 if added_count > 0:
-                    messages.success(request, f"🎉 Đã thêm thành công {added_count} email!")
+                    messages.success(request, f"Đã thêm thành công {added_count} email!")
                 if error_count > 0:
-                    messages.warning(request, f"⚠️ Có {error_count} email không thể thêm do lỗi")
+                    messages.warning(request, f"Có {error_count} email không thể thêm do lỗi")
 
                 return redirect('create_email')  # Chuyển hướng để tránh submit lại form
                 # ... code xử lý của bạn ...

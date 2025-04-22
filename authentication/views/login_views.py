@@ -35,7 +35,6 @@ def get_current_time():
 
 
 def login_view(request):
-    
     if request.user.is_authenticated:
         print('Đã đăng nhập')
         # Kiểm tra role của user
@@ -121,12 +120,24 @@ def login_view(request):
                                 messages.error(request, 'Không thể gửi mã OTP, vui lòng thử lại sau')
                                 return render(request, 'authentication/login.html')
                             
+                            # Lưu thông tin vào session
                             request.session['pre_otp_user'] = user.id
                             request.session['otp_username'] = username
                             request.session['otp_required'] = True
                             request.session['otp_code'] = otp_code
                             request.session['otp_timestamp'] = time.time()
-                            request.session.set_expiry(3600)
+                            request.session.set_expiry(3600)  # 1 giờ
+                            
+                            # Lưu session và kiểm tra
+                            request.session.save()
+                            if not request.session.session_key:
+                                logger.error("Failed to save session")
+                                messages.error(request, 'Có lỗi xảy ra, vui lòng thử lại')
+                                return render(request, 'authentication/login.html')
+                            
+                            logger.info(f"Session saved with key: {request.session.session_key}")
+                            logger.info(f"OTP code: {otp_code}")
+                            logger.info(f"User ID: {user.id}")
                             
                             return render(request, 'authentication/login.html', {
                                 'otp_required': True,
@@ -138,6 +149,7 @@ def login_view(request):
         except ValidationError as e:
             messages.error(request, str(e))
         except Exception as e:
+            logger.error(f"Login error: {str(e)}", exc_info=True)
             messages.error(request, 'Có lỗi xảy ra, vui lòng thử lại sau')
     
     return render(request, 'authentication/login.html')
@@ -148,169 +160,163 @@ def verify_otp_view(request):
         session_otp = request.session.get('otp_code')
         pre_user_id = request.session.get('pre_otp_user')
         username = request.session.get('otp_username')
+        
+        # Debug log
+        logger.info(f"Input OTP: {input_otp}")
+        logger.info(f"Session OTP: {session_otp}")
+        logger.info(f"Pre User ID: {pre_user_id}")
+        logger.info(f"Username: {username}")
+        
+        # Kiểm tra session data
         if not all([input_otp, session_otp, pre_user_id, username]):
+            logger.error("Missing session data")
             return JsonResponse({
                 'success': False,
                 'message': 'Thiếu thông tin cần thiết'
             })
             
+        # Kiểm tra OTP
         if input_otp != session_otp:
+            logger.error(f"OTP mismatch: input={input_otp}, session={session_otp}")
             return JsonResponse({
                 'success': False,
                 'message': 'Mã OTP không đúng, thử lại',
                 'show_loading': False
             })
-        if input_otp == session_otp:
-            try:
-                # Kiểm tra user trong MongoDB
-                users_collection, client = get_collection_handle('users')
-                if users_collection is None:
-                    return JsonResponse({
-                        'success': False,
-                        'message': 'Không thể kết nối đến cơ sở dữ liệu'
-                    })
-                    
-                try:
-                    mongo_user = users_collection.find_one({'username': username})
-                    if mongo_user is None:
-                        return JsonResponse({
-                            'success': False,
-                            'message': 'Tài khoản không tồn tại trong hệ thống'
-                        })
-                    
-                    # Lấy user từ Django
-                    User = get_user_model()
-                    try:
-                        user = User.objects.get(id=pre_user_id, username=username)
-                    except User.DoesNotExist:
-                        user = User.objects.create_user(
-                            username=username,
-                            email=mongo_user.get('email', f"{username}@example.com"),
-                            password=mongo_user.get('password', '')
-                        )
-                    
-                    # Đăng nhập user
-                    login(request, user)
-                    
-                    # Lưu thông tin đăng nhập vào session
-                    request.session['otp_verified'] = True
-                    request.session['otp_required'] = False
-                    
-                    # Cập nhật trạng thái hoạt động trong MongoDB
-                    current_time = timezone.now().astimezone(TIMEZONE)
-                    session_id = request.session.session_key or request.session.create()
-                    request.session['activity_session_id'] = session_id
-                    
-                    users_collection.update_one(
-                        {'user_id': str(user.id)},
-                        {'$set': {
-                            'is_active': True,
-                            'last_activity': current_time.isoformat(),
-                            'last_login': current_time.isoformat(),
-                            'current_session_id': session_id
-                        }}
-                    )
-                    
-                    # Lưu thông tin đăng nhập vào MongoDB
-                    user_activity_collection = client['user_activities']['activities']
-                    login_data = {
-                        'user_id': str(user.id),
-                        'username': username,
-                        'login_time': current_time.isoformat(),
-                        'ip_address': request.META.get('REMOTE_ADDR'),
-                        'user_agent': request.META.get('HTTP_USER_AGENT'),
-                        'session_id': session_id,
-                        'is_active': True,
-                        'created_at': current_time.isoformat(),
-                        'updated_at': current_time.isoformat(),
-                        'status': 'active'
-                    }
-                    
-                    user_activity_collection.insert_one(login_data)
-
-                    # Cập nhật work_time collection
-                    work_time_collection = client['work_time']['stats']
-                    work_time_data = {
-                        'user_id': str(user.id),
-                        'username': username,
-                        'date': current_time.date().isoformat(),
-                        'login_time': current_time.isoformat(),
-                        'session_id': session_id,
-                        'is_active': True,
-                        'created_at': current_time.isoformat(),
-                        'updated_at': current_time.isoformat()
-                    }
-                    
-                    work_time_collection.insert_one(work_time_data)
-                    
-                    # Gửi thông báo WebSocket
-                    try:
-                        channel_layer = get_channel_layer()
-                        if channel_layer is not None:
-                            async_to_sync(channel_layer.group_send)(
-                                "user_activity",
-                                {
-                                    'type': 'activity_status',
-                                    'user_id': str(user.id),
-                                    'is_active': True,
-                                    'session_id': session_id,
-                                    'last_activity': current_time.strftime('%Y-%m-%d %H:%M:%S')
-                                }
-                            )
-                    except Exception as e:
-                        logger.error(f"Error sending WebSocket notification: {str(e)}")
-                    
-                    # Ghi lại thời gian login
-                    UserActivity.objects.create(
-                        user=user,
-                        ip_address=request.META.get('REMOTE_ADDR'),
-                        user_agent=request.META.get('HTTP_USER_AGENT')
-                    )
-                    
-                    # Lưu session
-                    request.session.save()
-                    # Lấy thông tin user từ MongoDB
-                    # users_collection, client = get_collection_handle('users')
-                    # mongo_user = users_collection.find_one({'user_id': str(user.id)})
-                    # user_role = mongo_user.get('role')
-
-                    # if mongo_user:
-                    #     print(f"=== Thông tin tài khoản vừa đăng nhập ===")
-                    #     print(f"Username: {mongo_user.get('username')}")
-                    #     print(f"User ID: {mongo_user.get('user_id')}")
-                    #     print(f"Role: {mongo_user.get('role')}")
-                    #     print(f"Email: {mongo_user.get('email')}")
-                    #     print(f"Last Login: {mongo_user.get('last_login')}")
-                    #     print(f"IP Address: {request.META.get('REMOTE_ADDR')}")
-                    #     print(f"User Agent: {request.META.get('HTTP_USER_AGENT')}")
-                    #     print("=====================================")
-                    # if client:
-                    #     client.close()
-
-                    user_role = mongo_user.get('role')
-
-                    if user_role in ['admin', 'quanly', 'kiemtra']:
-                        return JsonResponse({
-                            'success': True,
-                            'redirect_url': '/home/',
-                            'message': 'Đăng nhập thành công'
-                        })
-                    else:
-                        return JsonResponse({
-                            'success': True,
-                            'redirect_url': '/verified/',
-                            'message': 'Đăng nhập thành công'
-                        })
-                        
-                finally:
-                    client.close()
-                
-            except Exception as e:
-                logger.error('Error during OTP verification', exc_info=True)
+            
+        try:
+            # Kiểm tra user trong MongoDB
+            users_collection, client = get_collection_handle('users')
+            if users_collection is None:
+                logger.error("Failed to connect to MongoDB")
                 return JsonResponse({
                     'success': False,
-                    'message': f'Có lỗi xảy ra: {str(e)}'
+                    'message': 'Không thể kết nối đến cơ sở dữ liệu'
                 })
+                
+            try:
+                mongo_user = users_collection.find_one({'username': username})
+                if mongo_user is None:
+                    logger.error(f"User not found in MongoDB: {username}")
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Tài khoản không tồn tại trong hệ thống'
+                    })
+                
+                # Lấy user từ Django
+                User = get_user_model()
+                try:
+                    user = User.objects.get(id=pre_user_id, username=username)
+                except User.DoesNotExist:
+                    logger.error(f"User not found in Django: {username}")
+                    user = User.objects.create_user(
+                        username=username,
+                        email=mongo_user.get('email', f"{username}@example.com"),
+                        password=mongo_user.get('password', '')
+                    )
+                
+                # Đăng nhập user
+                login(request, user)
+                
+                # Lưu thông tin đăng nhập vào session
+                request.session['otp_verified'] = True
+                request.session['otp_required'] = False
+                request.session.save()  # Lưu session sau khi cập nhật
+                
+                # Cập nhật trạng thái hoạt động trong MongoDB
+                current_time = timezone.now().astimezone(TIMEZONE)
+                session_id = request.session.session_key or request.session.create()
+                request.session['activity_session_id'] = session_id
+                
+                users_collection.update_one(
+                    {'user_id': str(user.id)},
+                    {'$set': {
+                        'is_active': True,
+                        'last_activity': current_time.isoformat(),
+                        'last_login': current_time.isoformat(),
+                        'current_session_id': session_id
+                    }}
+                )
+                
+                # Lưu thông tin đăng nhập vào MongoDB
+                user_activity_collection = client['user_activities']['activities']
+                login_data = {
+                    'user_id': str(user.id),
+                    'username': username,
+                    'login_time': current_time.isoformat(),
+                    'ip_address': request.META.get('REMOTE_ADDR'),
+                    'user_agent': request.META.get('HTTP_USER_AGENT'),
+                    'session_id': session_id,
+                    'is_active': True,
+                    'created_at': current_time.isoformat(),
+                    'updated_at': current_time.isoformat(),
+                    'status': 'active'
+                }
+                
+                user_activity_collection.insert_one(login_data)
+
+                # Cập nhật work_time collection
+                work_time_collection = client['work_time']['stats']
+                work_time_data = {
+                    'user_id': str(user.id),
+                    'username': username,
+                    'date': current_time.date().isoformat(),
+                    'login_time': current_time.isoformat(),
+                    'session_id': session_id,
+                    'is_active': True,
+                    'created_at': current_time.isoformat(),
+                    'updated_at': current_time.isoformat()
+                }
+                
+                work_time_collection.insert_one(work_time_data)
+                
+                # Gửi thông báo WebSocket
+                try:
+                    channel_layer = get_channel_layer()
+                    if channel_layer is not None:
+                        async_to_sync(channel_layer.group_send)(
+                            "user_activity",
+                            {
+                                'type': 'activity_status',
+                                'user_id': str(user.id),
+                                'is_active': True,
+                                'session_id': session_id,
+                                'last_activity': current_time.strftime('%Y-%m-%d %H:%M:%S')
+                            }
+                        )
+                except Exception as e:
+                    logger.error(f"Error sending WebSocket notification: {str(e)}")
+                
+                # Ghi lại thời gian login
+                UserActivity.objects.create(
+                    user=user,
+                    ip_address=request.META.get('REMOTE_ADDR'),
+                    user_agent=request.META.get('HTTP_USER_AGENT')
+                )
+                
+                user_role = mongo_user.get('role')
+                if user_role in ['admin', 'quanly', 'kiemtra']:
+                    return JsonResponse({
+                        'success': True,
+                        'redirect_url': '/home/',
+                        'message': 'Đăng nhập thành công'
+                    })
+                else:
+                    return JsonResponse({
+                        'success': True,
+                        'redirect_url': '/verified/',
+                        'message': 'Đăng nhập thành công'
+                    })
+                    
+            finally:
+                client.close()
+            
+        except Exception as e:
+            logger.error('Error during OTP verification', exc_info=True)
+            return JsonResponse({
+                'success': False,
+                'message': f'Có lỗi xảy ra: {str(e)}'
+            })
 
     return redirect('login')
 

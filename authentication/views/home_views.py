@@ -32,8 +32,10 @@ TIMEZONE = pytz.timezone('Asia/Bangkok')
 logger = logging.getLogger(__name__)
 
 def get_current_time():
-    """Lấy thời gian hiện tại theo múi giờ GMT+7"""
-    return timezone.now().astimezone(TIMEZONE)
+    """
+    Lấy thời gian hiện tại theo múi giờ Asia/Bangkok
+    """
+    return timezone.localtime(timezone.now(), pytz.timezone('Asia/Bangkok'))
 
 
 
@@ -112,36 +114,14 @@ def create_user(request):
 
 
 
-
-# def check_and_delete_expired_emails():
-#     """Kiểm tra và xóa các email hết hạn (3600 giây không thay đổi trạng thái)"""
-#     try:
-#         excel_data_collection, client = get_collection_handle('excel_data')
-#         if excel_data_collection is None or client is None:
-#             return 0
-            
-#         # Tính thời điểm 1 giờ trước
-#         expiration_time = get_current_time() - timedelta(seconds=3600)
-        
-#         # Tìm và xóa các email đã hết hạn
-#         result = excel_data_collection.delete_many({
-#             'status': 'Chưa sử dụng',
-#             'imported_at': {
-#                 '$lt': expiration_time.isoformat()
-#             }
-#         })
-        
-#         return result.deleted_count
-#     except Exception as e:
-#         print(f"Error in check_and_delete_expired_emails: {str(e)}")
-#         return 0
-#     finally:
-#         if client is not None:
-#             try:
-#                 client.close()
-#             except:
-#                 pass
-
+def seconds_to_days_hours(seconds):
+    """
+    Chuyển đổi số giây thành số ngày và số giờ
+    """
+    days = seconds // (24 * 3600)
+    remaining_seconds = seconds % (24 * 3600)
+    hours = remaining_seconds // 3600
+    return days, hours
 @login_required
 def home_view(request):
     # Get user data from MongoDB
@@ -194,7 +174,7 @@ def home_view(request):
                 df = pd.read_excel(file_path)
 
                 # Get Excel data collection
-                excel_data_collection, excel_client = get_collection_handle('excel_data')
+                excel_data_collection, excel_client = get_collection_handle('employee_textnow')
                 if excel_data_collection is None:
                     messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
                     return redirect('home')
@@ -243,7 +223,7 @@ def home_view(request):
             return redirect('home')
             
         # Get Excel data based on user role
-        excel_data_collection, excel_client = get_collection_handle('excel_data')
+        excel_data_collection, excel_client = get_collection_handle('employee_textnow')
         if excel_data_collection is None:
             messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
             return render(request, 'authentication/home.html', {
@@ -287,29 +267,31 @@ def home_view(request):
             if 'status' not in record:
                 record['status'] = 'Chưa sử dụng'
             # Thêm thông tin thời gian
-            if 'imported_at' in record:
+            if 'created_at' in record:
                 try:
-                    imported_time = datetime.fromisoformat(record['imported_at'].replace('Z', '+00:00'))
+                    raw_time = record['created_at']
+                    imported_time = timezone.make_aware(raw_time, timezone.get_default_timezone())
                     current_time = get_current_time()
                     time_diff = current_time - imported_time
                     total_seconds = int(time_diff.total_seconds())
-                    
+
+                    days, hours = seconds_to_days_hours(total_seconds)
+
                     if total_seconds < 0:
                         # Thời gian còn lại
                         record['time_info'] = {
                             'type': 'remaining',
-                            'total_seconds': abs(total_seconds),
-                            'minutes': abs(total_seconds) // 60,
-                            'seconds': abs(total_seconds) % 60
+                            'days': abs(days),
+                            'hours': abs(hours),
                         }
                     else:
                         # Thời gian đã trôi qua
                         record['time_info'] = {
                             'type': 'elapsed',
-                            'total_seconds': total_seconds,
-                            'minutes': total_seconds // 60,
-                            'seconds': total_seconds % 60
+                            'days': days,
+                            'hours': hours,
                         }
+
                 except Exception as e:
                     logger.error(f"Error processing time info: {str(e)}")
                     record['time_info'] = None
@@ -426,7 +408,7 @@ def export_emails(request):
     selected_statuses = request.GET.getlist('status')
     
     # Nếu không có trạng thái nào được chọn, xuất tất cả
-    excel_data_collection, client = get_collection_handle('excel_data')
+    excel_data_collection, client = get_collection_handle('employee_textnow')
     
     # Tạo query dựa trên trạng thái được chọn và ngày
     query = {}
@@ -557,7 +539,7 @@ def work_management(request):
     end_date_iso = datetime.combine(end_date, datetime.max.time()).astimezone(TIMEZONE).isoformat()
 
     # Lấy collection từ MongoDB
-    excel_data_collection, client = get_collection_handle('excel_data')
+    excel_data_collection, client = get_collection_handle('employee_textnow')
 
     # Query thống kê cho nhân viên đăng ký
     nhanvien_pipeline = [
@@ -864,7 +846,7 @@ def update_checkbox_status(request):
                 })
             
             # Kết nối MongoDB
-            excel_data_collection, client = get_collection_handle('excel_data')
+            excel_data_collection, client = get_collection_handle('employee_textnow')
             if excel_data_collection is None:
                 logger.error("Failed to connect to MongoDB")
                 return JsonResponse({
