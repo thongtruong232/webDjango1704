@@ -21,9 +21,10 @@ services:
   redis:
     image: redis:latest
     expose:
-      - "6379"
+      - "6380"
     volumes:
       - redis_data:/data
+    command: redis-server --port 6380
 
   mongodb:
     image: mongo:latest
@@ -47,5 +48,8 @@ services:
 
 volumes:
   mongodb_data:
+    driver: local
   redis_data:
-  static_volume: 
+    driver: local
+  static_volume:
+    driver: local 
