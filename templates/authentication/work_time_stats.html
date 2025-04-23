@@ -177,7 +177,7 @@
 
         // Xác định protocol dựa trên protocol hiện tại của trang
         const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${wsProtocol}//${window.location.host}/ws/user_activity/`;
+        const wsUrl = `${wsProtocol}//${window.location.hostname}:81/ws/user_activity/`;
         
         console.log('Connecting to WebSocket:', wsUrl);
         
