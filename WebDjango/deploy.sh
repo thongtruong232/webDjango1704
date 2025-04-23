@@ -45,7 +45,7 @@ fi
 
 # 8. Khởi động lại Daphne
 echo "🚀 Khởi động lại Daphne..."
-nohup daphne -b 0.0.0.0 -p 8000 $DJANGO_MODULE > daphne.log 2>&1 &
+nohup daphne -b 0.0.0.0 -p 8001 $DJANGO_MODULE > daphne.log 2>&1 &
 
 # 9. Xác nhận quá trình hoàn tất
 echo "✅ Deploy thành công!"
