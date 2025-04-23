@@ -24,18 +24,27 @@ git reset --hard origin/$BRANCH
 #  Build lại Docker image
 echo "🔧 Build lại Docker image..."
 docker compose build
+
 # Dừng và xóa các container cũ + volume (static, cache...)
 echo "🧹 Dọn dẹp container cũ..."
 docker compose down -v
+
+
 # Khởi động lại toàn bộ hệ thống
 echo "🚀 Khởi động lại hệ thống..."
 docker compose up -d
+
+
 # Chờ vài giây để Django container sẵn sàng
 echo "⏳ Chờ container sẵn sàng..."
 sleep 5
+
+
 # Cài đặt các gói mới (nếu có thay đổi trong requirements.txt)
 echo "📥 Cài đặt dependencies mới..."
 pip install -r requirements.txt
+
+
 # Chạy migrate & collectstatic bên trong container
 echo "🧩 Chạy migrate và thu thập static files..."
 docker compose exec $PROJECT_NAME bash -c "
