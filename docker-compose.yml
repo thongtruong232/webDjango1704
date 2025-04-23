@@ -3,16 +3,27 @@ version: '3.8'
 services:
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 WebDjango.wsgi:application
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000 & 
+             daphne -b 0.0.0.0 -p 8001 WebDjango.asgi:application"
     volumes:
       - .:/app
       - static_volume:/app/static
     ports:
       - "8000:8000"
+      - "8001:8001"
     # env_file:
     #   # - .env
     depends_on:
+      - redis
       - mongodb
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
 
   mongodb:
     image: mongo:latest
@@ -36,4 +47,5 @@ services:
 
 volumes:
   mongodb_data:
+  redis_data:
   static_volume: 
