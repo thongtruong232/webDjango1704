@@ -15,6 +15,7 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - DJANGO_SETTINGS_MODULE=WebDjango.settings
     depends_on:
       - redis
       - mongodb

@@ -210,6 +210,13 @@
 
             socket.onerror = function(e) {
                 console.error('WebSocket error:', e);
+                // Thêm thông tin chi tiết về lỗi
+                if (e.target.readyState === WebSocket.CLOSED) {
+                    console.error('WebSocket connection was closed');
+                } else if (e.target.readyState === WebSocket.CONNECTING) {
+                    console.error('WebSocket connection failed to establish');
+                }
+                
                 if (reconnectAttempts < maxReconnectAttempts) {
                     reconnectAttempts++;
                     console.log(`Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})...`);
@@ -219,6 +226,13 @@
 
             socket.onclose = function(e) {
                 console.log('WebSocket connection closed:', e);
+                // Thêm thông tin chi tiết về việc đóng kết nối
+                if (e.wasClean) {
+                    console.log(`Connection closed cleanly, code=${e.code} reason=${e.reason}`);
+                } else {
+                    console.log('Connection died');
+                }
+                
                 if (reconnectAttempts < maxReconnectAttempts) {
                     reconnectAttempts++;
                     console.log(`Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})...`);
