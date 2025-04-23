@@ -147,15 +147,6 @@ LOGOUT_REDIRECT_URL = 'login'
 
 AUTH_USER_MODEL = 'authentication.User'
 
-# Channel layer settings
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [os.getenv('REDIS_URL', 'redis://127.0.0.1:6379')],
-        },
-    },
-}
 
 # MongoDB settings
 MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb+srv://admin:admin@cluster0.yosy3w4.mongodb.net/?retryWrites=true&w=majority')
@@ -197,11 +188,20 @@ USE_TZ = True
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6380/1',  # Chỉnh sửa nếu Redis chạy ở máy chủ khác
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Chỉnh sửa nếu Redis chạy ở máy chủ khác
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
+}
+# Channel layer settings
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [os.getenv('REDIS_URL', 'redis://127.0.0.1:6379')],
+        },
+    },
 }
 
 # Channels Configuration
