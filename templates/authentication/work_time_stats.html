@@ -184,7 +184,16 @@
         try {
             socket = new WebSocket(wsUrl);
 
+            // Thêm timeout cho kết nối
+            const connectionTimeout = setTimeout(() => {
+                if (socket.readyState !== WebSocket.OPEN) {
+                    console.error('WebSocket connection timeout');
+                    socket.close();
+                }
+            }, 5000);
+
             socket.onopen = function(e) {
+                clearTimeout(connectionTimeout);
                 console.log('WebSocket connected successfully');
                 reconnectAttempts = 0;
                 // Yêu cầu trạng thái ban đầu
@@ -209,6 +218,7 @@
             };
 
             socket.onerror = function(e) {
+                clearTimeout(connectionTimeout);
                 console.error('WebSocket error:', e);
                 // Thêm thông tin chi tiết về lỗi
                 if (e.target.readyState === WebSocket.CLOSED) {
@@ -225,6 +235,7 @@
             };
 
             socket.onclose = function(e) {
+                clearTimeout(connectionTimeout);
                 console.log('WebSocket connection closed:', e);
                 // Thêm thông tin chi tiết về việc đóng kết nối
                 if (e.wasClean) {
