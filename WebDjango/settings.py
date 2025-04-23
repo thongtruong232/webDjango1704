@@ -102,7 +102,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session alive after browser clos
 CSRF_COOKIE_SECURE = False  # Set to True in production
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
-    'http://127.0.0.1:8000'
+    'http://127.0.0.1:8000',
+    'http://207.148.69.229',
+    'http://207.148.69.229:8001'
 ]
 
 # Email settings
