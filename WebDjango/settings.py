@@ -104,7 +104,21 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'http://207.148.69.229',
-    'http://207.148.69.229:8001'
+    'http://207.148.69.229:8001',
+    'http://207.148.69.229:81',
+    'ws://207.148.69.229:8001',
+    'ws://207.148.69.229:81'
+]
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://207.148.69.229',
+    'http://207.148.69.229:8001',
+    'http://207.148.69.229:81',
 ]
 
 # Email settings
@@ -204,6 +218,8 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             'hosts': [f'redis://{REDIS_HOST}:{REDIS_PORT}/0'],
+            'capacity': 1500,  # Số lượng message tối đa trong channel
+            'expiry': 3600,  # Thời gian hết hạn của message (giây)
         },
     },
 }
