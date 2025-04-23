@@ -10,7 +10,6 @@ services:
       - .:/app
       - static_volume:/app/static
     expose:
-      - "8000"
       - "8001"
     environment:
       - REDIS_HOST=redis
