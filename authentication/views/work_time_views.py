@@ -129,7 +129,7 @@ def work_time_stats(request):
                             'session_id': stat['session_id']
                         })
 
-                        logger.info(f'login_time: {login_time}, logout_time: {logout_time}')
+                        # logger.info(f'login_time: {login_time}, logout_time: {logout_time}')
                     except Exception as e:
                         logger.error(f"Error formatting activity: {str(e)}", exc_info=True)
                         continue
