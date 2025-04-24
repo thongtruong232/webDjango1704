@@ -203,7 +203,7 @@
             socket.onmessage = function(e) {
                 try {
                     const data = JSON.parse(e.data);
-                    console.log('Received WebSocket message:', data);
+                    // console.log('Received WebSocket message:', data);
 
                     if (data.type === 'activity_status') {
                         updateUserStatus(data);
