@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 8001
 
 # Chạy gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8001", "webproject.wsgi:application"] 
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8001", "--websocket-timeout", "86400", "--proxy-headers", "--access-log", "-", "WebDjango.asgi:application"] 
