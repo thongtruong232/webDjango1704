@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('login/', views.login_view, name='login'),
@@ -26,13 +27,12 @@ urlpatterns = [
 
     # Employee url
     path('create-mail/', views.create_email_view, name='create_email'),
-    path('work/', views.employee_work_view, name='employee_work'),
+    # path('work/', views.employee_work_view, name='employee_work'),
     path('verified/', views.employee_verified_view, name='employee_verified'),
-    path('api/update-status/', views.update_status_api_Tn, name='update_status_api'),
-    path('api/update-status-tf/', views.update_status_api_Tf, name='update_status_api_tf'),
+   
     path('create-password/', views.create_password_view, name='create_password'),
+    path('available-emails/', views.email_info_view, name='available_emails'),
+    path('api/available-emails/', views.get_available_emails_api, name='get_available_emails_api'),
     path('api/create-textnow/', views.create_textnow_api, name='create_textnow_api'),
-    path('api/create-textfree/', views.create_textfree_api, name='create_textfree_api'),
-    path('api/create-multiple-textnow/', views.create_multiple_textnow_api, name='create_multiple_textnow_api'),
-    path('api/create-multiple-textfree/', views.create_multiple_textfree_api, name='create_multiple_textfree_api'),
+    path('api/save-worksession/', views.save_worksession_api, name='save_worksession'),
 ]
