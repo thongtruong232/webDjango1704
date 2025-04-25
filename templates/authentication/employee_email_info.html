@@ -1,0 +1,466 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Danh sách Email Khả Dụng</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        .email-table {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            border: none;
+            padding: 12px;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .email-row:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .status-unavailable {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .table-responsive {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Thêm style cho biểu tượng X */
+        .status-x {
+            color: #e74c3c;
+            font-size: 24px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Danh sách Email Khả Dụng</h2>
+            <div class="action-buttons">
+                <button id="fetchEmailsBtn" class="btn btn-primary">Lấy Email Dự Trữ</button>
+                <button id="regAccBtn" class="btn btn-success" style="display: none;">Reg Acc</button>
+                <a href="{% url 'work_management' %}" class="btn btn-primary">Quay lại</a>
+            </div>
+        </div>
+
+        <div class="table-responsive email-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
+                        <th>STT</th>
+                        <th>Email</th>
+                        <th>Mật khẩu Mail</th>
+                        <th>Trạng thái Mail</th>
+
+                        <th>Mật khẩu Tn</th>
+                        <th>Mật khẩu TF</th>
+                        <th>Trạng thái Tn</th>
+                        <th>Trạng thái Tf</th>
+                    </tr>
+                </thead>
+                <tbody id="emailsTableBody">
+                    <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fetchEmailsBtn = document.getElementById('fetchEmailsBtn');
+            const regAccBtn = document.getElementById('regAccBtn');
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const emailsTableBody = document.getElementById('emailsTableBody');
+
+            // Hàm để hiển thị/ẩn nút Reg Acc
+            function toggleRegAccButton() {
+                const checkedBoxes = document.querySelectorAll('.email-checkbox:checked');
+                regAccBtn.style.display = checkedBoxes.length > 0 ? 'block' : 'none';
+            }
+
+            // Xử lý sự kiện cho checkbox "Chọn tất cả"
+            selectAllCheckbox.addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.email-checkbox');
+                checkboxes.forEach(checkbox => {
+                    // Chỉ chọn những checkbox không bị disabled (is_reg_acc=false)
+                    if (!checkbox.disabled) {
+                        checkbox.checked = this.checked;
+                    }
+                });
+                toggleRegAccButton();
+            });
+
+            // Xử lý sự kiện cho các checkbox riêng lẻ
+            emailsTableBody.addEventListener('change', function(e) {
+                if (e.target.classList.contains('email-checkbox')) {
+                    // Kiểm tra nếu tất cả checkbox không bị disabled đều được chọn
+                    const checkboxes = document.querySelectorAll('.email-checkbox:not([disabled])');
+                    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                    selectAllCheckbox.checked = allChecked;
+                    toggleRegAccButton();
+                }
+            });
+
+            // Hàm để lưu dữ liệu vào server
+            async function saveWorksessionToServer() {
+                const storedData = localStorage.getItem('employee_worksession');
+                if (!storedData) return;
+
+                try {
+                    const response = await fetch('/api/save-worksession/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `data=${storedData}`
+                    });
+                    
+                    const data = await response.json();
+                    if (!data.success) {
+                        console.error('Lỗi khi lưu phiên làm việc:', data.error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+
+            // Lưu dữ liệu khi đóng trang
+            window.addEventListener('beforeunload', function(e) {
+                // Lưu dữ liệu trước khi đóng trang
+                saveWorksessionToServer();
+                
+                // Hiển thị thông báo xác nhận
+                e.preventDefault();
+                e.returnValue = '';
+            });
+
+            // Lưu dữ liệu khi chuyển trang
+            window.addEventListener('unload', function() {
+                saveWorksessionToServer();
+            });
+
+            // Lưu dữ liệu định kỳ (mỗi 5 phút)
+            setInterval(function() {
+                saveWorksessionToServer();
+            }, 5 * 60 * 1000); // 5 phút
+
+            // Lưu dữ liệu khi thay đổi trạng thái
+            emailsTableBody.addEventListener('change', function(e) {
+                if (e.target.classList.contains('status-select')) {
+                    const email = e.target.dataset.email;
+                    const type = e.target.dataset.type;
+                    const newStatus = e.target.value;
+                    updateStatusInStorage(email, type, newStatus);
+                    saveWorksessionToServer(); // Lưu khi thay đổi trạng thái
+                }
+            });
+
+            // Lưu dữ liệu khi tạo tài khoản
+            regAccBtn.addEventListener('click', async function() {
+                const checkedBoxes = document.querySelectorAll('.email-checkbox:checked');
+                const selectedEmails = Array.from(checkedBoxes).map(checkbox => {
+                    const storedData = localStorage.getItem('employee_worksession');
+                    if (storedData) {
+                        const emails = JSON.parse(storedData);
+                        return emails.find(e => e.email === checkbox.dataset.email);
+                    }
+                    return null;
+                }).filter(email => email !== null);
+
+                if (selectedEmails.length > 0) {
+                    try {
+                        const response = await fetch('/api/create-textnow/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `data=${JSON.stringify(selectedEmails)}`
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            const storedData = localStorage.getItem('employee_worksession');
+                            if (storedData) {
+                                const emails = JSON.parse(storedData);
+                                selectedEmails.forEach(selectedEmail => {
+                                    const emailIndex = emails.findIndex(e => e.email === selectedEmail.email);
+                                    if (emailIndex !== -1) {
+                                        emails[emailIndex].is_reg_acc = true;
+                                    }
+                                });
+                                localStorage.setItem('employee_worksession', JSON.stringify(emails));
+                                displayEmails(emails);
+                                saveWorksessionToServer(); // Lưu sau khi tạo tài khoản
+                            }
+                            alert('Đã tạo tài khoản thành công');
+                        } else {
+                            alert('Có lỗi xảy ra: ' + data.error);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Có lỗi xảy ra khi gọi API');
+                    }
+                }
+            });
+
+            // Hàm để hiển thị dữ liệu từ localStorage
+            function displayEmailsFromStorage() {
+                // Lấy dữ liệu từ server nếu có
+                const serverEmails = JSON.parse('{{ emails|safe }}');
+                console.log('Server emails:', serverEmails);
+                
+                if (serverEmails && serverEmails.length > 0) {
+                    localStorage.setItem('employee_worksession', JSON.stringify(serverEmails));
+                    displayEmails(serverEmails);
+                } else {
+                    // Nếu không có dữ liệu từ server, lấy từ localStorage
+                    const storedData = localStorage.getItem('employee_worksession');
+                    if (storedData) {
+                        const emails = JSON.parse(storedData);
+                        displayEmails(emails);
+                    }
+                }
+            }
+
+            // Hàm để hiển thị dữ liệu email
+            function displayEmails(emails) {
+                emailsTableBody.innerHTML = '';
+                if (emails && emails.length > 0) {
+                    emails.forEach((email, index) => {
+                        const row = document.createElement('tr');
+                        row.className = 'email-row';
+                        
+                        // Kiểm tra trạng thái TN và TF
+                        const showTNX = email.status_tn === 'chưa tạo acc';
+                        const showTFX = email.status_tf === 'chưa tạo acc';
+                        
+                        row.innerHTML = `
+                            <td>
+                                ${showTNX || showTFX ? 
+                                    '<span class="status-x">✕</span>' : 
+                                    '<input type="checkbox" class="email-checkbox" data-email="' + email.email + '" ' + (email.is_reg_acc ? 'disabled' : '') + '>'
+                                }
+                            </td>
+                            <td>${index + 1}</td>
+                            <td>${email.email}</td>
+                            <td>${email.password}</td>
+                            <td>
+                                <span class="status-badge status-available">
+                                    ${email.status}
+                                </span>
+                            </td>
+                            <td>${email.pass_TN}</td>
+                            <td>${email.pass_TF}</td>
+                            <td>
+                                <select class="form-select status-select" data-email="${email.email}" data-type="tn" ${email.is_reg_acc ? 'disabled' : ''}>
+                                    <option value="chưa tạo acc" ${email.status_tn === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
+                                    <option value="tạo acc thành công" ${email.status_tn === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
+                                    <option value="acc lỗi" ${email.status_tn === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-select status-select" data-email="${email.email}" data-type="tf" ${email.is_reg_acc ? 'disabled' : ''}>
+                                    <option value="chưa tạo acc" ${email.status_tf === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
+                                    <option value="tạo acc thành công" ${email.status_tf === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
+                                    <option value="acc lỗi" ${email.status_tf === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
+                                </select>
+                            </td>
+                        `;
+                        emailsTableBody.appendChild(row);
+                    });
+                } else {
+                    emailsTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="11" class="text-center py-4">
+                                Không có email nào khả dụng
+                            </td>
+                        </tr>
+                    `;
+                }
+                toggleRegAccButton();
+            }
+
+            // Xử lý sự kiện khi bấm nút lấy email
+            fetchEmailsBtn.addEventListener('click', async function() {
+                try {
+                    const response = await fetch('/api/available-emails/');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        const existingData = localStorage.getItem('employee_worksession');
+                        let existingEmails = [];
+                        if (existingData) {
+                            existingEmails = JSON.parse(existingData);
+                        }
+
+                        const newEmails = data.data;
+                        const updatedEmails = [...existingEmails];
+
+                        newEmails.forEach(newEmail => {
+                            const existingIndex = existingEmails.findIndex(e => e.email === newEmail.email);
+                            if (existingIndex === -1) {
+                                updatedEmails.push(newEmail);
+                            }
+                        });
+
+                        localStorage.setItem('employee_worksession', JSON.stringify(updatedEmails));
+                        displayEmails(updatedEmails);
+                        saveWorksessionToServer(); // Lưu sau khi lấy email mới
+                    } else {
+                        alert('Có lỗi xảy ra khi lấy dữ liệu: ' + data.error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi gọi API');
+                }
+            });
+
+            // Hàm để cập nhật trạng thái trong localStorage
+            function updateStatusInStorage(email, type, newStatus) {
+                const storedData = localStorage.getItem('employee_worksession');
+                if (storedData) {
+                    const emails = JSON.parse(storedData);
+                    const emailIndex = emails.findIndex(e => e.email === email);
+                    if (emailIndex !== -1) {
+                        if (type === 'tn') {
+                            emails[emailIndex].status_tn = newStatus;
+                        } else if (type === 'tf') {
+                            emails[emailIndex].status_tf = newStatus;
+                        }
+                        localStorage.setItem('employee_worksession', JSON.stringify(emails));
+                        displayEmails(emails); // Cập nhật lại giao diện
+                    }
+                }
+            }
+
+            // Hiển thị dữ liệu từ localStorage khi trang được tải
+            displayEmailsFromStorage();
+        });
+    </script>
+</body>
+</html>
+{% endblock %} 

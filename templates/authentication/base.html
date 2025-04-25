@@ -92,9 +92,12 @@
                         <span class="badge bg-info ms-1">{{ user_data.role }}</span>
                         <!-- |default:"nhanvien"|title -->
                     </span>
-                    <a href="{% url 'logout' %}" class="btn btn-outline-light">
-                        <i class="fas fa-sign-out-alt me-1"></i>Logout
-                    </a>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
