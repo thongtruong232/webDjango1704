@@ -2,11 +2,14 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .mongodb import get_collection_handle
 from datetime import datetime
 import logging
 import json
+from django.contrib import messages
+from pymongo import MongoClient
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -15,22 +18,40 @@ def email_info_view(request):
     try:
         # Get MongoDB collection handle
         worksession_collection = get_collection_handle('employee_worksession')
-        
+        checkPass_Today = get_collection_handle('employee_passwordregproduct')
+
         if worksession_collection is None:
             return JsonResponse({
                 'success': False,
                 'error': 'Không thể kết nối đến cơ sở dữ liệu'
             }, status=500)
-
+        
         # Get today's date in YYYY-MM-DD format
         today = datetime.now().strftime('%Y-%m-%d')
-        
+        todayDmY = datetime.now().strftime('%d/%m/%Y')
+        print(todayDmY)
         # Check if there are any records with today's date and matching owner
         current_worksession = worksession_collection.find_one({
             'created_at': {'$regex': f'^{today}'},
             'owner': request.user.username
         })
-
+        print(current_worksession)
+        checkPass_TodayTn = checkPass_Today.find_one({
+            'created_at': {'$regex': f'^{todayDmY}'},
+            'type': 'TextNow'
+        })
+        checkPass_TodayTf = checkPass_Today.find_one({
+            'created_at': {'$regex': f'^{todayDmY}'},
+            'type': 'TextFree'
+        })
+        if checkPass_TodayTn is None:
+            pass_Tn = None
+        else:
+            pass_Tn = checkPass_TodayTn.get('password')
+        if checkPass_TodayTf is None:
+            pass_Tf = None
+        else:
+            pass_Tf = checkPass_TodayTf.get('password')
         if not current_worksession:
             # If no records exist for today, create a new one
             new_worksession = {
@@ -52,6 +73,7 @@ def email_info_view(request):
                 email['is_reg_acc'] = 'true' if email['is_reg_acc'] else 'false'
 
         # Prepare context data
+        print(created_textnow_emails)
         context = {
             'emails': json.dumps(created_textnow_emails),  # Convert to JSON string
             'total_accounts': total_accounts,
@@ -104,6 +126,10 @@ def get_available_emails_api(request):
                 }
                 worksession_collection.insert_one(current_worksession)
 
+            # Check for missing passwords
+          
+           
+
             # Query emails with status='chưa sử dụng' and is_provided=false, limit to 5 records
             available_emails = list(email_collection.find({
                 'status': 'chưa sử dụng',
@@ -119,9 +145,22 @@ def get_available_emails_api(request):
                 'type': 'TextFree',
                 'use_at': current_datetime.strftime('%d/%m/%Y')
             }, sort=[('created_at', -1)])
+            missing_passwords = []
+
+            if pass_Tn_today is None:
+                missing_passwords.append('TextNow')
+            if pass_Tf_today is None:
+                missing_passwords.append('TextFree')
 
             # Convert MongoDB documents to list of dictionaries and update records
+            if missing_passwords:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Vui lòng bổ sung mật khẩu {" và ".join(missing_passwords)} cho ngày hôm nay',
+                    'missing_passwords': True
+                })
             processed_emails = []
+
             for email in available_emails:
                 # Update the record in MongoDB
                 email_collection.update_one(
@@ -192,10 +231,16 @@ def create_password_view(request):
             password = request.POST.get('password')
             type = request.POST.get('type')
             create_by = request.POST.get('create_by')
-            use_at = request.POST.get('use_at')
+            use_at = datetime.strptime(request.POST.get('use_at'), '%Y-%m-%d').strftime('%d/%m/%Y')
             
             # Get MongoDB collection handle
-            collection, client = get_collection_handle('employee_passwordregproduct')
+            collection = get_collection_handle('employee_passwordregproduct')
+            
+            if collection is None:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Không thể kết nối đến cơ sở dữ liệu'
+                }, status=500)
             
             # Create new password document
             new_password = {
@@ -204,8 +249,8 @@ def create_password_view(request):
                 'create_by': create_by,
                 'use_at': use_at,
                 'is_used': False,
-                'created_at': datetime.now().isoformat(),
-                'updated_at': datetime.now().isoformat()
+                'created_at': datetime.now(),
+                'updated_at': datetime.now()
             }
             
             # Insert into MongoDB
@@ -222,45 +267,33 @@ def create_password_view(request):
                 'success': False,
                 'error': str(e)
             }, status=500)
-            
-        finally:
-            if client:
-                try:
-                    client.close()
-                except Exception as e:
-                    logger.error(f"Error closing MongoDB connection: {str(e)}")
                     
     return render(request, 'authentication/create_password.html')
 
 @login_required
 def employee_verified_view(request):
     try:
-        # Get MongoDB collection handle
-        collection, client = get_collection_handle('employee_textnow')
+        # Kết nối MongoDB sử dụng thông tin từ settings
+        client = MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['employee_textnow']
         
-        # Query for verified accounts
-        verified_accounts = list(collection.find({
-            'status_account': 'tạo acc thành công'
-        }).sort('created_at', -1))
+        # Lấy dữ liệu từ collection
+        records = list(collection.find({}, {'_id': 0}))
         
+        # Truyền dữ liệu vào template
         context = {
-            'textnow_accounts': verified_accounts
+            'records': json.dumps(records),  # Convert sang JSON để dùng trong JavaScript
         }
         
-        return render(request, 'authentication/employee_verified.html', context)
-        
+        return render(request, 'authentication/verified.html', context)
     except Exception as e:
         logger.error(f"Error in employee_verified_view: {str(e)}", exc_info=True)
-        return render(request, 'authentication/employee_verified.html', {
-            'textnow_accounts': []
-        })
-        
+        messages.error(request, 'Đã xảy ra lỗi khi tải dữ liệu')
+        return render(request, 'authentication/verified.html', {'records': '[]'})
     finally:
-        if client:
-            try:
-                client.close()
-            except Exception as e:
-                logger.error(f"Error closing MongoDB connection: {str(e)}")
+        if 'client' in locals():
+            client.close()
 
 @login_required
 def create_email_view(request):
@@ -440,7 +473,7 @@ def create_textnow_api(request):
                 'client_id': account.get('client_id', ''),
                 'full_information': f"{account['email']}|{account['password']}|{account.get('refresh_token', '')}|{account.get('client_id', '')}",
                 'created_by': account.get('created_by', request.user.username),
-                'created_at': account.get('created_at', datetime.now().isoformat()),
+                'created_at': datetime.now().isoformat(),
                 'updated_at': datetime.now().isoformat(),
                 'sold_status_TN': False,
                 'sold_status_TF': False
@@ -553,4 +586,119 @@ def save_worksession_api(request):
         return JsonResponse({
             'success': False,
             'error': str(e)
-        }, status=500) 
+        }, status=500)
+
+@login_required
+def employee_dashboard_view(request):
+    try:
+        # Get user data from MongoDB
+        users_collection, client = get_collection_handle('users')
+        if users_collection is None or client is None:
+            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
+            return redirect('login')
+            
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        if not user_data:
+            messages.error(request, 'Không tìm thấy thông tin người dùng')
+            return redirect('login')
+            
+        context = {
+            'user_data': user_data,
+        }
+        
+        return render(request, 'authentication/employee_dashboard.html', context)
+            
+    except Exception as e:
+        logger.error(f"Error in employee_dashboard_view: {str(e)}")
+        messages.error(request, 'Đã xảy ra lỗi. Vui lòng thử lại sau.')
+        return redirect('login')
+
+@login_required
+def employee_work_view(request):
+    try:
+        # Get user data from MongoDB
+        users_collection, client = get_collection_handle('users')
+        if users_collection is None or client is None:
+            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
+            return redirect('login')
+            
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        if not user_data:
+            messages.error(request, 'Không tìm thấy thông tin người dùng')
+            return redirect('login')
+            
+        context = {
+            'user_data': user_data,
+        }
+        
+        return render(request, 'authentication/employee_work.html', context)
+            
+    except Exception as e:
+        logger.error(f"Error in employee_work_view: {str(e)}")
+        messages.error(request, 'Đã xảy ra lỗi. Vui lòng thử lại sau.')
+        return redirect('login')
+
+@csrf_exempt
+@require_http_methods(["POST"])
+@login_required
+def update_textnow_status_api(request):
+    try:
+        # Lấy dữ liệu từ request
+        data = json.loads(request.body)
+        email = data.get('email')
+        status_tn = data.get('status_tn')
+        status_tf = data.get('status_tf')
+
+        if not email:
+            return JsonResponse({
+                'success': False,
+                'error': 'Email không được để trống'
+            }, status=400)
+
+        # Kết nối MongoDB
+        client = MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['employee_textnow']
+
+        # Tạo update query
+        update_query = {'$set': {}}
+        
+        if status_tn is not None:
+            update_query['$set']['status_account_TN'] = status_tn
+        if status_tf is not None:
+            update_query['$set']['status_account_TF'] = status_tf
+        
+        # Thêm updated_at vào update query
+        update_query['$set']['updated_at'] = datetime.now().isoformat()
+
+        # Thực hiện update
+        result = collection.update_one(
+            {'email': email},
+            update_query
+        )
+
+        if result.matched_count == 0:
+            return JsonResponse({
+                'success': False,
+                'error': 'Không tìm thấy email trong hệ thống'
+            }, status=404)
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Cập nhật trạng thái thành công'
+        })
+
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Dữ liệu không hợp lệ'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Error in update_textnow_status_api: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+    finally:
+        if 'client' in locals():
+            client.close() 

@@ -25,14 +25,15 @@ urlpatterns = [
     path('user-activity-stream/', views.user_activity_stream, name='user_activity_stream'),
     path('handle-browser-close/', views.handle_browser_close, name='handle_browser_close'),
 
-    # Employee url
+    # Employee urls
     path('create-mail/', views.create_email_view, name='create_email'),
-    # path('work/', views.employee_work_view, name='employee_work'),
     path('verified/', views.employee_verified_view, name='employee_verified'),
-   
+    path('employee/dashboard/', views.employee_dashboard_view, name='employee_dashboard'),
+    path('employee/work/', views.employee_work_view, name='employee_work'),
     path('create-password/', views.create_password_view, name='create_password'),
     path('available-emails/', views.email_info_view, name='available_emails'),
     path('api/available-emails/', views.get_available_emails_api, name='get_available_emails_api'),
     path('api/create-textnow/', views.create_textnow_api, name='create_textnow_api'),
     path('api/save-worksession/', views.save_worksession_api, name='save_worksession'),
+    path('api/verified-textnow-update/', views.update_textnow_status_api, name='verified_textnow_api'),
 ]

@@ -991,3 +991,175 @@ Traceback (most recent call last):
     users_collection, client = get_collection_handle('users')
 TypeError: 'Collection' object is not iterable
 "GET / HTTP/1.1" 500 73532
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /login/ HTTP/1.1" 500 69327
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /login/ HTTP/1.1" 500 69327
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /login/ HTTP/1.1" 500 69331
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73822
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73043
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73042
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73369
+Internal Server Error: /create-password/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\employee_views.py", line 262, in create_password_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /create-password/ HTTP/1.1" 500 74848
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73051
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73051
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73052
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73051
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 141
+Internal Server Error: /verified/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\employee_views.py", line 295, in employee_verified_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"GET /verified/ HTTP/1.1" 500 73141
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73043
