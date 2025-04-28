@@ -595,3 +595,49 @@ Traceback (most recent call last):
   File ".\authentication\views\login_views.py", line 169, in verify_otp_view
     if otp_expiry and current_time > otp_expiry:
 TypeError: can't compare offset-naive and offset-aware datetimes
+ERROR 2025-04-28 12:35:07,189 login_views 23920 24304 Error sending WebSocket notification: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:45,525 login_views 23920 26852 Error sending WebSocket notification: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:52,159 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:52,163 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:57,203 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:57,209 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,215 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,222 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,256 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,260 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:04,981 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:10,035 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:10,040 consumers 31704 22404 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,055 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,064 consumers 31704 22404 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,080 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,086 consumers 31704 22404 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:18,271 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:18,276 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:23,336 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:23,342 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,338 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,343 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,516 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,523 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:49,540 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:49,544 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:54,610 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:54,617 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,624 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,631 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,660 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,664 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:45:41,469 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:45:48,538 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:45:53,566 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:45:55,601 consumers 5428 17960 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:50,166 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:52,204 consumers 5428 17960 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:57,218 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:57,281 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:50:17,116 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:50:24,188 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:51:18,214 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:51:20,244 consumers 13572 11972 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:51:25,349 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.

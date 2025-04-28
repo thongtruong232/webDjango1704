@@ -229,15 +229,26 @@ USE_I18N = True
 USE_TZ = True
 
 # Redis Configuration
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
-REDIS_PORT = os.getenv('REDIS_PORT', '6379')
+REDIS_HOST = '207.148.69.229'  # Sử dụng địa chỉ IP trực tiếp
+REDIS_PORT = '6379'
+REDIS_PASSWORD = 'thongtruong232'
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
+        'LOCATION': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',  # Thêm mật khẩu vào URL
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': REDIS_PASSWORD,
+            'SOCKET_CONNECT_TIMEOUT': 5,
+            'SOCKET_TIMEOUT': 5,
+            'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
+            'CONNECTION_POOL_CLASS_KWARGS': {
+                'max_connections': 50,
+                'timeout': 20
+            },
+            'MAX_CONNECTIONS': 1000,
+            'RETRY_ON_TIMEOUT': True,
         }
     }
 }
@@ -247,9 +258,19 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [f'redis://{REDIS_HOST}:{REDIS_PORT}/0'],
-            'capacity': 1500,  # Số lượng message tối đa trong channel
-            'expiry': 3600,  # Thời gian hết hạn của message (giây)
+            'hosts': [{
+                'address': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0',  # Thêm mật khẩu vào URL
+                'password': REDIS_PASSWORD
+            }],
+            'capacity': 1500,
+            'expiry': 3600,
+            'group_expiry': 3600,
+            'prefix': 'asgi',
+            'channel_capacity': {
+                'http.request': 200,
+                'http.response*': 200,
+                'websocket.send*': 200,
+            },
         },
     },
 }
@@ -297,3 +318,10 @@ LOGGING = {
         },
     },
 }
+
+# WebSocket settings
+CHANNELS_WS_PROTOCOLS = ['websocket']
+CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1']
+CHANNELS_WS_HEARTBEAT = 30  # seconds
+CHANNELS_WS_PING_INTERVAL = 20  # seconds
+CHANNELS_WS_PING_TIMEOUT = 10  # seconds
