@@ -14,12 +14,42 @@ from pathlib import Path
 import os
 import re
 import environ
+import logging
 
+# Configure logging
+logger = logging.getLogger(__name__)
 
-env = environ.Env()
-environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Initialize environ
+env = environ.Env()
+
+# Đọc file .env từ thư mục gốc của project
+env_path = os.path.join(BASE_DIR, '.env')
+logger.info(f"Looking for .env file at: {env_path}")
+
+if os.path.exists(env_path):
+    logger.info(f"Found .env file at: {env_path}")
+    env.read_env(env_path)
+    logger.info("Successfully loaded .env file")
+else:
+    logger.warning(f".env file not found at: {env_path}")
+    # Thử tìm file .env ở các vị trí khác
+    alternative_paths = [
+        os.path.join(BASE_DIR.parent, '.env'),
+        os.path.join(os.path.dirname(BASE_DIR), '.env'),
+        os.path.join(os.getcwd(), '.env')
+    ]
+    
+    for path in alternative_paths:
+        if os.path.exists(path):
+            logger.info(f"Found .env file at alternative location: {path}")
+            env.read_env(path)
+            logger.info("Successfully loaded .env file from alternative location")
+            break
+    else:
+        logger.error("Could not find .env file in any location")
 
 
 # Quick-start development settings - unsuitable for production
@@ -227,20 +257,42 @@ CHANNEL_LAYERS = {
 # Channels Configuration
 ASGI_APPLICATION = 'WebDjango.asgi.application'
 
+# Logging settings
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
         'file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'django_error.log',
+            'filename': os.path.join(BASE_DIR, 'django_error.log'),
+            'formatter': 'verbose',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'authentication': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     },

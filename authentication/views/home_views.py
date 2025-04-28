@@ -270,7 +270,23 @@ def home_view(request):
             if 'created_at' in record:
                 try:
                     raw_time = record['created_at']
-                    imported_time = timezone.make_aware(raw_time, timezone.get_default_timezone())
+                    
+                    # Xử lý trường hợp raw_time là string
+                    if isinstance(raw_time, str):
+                        try:
+                            # Thử parse string thành datetime
+                            imported_time = datetime.fromisoformat(raw_time)
+                        except ValueError:
+                            logger.error(f"Invalid datetime string format: {raw_time}")
+                            record['time_info'] = None
+                            continue
+                    else:
+                        imported_time = raw_time
+                    
+                    # Đảm bảo imported_time là aware datetime
+                    if not timezone.is_aware(imported_time):
+                        imported_time = timezone.make_aware(imported_time, timezone.get_default_timezone())
+                    
                     current_time = get_current_time()
                     time_diff = current_time - imported_time
                     total_seconds = int(time_diff.total_seconds())

@@ -93,6 +93,21 @@ class UserActivityConsumer(AsyncWebsocketConsumer):
 
     async def send_initial_status(self):
         statuses = await self.get_user_status()
+        # Convert datetime objects to ISO format strings
+        for status in statuses:
+            if isinstance(status.get('last_activity'), datetime):
+                status['last_activity'] = status['last_activity'].isoformat()
+            if isinstance(status.get('last_login'), datetime):
+                status['last_login'] = status['last_login'].isoformat()
+            if isinstance(status.get('last_logout'), datetime):
+                status['last_logout'] = status['last_logout'].isoformat()
+            if status.get('session'):
+                session = status['session']
+                if isinstance(session.get('login_time'), datetime):
+                    session['login_time'] = session['login_time'].isoformat()
+                if isinstance(session.get('logout_time'), datetime):
+                    session['logout_time'] = session['logout_time'].isoformat()
+
         await self.send(text_data=json.dumps({
             'type': 'initial_status',
             'statuses': statuses
