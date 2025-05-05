@@ -27,7 +27,7 @@
 
         .container {
             max-width: 1800px;
-            padding: 20px;
+            padding: 10px 20px 0px 20px;
             margin: 0 auto;
         }
 
@@ -144,7 +144,7 @@
         }
 
         .table-responsive {
-            max-height: 600px;
+            max-height: 730px;
             overflow-y: auto;
             overflow-x: auto;
         }
@@ -317,340 +317,232 @@
         }
 
         #mailListModal .modal-content {
-            max-height: none;
-            overflow-y: visible;
+            max-width: 1400px;
+            width: 95%;
+            padding: 25px;
+            background: linear-gradient(145deg, #ffffff, #f0f2f5);
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            max-width: 1200px;
-            width: 90%;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            padding: 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         #mailListModal .modal-header {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 20px 25px;
-            border-radius: 12px 12px 0 0;
-            border-bottom: none;
-        }
-
-        #mailListModal .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #mailListModal .modal-body {
-            padding: 25px;
-            overflow: visible;
-        }
-
-        #mailListModal .table {
-            margin-bottom: 0;
-            border-collapse: separate;
-            border-spacing: 0;
-            width: 100%;
-        }
-
-        #mailListModal .table th {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            color: #2c3e50;
-            font-weight: 600;
-            padding: 18px 15px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #dee2e6;
-            text-align: center;
-        }
-
-        #mailListModal .table td {
-            padding: 15px;
-            vertical-align: middle;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-            font-size: 1rem;
-            color: #444;
-            transition: all 0.2s ease;
-        }
-
-        .mail-list-row {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .mail-list-row:hover {
-            background-color: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .mail-list-row td:first-child {
-            font-weight: 600;
-            color: #3498db;
-        }
-
-        .mail-list-row .price-column {
-            font-weight: 700;
-            color: #e74c3c;
-            font-size: 1.1rem;
-            text-shadow: 0 0 1px rgba(231, 76, 60, 0.1);
-        }
-
-        #mailListModal .btn-buy-mail {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: linear-gradient(135deg, #27ae60, #219a52);
-            border: none;
-            color: white;
-            transition: all 0.3s ease;
-            min-width: 120px;
-        }
-
-        #mailListModal .btn-buy-mail:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-        }
-
-        #mailListModal .btn-buy-mail:disabled {
-            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
-            color: #ecf0f1;
-            cursor: not-allowed;
-            opacity: 0.8;
-        }
-
-        #mailListModal .btn-buy-mail:disabled::after {
-            content: '🚫';
-            margin-left: 5px;
-        }
-
-        #mailListModal .btn-buy-mail:not(:disabled)::after {
-            content: '🛒';
-            margin-left: 5px;
-        }
-
-        /* Thêm style cho cột số lượng */
-        .mail-list-row td:nth-child(3) {
-            font-weight: 600;
-            color: #2ecc71;
-        }
-
-        .mail-list-row td:nth-child(3)::after {
-            content: ' mail';
-            color: #7f8c8d;
-            font-weight: normal;
-        }
-
-        /* Style cho tên loại mail */
-        .mail-list-row td:nth-child(2) {
-            font-weight: 500;
-            color: #34495e;
-            text-transform: capitalize;
-        }
-
-        /* Thêm hiệu ứng hover cho từng cột */
-        .mail-list-row:hover td {
-            color: #2c3e50;
-        }
-
-        .mail-list-row:hover .price-column {
-            color: #c0392b;
-            transform: scale(1.05);
-        }
-
-        /* Animation cho nút khi load */
-        @keyframes buttonPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        #mailListModal .btn-buy-mail:not(:disabled) {
-            animation: buttonPulse 2s infinite;
-        }
-
-        #mailListModal .btn-buy-mail:hover:not(:disabled) {
-            animation: none;
-        }
-
-        /* Thêm style cho trường hợp hết hàng */
-        .mail-list-row.out-of-stock td {
-            opacity: 0.7;
-        }
-
-        .mail-list-row.out-of-stock td:nth-child(3) {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-
-        /* Styles for Purchase Modal */
-        .purchase-info {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            z-index: 1000;
+            padding: 20px 30px;
+            border-radius: 15px;
             margin-bottom: 20px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-row .label {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .info-row .value {
-            color: #34495e;
-        }
-
-        .price-highlight {
-            color: #e74c3c !important;
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
-
-        #purchaseQuantity {
-            font-size: 1.1em;
-            padding: 10px;
-            border: 2px solid #3498db;
-            border-radius: 6px;
-            width: 100%;
-        }
-
-        #purchaseQuantity:focus {
-            outline: none;
-            border-color: #2980b9;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-
-        .total-price {
-            background: #e8f4f8;
-            padding: 15px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .btn-confirm-purchase {
-            background: linear-gradient(135deg, #27ae60, #219a52);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-confirm-purchase:hover {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.2);
-        }
-
-        #purchaseModal .modal-content {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 0;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            max-width: 500px;
-            width: 90%;
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        #purchaseModal .modal-header {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 20px;
-            border-radius: 12px 12px 0 0;
-            position: relative;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        #purchaseModal .modal-title {
-            flex-grow: 1;
-            text-align: center;
+        #mailListModal .modal-header .modal-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
             margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        #purchaseModal .btn-close {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(255,255,255,0.3);
+        #mailListModal .modal-header .fas {
+            font-size: 28px;
+            color: #fff;
+        }
+
+        #mailListModal .btn-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: none;
-            padding: 0;
         }
 
-        #purchaseModal .btn-close:hover {
-            background-color: rgba(255,255,255,0.5);
-            transform: translateY(-50%) rotate(90deg);
+        #mailListModal .btn-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
         }
 
-        #purchaseModal .btn-close::before {
-            content: "×";
-            font-size: 24px;
+        #mailListModal .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(90vh - 120px);
+        }
+
+        .mail-card-parent {
+            width: 320px;
+            height: 380px;
+            perspective: 1000px;
+            margin: 15px;
+        }
+
+        .mail-card {
+            height: 100%;
+            border-radius: 25px;
+            background: linear-gradient(145deg, #00e1ff, #00c853);
+            transition: all 0.5s ease-in-out;
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mail-card .glass {
+            transform-style: preserve-3d;
+            position: absolute;
+            inset: 8px;
+            border-radius: 22px;
+            border-top-right-radius: 100px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            transform: translate3d(0px, 0px, 25px);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .mail-card .content {
+            padding: 35px 30px 0px 30px;
+            transform: translate3d(0, 0, 26px);
+            height: calc(100% - 100px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mail-card .content .title {
             color: white;
-            line-height: 1;
+            font-weight: 800;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            line-height: 1.2;
+            word-wrap: break-word;
         }
 
-        #purchaseModal .modal-body {
+        .mail-card .content .text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .mail-card .content .details {
+            margin-top: auto;
+            padding: 15px 0;
+        }
+
+        .mail-card .price {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .mail-card .quantity {
+            position: absolute;
+            top: 85px;
+            right: 10px;
+            background: rgba(255, 255, 255,1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            color: #00894d;
+            font-weight: bold;
+            transform: translate3d(0, 0, 30px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .mail-card .bottom {
             padding: 25px;
+            transform-style: preserve-3d;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate3d(0, 0, 26px);
         }
 
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -48%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
+        .mail-card .buy-button {
+            background: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 25px;
+            color: #00894d;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translate3d(0, 0, 10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mail-card .buy-button:hover {
+            background: #00894d;
+            color: white;
+            transform: translate3d(0, -5px, 10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .mail-card .buy-button:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .mail-card-parent:hover .mail-card {
+            transform: rotate3d(1, 1, 0, 25deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style cho thanh scroll */
+        #mailListModal .modal-body::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #mailListModal .modal-body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        #mailListModal .modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            border-radius: 10px;
+            border: 2px solid #f0f2f5;
+        }
+
+        #mailListModal .modal-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(145deg, #2980b9, #3498db);
         }
 
         /* Thêm style cho nút copy */
@@ -754,6 +646,351 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        /* Style cho bảng trong modal danh sách mail */
+        #mailListModal .table th:nth-child(1), /* ID */
+        #mailListModal .table td:nth-child(1) {
+            width: 80px;
+            min-width: 80px;
+        }
+
+        #mailListModal .table th:nth-child(2), /* Loại Mail */
+        #mailListModal .table td:nth-child(2) {
+            width: 200px;
+            min-width: 200px;
+        }
+
+        #mailListModal .table th:nth-child(3), /* Số Lượng */
+        #mailListModal .table td:nth-child(3) {
+            width: 120px;
+            min-width: 120px;
+        }
+
+        #mailListModal .table th:nth-child(4), /* Giá */
+        #mailListModal .table td:nth-child(4) {
+            width: 150px;
+            min-width: 150px;
+        }
+
+        #mailListModal .table th:nth-child(5), /* Thao Tác */
+        #mailListModal .table td:nth-child(5) {
+            width: 120px;
+            min-width: 120px;
+        }
+
+        /* Điều chỉnh chiều rộng tổng thể của modal */
+        #mailListModal .modal-content {
+            max-width: 1300px;
+            width: 100%;
+           
+        }
+
+        #mailListModal .table-responsive {
+            overflow-x: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        #mailListModal .table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        #purchaseModal .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f0f2f5);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        #purchaseModal .modal-header {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            border: none;
+        }
+
+        #purchaseModal .modal-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        #purchaseModal .modal-body {
+            padding: 20px;
+        }
+
+        #purchaseModal .purchase-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #purchaseModal .info-row {
+            margin-bottom: 10px;
+        }
+
+        #purchaseModal .label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        #purchaseModal .value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        #purchaseModal .price-highlight {
+            color: #e74c3c;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        #purchaseModal .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        #purchaseModal .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        #purchaseModal .total-price {
+            background: #f1f8ff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        #purchaseModal .modal-footer {
+            border-top: 1px solid #eee;
+            padding: 15px 20px;
+        }
+
+        #purchaseModal .btn-confirm-purchase {
+            background: linear-gradient(145deg, #27ae60, #219a52);
+            border: none;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #purchaseModal .btn-confirm-purchase:hover {
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+            transform: translateY(-1px);
+        }
+
+        #purchaseModal .btn-close-modal {
+            background: #f5f6f7;
+            border: none;
+            color: #666;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #purchaseModal .btn-close-modal:hover {
+            background: #e8e9ea;
+            transform: translateY(-1px);
+        }
+
+        /* Modal styles */
+        #confirmFetchModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Overlay màu đen mờ */
+            z-index: 1000;
+            animation: fadeIn 0.1s ease;
+        }
+
+        #confirmFetchModal .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f0f2f5); /* Hiệu ứng gradient */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+            max-width: 500px;
+            width: 35%;
+            position: relative;
+            top: 20%;
+            justify-self: center;
+            animation: slideIn 0.2s ease; /* Hiệu ứng trượt vào */
+        }
+
+        #confirmFetchModal .modal-header {
+            background: linear-gradient(145deg, #3498db, #2980b9); /* Màu xanh gradient */
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #confirmFetchModal .modal-body {
+            padding: 20px;
+            font-size: 1rem;
+            color: #333;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        #confirmFetchModal .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+        }
+
+        #confirmFetchModal .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        #confirmFetchModal .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+        }
+
+        #confirmFetchModal .btn-secondary:hover {
+            background-color: #d6d6d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #confirmFetchModal .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: none;
+        }
+
+        #confirmFetchModal .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hiệu ứng fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Hiệu ứng slide-in */
+        @keyframes slideIn {
+            from {
+                transform: translate(-50%, -60%) scale(0.8); /* Trượt từ trên xuống và thu nhỏ */
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05); /* Phóng to nhẹ ở giữa */
+                opacity: 0.8;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1); /* Về vị trí và kích thước ban đầu */
+                opacity: 1;
+            }
+        }
+
+        /* Cải tiến style cho ô chọn trạng thái */
+        .form-select {
+            appearance: none; /* Loại bỏ giao diện mặc định của trình duyệt */
+            background-color: #f8f9fa; /* Màu nền nhẹ nhàng */
+            border: 2px solid var(--border-color); /* Viền mềm mại */
+            border-radius: 8px; /* Bo góc */
+            padding: 8px 12px; /* Khoảng cách bên trong */
+            font-size: 0.95rem; /* Kích thước chữ */
+            font-weight: 500; /* Đậm hơn một chút */
+            color: #333; /* Màu chữ */
+            transition: all 0.3s ease; /* Hiệu ứng mượt */
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none; /* Loại bỏ viền mặc định khi focus */
+            border-color: var(--primary-color); /* Đổi màu viền khi focus */
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Hiệu ứng đổ bóng */
+        }
+
+        .form-select:hover {
+            background-color: #f1f8ff; /* Màu nền khi hover */
+            border-color: var(--primary-color); /* Đổi màu viền khi hover */
+        }
+
+        /* Thêm biểu tượng mũi tên cho ô chọn */
+        .form-select {
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"%3E%3Cpath fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1rem;
+        }
+
+        /* Màu sắc cho từng trạng thái */
+        .form-select option[value="chưa tạo acc"] {
+            background-color: #f8d7da; /* Màu đỏ nhạt */
+            color: #721c24;
+        }
+
+        .form-select option[value="tạo acc thành công"] {
+            background-color: #d4edda; /* Màu xanh nhạt */
+            color: #155724;
+        }
+
+        .form-select option[value="acc lỗi"] {
+            background-color: #fff3cd; /* Màu vàng nhạt */
+            color: #856404;
+        }
+        
+        /* Responsive: Điều chỉnh kích thước trên màn hình nhỏ */
+        @media (max-width: 768px) {
+            .form-select {
+                font-size: 0.85rem;
+                padding: 6px 10px;
+            }
+        }
+
+        /* Cải tiến nút Reg Acc */
+        #regAccBtn {
+            display: none; /* Ẩn mặc định */
+            background-color:rgb(104, 71, 224); /* Màu xanh lá */
+            color: white; /* Màu chữ trắng */
+            border: none; /* Loại bỏ viền */
+            padding: 10px 20px; /* Khoảng cách bên trong */
+            border-radius: 8px; /* Bo góc mềm mại */
+            font-size: 1rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ đậm */
+            text-transform: uppercase; /* Chữ in hoa */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+            transition: all 0.3s ease; /* Hiệu ứng mượt */
+            cursor: pointer; /* Con trỏ chuột */
+        }
+
+        #regAccBtn:hover {
+            background-color: #218838; /* Màu xanh đậm hơn khi hover */
+            transform: translateY(-2px); /* Hiệu ứng nổi lên */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Tăng đổ bóng khi hover */
+        }
+
+        #regAccBtn:active {
+            background-color: #1e7e34; /* Màu xanh đậm hơn khi nhấn */
+            transform: translateY(1px); /* Hiệu ứng nhấn xuống */
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Giảm đổ bóng khi nhấn */
+        }
     </style>
 </head>
 <body>
@@ -775,28 +1012,14 @@
 
     <!-- Add Mail List Modal -->
     <div id="mailListModal" class="custom-modal">
-        <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-content">
             <div class="modal-header">
                 <i class="fas fa-envelope"></i>
                 <h4 class="modal-title">Danh Sách Mail Đồng Văn</h4>
                 <button type="button" class="btn-close" onclick="closeMailListModal()"></button>
             </div>
-            <div class="modal-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Loại Mail</th>
-                                <th>Số Lượng</th>
-                                <th>Giá (VNĐ)</th>
-                                <th>Thao Tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="mailListTableBody">
-                        </tbody>
-                    </table>
-                </div>
+            <div class="modal-body" id="mailListCards">
+                <!-- Cards sẽ được thêm vào đây bằng JavaScript -->
             </div>
         </div>
     </div>
@@ -807,46 +1030,70 @@
             <div class="modal-header">
                 <i class="fas fa-shopping-cart"></i>
                 <h4 class="modal-title">Xác nhận mua Mail</h4>
-                <button type="button" class="btn-close" onclick="closePurchaseModal()"></button>
+                <button type="button" class="btn-close" onclick="closePurchaseModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body">
-                <div class="purchase-info mb-4">
+                <div class="purchase-info">
                     <div class="info-row">
                         <span class="label">ID Mail:</span>
-                        <span id="purchaseMailId" class="value"></span>
+                        <span class="value">#${mailId}</span>
                     </div>
                     <div class="info-row">
                         <span class="label">Loại Mail:</span>
-                        <span id="purchaseMailName" class="value"></span>
+                        <span class="value">${mailName}</span>
                     </div>
                     <div class="info-row">
-                        <span class="label">Giá:</span>
-                        <span id="purchaseMailPrice" class="value price-highlight"></span>
+                        <span class="label">Đơn giá:</span>
+                        <span class="value price-highlight">${formatPrice(mailPrice)}</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="quantity" class="form-label">Số lượng:</label>
-                    <input type="number" class="form-control" id="purchaseQuantity" min="1" value="1">
-                    <div class="total-price mt-3">
+                    <label for="purchaseQuantity" class="form-label">Số lượng muốn mua:</label>
+                    <input type="number" class="form-control" id="purchaseQuantity" 
+                           min="1" max="${maxQuantity}" value="1" 
+                           placeholder="Nhập số lượng (tối đa ${maxQuantity})">
+                    <div class="total-price">
                         <span class="label">Tổng tiền:</span>
-                        <span id="totalPrice" class="value price-highlight">0 VNĐ</span>
+                        <span class="value">${formatPrice(mailPrice)}</span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-modal btn-confirm-purchase" onclick="confirmPurchase()">Xác nhận mua</button>
-                <button class="btn btn-modal btn-close-modal" onclick="closePurchaseModal()">Hủy</button>
+                <button class="btn-close-modal" onclick="closePurchaseModal()">Hủy bỏ</button>
+                <button class="btn-confirm-purchase" onclick="confirmPurchase()">
+                    <i class="fas fa-check"></i> Xác nhận mua
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Modal xác nhận lấy email dự trữ -->
+    <div id="confirmFetchModal" class="custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Xác nhận</h4>
+                <button type="button" class="btn-close" onclick="closeConfirmFetchModal()"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn lấy email dự trữ không?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeConfirmFetchModal()">Hủy</button>
+                <button class="btn btn-primary" onclick="confirmFetchEmails()">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Danh sách Email Khả Dụng</h2>
             <div class="action-buttons">
+                <button id="regAccBtn" class="btn btn-success" style="display: none;">Reg Acc</button>
+
                 <button id="fetchEmailsBtn" class="btn btn-primary">Lấy Email Dự Trữ</button>
                 <button id="buyDongVanBtn" class="btn btn-success">Mua Mail Đồng Văn</button>
-                <button id="regAccBtn" class="btn btn-success" style="display: none;">Reg Acc</button>
                 <a href="{% url 'work_management' %}" class="btn btn-primary">Quay lại</a>
             </div>
         </div>
@@ -900,6 +1147,12 @@
 
         function closePurchaseModal() {
             const modal = document.getElementById('purchaseModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeConfirmFetchModal() {
+            const modal = document.getElementById('confirmFetchModal');
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
@@ -977,6 +1230,9 @@
                     `;
                     emailsTableBody.appendChild(row);
                 });
+
+                // Cập nhật màu sắc cho các ô chọn trạng thái
+                updateSelectStyles();
             } else {
                 emailsTableBody.innerHTML = `
                     <tr>
@@ -989,6 +1245,31 @@
             toggleRegAccButton();
         }
 
+        // Hàm cập nhật màu sắc cho các ô chọn trạng thái
+        function updateSelectStyles() {
+            const selects = document.querySelectorAll('.status-select');
+
+            selects.forEach(select => {
+                const selectedValue = select.value;
+
+                if (selectedValue === 'tạo acc thành công') {
+                    select.style.backgroundColor = '#2ecc71'; // Nền xanh
+                    select.style.color = 'white'; // Chữ trắng
+                } else if (selectedValue === 'acc lỗi') {
+                    select.style.backgroundColor = '#e74c3c'; // Nền đỏ
+                    select.style.color = 'white'; // Chữ trắng
+                } else {
+                    select.style.backgroundColor = '#f8f9fa'; // Nền mặc định
+                    select.style.color = '#333'; // Chữ mặc định
+                }
+
+                // Lắng nghe sự kiện thay đổi giá trị
+                select.addEventListener('change', function () {
+                    updateSelectStyles(); // Cập nhật lại màu sắc khi giá trị thay đổi
+                });
+            });
+        }
+
         // Hàm để hiển thị dữ liệu từ localStorage
         function displayEmailsFromStorage() {
             // Lấy dữ liệu từ server nếu có
@@ -998,8 +1279,61 @@
             displayEmails(serverEmails);
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const fetchEmailsBtn = document.getElementById('fetchEmailsBtn');
+            const confirmFetchModal = document.getElementById('confirmFetchModal');
+
+            // Hiển thị modal xác nhận khi bấm nút "Lấy Email Dự Trữ"
+            fetchEmailsBtn.addEventListener('click', function () {
+                confirmFetchModal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi modal mở
+            });
+
+            // Hàm đóng modal xác nhận
+            window.closeConfirmFetchModal = function () {
+                confirmFetchModal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Cho phép cuộn trang trở lại
+            };
+
+            // Hàm xác nhận và gọi API
+            window.confirmFetchEmails = async function () {
+                closeConfirmFetchModal(); // Đóng modal xác nhận
+                try {
+                    const response = await fetch('/api/available-emails/');
+                    const data = await response.json();
+
+                    if (data.success) {
+                        const existingData = localStorage.getItem('employee_worksession');
+                        let existingEmails = [];
+                        if (existingData) {
+                            existingEmails = JSON.parse(existingData);
+                        }
+
+                        const newEmails = data.data;
+                        const updatedEmails = [...existingEmails];
+
+                        newEmails.forEach(newEmail => {
+                            const existingIndex = existingEmails.findIndex(e => e.email === newEmail.email);
+                            if (existingIndex === -1) {
+                                updatedEmails.push(newEmail);
+                            }
+                        });
+
+                        localStorage.setItem('employee_worksession', JSON.stringify(updatedEmails));
+                        displayEmails(updatedEmails);
+                    } else {
+                        if (data.missing_passwords) {
+                            showModal(data.error);
+                        } else {
+                            alert('Có lỗi xảy ra khi lấy dữ liệu: ' + data.error);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi gọi API');
+                }
+            };
+
             const regAccBtn = document.getElementById('regAccBtn');
             const buyDongVanBtn = document.getElementById('buyDongVanBtn');
             const selectAllCheckbox = document.getElementById('selectAll');
@@ -1147,44 +1481,6 @@
                 }
             });
 
-            // Xử lý sự kiện khi bấm nút lấy email
-            fetchEmailsBtn.addEventListener('click', async function() {
-                try {
-                    const response = await fetch('/api/available-emails/');
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        const existingData = localStorage.getItem('employee_worksession');
-                        let existingEmails = [];
-                        if (existingData) {
-                            existingEmails = JSON.parse(existingData);
-                        }
-
-                        const newEmails = data.data;
-                        const updatedEmails = [...existingEmails];
-
-                        newEmails.forEach(newEmail => {
-                            const existingIndex = existingEmails.findIndex(e => e.email === newEmail.email);
-                            if (existingIndex === -1) {
-                                updatedEmails.push(newEmail);
-                            }
-                        });
-
-                        localStorage.setItem('employee_worksession', JSON.stringify(updatedEmails));
-                        displayEmails(updatedEmails);
-                    } else {
-                        if (data.missing_passwords) {
-                            showModal(data.error);
-                        } else {
-                            alert('Có lỗi xảy ra khi lấy dữ liệu: ' + data.error);
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Có lỗi xảy ra khi gọi API');
-                }
-            });
-
             // Hàm để cập nhật trạng thái trong localStorage
             function updateStatusInStorage(email, type, newStatus) {
                 const storedData = localStorage.getItem('employee_worksession');
@@ -1216,30 +1512,40 @@
 
         function showMailListModal(mailList) {
             const modal = document.getElementById('mailListModal');
-            const tableBody = document.getElementById('mailListTableBody');
-            tableBody.innerHTML = '';
+            const cardsContainer = document.getElementById('mailListCards');
+            cardsContainer.innerHTML = '';
 
-            // Sắp xếp mailList theo giá từ thấp đến cao
             const sortedMailList = [...mailList].sort((a, b) => a.price - b.price);
 
             sortedMailList.forEach(mail => {
-                const row = document.createElement('tr');
-                row.className = `mail-list-row ${mail.quality === 0 ? 'out-of-stock' : ''}`;
-                row.dataset.mailId = mail.id;
-                row.innerHTML = `
-                    <td>#${mail.id}</td>
-                    <td>${mail.name}</td>
-                    <td>${mail.quality}</td>
-                    <td class="price-column" data-price="${mail.price}">${formatPrice(mail.price)}</td>
-                    <td>
-                        <button class="btn-buy-mail" 
-                                onclick="buyMail(${mail.id})" 
-                                ${mail.quality === 0 ? 'disabled' : ''}>
-                            ${mail.quality === 0 ? 'Hết hàng' : 'Mua ngay'}
-                        </button>
-                    </td>
+                const cardHtml = `
+                    <div class="mail-card-parent">
+                        <div class="mail-card" data-mail-id="${mail.id}">
+                            <div class="glass"></div>
+                            <div class="quantity">${mail.quality} mail</div>
+                            <div class="content">
+                                <span class="title">${mail.name}</span>
+                                <div class="details">
+                                    <div class="price">${formatPrice(mail.price)}</div>
+                                    <span class="text                                   
+                                        ✓ Mail chất lượng cao<br>
+                                        ✓ Bảo hành 24h<br>
+                                        ✓ Hỗ trợ tận tình<br>
+                                        ✓ Giao mail ngay
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bottom">
+                                <button class="buy-button" 
+                                        onclick="buyMail(${mail.id})" 
+                                        ${mail.quality === 0 ? 'disabled' : ''}>
+                                    ${mail.quality === 0 ? 'Hết hàng' : 'Mua ngay'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 `;
-                tableBody.appendChild(row);
+                cardsContainer.insertAdjacentHTML('beforeend', cardHtml);
             });
 
             modal.style.display = 'block';
@@ -1248,8 +1554,40 @@
 
         let currentMailData = null;
 
+        async function buyMail(mailId) {
+            try {
+                const mailCard = document.querySelector(`.mail-card[data-mail-id="${mailId}"]`);
+                if (!mailCard) {
+                    throw new Error('Không tìm thấy thông tin mail');
+                }
+
+                const mailName = mailCard.querySelector('.title').textContent;
+                const priceText = mailCard.querySelector('.price').textContent;
+                const price = parseInt(priceText.replace(/[^\d]/g, '')); // Lấy số từ chuỗi giá
+                const quantityText = mailCard.querySelector('.quantity').textContent;
+                const maxQuantity = parseInt(quantityText); // Lấy số từ chuỗi "X mail"
+
+                if (isNaN(price) || isNaN(maxQuantity)) {
+                    throw new Error('Dữ liệu không hợp lệ');
+                }
+
+                showPurchaseModal(mailId, mailName, price, maxQuantity);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi mở form mua mail: ' + error.message);
+            }
+        }
+
         function showPurchaseModal(mailId, mailName, mailPrice, maxQuantity) {
             const modal = document.getElementById('purchaseModal');
+            if (!modal) {
+                console.error('Không tìm thấy modal');
+                return;
+            }
+
+            // Giới hạn số lượng tối đa là 20
+            const actualMaxQuantity = Math.min(maxQuantity, 20);
+
             modal.innerHTML = `
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1261,20 +1599,22 @@
                         <div class="purchase-info mb-4">
                             <div class="info-row">
                                 <span class="label">ID Mail:</span>
-                                <span id="purchaseMailId" class="value">#${mailId}</span>
+                                <span class="value">#${mailId}</span>
                             </div>
                             <div class="info-row">
                                 <span class="label">Loại Mail:</span>
-                                <span id="purchaseMailName" class="value">${mailName}</span>
+                                <span class="value">${mailName}</span>
                             </div>
                             <div class="info-row">
-                                <span class="label">Giá:</span>
-                                <span id="purchaseMailPrice" class="value price-highlight">${formatPrice(mailPrice)}</span>
+                                <span class="label">Đơn giá:</span>
+                                <span class="value price-highlight">${formatPrice(mailPrice)}</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="quantity" class="form-label">Số lượng:</label>
-                            <input type="number" class="form-control" id="purchaseQuantity" min="1" max="${maxQuantity}" value="1">
+                            <label for="purchaseQuantity" class="form-label">Số lượng muốn mua (tối đa ${actualMaxQuantity}):</label>
+                            <input type="number" class="form-control" id="purchaseQuantity" 
+                                   min="1" max="${actualMaxQuantity}" value="1" 
+                                   placeholder="Nhập số lượng (tối đa ${actualMaxQuantity})">
                             <div class="total-price mt-3">
                                 <span class="label">Tổng tiền:</span>
                                 <span id="totalPrice" class="value price-highlight">${formatPrice(mailPrice)}</span>
@@ -1282,8 +1622,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-modal btn-confirm-purchase" onclick="confirmPurchase()">Xác nhận mua</button>
                         <button class="btn btn-modal btn-close-modal" onclick="closePurchaseModal()">Hủy</button>
+                        <button class="btn btn-modal btn-confirm-purchase" onclick="confirmPurchase()">Xác nhận mua</button>
                     </div>
                 </div>
             `;
@@ -1292,27 +1632,32 @@
                 id: mailId,
                 name: mailName,
                 price: mailPrice,
-                maxQuantity: maxQuantity
+                maxQuantity: actualMaxQuantity
             };
             
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
             
-            // Add event listener for quantity input
-            document.getElementById('purchaseQuantity').addEventListener('input', function() {
-                let value = parseInt(this.value) || 0;
-                if (value < 1) this.value = 1;
-                if (value > maxQuantity) this.value = maxQuantity;
-                updateTotalPrice();
-            });
-        }
-
-        function updateTotalPrice() {
-            if (!currentMailData) return;
-            
-            const quantity = parseInt(document.getElementById('purchaseQuantity').value) || 0;
-            const totalPrice = quantity * currentMailData.price;
-            document.getElementById('totalPrice').textContent = formatPrice(totalPrice);
+            const quantityInput = document.getElementById('purchaseQuantity');
+            if (quantityInput) {
+                quantityInput.addEventListener('input', function() {
+                    let value = parseInt(this.value) || 0;
+                    
+                    // Giới hạn giá trị nhập vào
+                    if (value < 1) {
+                        this.value = 1;
+                        value = 1;
+                    }
+                    if (value > actualMaxQuantity) {
+                        this.value = actualMaxQuantity;
+                        value = actualMaxQuantity;
+                    }
+                    
+                    // Cập nhật tổng tiền
+                    const totalPrice = value * mailPrice;
+                    document.getElementById('totalPrice').textContent = formatPrice(totalPrice);
+                });
+            }
         }
 
         async function confirmPurchase() {
@@ -1402,21 +1747,6 @@
             }
         }
 
-        // Update buyMail function
-        async function buyMail(mailId) {
-            try {
-                const mailRow = document.querySelector(`tr[data-mail-id="${mailId}"]`);
-                const mailName = mailRow.querySelector('td:nth-child(2)').textContent;
-                const mailPrice = parseInt(mailRow.querySelector('.price-column').dataset.price);
-                const maxQuantity = parseInt(mailRow.querySelector('td:nth-child(3)').textContent);
-                
-                showPurchaseModal(mailId, mailName, mailPrice, maxQuantity);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra khi mở form mua mail');
-            }
-        }
-
         function copyEmailInfo(email, password, refreshToken, clientId) {
             const textToCopy = `${email}|${password}|${refreshToken}|${clientId}`;
             
@@ -1449,4 +1779,4 @@
     </script>
 </body>
 </html>
-{% endblock %} 
+{% endblock %}
