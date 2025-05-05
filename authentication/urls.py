@@ -36,4 +36,5 @@ urlpatterns = [
     path('api/create-textnow/', views.create_textnow_api, name='create_textnow_api'),
     path('api/save-worksession/', views.save_worksession_api, name='save_worksession'),
     path('api/verified-textnow-update/', views.update_textnow_status_api, name='verified_textnow_api'),
+    path('api/search-textnow/', views.search_textnow_api, name='search_textnow_api'),
 ]

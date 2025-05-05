@@ -270,6 +270,84 @@ def create_password_view(request):
                     
     return render(request, 'authentication/create_password.html')
 
+@csrf_exempt
+@require_http_methods(["GET"])
+@login_required
+def search_textnow_api(request):
+    try:
+        # Kết nối MongoDB
+        client = MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['employee_textnow']
+        
+        # Lấy parameters từ request
+        status_tn = request.GET.get('status_tn')
+        search_date = request.GET.get('date', datetime.now().strftime('%Y-%m-%d'))
+        created_by = request.GET.get('created_by')
+        
+        # Xây dựng query
+        query = {}
+        
+        # Thêm điều kiện ngày nếu có
+        if search_date:
+            query['created_at'] = {'$regex': f'^{search_date}'}
+            
+        # Thêm điều kiện status_tn nếu có
+        if status_tn:
+            query['status_account_TN'] = status_tn
+            
+        # Thêm điều kiện created_by nếu có
+        if created_by:
+            query['created_by'] = created_by
+            
+        # Chỉ lấy các trường cần thiết
+        projection = {
+            '_id': 0,
+            'email': 1,
+            'password_email': 1,
+            'password': 1,
+            'password_TF': 1,
+            'status_account_TN': 1,
+            'status_account_TF': 1,
+            'created_at': 1,
+            'created_by': 1,
+            'full_information': 1
+        }
+        
+        # Thực hiện query
+        records = list(collection.find(query, projection).sort('created_at', -1))
+        
+        # Format lại ngày trong records
+        for record in records:
+            if 'created_at' in record:
+                record['created_at'] = record['created_at'].split('T')[0]
+        
+        # Lấy danh sách người tạo để trả về cho dropdown
+        creators = list(collection.distinct('created_by'))
+        creators = sorted([creator for creator in creators if creator])
+
+        return JsonResponse({
+            'success': True,
+            'data': records,
+            'total': len(records),
+            'creators': creators,
+            'filters': {
+                'status_tn': status_tn,
+                'date': search_date,
+                'created_by': created_by
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Error in search_textnow_api: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+    finally:
+        if 'client' in locals():
+            client.close()
+
 @login_required
 def employee_verified_view(request):
     try:
@@ -278,19 +356,42 @@ def employee_verified_view(request):
         db = client[settings.MONGODB_DATABASE]
         collection = db['employee_textnow']
         
+        # Lấy danh sách các trạng thái TN duy nhất để tạo dropdown
+        status_list = list(collection.distinct('status_account_TN'))
+        
+        # Lấy ngày hôm nay
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        # Query MongoDB với điều kiện ngày hôm nay
+        query = {
+            'created_at': {'$regex': f'^{today}'}
+        }
+        
         # Lấy dữ liệu từ collection
-        records = list(collection.find({}, {'_id': 0}))
+        records = list(collection.find(query, {'_id': 0}).sort('created_at', -1))
+        
+        # Format lại ngày trong records để chỉ hiển thị ngày tháng năm
+        for record in records:
+            if 'created_at' in record:
+                record['created_at'] = record['created_at'].split('T')[0]
         
         # Truyền dữ liệu vào template
         context = {
             'records': json.dumps(records),  # Convert sang JSON để dùng trong JavaScript
+            'total_records': len(records),
+            'status_list': status_list  # Thêm danh sách trạng thái
         }
         
         return render(request, 'authentication/verified.html', context)
+            
     except Exception as e:
         logger.error(f"Error in employee_verified_view: {str(e)}", exc_info=True)
         messages.error(request, 'Đã xảy ra lỗi khi tải dữ liệu')
-        return render(request, 'authentication/verified.html', {'records': '[]'})
+        return render(request, 'authentication/verified.html', {
+            'records': '[]',
+            'total_records': 0,
+            'status_list': []
+        })
     finally:
         if 'client' in locals():
             client.close()
