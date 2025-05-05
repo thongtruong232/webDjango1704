@@ -595,3 +595,571 @@ Traceback (most recent call last):
   File ".\authentication\views\login_views.py", line 169, in verify_otp_view
     if otp_expiry and current_time > otp_expiry:
 TypeError: can't compare offset-naive and offset-aware datetimes
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 72
+Internal Server Error: /available-emails/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 795, in email_info_view
+    return render(request, 'authentication/employee_email_info.html', {
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 801, in email_info_view
+    return redirect('employee_work')
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
+"GET /available-emails/ HTTP/1.1" 500 144014
+Internal Server Error: /available-emails/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 795, in email_info_view
+    return render(request, 'authentication/employee_email_info.html', {
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 801, in email_info_view
+    return redirect('employee_work')
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
+"GET /available-emails/ HTTP/1.1" 500 144304
+Internal Server Error: /available-emails/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view authentication.views.employee_views.email_info_view didn't return an HttpResponse object. It returned None instead.
+"GET /available-emails/ HTTP/1.1" 500 69807
+Internal Server Error: /available-emails/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view authentication.views.employee_views.email_info_view didn't return an HttpResponse object. It returned None instead.
+"GET /available-emails/ HTTP/1.1" 500 69808
+Internal Server Error: /available-emails/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view authentication.views.employee_views.email_info_view didn't return an HttpResponse object. It returned None instead.
+"GET /available-emails/ HTTP/1.1" 500 69808
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 42, in login_view
+    if users_collection:
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
+    raise NotImplementedError(
+NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
+"GET /login/ HTTP/1.1" 500 73629
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 65
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 66
+Internal Server Error: /api/available-emails/
+"GET /api/available-emails/ HTTP/1.1" 500 66
+Internal Server Error: /create-mail/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 306, in create_email_view
+    return render(request, 'authentication/create_email.html')
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/create_email.html
+"GET /create-mail/ HTTP/1.1" 500 87699
+Internal Server Error: /create-mail/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 305, in create_email_view
+    return render(request, 'authentication/create_email.html')
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/create_email.html
+"GET /create-mail/ HTTP/1.1" 500 87699
+Internal Server Error: /create-mail/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 305, in create_email_view
+    return render(request, 'authentication/create_email.html')
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/create_email.html
+"GET /create-mail/ HTTP/1.1" 500 87699
+Internal Server Error: /create-mail/
+"GET /create-mail/ HTTP/1.1" 500 63
+Internal Server Error: /create-mail/
+"GET /create-mail/ HTTP/1.1" 500 63
+Internal Server Error: /api/create-textnow/
+"POST /api/create-textnow/ HTTP/1.1" 500 66
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 40
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 40
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 40
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 40
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73395
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73395
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73395
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73395
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73227
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73532
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73532
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /login/ HTTP/1.1" 500 69327
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /login/ HTTP/1.1" 500 69327
+Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /login/ HTTP/1.1" 500 69331
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73822
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73043
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73042
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73369
+Internal Server Error: /create-password/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\employee_views.py", line 262, in create_password_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"POST /create-password/ HTTP/1.1" 500 74848
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73051
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73051
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73052
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73051
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /work/
+"GET /work/ HTTP/1.1" 500 141
+Internal Server Error: /available-emails/
+"GET /available-emails/ HTTP/1.1" 500 141
+Internal Server Error: /verified/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\employee_views.py", line 295, in employee_verified_view
+    if client:
+UnboundLocalError: local variable 'client' referenced before assignment
+"GET /verified/ HTTP/1.1" 500 73141
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73043

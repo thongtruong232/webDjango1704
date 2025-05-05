@@ -5,6 +5,7 @@ from authentication.views.mongodb import get_collection_handle
 from datetime import datetime
 import pytz
 import logging
+from authentication.models import EmployeeTextNow
 
 logger = logging.getLogger(__name__)
 
@@ -96,4 +97,21 @@ class UserActivityConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'initial_status',
             'statuses': statuses
+        }))
+
+class CreatedByConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+        # Gửi danh sách ban đầu
+        await self.send_created_by_list()
+        
+    @database_sync_to_async
+    def get_created_by_list(self):
+        return list(EmployeeTextNow.objects.values_list('created_by', flat=True).distinct())
+        
+    async def send_created_by_list(self):
+        created_by_list = await self.get_created_by_list()
+        await self.send(text_data=json.dumps({
+            'type': 'created_by_list',
+            'created_by_list': created_by_list
         })) 

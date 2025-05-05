@@ -1,0 +1,1782 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Danh sách Email Khả Dụng</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+
+        body {
+            background-color: var(--background-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1800px;
+            padding: 10px 20px 0px 20px;
+            margin: 0 auto;
+        }
+
+        .email-table {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .email-table .table {
+            margin-bottom: 0;
+        }
+
+        .email-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: var(--primary-color);
+        }
+
+        .email-table thead th {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            border: none;
+            padding: 12px;
+            white-space: nowrap;
+        }
+
+        .email-table tbody {
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+        }
+
+        .email-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            border: none;
+            padding: 12px;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .email-row:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .status-unavailable {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .table-responsive {
+            max-height: 730px;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Thêm style cho biểu tượng X */
+        .status-x {
+            color: #e74c3c;
+            font-size: 24px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        /* Modal styles */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Styles cho modal Danh sách Mail */
+        #mailListModal {
+            z-index: 1000;
+        }
+
+        /* Styles cho modal Thông báo */
+        #passwordModal {
+            z-index: 1100;
+        }
+
+        /* Styles cho modal Xác nhận mua */
+        #purchaseModal {
+            z-index: 1050;
+        }
+
+        #passwordModal .modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            border: none;
+            max-width: 500px;
+            width: 90%;
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 0;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        #passwordModal .modal-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #passwordModal .modal-title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        #passwordModal .alert {
+            margin: 0;
+            border: none;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 1.1rem;
+        }
+
+        #passwordModal .alert i {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #f39c12;
+        }
+
+        #passwordModal .modal-body {
+            padding: 25px;
+        }
+
+        #passwordModal .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translate(-50%, -40%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+
+        /* Additional styles for mail list modal */
+        .mail-list-row {
+            transition: all 0.2s ease;
+        }
+
+        .mail-list-row:hover {
+            background-color: #f5f5f5;
+        }
+
+        .btn-buy-mail {
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-buy-mail:hover {
+            background-color: #219a52;
+            transform: translateY(-1px);
+        }
+
+        .btn-buy-mail:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .price-column {
+            font-weight: 500;
+            color: #e74c3c;
+        }
+
+        #mailListModal .modal-content {
+            max-width: 1400px;
+            width: 95%;
+            padding: 25px;
+            background: linear-gradient(145deg, #ffffff, #f0f2f5);
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        #mailListModal .modal-header {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            z-index: 1000;
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #mailListModal .modal-header .modal-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #mailListModal .modal-header .fas {
+            font-size: 28px;
+            color: #fff;
+        }
+
+        #mailListModal .btn-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #mailListModal .btn-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        #mailListModal .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(90vh - 120px);
+        }
+
+        .mail-card-parent {
+            width: 320px;
+            height: 380px;
+            perspective: 1000px;
+            margin: 15px;
+        }
+
+        .mail-card {
+            height: 100%;
+            border-radius: 25px;
+            background: linear-gradient(145deg, #00e1ff, #00c853);
+            transition: all 0.5s ease-in-out;
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mail-card .glass {
+            transform-style: preserve-3d;
+            position: absolute;
+            inset: 8px;
+            border-radius: 22px;
+            border-top-right-radius: 100px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            transform: translate3d(0px, 0px, 25px);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .mail-card .content {
+            padding: 35px 30px 0px 30px;
+            transform: translate3d(0, 0, 26px);
+            height: calc(100% - 100px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mail-card .content .title {
+            color: white;
+            font-weight: 800;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
+
+        .mail-card .content .text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .mail-card .content .details {
+            margin-top: auto;
+            padding: 15px 0;
+        }
+
+        .mail-card .price {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .mail-card .quantity {
+            position: absolute;
+            top: 85px;
+            right: 10px;
+            background: rgba(255, 255, 255,1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            color: #00894d;
+            font-weight: bold;
+            transform: translate3d(0, 0, 30px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .mail-card .bottom {
+            padding: 25px;
+            transform-style: preserve-3d;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate3d(0, 0, 26px);
+        }
+
+        .mail-card .buy-button {
+            background: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 25px;
+            color: #00894d;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translate3d(0, 0, 10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mail-card .buy-button:hover {
+            background: #00894d;
+            color: white;
+            transform: translate3d(0, -5px, 10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .mail-card .buy-button:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .mail-card-parent:hover .mail-card {
+            transform: rotate3d(1, 1, 0, 25deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style cho thanh scroll */
+        #mailListModal .modal-body::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #mailListModal .modal-body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        #mailListModal .modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            border-radius: 10px;
+            border: 2px solid #f0f2f5;
+        }
+
+        #mailListModal .modal-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(145deg, #2980b9, #3498db);
+        }
+
+        /* Thêm style cho nút copy */
+        .copy-btn {
+            padding: 4px 8px;
+            font-size: 14px;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .copy-btn i {
+            color: white;
+        }
+
+        /* Style cho tooltip thông báo copy */
+        .copy-tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 1000;
+            display: none;
+        }
+
+        /* Thêm style cho từng cột để tối ưu chiều rộng */
+        .table th:nth-child(1), /* Checkbox */
+        .table td:nth-child(1) {
+            width: 40px;
+            min-width: 40px;
+        }
+
+        .table th:nth-child(2), /* STT */
+        .table td:nth-child(2) {
+            width: 60px;
+            min-width: 60px;
+        }
+
+        .table th:nth-child(3), /* Email */
+        .table td:nth-child(3) {
+            width: 250px;
+            min-width: 250px;
+        }
+
+        .table th:nth-child(4), /* Mật khẩu Mail */
+        .table td:nth-child(4) {
+            width: 150px;
+            min-width: 150px;
+        }
+
+        .table th:nth-child(5), /* Trạng thái Mail */
+        .table td:nth-child(5) {
+            width: 150px;
+            min-width: 150px;
+        }
+
+        .table th:nth-child(6), /* Mật khẩu Tn */
+        .table td:nth-child(6) {
+            width: 150px;
+            min-width: 150px;
+        }
+
+        .table th:nth-child(7), /* Mật khẩu TF */
+        .table td:nth-child(7) {
+            width: 150px;
+            min-width: 150px;
+        }
+
+        .table th:nth-child(8), /* Trạng thái Tn */
+        .table td:nth-child(8) {
+            width: 180px;
+            min-width: 180px;
+        }
+
+        .table th:nth-child(9), /* Trạng thái Tf */
+        .table td:nth-child(9) {
+            width: 180px;
+            min-width: 180px;
+        }
+
+        .table th:nth-child(10), /* Sao chép */
+        .table td:nth-child(10) {
+            width: 80px;
+            min-width: 80px;
+        }
+
+        /* Style cho các ô trong bảng */
+        .table td {
+            padding: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Style cho bảng trong modal danh sách mail */
+        #mailListModal .table th:nth-child(1), /* ID */
+        #mailListModal .table td:nth-child(1) {
+            width: 80px;
+            min-width: 80px;
+        }
+
+        #mailListModal .table th:nth-child(2), /* Loại Mail */
+        #mailListModal .table td:nth-child(2) {
+            width: 200px;
+            min-width: 200px;
+        }
+
+        #mailListModal .table th:nth-child(3), /* Số Lượng */
+        #mailListModal .table td:nth-child(3) {
+            width: 120px;
+            min-width: 120px;
+        }
+
+        #mailListModal .table th:nth-child(4), /* Giá */
+        #mailListModal .table td:nth-child(4) {
+            width: 150px;
+            min-width: 150px;
+        }
+
+        #mailListModal .table th:nth-child(5), /* Thao Tác */
+        #mailListModal .table td:nth-child(5) {
+            width: 120px;
+            min-width: 120px;
+        }
+
+        /* Điều chỉnh chiều rộng tổng thể của modal */
+        #mailListModal .modal-content {
+            max-width: 1300px;
+            width: 100%;
+           
+        }
+
+        #mailListModal .table-responsive {
+            overflow-x: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        #mailListModal .table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        #purchaseModal .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f0f2f5);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        #purchaseModal .modal-header {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            border: none;
+        }
+
+        #purchaseModal .modal-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        #purchaseModal .modal-body {
+            padding: 20px;
+        }
+
+        #purchaseModal .purchase-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #purchaseModal .info-row {
+            margin-bottom: 10px;
+        }
+
+        #purchaseModal .label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        #purchaseModal .value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        #purchaseModal .price-highlight {
+            color: #e74c3c;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        #purchaseModal .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        #purchaseModal .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        #purchaseModal .total-price {
+            background: #f1f8ff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        #purchaseModal .modal-footer {
+            border-top: 1px solid #eee;
+            padding: 15px 20px;
+        }
+
+        #purchaseModal .btn-confirm-purchase {
+            background: linear-gradient(145deg, #27ae60, #219a52);
+            border: none;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #purchaseModal .btn-confirm-purchase:hover {
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+            transform: translateY(-1px);
+        }
+
+        #purchaseModal .btn-close-modal {
+            background: #f5f6f7;
+            border: none;
+            color: #666;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        #purchaseModal .btn-close-modal:hover {
+            background: #e8e9ea;
+            transform: translateY(-1px);
+        }
+
+        /* Modal styles */
+        #confirmFetchModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Overlay màu đen mờ */
+            z-index: 1000;
+            animation: fadeIn 0.1s ease;
+        }
+
+        #confirmFetchModal .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f0f2f5); /* Hiệu ứng gradient */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+            max-width: 500px;
+            width: 35%;
+            position: relative;
+            top: 20%;
+            justify-self: center;
+            animation: slideIn 0.2s ease; /* Hiệu ứng trượt vào */
+        }
+
+        #confirmFetchModal .modal-header {
+            background: linear-gradient(145deg, #3498db, #2980b9); /* Màu xanh gradient */
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #confirmFetchModal .modal-body {
+            padding: 20px;
+            font-size: 1rem;
+            color: #333;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        #confirmFetchModal .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+        }
+
+        #confirmFetchModal .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        #confirmFetchModal .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+        }
+
+        #confirmFetchModal .btn-secondary:hover {
+            background-color: #d6d6d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #confirmFetchModal .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: none;
+        }
+
+        #confirmFetchModal .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hiệu ứng fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Hiệu ứng slide-in */
+        @keyframes slideIn {
+            from {
+                transform: translate(-50%, -60%) scale(0.8); /* Trượt từ trên xuống và thu nhỏ */
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05); /* Phóng to nhẹ ở giữa */
+                opacity: 0.8;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1); /* Về vị trí và kích thước ban đầu */
+                opacity: 1;
+            }
+        }
+
+        /* Cải tiến style cho ô chọn trạng thái */
+        .form-select {
+            appearance: none; /* Loại bỏ giao diện mặc định của trình duyệt */
+            background-color: #f8f9fa; /* Màu nền nhẹ nhàng */
+            border: 2px solid var(--border-color); /* Viền mềm mại */
+            border-radius: 8px; /* Bo góc */
+            padding: 8px 12px; /* Khoảng cách bên trong */
+            font-size: 0.95rem; /* Kích thước chữ */
+            font-weight: 500; /* Đậm hơn một chút */
+            color: #333; /* Màu chữ */
+            transition: all 0.3s ease; /* Hiệu ứng mượt */
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none; /* Loại bỏ viền mặc định khi focus */
+            border-color: var(--primary-color); /* Đổi màu viền khi focus */
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Hiệu ứng đổ bóng */
+        }
+
+        .form-select:hover {
+            background-color: #f1f8ff; /* Màu nền khi hover */
+            border-color: var(--primary-color); /* Đổi màu viền khi hover */
+        }
+
+        /* Thêm biểu tượng mũi tên cho ô chọn */
+        .form-select {
+            background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"%3E%3Cpath fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1rem;
+        }
+
+        /* Màu sắc cho từng trạng thái */
+        .form-select option[value="chưa tạo acc"] {
+            background-color: #f8d7da; /* Màu đỏ nhạt */
+            color: #721c24;
+        }
+
+        .form-select option[value="tạo acc thành công"] {
+            background-color: #d4edda; /* Màu xanh nhạt */
+            color: #155724;
+        }
+
+        .form-select option[value="acc lỗi"] {
+            background-color: #fff3cd; /* Màu vàng nhạt */
+            color: #856404;
+        }
+        
+        /* Responsive: Điều chỉnh kích thước trên màn hình nhỏ */
+        @media (max-width: 768px) {
+            .form-select {
+                font-size: 0.85rem;
+                padding: 6px 10px;
+            }
+        }
+
+        /* Cải tiến nút Reg Acc */
+        #regAccBtn {
+            display: none; /* Ẩn mặc định */
+            background-color:rgb(104, 71, 224); /* Màu xanh lá */
+            color: white; /* Màu chữ trắng */
+            border: none; /* Loại bỏ viền */
+            padding: 10px 20px; /* Khoảng cách bên trong */
+            border-radius: 8px; /* Bo góc mềm mại */
+            font-size: 1rem; /* Kích thước chữ */
+            font-weight: bold; /* Chữ đậm */
+            text-transform: uppercase; /* Chữ in hoa */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+            transition: all 0.3s ease; /* Hiệu ứng mượt */
+            cursor: pointer; /* Con trỏ chuột */
+        }
+
+        #regAccBtn:hover {
+            background-color: #218838; /* Màu xanh đậm hơn khi hover */
+            transform: translateY(-2px); /* Hiệu ứng nổi lên */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Tăng đổ bóng khi hover */
+        }
+
+        #regAccBtn:active {
+            background-color: #1e7e34; /* Màu xanh đậm hơn khi nhấn */
+            transform: translateY(1px); /* Hiệu ứng nhấn xuống */
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Giảm đổ bóng khi nhấn */
+        }
+    </style>
+</head>
+<body>
+    <!-- Add Modal HTML -->
+    <div id="passwordModal" class="custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h4 class="modal-title">Thông báo</h4>
+            </div>
+            <div class="modal-body" id="modalMessage">
+            </div>
+            <div class="modal-footer">
+                <a href="/create-password/" class="btn btn-modal btn-add-password">Thêm mật khẩu</a>
+                <button class="btn btn-modal btn-close-modal" onclick="closeModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Mail List Modal -->
+    <div id="mailListModal" class="custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-envelope"></i>
+                <h4 class="modal-title">Danh Sách Mail Đồng Văn</h4>
+                <button type="button" class="btn-close" onclick="closeMailListModal()"></button>
+            </div>
+            <div class="modal-body" id="mailListCards">
+                <!-- Cards sẽ được thêm vào đây bằng JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Purchase Modal -->
+    <div id="purchaseModal" class="custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-shopping-cart"></i>
+                <h4 class="modal-title">Xác nhận mua Mail</h4>
+                <button type="button" class="btn-close" onclick="closePurchaseModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="purchase-info">
+                    <div class="info-row">
+                        <span class="label">ID Mail:</span>
+                        <span class="value">#${mailId}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Loại Mail:</span>
+                        <span class="value">${mailName}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Đơn giá:</span>
+                        <span class="value price-highlight">${formatPrice(mailPrice)}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="purchaseQuantity" class="form-label">Số lượng muốn mua:</label>
+                    <input type="number" class="form-control" id="purchaseQuantity" 
+                           min="1" max="${maxQuantity}" value="1" 
+                           placeholder="Nhập số lượng (tối đa ${maxQuantity})">
+                    <div class="total-price">
+                        <span class="label">Tổng tiền:</span>
+                        <span class="value">${formatPrice(mailPrice)}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-close-modal" onclick="closePurchaseModal()">Hủy bỏ</button>
+                <button class="btn-confirm-purchase" onclick="confirmPurchase()">
+                    <i class="fas fa-check"></i> Xác nhận mua
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal xác nhận lấy email dự trữ -->
+    <div id="confirmFetchModal" class="custom-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Xác nhận</h4>
+                <button type="button" class="btn-close" onclick="closeConfirmFetchModal()"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn lấy email dự trữ không?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeConfirmFetchModal()">Hủy</button>
+                <button class="btn btn-primary" onclick="confirmFetchEmails()">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Danh sách Email Khả Dụng</h2>
+            <div class="action-buttons">
+                <button id="regAccBtn" class="btn btn-success" style="display: none;">Reg Acc</button>
+
+                <button id="fetchEmailsBtn" class="btn btn-primary">Lấy Email Dự Trữ</button>
+                <button id="buyDongVanBtn" class="btn btn-success">Mua Mail Đồng Văn</button>
+                <a href="{% url 'work_management' %}" class="btn btn-primary">Quay lại</a>
+            </div>
+        </div>
+
+        <div class="table-responsive email-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
+                        <th>STT</th>
+                        <th>Email</th>
+                        <th>Mật khẩu Mail</th>
+                        <th>Trạng thái Mail</th>
+
+                        <th>Mật khẩu Tn</th>
+                        <th>Mật khẩu TF</th>
+                        <th>Trạng thái Tn</th>
+                        <th>Trạng thái Tf</th>
+                        <th>Sao chép</th>
+                    </tr>
+                </thead>
+                <tbody id="emailsTableBody">
+                    <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        function showModal(message) {
+            const modal = document.getElementById('passwordModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modalMessage.textContent = message;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('passwordModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeMailListModal() {
+            const modal = document.getElementById('mailListModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closePurchaseModal() {
+            const modal = document.getElementById('purchaseModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeConfirmFetchModal() {
+            const modal = document.getElementById('confirmFetchModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeAllModals() {
+            // Đóng tất cả các modal
+            const mailListModal = document.getElementById('mailListModal');
+            const purchaseModal = document.getElementById('purchaseModal');
+            
+            mailListModal.style.display = 'none';
+            purchaseModal.style.display = 'none';
+            
+            // Cho phép cuộn trang trở lại
+            document.body.style.overflow = 'auto';
+        }
+
+        // Hàm để hiển thị/ẩn nút Reg Acc
+        function toggleRegAccButton() {
+            const regAccBtn = document.getElementById('regAccBtn');
+            const checkedBoxes = document.querySelectorAll('.email-checkbox:checked');
+            regAccBtn.style.display = checkedBoxes.length > 0 ? 'block' : 'none';
+        }
+
+        // Hàm để hiển thị dữ liệu email
+        function displayEmails(emails) {
+            const emailsTableBody = document.getElementById('emailsTableBody');
+            emailsTableBody.innerHTML = '';
+            if (emails && emails.length > 0) {
+                emails.forEach((email, index) => {
+                    const row = document.createElement('tr');
+                    row.className = 'email-row';
+                    
+                    // Kiểm tra trạng thái TN và TF
+                    const showTNX = email.status_tn === 'chưa tạo acc';
+                    const showTFX = email.status_tf === 'chưa tạo acc';
+                    
+                    row.innerHTML = `
+                        <td>
+                            ${showTNX || showTFX ? 
+                                '<span class="status-x">✕</span>' : 
+                                '<input type="checkbox" class="email-checkbox" data-email="' + email.email + '" ' + (email.is_reg_acc ? 'disabled' : '') + '>'
+                            }
+                        </td>
+                        <td>${index + 1}</td>
+                        <td>${email.email}</td>
+                        <td>${email.password}</td>
+                        <td>
+                            <span class="status-badge status-available">
+                                ${email.status}
+                            </span>
+                        </td>
+                        <td>${email.pass_TN}</td>
+                        <td>${email.pass_TF}</td>
+                        <td>
+                            <select class="form-select status-select" data-email="${email.email}" data-type="tn" ${email.is_reg_acc ? 'disabled' : ''}>
+                                <option value="chưa tạo acc" ${email.status_tn === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
+                                <option value="tạo acc thành công" ${email.status_tn === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
+                                <option value="acc lỗi" ${email.status_tn === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select status-select" data-email="${email.email}" data-type="tf" ${email.is_reg_acc ? 'disabled' : ''}>
+                                <option value="chưa tạo acc" ${email.status_tf === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
+                                <option value="tạo acc thành công" ${email.status_tf === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
+                                <option value="acc lỗi" ${email.status_tf === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary copy-btn" 
+                                    onclick="copyEmailInfo('${email.email}', '${email.password}', '${email.refresh_token || ''}', '${email.client_id || ''}')"
+                                    title="Sao chép thông tin">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </td>
+                    `;
+                    emailsTableBody.appendChild(row);
+                });
+
+                // Cập nhật màu sắc cho các ô chọn trạng thái
+                updateSelectStyles();
+            } else {
+                emailsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="11" class="text-center py-4">
+                            Không có email nào khả dụng
+                        </td>
+                    </tr>
+                `;
+            }
+            toggleRegAccButton();
+        }
+
+        // Hàm cập nhật màu sắc cho các ô chọn trạng thái
+        function updateSelectStyles() {
+            const selects = document.querySelectorAll('.status-select');
+
+            selects.forEach(select => {
+                const selectedValue = select.value;
+
+                if (selectedValue === 'tạo acc thành công') {
+                    select.style.backgroundColor = '#2ecc71'; // Nền xanh
+                    select.style.color = 'white'; // Chữ trắng
+                } else if (selectedValue === 'acc lỗi') {
+                    select.style.backgroundColor = '#e74c3c'; // Nền đỏ
+                    select.style.color = 'white'; // Chữ trắng
+                } else {
+                    select.style.backgroundColor = '#f8f9fa'; // Nền mặc định
+                    select.style.color = '#333'; // Chữ mặc định
+                }
+
+                // Lắng nghe sự kiện thay đổi giá trị
+                select.addEventListener('change', function () {
+                    updateSelectStyles(); // Cập nhật lại màu sắc khi giá trị thay đổi
+                });
+            });
+        }
+
+        // Hàm để hiển thị dữ liệu từ localStorage
+        function displayEmailsFromStorage() {
+            // Lấy dữ liệu từ server nếu có
+            const serverEmails = JSON.parse('{{ emails|safe }}');
+            console.log('Server emails:', serverEmails);
+            localStorage.setItem('employee_worksession', JSON.stringify(serverEmails));
+            displayEmails(serverEmails);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const fetchEmailsBtn = document.getElementById('fetchEmailsBtn');
+            const confirmFetchModal = document.getElementById('confirmFetchModal');
+
+            // Hiển thị modal xác nhận khi bấm nút "Lấy Email Dự Trữ"
+            fetchEmailsBtn.addEventListener('click', function () {
+                confirmFetchModal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi modal mở
+            });
+
+            // Hàm đóng modal xác nhận
+            window.closeConfirmFetchModal = function () {
+                confirmFetchModal.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Cho phép cuộn trang trở lại
+            };
+
+            // Hàm xác nhận và gọi API
+            window.confirmFetchEmails = async function () {
+                closeConfirmFetchModal(); // Đóng modal xác nhận
+                try {
+                    const response = await fetch('/api/available-emails/');
+                    const data = await response.json();
+
+                    if (data.success) {
+                        const existingData = localStorage.getItem('employee_worksession');
+                        let existingEmails = [];
+                        if (existingData) {
+                            existingEmails = JSON.parse(existingData);
+                        }
+
+                        const newEmails = data.data;
+                        const updatedEmails = [...existingEmails];
+
+                        newEmails.forEach(newEmail => {
+                            const existingIndex = existingEmails.findIndex(e => e.email === newEmail.email);
+                            if (existingIndex === -1) {
+                                updatedEmails.push(newEmail);
+                            }
+                        });
+
+                        localStorage.setItem('employee_worksession', JSON.stringify(updatedEmails));
+                        displayEmails(updatedEmails);
+                    } else {
+                        if (data.missing_passwords) {
+                            showModal(data.error);
+                        } else {
+                            alert('Có lỗi xảy ra khi lấy dữ liệu: ' + data.error);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi gọi API');
+                }
+            };
+
+            const regAccBtn = document.getElementById('regAccBtn');
+            const buyDongVanBtn = document.getElementById('buyDongVanBtn');
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const emailsTableBody = document.getElementById('emailsTableBody');
+
+            // Xử lý sự kiện cho checkbox "Chọn tất cả"
+            selectAllCheckbox.addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.email-checkbox');
+                checkboxes.forEach(checkbox => {
+                    // Chỉ chọn những checkbox không bị disabled (is_reg_acc=false)
+                    if (!checkbox.disabled) {
+                        checkbox.checked = this.checked;
+                    }
+                });
+                toggleRegAccButton();
+            });
+
+            // Xử lý sự kiện cho các checkbox riêng lẻ
+            emailsTableBody.addEventListener('change', function(e) {
+                if (e.target.classList.contains('email-checkbox')) {
+                    // Kiểm tra nếu tất cả checkbox không bị disabled đều được chọn
+                    const checkboxes = document.querySelectorAll('.email-checkbox:not([disabled])');
+                    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                    selectAllCheckbox.checked = allChecked;
+                    toggleRegAccButton();
+                }
+            });
+
+            // Hàm để lưu dữ liệu vào server
+            async function saveWorksessionToServer() {
+                const storedData = localStorage.getItem('employee_worksession');
+                if (!storedData) return;
+
+                try {
+                    const response = await fetch('/api/save-worksession/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `data=${storedData}`
+                    });
+                    
+                    const data = await response.json();
+                    if (!data.success) {
+                        console.error('Lỗi khi lưu phiên làm việc:', data.error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+
+            // Lưu dữ liệu khi đóng trang
+            window.addEventListener('beforeunload', function(e) {
+                // Lưu dữ liệu trước khi đóng trang
+                saveWorksessionToServer();
+                
+                // Hiển thị thông báo xác nhận
+                e.preventDefault();
+                e.returnValue = '';
+            });
+
+            // Lưu dữ liệu khi chuyển trang
+            window.addEventListener('unload', function() {
+                saveWorksessionToServer();
+            });
+
+            // Lưu dữ liệu định kỳ (mỗi 5 phút)
+            setInterval(function() {
+                saveWorksessionToServer();
+            }, 5 * 60 * 1000); // 5 phút
+
+            // Lưu dữ liệu khi thay đổi trạng thái
+            emailsTableBody.addEventListener('change', function(e) {
+                if (e.target.classList.contains('status-select')) {
+                    const email = e.target.dataset.email;
+                    const type = e.target.dataset.type;
+                    const newStatus = e.target.value;
+                    updateStatusInStorage(email, type, newStatus);
+                }
+            });
+
+            // Lưu dữ liệu khi tạo tài khoản
+            regAccBtn.addEventListener('click', async function() {
+                const checkedBoxes = document.querySelectorAll('.email-checkbox:checked');
+                const selectedEmails = Array.from(checkedBoxes).map(checkbox => {
+                    const storedData = localStorage.getItem('employee_worksession');
+                    if (storedData) {
+                        const emails = JSON.parse(storedData);
+                        return emails.find(e => e.email === checkbox.dataset.email);
+                    }
+                    return null;
+                }).filter(email => email !== null);
+
+                if (selectedEmails.length > 0) {
+                    try {
+                        const response = await fetch('/api/create-textnow/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `data=${JSON.stringify(selectedEmails)}`
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            const storedData = localStorage.getItem('employee_worksession');
+                            if (storedData) {
+                                const emails = JSON.parse(storedData);
+                                selectedEmails.forEach(selectedEmail => {
+                                    const emailIndex = emails.findIndex(e => e.email === selectedEmail.email);
+                                    if (emailIndex !== -1) {
+                                        emails[emailIndex].is_reg_acc = true;
+                                    }
+                                });
+                                localStorage.setItem('employee_worksession', JSON.stringify(emails));
+                                displayEmails(emails);
+                                saveWorksessionToServer(); // Lưu sau khi tạo tài khoản
+                            }
+                            alert('Đã tạo tài khoản thành công');
+                        } else {
+                            alert('Có lỗi xảy ra: ' + data.error);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Có lỗi xảy ra khi gọi API');
+                    }
+                }
+            });
+
+            // Thêm xử lý sự kiện cho nút Mua Mail Đồng Văn
+            buyDongVanBtn.addEventListener('click', async function() {
+                try {
+                    const response = await fetch('https://api.dongvanfb.net/user/account_type?apikey=GfeXobVqUdD8WTDwvtKE6GBPC');
+                    const data = await response.json();
+                    
+                    if (data.status && data.error_code === 200) {
+                        showMailListModal(data.data);
+                    } else {
+                        alert('Có lỗi khi lấy danh sách mail: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi gọi API');
+                }
+            });
+
+            // Hàm để cập nhật trạng thái trong localStorage
+            function updateStatusInStorage(email, type, newStatus) {
+                const storedData = localStorage.getItem('employee_worksession');
+                if (storedData) {
+                    const emails = JSON.parse(storedData);
+                    const emailIndex = emails.findIndex(e => e.email === email);
+                    if (emailIndex !== -1) {
+                        if (type === 'tn') {
+                            emails[emailIndex].status_tn = newStatus;
+                        } else if (type === 'tf') {
+                            emails[emailIndex].status_tf = newStatus;
+                        }
+                        localStorage.setItem('employee_worksession', JSON.stringify(emails));
+                        displayEmails(emails); // Cập nhật lại giao diện
+                    }
+                }
+            }
+
+            // Hiển thị dữ liệu từ localStorage khi trang được tải
+            displayEmailsFromStorage();
+        });
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+
+        function showMailListModal(mailList) {
+            const modal = document.getElementById('mailListModal');
+            const cardsContainer = document.getElementById('mailListCards');
+            cardsContainer.innerHTML = '';
+
+            const sortedMailList = [...mailList].sort((a, b) => a.price - b.price);
+
+            sortedMailList.forEach(mail => {
+                const cardHtml = `
+                    <div class="mail-card-parent">
+                        <div class="mail-card" data-mail-id="${mail.id}">
+                            <div class="glass"></div>
+                            <div class="quantity">${mail.quality} mail</div>
+                            <div class="content">
+                                <span class="title">${mail.name}</span>
+                                <div class="details">
+                                    <div class="price">${formatPrice(mail.price)}</div>
+                                    <span class="text                                   
+                                        ✓ Mail chất lượng cao<br>
+                                        ✓ Bảo hành 24h<br>
+                                        ✓ Hỗ trợ tận tình<br>
+                                        ✓ Giao mail ngay
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bottom">
+                                <button class="buy-button" 
+                                        onclick="buyMail(${mail.id})" 
+                                        ${mail.quality === 0 ? 'disabled' : ''}>
+                                    ${mail.quality === 0 ? 'Hết hàng' : 'Mua ngay'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                cardsContainer.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        let currentMailData = null;
+
+        async function buyMail(mailId) {
+            try {
+                const mailCard = document.querySelector(`.mail-card[data-mail-id="${mailId}"]`);
+                if (!mailCard) {
+                    throw new Error('Không tìm thấy thông tin mail');
+                }
+
+                const mailName = mailCard.querySelector('.title').textContent;
+                const priceText = mailCard.querySelector('.price').textContent;
+                const price = parseInt(priceText.replace(/[^\d]/g, '')); // Lấy số từ chuỗi giá
+                const quantityText = mailCard.querySelector('.quantity').textContent;
+                const maxQuantity = parseInt(quantityText); // Lấy số từ chuỗi "X mail"
+
+                if (isNaN(price) || isNaN(maxQuantity)) {
+                    throw new Error('Dữ liệu không hợp lệ');
+                }
+
+                showPurchaseModal(mailId, mailName, price, maxQuantity);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi mở form mua mail: ' + error.message);
+            }
+        }
+
+        function showPurchaseModal(mailId, mailName, mailPrice, maxQuantity) {
+            const modal = document.getElementById('purchaseModal');
+            if (!modal) {
+                console.error('Không tìm thấy modal');
+                return;
+            }
+
+            // Giới hạn số lượng tối đa là 20
+            const actualMaxQuantity = Math.min(maxQuantity, 20);
+
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h4 class="modal-title">Xác nhận mua Mail</h4>
+                        <button type="button" class="btn-close" onclick="closePurchaseModal()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="purchase-info mb-4">
+                            <div class="info-row">
+                                <span class="label">ID Mail:</span>
+                                <span class="value">#${mailId}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Loại Mail:</span>
+                                <span class="value">${mailName}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Đơn giá:</span>
+                                <span class="value price-highlight">${formatPrice(mailPrice)}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchaseQuantity" class="form-label">Số lượng muốn mua (tối đa ${actualMaxQuantity}):</label>
+                            <input type="number" class="form-control" id="purchaseQuantity" 
+                                   min="1" max="${actualMaxQuantity}" value="1" 
+                                   placeholder="Nhập số lượng (tối đa ${actualMaxQuantity})">
+                            <div class="total-price mt-3">
+                                <span class="label">Tổng tiền:</span>
+                                <span id="totalPrice" class="value price-highlight">${formatPrice(mailPrice)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-modal btn-close-modal" onclick="closePurchaseModal()">Hủy</button>
+                        <button class="btn btn-modal btn-confirm-purchase" onclick="confirmPurchase()">Xác nhận mua</button>
+                    </div>
+                </div>
+            `;
+            
+            currentMailData = {
+                id: mailId,
+                name: mailName,
+                price: mailPrice,
+                maxQuantity: actualMaxQuantity
+            };
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            const quantityInput = document.getElementById('purchaseQuantity');
+            if (quantityInput) {
+                quantityInput.addEventListener('input', function() {
+                    let value = parseInt(this.value) || 0;
+                    
+                    // Giới hạn giá trị nhập vào
+                    if (value < 1) {
+                        this.value = 1;
+                        value = 1;
+                    }
+                    if (value > actualMaxQuantity) {
+                        this.value = actualMaxQuantity;
+                        value = actualMaxQuantity;
+                    }
+                    
+                    // Cập nhật tổng tiền
+                    const totalPrice = value * mailPrice;
+                    document.getElementById('totalPrice').textContent = formatPrice(totalPrice);
+                });
+            }
+        }
+
+        async function confirmPurchase() {
+            if (!currentMailData) return;
+            
+            const quantity = parseInt(document.getElementById('purchaseQuantity').value);
+            if (quantity < 1 || quantity > currentMailData.maxQuantity) {
+                alert('Số lượng không hợp lệ!');
+                return;
+            }
+
+            // Kiểm tra mật khẩu từ email gần nhất
+            const existingData = localStorage.getItem('employee_worksession');
+            let existingEmails = [];
+            if (existingData) {
+                existingEmails = JSON.parse(existingData);
+            }
+
+            const lastEmail = existingEmails.length > 0 ? existingEmails[existingEmails.length - 1] : null;
+            const defaultPassTN = lastEmail ? lastEmail.pass_TN : "";
+            const defaultPassTF = lastEmail ? lastEmail.pass_TF : "";
+
+            // Kiểm tra nếu không có mật khẩu
+            if (!defaultPassTN || !defaultPassTF || defaultPassTN.trim() === "" || defaultPassTF.trim() === "") {
+                const missingPasswords = [];
+                if (!defaultPassTN || defaultPassTN.trim() === "") missingPasswords.push("TextNow");
+                if (!defaultPassTF || defaultPassTF.trim() === "") missingPasswords.push("TextFree");
+
+                const modal = document.getElementById('passwordModal');
+                const modalMessage = document.getElementById('modalMessage');
+                modalMessage.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Không thể mua mail!</strong><br>
+                        Vui lòng cung cấp mật khẩu cho các ứng dụng sau:<br>
+                        ${missingPasswords.join(", ")}
+                    </div>
+                `;
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                closePurchaseModal(); // Đóng modal mua hàng
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.dongvanfb.net/user/buy?apikey=GfeXobVqUdD8WTDwvtKE6GBPC&account_type=${currentMailData.id}&quality=${quantity}&type=full`);
+                const data = await response.json();
+                
+                if (data.status && data.error_code === 200) {
+                    // Xử lý dữ liệu trả về
+                    const listData = data.data.list_data;
+                    const newEmails = listData.map(item => {
+                        const [email, password, refreshToken, clientId] = item.split('|');
+                        return {
+                            email: email,
+                            password: password,
+                            refresh_token: refreshToken,
+                            client_id: clientId,
+                            status: "mail mua đồng văn",
+                            pass_TN: defaultPassTN,
+                            pass_TF: defaultPassTF,
+                            status_tn: "chưa tạo acc",
+                            status_tf: "chưa tạo acc",
+                            is_provided: false,
+                            supplier: "Dong Van",
+                        };
+                    });
+
+                    // Kết hợp email mới và email hiện có
+                    const updatedEmails = [...existingEmails, ...newEmails];
+                    localStorage.setItem('employee_worksession', JSON.stringify(updatedEmails));
+
+                    // Cập nhật giao diện
+                    displayEmails(updatedEmails);
+                    // Lưu vào server
+                    // Hiển thị thông báo thành công
+                    alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.data.order_code}\nSố dư còn lại: ${data.data.balance.toLocaleString('vi-VN')} VNĐ`);
+                    
+                    // Đóng tất cả modal
+                    closeAllModals();
+                } else {
+                    alert('Có lỗi khi mua mail: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi mua mail');
+            }
+        }
+
+        function copyEmailInfo(email, password, refreshToken, clientId) {
+            const textToCopy = `${email}|${password}|${refreshToken}|${clientId}`;
+            
+            // Tạo một element tạm thời để copy
+            const tempInput = document.createElement('textarea');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // Hiển thị tooltip thông báo
+            const tooltip = document.createElement('div');
+            tooltip.className = 'copy-tooltip';
+            tooltip.textContent = 'Đã sao chép!';
+            
+            // Lấy vị trí chuột
+            const event = window.event;
+            tooltip.style.left = (event.clientX + 10) + 'px';
+            tooltip.style.top = (event.clientY - 25) + 'px';
+            
+            document.body.appendChild(tooltip);
+            tooltip.style.display = 'block';
+
+            // Xóa tooltip sau 1 giây
+            setTimeout(() => {
+                document.body.removeChild(tooltip);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
+{% endblock %}
