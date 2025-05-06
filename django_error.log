@@ -2004,3 +2004,15 @@ Traceback (most recent call last):
     users_collection, client = get_collection_handle('users')
 TypeError: 'Collection' object is not iterable
 "GET / HTTP/1.1" 500 74204
+Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+TypeError: 'Collection' object is not iterable
+"GET / HTTP/1.1" 500 73766

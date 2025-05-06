@@ -117,7 +117,7 @@ def manager_textnow_view(request):
             if '_id' in employee:
                 employee['id'] = str(employee['_id'])
             if 'created_at' in employee:
-                employee['created_at'] = employee['created_at'].split('T')[0]
+                employee['created_at'] = datetime.strptime(employee['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
         
         # Lấy danh sách người tạo và trạng thái
         creators = list(collection.distinct('created_by'))

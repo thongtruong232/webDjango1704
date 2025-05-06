@@ -668,7 +668,7 @@
                                 </span>
                             </td>
                             <td>{{ employee.created_by }}</td>
-                            <td>{{ employee.created_at }}</td>
+                            <td>{{ employee.created_at|date:"d/m/Y" }}</td>
                             <td>
                                 <button class="btn btn-copy" 
                                         data-info="{{ employee.full_information }}"
