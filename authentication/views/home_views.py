@@ -139,7 +139,8 @@ def home_view(request):
             'total_pages': 1,
             'has_more': False,
             'page_range': [1],
-            'start_index': 0
+            'start_index': 0,
+            'name': request.user.username
         })
         
     try:

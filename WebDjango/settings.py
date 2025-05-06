@@ -229,14 +229,14 @@ USE_I18N = True
 USE_TZ = True
 
 # Redis Configuration
-REDIS_HOST = '207.148.69.229'  # Sử dụng địa chỉ IP trực tiếp
-REDIS_PORT = '6379'
-REDIS_PASSWORD = 'thongtruong232'
+REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')  # Mặc định là localhost
+REDIS_PORT = os.getenv('REDIS_PORT', '6379')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'thongtruong232')
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',  # Thêm mật khẩu vào URL
+        'LOCATION': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PASSWORD': REDIS_PASSWORD,
@@ -249,6 +249,7 @@ CACHES = {
             },
             'MAX_CONNECTIONS': 1000,
             'RETRY_ON_TIMEOUT': True,
+            'IGNORE_EXCEPTIONS': True,  # Bỏ qua lỗi kết nối tạm thời
         }
     }
 }
@@ -259,7 +260,7 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             'hosts': [{
-                'address': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0',  # Thêm mật khẩu vào URL
+                'address': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0',
                 'password': REDIS_PASSWORD
             }],
             'capacity': 1500,
@@ -271,6 +272,7 @@ CHANNEL_LAYERS = {
                 'http.response*': 200,
                 'websocket.send*': 200,
             },
+            'symmetric_encryption_keys': [SECRET_KEY],  # Mã hóa dữ liệu WebSocket
         },
     },
 }
