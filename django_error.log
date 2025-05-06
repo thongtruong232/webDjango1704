@@ -641,3 +641,23 @@ ERROR 2025-04-28 12:50:24,188 consumers 13572 11972 Error in WebSocket connect: 
 ERROR 2025-04-28 12:51:18,214 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
 ERROR 2025-04-28 12:51:20,244 consumers 13572 11972 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. 10061.
 ERROR 2025-04-28 12:51:25,349 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-05-06 10:25:28,891 login_views 30512 9884 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:27:41,182 login_views 3352 29508 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:28:14,970 login_views 3352 19616 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:03,907 login_views 3352 26000 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:19,679 login_views 3352 19424 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:48,269 consumers 3352 27112 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:50,306 consumers 3352 27112 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:42,737 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:49,817 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:55,886 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:57,924 consumers 21336 13948 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:44:02,964 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:01:43,582 login_views 19676 29096 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:03:20,004 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:03:45,848 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:03:56,926 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:04:04,009 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:04:04,589 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:04:06,062 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:40:03,516 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).

@@ -388,7 +388,7 @@ function showAlert(message, type) {
 
 // Hàm cập nhật trạng thái
 function updateStatus(recordId, newStatus, link) {
-    console.log('Starting updateStatus:', { recordId, newStatus });
+    // console.log('Starting updateStatus:', { recordId, newStatus });
     
     if (!recordId) {
         console.error('Record ID is missing');
@@ -406,8 +406,8 @@ function updateStatus(recordId, newStatus, link) {
     formData.append('record_id', recordId);
     formData.append('status', newStatus);
     
-    console.log('Sending request to:', APP_CONFIG.updateStatusUrl);
-    console.log('Request data:', formData.toString());
+    // console.log('Sending request to:', APP_CONFIG.updateStatusUrl);
+    // console.log('Request data:', formData.toString());
     
     fetch(APP_CONFIG.updateStatusUrl, {
         method: 'POST',
@@ -418,23 +418,23 @@ function updateStatus(recordId, newStatus, link) {
         body: formData.toString()
     })
     .then(response => {
-        console.log('Response status:', response.status);
+        // console.log('Response status:', response.status);
         return response.json();
     })
     .then(data => {
-        console.log('Response data:', data);
+        // console.log('Response data:', data);
         
         if (data.success) {
             const row = link.closest('tr');
-            console.log('Updating UI for row:', row);
+            // console.log('Updating UI for row:', row);
             
             // Cập nhật trạng thái nếu có cột trạng thái
             const statusBadge = row.querySelector('.status-badge');
             if (statusBadge) {
-                console.log('Updating status badge:', {
-                    oldStatus: statusBadge.textContent,
-                    newStatus: data.new_status
-                });
+                // console.log('Updating status badge:', {
+                //     oldStatus: statusBadge.textContent,
+                //     newStatus: data.new_status
+                // });
                 statusBadge.textContent = data.new_status;
                 statusBadge.className = `status-badge status-${data.new_status.toLowerCase().replace(/\s+/g, '-')}`;
             }
@@ -446,7 +446,7 @@ function updateStatus(recordId, newStatus, link) {
             
             // Ẩn dòng sau khi cập nhật trạng thái cho cả nhanvien và kiemtra
             if (APP_CONFIG.isNhanvien || APP_CONFIG.isKiemtra) {
-                console.log('Hiding row for role:', APP_CONFIG.isNhanvien ? 'nhanvien' : 'kiemtra');
+                // console.log('Hiding row for role:', APP_CONFIG.isNhanvien ? 'nhanvien' : 'kiemtra');
                 row.style.transition = 'all 0.4s ease';
                 row.style.opacity = '0';
                 row.style.transform = 'translateX(20px)';
@@ -455,7 +455,7 @@ function updateStatus(recordId, newStatus, link) {
                     // Kiểm tra nếu không còn dòng nào
                     const tbody = document.querySelector('#emailTable tbody');
                     if (tbody.children.length === 0) {
-                        console.log('No rows left, triggering load more');
+                        // console.log('No rows left, triggering load more');
                         const loadMoreBtn = document.getElementById('loadMoreBtn');
                         if (loadMoreBtn) {
                             loadMoreBtn.click();
@@ -495,11 +495,11 @@ function attachUpdateStatusListeners() {
                 bootstrap.Dropdown.getInstance(dropdownToggle).hide();
             }
             
-            console.log('Click event:', {
-                recordId,
-                newStatus,
-                element: this
-            });
+            // console.log('Click event:', {
+            //     recordId,
+            //     newStatus,
+            //     element: this
+            // });
             
             if (!recordId) {
                 console.error('Record ID is missing from element:', this);
@@ -564,18 +564,18 @@ function loadMoreEmails() {
 
 // Hàm xử lý thay đổi trạng thái checkbox
 function handleCheckboxChange(checkbox) {
-    console.log('Checkbox change event triggered');
+    // console.log('Checkbox change event triggered');
     const row = checkbox.closest('tr');
     const recordId = row.dataset.recordId;
     const status = checkbox.value;
     const isChecked = checkbox.checked;
     
-    console.log('Checkbox data:', {
-        recordId,
-        status,
-        isChecked,
-        row: row
-    });
+    // console.log('Checkbox data:', {
+    //     recordId,
+    //     status,
+    //     isChecked,
+    //     row: row
+    // });
     
     if (!recordId) {
         console.error('Không tìm thấy record ID');

@@ -36,7 +36,7 @@ def work_time_stats(request):
     user_id = request.GET.get('user_id')
     export_excel = request.GET.get('export') == 'true'  # Thêm flag xuất Excel
 
-    logger.info(f"work_time_stats called with params - start_date: {start_date}, end_date: {end_date}, user_id: {user_id}")
+    # logger.info(f"work_time_stats called with params - start_date: {start_date}, end_date: {end_date}, user_id: {user_id}")
 
     # Xử lý ngày tháng
     if not end_date:
@@ -246,7 +246,6 @@ def work_time_stats(request):
         return render(request, 'authentication/work_time_stats.html', context)
         
     except Exception as e:
-        logger.error(f"Error in work_time_stats: {str(e)}", exc_info=True)
         messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
         return render(request, 'authentication/work_time_stats.html', {
             'stats': [],
@@ -464,7 +463,7 @@ def check_user_status(request):
             data = json.loads(request.body)
             user_ids = data.get('user_ids', [])
             
-            logger.info(f"check_user_status called with user_ids: {user_ids}")
+            # logger.info(f"check_user_status called with user_ids: {user_ids}")
             
             if not user_ids:
                 logger.warning("No user_ids provided")
@@ -487,7 +486,7 @@ def check_user_status(request):
                 current_time = timezone.now()
                 
                 for user_id in user_ids:
-                    logger.info(f"Processing user_id: {user_id}")
+                    # logger.info(f"Processing user_id: {user_id}")
                     
                     # Tìm user trong MongoDB
                     mongo_user = users_collection.find_one({'user_id': str(user_id)})
@@ -502,19 +501,19 @@ def check_user_status(request):
                         sort=[('login_time', -1)]
                     )
                     
-                    logger.info(f"Latest activity for user {user_id}: {latest_activity}")
+                    # logger.info(f"Latest activity for user {user_id}: {latest_activity}")
                     
                     logout_time = None
                     session_id = None
                     
                     if latest_activity:
                         session_id = latest_activity.get('session_id')
-                        logger.info(f"Session ID: {session_id}")
+                        # logger.info(f"Session ID: {session_id}")
                         
                         # Kiểm tra xem có thời gian logout không
                         if latest_activity.get('logout_time'):
                             logout_time = latest_activity['logout_time']
-                            logger.info(f"Found logout time: {logout_time}")
+                            # logger.info(f"Found logout time: {logout_time}")
                     
                     statuses.append({
                         'user_id': user_id,
@@ -522,7 +521,7 @@ def check_user_status(request):
                         'session_id': session_id
                     })
                 
-                logger.info(f"Returning statuses: {statuses}")
+                # logger.info(f"Returning statuses: {statuses}")
                 return JsonResponse({
                     'success': True,
                     'statuses': statuses

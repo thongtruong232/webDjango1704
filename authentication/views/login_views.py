@@ -135,9 +135,9 @@ def login_view(request):
                                 messages.error(request, 'Có lỗi xảy ra, vui lòng thử lại')
                                 return render(request, 'authentication/login.html')
                             
-                            logger.info(f"Session saved with key: {request.session.session_key}")
-                            logger.info(f"OTP code: {otp_code}")
-                            logger.info(f"User ID: {user.id}")
+                            # logger.info(f"Session saved with key: {request.session.session_key}")
+                            # logger.info(f"OTP code: {otp_code}")
+                            # logger.info(f"User ID: {user.id}")
                             
                             return render(request, 'authentication/login.html', {
                                 'otp_required': True,
@@ -149,8 +149,8 @@ def login_view(request):
         except ValidationError as e:
             messages.error(request, str(e))
         except Exception as e:
-            logger.error(f"Login error: {str(e)}", exc_info=True)
-            messages.error(request, 'Có lỗi xảy ra, vui lòng thử lại sau')
+            logger.error(f"Login error: {str(e)}")
+            return render(request, 'authentication/login.html', {'error': 'Có lỗi xảy ra'})
     
     return render(request, 'authentication/login.html')
 
@@ -162,10 +162,10 @@ def verify_otp_view(request):
         username = request.session.get('otp_username')
         
         # Debug log
-        logger.info(f"Input OTP: {input_otp}")
-        logger.info(f"Session OTP: {session_otp}")
-        logger.info(f"Pre User ID: {pre_user_id}")
-        logger.info(f"Username: {username}")
+        # logger.info(f"Input OTP: {input_otp}")
+        # logger.info(f"Session OTP: {session_otp}")
+        # logger.info(f"Pre User ID: {pre_user_id}")
+        # logger.info(f"Username: {username}")
         
         # Kiểm tra session data
         if not all([input_otp, session_otp, pre_user_id, username]):

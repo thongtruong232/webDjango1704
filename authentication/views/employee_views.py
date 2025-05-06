@@ -22,105 +22,6 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-@login_required
-def employee_verified_view(request):
-    try:
-        print('Đã vào trang verified')
-        # Lấy thông tin user từ MongoDB
-        users_collection, client = get_collection_handle('users')
-        if users_collection is None:
-            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-            return render(request, 'authentication/employee_verified.html', {
-                'textnow_accounts': [],
-                'current_page': 1,
-                'total_pages': 1
-            })
-
-        try:
-            # Lấy thông tin user
-            user_data = users_collection.find_one({'user_id': str(request.user.id)})
-            if not user_data:
-                messages.error(request, 'Không tìm thấy thông tin người dùng')
-                return redirect('login')
-
-            # Lấy dữ liệu TextNow accounts
-            textnow_collection = client['textnow']['accounts']
-            query = {'assigned_to': str(request.user.id)}
-            
-            # Phân trang
-            page = int(request.GET.get('page', 1))
-            per_page = 10
-            skip = (page - 1) * per_page
-
-            # Đếm tổng số bản ghi
-            total_records = textnow_collection.count_documents(query)
-            total_pages = (total_records + per_page - 1) // per_page
-
-            # Lấy dữ liệu phân trang
-            accounts = list(textnow_collection.find(query)
-                          .sort('created_at', -1)
-                          .skip(skip)
-                          .limit(per_page))
-
-            # Xử lý dữ liệu
-            processed_accounts = []
-            for account in accounts:
-                try:
-                    # Thêm mongo_id
-                    account['mongo_id'] = str(account['_id'])
-                    
-                    # Xử lý thời gian với timezone
-                    if isinstance(account['created_at'], str):
-                        created_at = datetime.fromisoformat(account['created_at'])
-                    else:
-                        created_at = account['created_at']
-                    
-                    # Đảm bảo created_at có timezone
-                    if created_at.tzinfo is None:
-                        created_at = timezone.make_aware(created_at)
-                    
-                    now = timezone.now()
-                    time_diff = now - created_at
-                    
-                    if time_diff.days > 0:
-                        account['time_info'] = f"{time_diff.days} ngày trước"
-                    elif time_diff.seconds >= 3600:
-                        hours = time_diff.seconds // 3600
-                        account['time_info'] = f"{hours} giờ trước"
-                    else:
-                        minutes = time_diff.seconds // 60
-                        account['time_info'] = f"{minutes} phút trước"
-                        
-                except Exception as e:
-                    logger.error(f"Error processing account {account.get('_id')}: {str(e)}")
-                    continue
-                    
-                processed_accounts.append(account)
-
-            context = {
-                'textnow_accounts': processed_accounts,
-                'current_page': page,
-                'total_pages': total_pages,
-                'user_data': user_data
-            }
-
-            return render(request, 'authentication/employee_verified.html', context)
-
-        finally:
-            if client:
-                try:
-                    client.close()
-                except Exception as e:
-                    logger.error(f"Error closing MongoDB connection: {str(e)}")
-
-    except Exception as e:
-        logger.error(f"Error in employee_verified_view: {str(e)}", exc_info=True)
-        messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
-        return render(request, 'authentication/employee_verified.html', {
-            'textnow_accounts': [],
-            'current_page': 1,
-            'total_pages': 1
-        })
 
 def get_vietnam_datetime():
     """
@@ -150,7 +51,6 @@ def create_email_view(request):
                     try:
                         file_data = import_file.read().decode('utf-8')
                         raw_lines = file_data.splitlines()
-                        logger.info(f"Đọc được {len(raw_lines)} dòng từ file upload")
                     except Exception as e:
                         logger.error(f"Lỗi đọc file: {str(e)}", exc_info=True)
                         messages.error(request, "File upload không đúng định dạng hoặc bị lỗi")
@@ -158,7 +58,6 @@ def create_email_view(request):
 
                 elif cleaned_data.get('bulk_input'):
                     raw_lines = cleaned_data['bulk_input'].splitlines()
-                    logger.info(f"Đọc được {len(raw_lines)} dòng từ bulk input")
 
                 if not raw_lines:
                     messages.warning(request, "Không có dữ liệu email nào được nhập")
@@ -199,7 +98,6 @@ def create_email_view(request):
                             # created_by=request.user if request.user.is_authenticated else None
                         )
                         added_count += 1
-                        logger.info(f"Đã tạo email {email} thành công")
 
                     except Exception as e:
                         logger.error(f"Lỗi khi xử lý dòng {idx}: {line}. Lỗi: {str(e)}", exc_info=True)
@@ -302,7 +200,6 @@ def employee_work_view(request):
             )
             
             # Tạo response với cookie chứa session_code
-            logger.info(f"Created new work session: {session_code}")
             response = render(request, 'employee/employee_work.html', {
                 'emails': filtered_emails
             })
@@ -374,7 +271,6 @@ def employee_work_view(request):
                     })
                 else:
                 # Nếu không có yêu cầu cấp email mới, hiển thị email hiện tại
-                    logger.info(f"Found existing work session: {work_session}")
                     emails = work_session.created_textnow_emails
                     print(emails)
                     return render(request, 'employee/employee_work.html', {
@@ -507,14 +403,12 @@ def update_status_api_Tn(request):
                 # Đóng kết nối
                 disconnect()
                 
-                logger.info(f"Updated status for email {email} to {status_reg_account_TN}")
                 return JsonResponse({
                     'success': True,
                     'message': 'Status updated successfully'
                 })
                 
             except Exception as e:
-                logger.error(f"Error updating work session: {str(e)}")
                 disconnect()  # Đảm bảo đóng kết nối nếu có lỗi
                 return JsonResponse({
                     'success': False,
@@ -527,7 +421,6 @@ def update_status_api_Tn(request):
             }, status=400)
             
     except Exception as e:
-        logger.error(f"Error updating status: {str(e)}", exc_info=True)
         return JsonResponse({
             'success': False,
             'error': str(e)
@@ -600,14 +493,12 @@ def update_status_api_Tf(request):
                 # Đóng kết nối
                 disconnect()
                 
-                logger.info(f"Updated status for email {email} to {status_reg_account_TF}")
                 return JsonResponse({
                     'success': True,
                     'message': 'Status updated successfully'
                 })
                 
             except Exception as e:
-                logger.error(f"Error updating work session: {str(e)}")
                 disconnect()  # Đảm bảo đóng kết nối nếu có lỗi
                 return JsonResponse({
                     'success': False,
@@ -620,7 +511,6 @@ def update_status_api_Tf(request):
             }, status=400)
             
     except Exception as e:
-        logger.error(f"Error updating status: {str(e)}", exc_info=True)
         return JsonResponse({
             'success': False,
             'error': str(e)
@@ -705,7 +595,6 @@ def create_password_view(request):
             })
             
         except Exception as e:
-            logger.error(f"Error creating password: {str(e)}", exc_info=True)
             return JsonResponse({
                 'success': False,
                 'error': 'Đã xảy ra lỗi khi thêm mật khẩu'
@@ -793,7 +682,6 @@ def create_textnow_api(request):
         })
         
     except Exception as e:
-        logger.error(f"Error creating TextNow: {str(e)}", exc_info=True)
         return JsonResponse({
             'success': False,
             'error': 'An error occurred while creating TextNow'
@@ -881,7 +769,6 @@ def create_textfree_api(request):
         })
         
     except Exception as e:
-        logger.error(f"Error creating TextFree: {str(e)}", exc_info=True)
         return JsonResponse({
             'success': False,
             'error': 'An error occurred while creating TextFree'
