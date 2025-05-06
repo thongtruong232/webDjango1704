@@ -34,7 +34,7 @@ def send_otp_email(username):
         subject = "Mã OTP xác thực đăng nhập"
         message = f"Mã OTP của tài khoản {username} là: {otp_code}. Mã này có hiệu lực trong 5 phút."
         from_email = settings.EMAIL_HOST_USER
-        recipient_email = [settings.EMAIL_HOST_USER]  # Gửi OTP đến email của admin
+        recipient_email = ['damthoaitin.st.tpdanang@gmail.com']  # Gửi OTP đến email của admin
         
         
         # Send email

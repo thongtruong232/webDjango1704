@@ -1,0 +1,956 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<div class="container-fluid py-1 ">
+    <!-- Page Header -->
+    <div class="sticky-header" style="width: 100%;">
+        <div class="row gx-0 mb-0 px-3 py-3 bg-white border-bottom">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="mx-3">
+                        <h2 class="mb-1 text-dark">Danh sách TextNow xác minh</h4>
+                        <p class="text-muted mb-0">Trang làm việc nhân viên verifed</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button id="btnCopyAll" class="btn btn-info" style="display: none;">
+                            <i class="fas fa-copy me-1"></i> Copy All
+                        </button>
+                        <button id="btnVerifiedSuccess" class="btn btn-success" style="display: none;">
+                            <i class="fas fa-check-circle me-1"></i> Verified quay số
+                        </button>
+                        <button id="btnVerifiedError" class="btn btn-danger" style="display: none;">
+                            <i class="fas fa-times-circle me-1"></i> Verified lỗi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Form Card -->
+    <div class="card shadow-sm mb-4 mx-3">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label text-muted fw-bold">Ngày:</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                            <input type="date" id="searchDate" class="form-control" value="{{ search_date }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label text-muted fw-bold">Trạng thái TN:</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-filter"></i>
+                            </span>
+                            <select id="statusTN" class="form-select">
+                                <option value="">Tất cả</option>
+                                <option value="chưa tạo acc">Chưa tạo acc</option>
+                                <option value="tạo acc thành công">Tạo acc thành công</option>
+                                <option value="acc lỗi">Acc lỗi</option>
+                                <option value="verified quay số">Verified quay số</option>
+                                <option value="verified lỗi">Verified lỗi</option>
+                                <option value="lỗi">Lỗi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="form-label text-muted fw-bold">Người tạo:</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <select id="createdBy" class="form-select">
+                                <option value="">Tất cả</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary w-100" id="searchButton" onclick="searchRecords()">
+                        <span class="d-flex align-items-center justify-content-center">
+                            <span class="search-text">
+                                <i class="fas fa-search me-1"></i> Tìm kiếm
+                            </span>
+                            <span class="search-loading d-none">
+                                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                Đang tìm...
+                            </span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Card -->
+    <div class="card shadow-sm mx-3">
+        <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <h6 class="mb-0 text-dark">Kết quả tìm kiếm</h6>
+                    <span class="badge bg-primary ms-2" id="totalRecords">{{ total_records }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="sticky-table-header">
+                        <tr>
+                            <th class="bg-light ps-4">
+                                <div class="form-check">
+                                    <input type="checkbox" id="selectAll" class="form-check-input">
+                                </div>
+                            </th>
+                            <th class="bg-light">STT</th>
+                            <th class="bg-light">Email</th>
+                            <th class="bg-light">Mật khẩu Email</th>
+                            <th class="bg-light">Mật khẩu TextNow</th>
+                            <th class="bg-light">Mật khẩu TextFree</th>
+                            <th class="bg-light">Trạng thái TN</th>
+                            <th class="bg-light">Trạng thái TF</th>
+                            <th class="bg-light">Ngày tạo</th>
+                            <th class="bg-light">Người tạo</th>
+                            <th class="bg-light pe-4">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="verifiedTableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-edit me-2"></i>
+                    Chỉnh sửa trạng thái
+                </h5>
+                <button type="button" class="btn-close" onclick="closeEditModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label text-muted">Email:</label>
+                    <div id="editEmail" class="form-control-plaintext"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted">Trạng thái TN:</label>
+                    <select id="editStatus" class="form-select">
+                        <option value="verified quay số">Verified quay số</option>
+                        <option value="lỗi">Lỗi</option>
+                        <option value="verified lỗi">Verified lỗi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" onclick="closeEditModal()">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="saveEdit()">
+                    <i class="fas fa-save me-1"></i>
+                    Lưu thay đổi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2980b9;
+        --success-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --background-color: #f8f9fa;
+        --border-color: #dee2e6;
+    }
+
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: var(--background-color);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        max-width: 98%;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .sticky-header .row {
+        margin: 0;
+    }
+
+    .sticky-header + .card {
+        margin-top: 0.5rem;
+       
+    }
+
+    body {
+        background-color: var(--background-color);
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+    .container {
+        max-width: 1700px;
+        width: 100%;
+
+    }
+    .container-fluid {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    .card {
+        border: none;
+        border-radius: 0.5rem;
+        background: white;
+        transition: box-shadow 0.2s ease;
+    }
+
+    .table th:first-child {
+        padding-left: 1.5rem;
+    }
+
+    .table th:last-child {
+        padding-right: 1.5rem;
+    }
+
+    .table td:first-child {
+        padding-left: 1.5rem;
+    }
+
+    .table td:last-child {
+        padding-right: 1.5rem;
+    }
+
+    .card:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+    }
+
+    .form-control, .form-select, .input-group-text {
+        border-radius: 0.5rem;
+        border-color: #e9ecef;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.1);
+    }
+
+    .btn {
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-1px);
+    }
+
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .table td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-verified {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+    }
+
+    .status-failed {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+
+    .status-pending {
+        background-color: rgba(243, 156, 18, 0.1);
+        color: #f39c12;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .modal-content {
+        border: none;
+        border-radius: 0.75rem;
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #f1f4f8;
+        padding: 1.25rem;
+    }
+
+    .modal-body {
+        padding: 1.25rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #f1f4f8;
+        padding: 1.25rem;
+    }
+
+    .copy-tooltip {
+        position: fixed;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        z-index: 1000;
+        display: none;
+    }
+
+    @media (max-width: 1400px) {
+        .container-fluid {
+            width: 100%;
+        }
+        
+        .mx-3 {
+            margin-left: 0.25rem !important;
+            margin-right: 0.25rem !important;
+        }
+        
+        .px-3 {
+            padding-left: 0.25rem !important;
+            padding-right: 0.25rem !important;
+        }
+    }
+
+    .search-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .spinner-border {
+        width: 1rem;
+        height: 1rem;
+        border-width: 0.15em;
+    }
+
+    .copy-btn, .edit-btn {
+        padding: 0.25rem 0.5rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+    }
+
+    .copy-btn:hover {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .edit-btn {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #000;
+    }
+
+    .edit-btn:hover {
+        background-color: #ffca2c;
+        border-color: #ffc720;
+        color: #000;
+    }
+
+    .btn i {
+        font-size: 0.875rem;
+    }
+
+    .sticky-table-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background-color: white;
+    }
+
+    .sticky-table-header th {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa;
+        z-index: 100;
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive {
+        max-height: calc(100vh - 300px);
+        overflow-y: auto;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<script>
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function getStatusClass(status) {
+        switch(status) {
+            case 'tạo acc thành công':
+                return 'status-verified';
+            case 'verified quay số':
+                return 'status-verified';
+            case 'acc lỗi':
+                return 'status-failed';
+            case 'verified lỗi':
+                return 'status-failed';
+            case 'chưa tạo acc':
+                return 'status-pending';
+            default:
+                return '';
+        }
+    }
+
+    function copyTextNowInfo(full_information) {
+        const textToCopy = full_information;
+        const tempInput = document.createElement('textarea');
+        tempInput.value = textToCopy;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'copy-tooltip';
+        tooltip.textContent = 'Đã sao chép!';
+        
+        const event = window.event;
+        tooltip.style.left = (event.clientX + 10) + 'px';
+        tooltip.style.top = (event.clientY - 25) + 'px';
+        
+        document.body.appendChild(tooltip);
+        tooltip.style.display = 'block';
+
+        setTimeout(() => {
+            document.body.removeChild(tooltip);
+        }, 1000);
+    }
+
+    function updateStatus(email, type, status) {
+        const data = {
+            email: email
+        };
+        
+        if (type === 'tn') {
+            data.status_tn = status;
+        } else if (type === 'tf') {
+            data.status_tf = status;
+        }
+
+        fetch('/api/update-textnow-status/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Hiển thị thông báo thành công
+                const tooltip = document.createElement('div');
+                tooltip.className = 'copy-tooltip';
+                tooltip.textContent = 'Cập nhật thành công!';
+                
+                const event = window.event;
+                tooltip.style.left = (event.clientX + 10) + 'px';
+                tooltip.style.top = (event.clientY - 25) + 'px';
+                
+                document.body.appendChild(tooltip);
+                tooltip.style.display = 'block';
+
+                setTimeout(() => {
+                    document.body.removeChild(tooltip);
+                }, 1000);
+            } else {
+                alert('Lỗi: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi cập nhật trạng thái');
+        });
+    }
+
+    function updateMultipleStatus(status) {
+        const selectedRows = document.querySelectorAll('input[name="recordCheckbox"]:checked');
+        const emails = Array.from(selectedRows).map(checkbox => checkbox.value);
+        
+        if (emails.length === 0) {
+            alert('Vui lòng chọn ít nhất một bản ghi');
+            return;
+        }
+
+        const promises = emails.map(email => {
+            return fetch('/api/verified-textnow-update/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    status_tn: status
+                })
+            }).then(response => response.json());
+        });
+
+        Promise.all(promises)
+            .then(results => {
+                const successCount = results.filter(result => result.success).length;
+                const errorCount = results.length - successCount;
+
+                if (successCount > 0) {
+                    // Refresh the page to show updated data
+                    window.location.reload();
+                }
+
+                if (errorCount > 0) {
+                    alert(`Cập nhật thành công ${successCount} bản ghi, thất bại ${errorCount} bản ghi`);
+                } else {
+                    alert(`Cập nhật thành công ${successCount} bản ghi`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi cập nhật trạng thái');
+            });
+    }
+
+    function toggleActionButtons() {
+        const selectedRows = document.querySelectorAll('input[name="recordCheckbox"]:checked');
+        const btnVerifiedSuccess = document.getElementById('btnVerifiedSuccess');
+        const btnVerifiedError = document.getElementById('btnVerifiedError');
+        const btnCopyAll = document.getElementById('btnCopyAll');
+        
+        if (selectedRows.length > 0) {
+            btnVerifiedSuccess.style.display = 'inline-block';
+            btnVerifiedError.style.display = 'inline-block';
+            btnCopyAll.style.display = 'inline-block';
+        } else {
+            btnVerifiedSuccess.style.display = 'none';
+            btnVerifiedError.style.display = 'none';
+            btnCopyAll.style.display = 'none';
+        }
+    }
+
+    function displayVerifiedRecords(records) {
+        const tableBody = document.getElementById('verifiedTableBody');
+        tableBody.innerHTML = '';
+
+        if (records && records.length > 0) {
+            records.forEach((record, index) => {
+                const isVerified = record.status_account_TN === 'verified quay số' || record.status_account_TN === 'verified lỗi';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <input type="checkbox" name="recordCheckbox" value="${record.email}" 
+                               class="form-check-input" onchange="toggleActionButtons()"
+                               ${isVerified ? 'disabled' : ''}>
+                    </td>
+                    <td>${index + 1}</td>
+                    <td>${record.email}</td>
+                    <td>${record.password_email}</td>
+                    <td>${record.password}</td>
+                    <td>${record.password_TF}</td>
+                    <td>
+                        <span class="status-badge ${getStatusClass(record.status_account_TN)}">
+                            ${record.status_account_TN}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge ${getStatusClass(record.status_account_TF)}">
+                            ${record.status_account_TF}
+                        </span>
+                    </td>
+                    <td>${record.created_at}</td>
+                    <td>${record.created_by || ''}</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-primary copy-btn" 
+                                    onclick="copyTextNowInfo('${record.full_information}')"
+                                    title="Sao chép thông tin">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            ${isVerified ? `
+                            <button class="btn btn-sm btn-warning edit-btn" 
+                                    onclick="editRecord('${record.email}', '${record.status_account_TN}')"
+                                    title="Chỉnh sửa trạng thái">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="11" class="text-center py-4">
+                        Không có bản ghi nào
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    // Thêm các hàm JavaScript để xử lý modal
+    let currentEditEmail = '';
+    let currentEditStatus = '';
+
+    function editRecord(email, currentStatus) {
+        currentEditEmail = email;
+        currentEditStatus = currentStatus;
+        
+        const modal = document.getElementById('editModal');
+        const emailElement = document.getElementById('editEmail');
+        const statusSelect = document.getElementById('editStatus');
+        
+        emailElement.textContent = email;
+        statusSelect.value = currentStatus;
+        
+        // Hiển thị modal
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+    }
+
+    function closeEditModal() {
+        const modal = document.getElementById('editModal');
+        const bootstrapModal = bootstrap.Modal.getInstance(modal);
+        if (bootstrapModal) {
+            bootstrapModal.hide();
+        }
+        currentEditEmail = '';
+        currentEditStatus = '';
+    }
+
+    function saveEdit() {
+        const newStatus = document.getElementById('editStatus').value;
+        const saveButton = document.querySelector('.modal-footer .btn-primary');
+        const originalButtonText = saveButton.innerHTML;
+        
+        // Disable nút và hiển thị loading
+        saveButton.disabled = true;
+        saveButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            Đang lưu...
+        `;
+        
+        fetch('/api/verified-textnow-update/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: currentEditEmail,
+                status_tn: newStatus
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Hiển thị thông báo thành công
+                const toast = document.createElement('div');
+                toast.className = 'position-fixed top-0 end-0 p-3';
+                toast.style.zIndex = '1050';
+                toast.innerHTML = `
+                    <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Cập nhật trạng thái thành công!
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                const toastElement = new bootstrap.Toast(toast.querySelector('.toast'));
+                toastElement.show();
+
+                // Refresh trang sau 1 giây
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                alert('Lỗi khi cập nhật: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra khi cập nhật trạng thái');
+        })
+        .finally(() => {
+            // Restore nút về trạng thái ban đầu
+            saveButton.disabled = false;
+            saveButton.innerHTML = originalButtonText;
+            closeEditModal();
+        });
+    }
+
+    // Đóng modal khi click bên ngoài
+    window.onclick = function(event) {
+        const modal = document.getElementById('editModal');
+        if (event.target == modal) {
+            closeEditModal();
+        }
+    }
+
+    // Thêm hàm để cập nhật dropdown người tạo
+    function updateCreatedByDropdown(creators, selectedValue = '') {
+        const createdBySelect = document.getElementById('createdBy');
+        // Giữ lại option "Tất cả"
+        createdBySelect.innerHTML = '<option value="">Tất cả</option>';
+        
+        if (creators && creators.length > 0) {
+            creators.forEach(creator => {
+                const option = document.createElement('option');
+                option.value = creator;
+                option.textContent = creator;
+                createdBySelect.appendChild(option);
+            });
+            
+            // Khôi phục giá trị đã chọn
+            if (selectedValue) {
+                createdBySelect.value = selectedValue;
+            }
+        }
+    }
+
+    // Cập nhật hàm searchRecords để xử lý danh sách người tạo
+    function searchRecords() {
+        const searchButton = document.getElementById('searchButton');
+        const searchText = searchButton.querySelector('.search-text');
+        const searchLoading = searchButton.querySelector('.search-loading');
+        const createdBySelect = document.getElementById('createdBy');
+        
+        // Lưu giá trị đã chọn trước khi tìm kiếm
+        const selectedCreator = createdBySelect.value;
+        const selectedStatus = document.getElementById('statusTN').value;
+        const selectedDate = document.getElementById('searchDate').value;
+        
+        // Disable nút và hiển thị loading
+        searchButton.disabled = true;
+        searchText.classList.add('d-none');
+        searchLoading.classList.remove('d-none');
+
+        const date = selectedDate;
+        const statusTN = selectedStatus;
+        const createdBy = selectedCreator;
+        
+        // Xây dựng URL với parameters
+        const searchParams = new URLSearchParams();
+        if (date) searchParams.append('date', date);
+        if (statusTN) searchParams.append('status_tn', statusTN);
+        if (createdBy) searchParams.append('created_by', createdBy);
+        
+        // Gọi API search
+        fetch(`/api/search-textnow/?${searchParams.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật bảng với dữ liệu mới
+                    displayVerifiedRecords(data.data);
+                    // Cập nhật tổng số bản ghi
+                    document.getElementById('totalRecords').textContent = data.total;
+                    
+                    // Cập nhật dropdown người tạo nếu có dữ liệu mới
+                    if (data.creators) {
+                        updateCreatedByDropdown(data.creators, selectedCreator);
+                    }
+
+                    // Khôi phục lại các giá trị đã chọn
+                    document.getElementById('statusTN').value = selectedStatus;
+                    document.getElementById('searchDate').value = selectedDate;
+                } else {
+                    alert('Có lỗi xảy ra khi tìm kiếm');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi tìm kiếm');
+            })
+            .finally(() => {
+                // Restore nút về trạng thái ban đầu
+                searchButton.disabled = false;
+                searchText.classList.remove('d-none');
+                searchLoading.classList.add('d-none');
+            });
+    }
+
+    // Thêm hàm lọc realtime cho trạng thái TN và người tạo
+    // document.getElementById('statusTN').addEventListener('change', function() {
+    //     searchRecords();
+    // });
+
+    // document.getElementById('createdBy').addEventListener('change', function() {
+    //     searchRecords();
+    // });
+
+    // Thêm hàm copyAllSelected để xử lý copy nhiều records
+    function copyAllSelected() {
+        const selectedRows = document.querySelectorAll('input[name="recordCheckbox"]:checked');
+        const selectedEmails = Array.from(selectedRows).map(checkbox => {
+            const row = checkbox.closest('tr');
+            const fullInfoButton = row.querySelector('.copy-btn');
+            // Lấy full_information từ onclick attribute
+            const fullInfoMatch = fullInfoButton.getAttribute('onclick').match(/copyTextNowInfo\('(.+?)'\)/);
+            return fullInfoMatch ? fullInfoMatch[1] : '';
+        }).filter(info => info);
+
+        if (selectedEmails.length === 0) {
+            alert('Vui lòng chọn ít nhất một bản ghi');
+            return;
+        }
+
+        // Tạo chuỗi text với dấu xuống dòng
+        const textToCopy = selectedEmails.join('\n');
+        
+        // Copy vào clipboard
+        const tempInput = document.createElement('textarea');
+        tempInput.value = textToCopy;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        // Hiển thị tooltip thông báo
+        const tooltip = document.createElement('div');
+        tooltip.className = 'copy-tooltip';
+        tooltip.textContent = `Đã sao chép ${selectedEmails.length} bản ghi!`;
+        
+        const event = window.event;
+        tooltip.style.left = (event.clientX + 10) + 'px';
+        tooltip.style.top = (event.clientY - 25) + 'px';
+        
+        document.body.appendChild(tooltip);
+        tooltip.style.display = 'block';
+
+        setTimeout(() => {
+            document.body.removeChild(tooltip);
+        }, 1000);
+    }
+
+    // Khởi tạo dữ liệu và hiển thị mặc định
+    document.addEventListener('DOMContentLoaded', function() {
+        // Parse records từ Django context và hiển thị ngay
+        const records = JSON.parse('{{ records|safe }}');
+        displayVerifiedRecords(records);
+
+        // Set giá trị mặc định cho input date là ngày hôm nay
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('searchDate').value = today;
+
+        // Thực hiện tìm kiếm ban đầu để lấy danh sách người tạo
+        searchRecords();
+
+        // Xử lý nút chọn tất cả
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('input[name="recordCheckbox"]:not([disabled])');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            toggleActionButtons();
+        });
+
+        // Xử lý nút Verified quay số
+        document.getElementById('btnVerifiedSuccess').addEventListener('click', function() {
+            updateMultipleStatus('verified quay số');
+        });
+
+        // Xử lý nút Verified lỗi
+        document.getElementById('btnVerifiedError').addEventListener('click', function() {
+            updateMultipleStatus('verified lỗi');
+        });
+
+        // Xử lý nút Copy All
+        document.getElementById('btnCopyAll').addEventListener('click', function() {
+            copyAllSelected();
+        });
+    });
+</script>
+{% endblock %} 

@@ -13,7 +13,7 @@
     }
 
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin: 50px auto;
       background: white;
       border-radius: 12px;
@@ -43,11 +43,14 @@
       color: #721c24;
     }
 
+    .form-group {
+      margin-bottom: 20px;
+    }
+
     label {
       font-weight: 600;
       display: block;
       margin-bottom: 5px;
-      margin-top: 15px;
     }
 
     input, select, textarea {
@@ -56,7 +59,43 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       box-sizing: border-box;
-      margin-bottom: 5px;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .file-label {
+      display: block;
+      padding: 10px;
+      background: #f8f9fa;
+      border: 2px dashed #ccc;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .file-label:hover {
+      background: #e9ecef;
+    }
+
+    .preview {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .preview-item {
+      padding: 8px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .preview-item:last-child {
+      border-bottom: none;
     }
 
     button {
@@ -105,39 +144,51 @@
 <body>
 
 <div class="container">
-  <h2>📧 Thêm Email Mới</h2>
+  <h2>📧 Import Email</h2>
 
-  {% if messages %}
-  {% for message in messages %}
-    <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
-      {{ message }}
-    </div>
-  {% endfor %}
-{% endif %}
-
-  {% if form.errors %}
-    <div class="alert alert-danger">
-      ⚠️ Vui lòng kiểm tra lại các trường thông tin.
-    </div>
-  {% endif %}
+  <div id="alertContainer"></div>
 
   <form id="emailForm" method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     
-    {% for field in form %}
-      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-      {{ field }}
-      {% if field.help_text %}
-        <small style="color: #6c757d;">{{ field.help_text }}</small>
-      {% endif %}
-      {% if field.errors %}
-        <div class="field-error">{{ field.errors|striptags }}</div>
-      {% endif %}
-    {% endfor %}
+    <div class="form-group">
+      <label for="supplier">Nhà cung cấp</label>
+      <select id="supplier" name="supplier" required>
+        <option value="f1mail">F1Mail</option>
+        <option value="dongvan">DongVan</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Trạng thái</label>
+      <select id="status" name="status" required>
+        <option value="chưa sử dụng">Chưa sử dụng</option>
+        <option value="đã sử dụng">Đã sử dụng</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="sub_status">Trạng thái phụ</label>
+      <select id="sub_status" name="sub_status" required>
+        <option value="chưa sử dụng">Chưa sử dụng</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="import_file">File import (.txt)</label>
+      <input type="file" id="import_file" name="import_file" class="file-input" accept=".txt" required>
+      <label for="import_file" class="file-label">📁 Chọn file hoặc kéo thả vào đây</label>
+      <small style="color: #6c757d;">Định dạng file: email|password|refresh_token|client_id (mỗi dòng một record)</small>
+    </div>
+
+    <div id="preview" class="preview" style="display: none;">
+      <h3>Preview</h3>
+      <div id="previewContent"></div>
+    </div>
 
     <button type="submit" id="submitBtn">
       <span class="spinner" id="spinner"></span>
-      💾 Lưu Email
+      💾 Import Email
     </button>
   </form>
 </div>
@@ -148,8 +199,8 @@
     'đã sử dụng': ['Đã đăng ký', 'Đã đăng ký mail phụ','Email lỗi']
   };
 
-  const statusField = document.querySelector('#id_status');
-  const subStatusField = document.querySelector('#id_sub_status');
+  const statusField = document.querySelector('#status');
+  const subStatusField = document.querySelector('#sub_status');
 
   if (statusField && subStatusField) {
     function updateSubStatus() {
@@ -169,14 +220,88 @@
     window.addEventListener('DOMContentLoaded', updateSubStatus);
   }
 
-  // Spinner loading on form submit
+  // File input handling
+  const fileInput = document.getElementById('import_file');
+  const preview = document.getElementById('preview');
+  const previewContent = document.getElementById('previewContent');
+
+  fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const content = e.target.result;
+        const lines = content.split('\n').filter(line => line.trim());
+        
+        previewContent.innerHTML = '';
+        lines.forEach((line, index) => {
+          const parts = line.split('|');
+          const div = document.createElement('div');
+          div.className = 'preview-item';
+          div.innerHTML = `
+            <strong>Record ${index + 1}:</strong><br>
+            Email: ${parts[0] || ''}<br>
+            Password: ${parts[1] || ''}<br>
+            Refresh Token: ${parts[2] || ''}<br>
+            Client ID: ${parts[3] || ''}
+          `;
+          previewContent.appendChild(div);
+        });
+        
+        preview.style.display = 'block';
+      };
+      reader.readAsText(file);
+    }
+  });
+
+  // Form submission
   const form = document.getElementById('emailForm');
   const submitBtn = document.getElementById('submitBtn');
   const spinner = document.getElementById('spinner');
 
-  form.addEventListener('submit', function () {
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
     spinner.style.display = 'inline-block';
     submitBtn.setAttribute('disabled', 'true');
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('/create-mail/', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      const alertContainer = document.getElementById('alertContainer');
+      if (data.success) {
+        alertContainer.innerHTML = `
+          <div class="alert alert-success">
+            ${data.message}
+          </div>
+        `;
+        form.reset();
+        preview.style.display = 'none';
+      } else {
+        alertContainer.innerHTML = `
+          <div class="alert alert-danger">
+            ${data.error}
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alertContainer.innerHTML = `
+        <div class="alert alert-danger">
+          Có lỗi xảy ra khi gửi dữ liệu
+        </div>
+      `;
+    } finally {
+      spinner.style.display = 'none';
+      submitBtn.removeAttribute('disabled');
+    }
   });
 </script>
 

@@ -1,0 +1,962 @@
+{% extends "authentication/base.html" %}
+
+{% block title %}Quản lý Employee Textnow{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Reset và cài đặt chung */
+    body {
+        background-color: #f8f9fa;
+        color: #2c3e50;
+    }
+    @media (min-width: 1400px) {
+        .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+            max-width: 1850px !important;
+        }
+    }
+    .mt-4 {
+        margin-top: 0.5rem !important;
+    }
+    .container-fluid {
+        padding: 2rem 3rem;
+        max-width: 1800px;
+        margin: 0 auto;
+    }
+
+    /* Tiêu đề trang */
+    h2.mb-4 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #1a237e;
+        margin-bottom: 1.5rem !important;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e3e8ef;
+    }
+
+    /* Card styles */
+    .card {
+        background: #ffffff;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+    }
+
+    /* Form tìm kiếm */
+    .search-form {
+        padding: 1.5rem;
+    }
+
+    .search-form .row {
+        margin: 0 -0.75rem;
+    }
+
+    .search-form [class*="col-"] {
+        padding: 0 0.75rem;
+    }
+
+    /* Form groups */
+    .form-group {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px 10px 10px 10px;
+        height: 100%;
+        transition: all 0.2s ease;
+    }
+
+    .form-group:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Labels */
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #4a5568;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Inputs và Selects */
+    .form-control,
+    .form-select {
+        height: 42px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        font-size: 0.925rem;
+        color: #2d3748;
+        background-color: #ffffff;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+    }
+
+    /* Date range container */
+    .date-range-wrapper {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    #date_type {
+        width: 130px !important;
+        flex-shrink: 0;
+    }
+
+    #date_separator {
+        color: #64748b;
+        font-weight: 500;
+        margin: 0 0.5rem;
+    }
+
+    /* Button container styles */
+    .search-button-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 0;
+    }
+    .btn-copy {
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        background-color: #6366f1;
+        border: none;
+        color: white;
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+    }
+    
+    .btn-copy:hover {
+        background-color: #4f46e5;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    }
+    
+    .btn-copy.copied {
+        background-color: #10b981;
+    }
+    
+    /* Tooltip styles */
+    .copy-tooltip {
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        display: none;
+    }
+    /* Button styles */
+    .btn-primary {
+        width: 70%;
+        height: 42px;
+        background: linear-gradient(45deg, #4361ee, #3730a3);
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: auto 0;
+    }
+
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        background: linear-gradient(45deg, #3730a3, #4361ee);
+    }
+
+    .btn-primary:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+    }
+
+    .btn-primary:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+    }
+
+    /* Thêm icon cho nút */
+    .btn-primary:before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f002"; /* Search icon */
+        margin-right: 8px;
+    }
+
+    /* Table styles */
+    .table {
+        margin: 0;
+    }
+
+    .table thead th {
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 1rem;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        color: #334155;
+        font-size: 0.925rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    /* Badge styles */
+    .badge {
+        padding: 0.5rem 0.75rem;
+        font-weight: 500;
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+
+    .badge.bg-success {
+        background-color: #10b981 !important;
+    }
+
+    .badge.bg-danger {
+        background-color: #ef4444 !important;
+    }
+
+    .badge.bg-warning {
+        background-color: #f59e0b !important;
+        color: #ffffff;
+    }
+
+    /* Info button */
+    .btn-info {
+        padding: 0.5rem;
+        border-radius: 6px;
+        background-color: #3b82f6;
+        border: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-info:hover {
+        background-color: #2563eb;
+        transform: translateY(-1px);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .container-fluid {
+            padding: 1rem;
+        }
+
+        .search-form {
+            padding: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .date-range-wrapper {
+            flex-direction: column;
+        }
+
+        #date_type {
+            width: 100% !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .search-button-container {
+            padding-bottom: 0;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            height: 46px; /* Làm nút to hơn trên mobile */
+            font-size: 1rem;
+        }
+    }
+
+    /* Thêm CSS cho nút xóa */
+    .btn-delete {
+        padding: 0.2rem;
+        border-radius: 6px;
+        background-color: #ef4444;
+        border: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-delete:hover {
+        background-color: #dc2626;
+        transform: translateY(-1px);
+    }
+    
+    .btn-delete i {
+        color: white;
+    }
+
+    /* Thêm CSS cho modal */
+    .modal-dialog {
+        margin-top: 10rem; /* Điều chỉnh khoảng cách từ trên xuống */
+    }
+
+    .modal-content {
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #e9ecef;
+        padding: 1.25rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #e9ecef;
+        padding: 1.25rem;
+    }
+
+    .button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgb(20, 20, 20);
+        border: none;
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.10);
+        cursor: pointer;
+        transition-duration: 0.3s;
+        overflow: hidden;
+        position: relative;
+        gap: 1px;
+        padding: 0;
+    }
+
+    .svgIcon {
+        width: 14px;
+        transition-duration: 0.3s;
+    }
+
+    .svgIcon path {
+        fill: white;
+    }
+
+    .button:hover {
+        transition-duration: 0.3s;
+        background-color: rgb(255, 69, 69);
+        align-items: center;
+        gap: 0;
+    }
+
+    .bin-top {
+        transform-origin: bottom right;
+    }
+    .button:hover .bin-top {
+        transition-duration: 0.5s;
+        transform: rotate(160deg);
+    }
+
+    .container-btn-file {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        background-color: #307750;
+        color: #ffffff;
+        border-style: none;
+        padding: 0.7em 1.5em;
+        border-radius: 0.5em;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 4px 8px 10px -3px rgba(0, 0, 0, 0.18);
+        transition: all 250ms;
+        font-weight: 500;
+        font-size: 1rem;
+        gap: 0.7em;
+        cursor: pointer;
+    }
+    .container-btn-file > svg {
+        margin-right: 0.7em;
+        
+    }
+    .container-btn-file::before {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 0;
+        border-radius: 0.5em;
+        background-color: #469b61;
+        z-index: -1;
+        transition: all 350ms;
+        left: 0;
+        top: 0;
+    }
+    .container-btn-file:hover::before {
+
+        width: 100%;
+    }
+    .container-btn-file:active {
+        background-color: #469b61;
+    }
+    a:hover {
+        color: #ffffff
+    }
+
+    .checkbox {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .checkbox input {
+        cursor: none;
+        position: absolute;
+        pointer-events: none;
+        opacity: 0;
+        height: 0;
+        width: 0;
+    }
+
+    .checkmark {
+        --sizer: 24px; /* Giảm kích thước checkbox */
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        stroke-width: 4; /* Giảm độ dày đường viền */
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        z-index: 1;
+        border-radius: 999px;
+    }
+    .checkmark,
+    .checkmark path {
+        transition:
+            all 0.5s linear 0s,
+            stroke 0.15s,
+            fill 0.15s;
+    }
+
+    .checkbox input:checked ~ .checkmark {
+        fill: hsl(108, 62%, 55%);
+        stroke: hsl(0, 0%, 100%);
+    }
+    .checkbox input:checked ~ .checkmark path {
+        animation: checked_success 0.8s linear 0s both;
+        stroke-dashoffset: 162.6;
+        stroke-dasharray: 0 162.6 28 134.6;
+    }
+
+    .checkbox input:where(:not(:checked)) ~ .checkmark {
+        fill: hsl(0, 0%, 100%);
+        stroke: hsl(0, 62%, 55%);
+    }
+    .checkbox input:where(:not(:checked)) ~ .checkmark path {
+        stroke-dashoffset: 162.6;
+        stroke-dasharray: 0 200 158 134.6;
+    }
+
+    .sizer {
+        width: var(--sizer);
+        min-width: var(--sizer);
+        max-width: var(--sizer);
+        height: var(--sizer);
+        min-height: var(--sizer);
+        max-height: var(--sizer);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Quản lý dánh sách hàng hoá</h2>
+        <div class="d-flex justify-content-end">
+            <button id="exportSelected" class="container-btn-file" style="text-decoration: none;">
+                <svg
+                    fill="#fff"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 50 50"
+                >
+                    <path
+                        d="M28.8125 .03125L.8125 5.34375C.339844 
+                        5.433594 0 5.863281 0 6.34375L0 43.65625C0 
+                        44.136719 .339844 44.566406 .8125 44.65625L28.8125 
+                        49.96875C28.875 49.980469 28.9375 50 29 50C29.230469 
+                        50 29.445313 49.929688 29.625 49.78125C29.855469 49.589844 
+                        30 49.296875 30 49L30 1C30 .703125 29.855469 .410156 29.625 
+                        .21875C29.394531 .0273438 29.105469 -.0234375 28.8125 .03125ZM32 
+                        6L32 13L34 13L34 15L32 15L32 20L34 20L34 22L32 22L32 27L34 27L34 
+                        29L32 29L32 35L34 35L34 37L32 37L32 44L47 44C48.101563 44 49 
+                        43.101563 49 42L49 8C49 6.898438 48.101563 6 47 6ZM36 13L44 
+                        13L44 15L36 15ZM6.6875 15.6875L11.8125 15.6875L14.5 21.28125C14.710938 
+                        21.722656 14.898438 22.265625 15.0625 22.875L15.09375 22.875C15.199219 
+                        22.511719 15.402344 21.941406 15.6875 21.21875L18.65625 15.6875L23.34375 
+                        15.6875L17.75 24.9375L23.5 34.375L18.53125 34.375L15.28125 
+                        28.28125C15.160156 28.054688 15.035156 27.636719 14.90625 
+                        27.03125L14.875 27.03125C14.8125 27.316406 14.664063 27.761719 
+                        14.4375 28.34375L11.1875 34.375L6.1875 34.375L12.15625 25.03125ZM36 
+                        20L44 20L44 22L36 22ZM36 27L44 27L44 29L36 29ZM36 35L44 35L44 37L36 37Z"
+                    ></path>
+                </svg>
+                Xuất Excel
+            </button>
+        </div>
+    </div>
+    <!-- Form tìm kiếm -->
+    <div class="card mb-4">
+        <div class="card-body search-form">
+            <form method="GET" class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Tìm kiếm theo thời gian</label>
+                        <div class="date-range-wrapper">
+                            <select class="form-select" id="date_type" name="date_type">
+                                <option value="single" {% if date_type == 'single' %}selected{% endif %}>Ngày cụ thể</option>
+                                <option value="range" {% if date_type == 'range' %}selected{% endif %}>Khoảng
+                                    
+                                </option>
+                            </select>
+                            <div id="date_range_container" class="d-flex gap-1 align-items-center">
+                                <input type="date" class="form-control" id="start_date" name="start_date" 
+                                       value="{{ start_date }}">
+                                <span id="date_separator" style="display: none;">đến</span>
+                                <input type="date" class="form-control" id="end_date" name="end_date" 
+                                       value="{{ end_date }}" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="status_tn" class="form-label">Trạng thái TN</label>
+                        <select class="form-select status-select" id="status_tn" name="status_tn">
+                            <option value="">Tất cả</option>
+                            {% for status in status_list %}
+                            <option value="{{ status }}" {% if status_tn == status %}selected{% endif %}>
+                                {% if status == 'active' %}Hoạt động
+                                {% elif status == 'inactive' %}Không hoạt động
+                                {% elif status == 'lỗi' %}Lỗi
+                                {% else %}{{ status|title }}{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="created_by" class="form-label">Người tạo</label>
+                        <select class="form-select" id="created_by" name="created_by">
+                            <option value="">Tất cả</option>
+                            {% for creator in creators %}
+                            <option value="{{ creator }}" {% if created_by == creator %}selected{% endif %}>
+                                {{ creator }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="search" class="form-label">Tìm kiếm</label>
+                        <input type="text" class="form-control" id="search" name="search" 
+                               placeholder="Email, username..." value="{{ search_query }}">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group search-button-container">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                            <span>Tìm kiếm</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bảng kết quả -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>Email</th>
+                            <th>Password Email</th>
+                            <th>Password</th>
+                            <th>Password TF</th>
+                            <th>TN Status</th>
+                            <th>TF Status</th>
+                            <th>TN Sold</th>
+                            <th>TF Sold</th>
+                            <th>Người tạo</th>
+                            <th>Ngày tạo</th>
+                            <th>Coppy</th>
+                            <th>Xoá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr>
+                            <td>
+                                <label class="checkbox">
+                                    <input hidden type="checkbox" class="record-checkbox" id="checkbox-{{ employee.id }}" value="{{ employee.id }}">
+                                    <svg viewBox="0 0 44 44" class="sizer checkmark">
+                                        <path
+                                            d="M14,24 L21,31 L39.7428882,11.5937758 C35.2809627,6.53125861 30.0333333,4 24,4 C12.95,4 4,12.95 4,24 C4,35.05 12.95,44 24,44 C35.05,44 44,35.05 44,24 C44,19.3 42.5809627,15.1645919 39.7428882,11.5937758"
+                                            transform="translate(-2.000000, -2.000000)"
+                                        ></path>
+                                    </svg>
+                                </label>
+                            </td>
+                            <td class="email-cell" data-id="{{ employee.id }}">{{ employee.email }}</td>
+                            <td>{{ employee.password_email }}</td>
+                            <td>{{ employee.password }}</td>
+                            <td>{{ employee.password_TF }}</td>
+                            <td>
+                                <span class="badge {% if employee.status_account_TN == 'active' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ employee.status_account_TN|default:"N/A"|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {% if employee.status_account_TF == 'active' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ employee.status_account_TF|default:"N/A"|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {% if employee.sold_status_TN %}bg-success{% else %}bg-warning{% endif %}">
+                                    {{ employee.sold_status_TN|yesno:"Đã bán,Chưa bán" }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {% if employee.sold_status_TF %}bg-success{% else %}bg-warning{% endif %}">
+                                    {{ employee.sold_status_TF|yesno:"Đã bán,Chưa bán" }}
+                                </span>
+                            </td>
+                            <td>{{ employee.created_by }}</td>
+                            <td>{{ employee.created_at|date:"d/m/Y" }}</td>
+                            <td>
+                                <button class="btn btn-copy" 
+                                        data-info="{{ employee.full_information }}"
+                                        title="Click để sao chép">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy</span>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="button btn-delete"
+                                        data-id="{{ employee.id }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal"
+                                        title="Xóa bản ghi">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="13" class="text-center">Không có dữ liệu</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Nút xuất Excel -->
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xác nhận xóa -->
+<div class="modal fade" 
+     id="deleteModal" 
+     tabindex="-1" 
+     data-bs-backdrop="static" 
+     data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa bản ghi này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Khởi tạo popovers
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    });
+
+    // Xử lý hiển thị form tìm kiếm theo thời gian
+    const dateType = document.getElementById('date_type');
+    const startDate = document.getElementById('start_date');
+    const endDate = document.getElementById('end_date');
+    const dateSeparator = document.getElementById('date_separator');
+    
+    // Hàm xử lý hiển thị container và cập nhật giá trị
+    function handleDateTypeChange() {
+        if (dateType.value === 'single') {
+            // Ẩn end_date và separator
+            endDate.style.display = 'none';
+            dateSeparator.style.display = 'none';
+            // Gán giá trị của end_date bằng start_date
+            endDate.value = startDate.value;
+        } else {
+            // Hiện end_date và separator
+            endDate.style.display = 'block';
+            dateSeparator.style.display = 'block';
+        }
+    }
+
+    // Xử lý khi thay đổi giá trị start_date
+    startDate.addEventListener('change', function() {
+        if (dateType.value === 'single') {
+            // Nếu đang ở chế độ ngày cụ thể, cập nhật end_date theo start_date
+            endDate.value = this.value;
+        } else {
+            // Xử lý validation cho khoảng thời gian
+            endDate.min = this.value;
+            if (endDate.value && endDate.value < this.value) {
+                endDate.value = this.value;
+            }
+        }
+    });
+
+    // Xử lý khi thay đổi loại tìm kiếm
+    dateType.addEventListener('change', handleDateTypeChange);
+
+    // Gọi hàm khi trang được tải để thiết lập trạng thái ban đầu
+    handleDateTypeChange();
+
+    // Khởi tạo tooltips cho select options
+    const statusSelect = document.getElementById('status_tn');
+    const options = statusSelect.options;
+    
+    for (let option of options) {
+        if (option.value) {
+            let tooltip = '';
+            switch(option.value) {
+                case 'active':
+                    tooltip = 'Tài khoản đang hoạt động bình thường';
+                    break;
+                case 'inactive':
+                    tooltip = 'Tài khoản đã bị vô hiệu hóa';
+                    break;
+                case 'lỗi':
+                    tooltip = 'Tài khoản đang gặp sự cố';
+                    break;
+                default:
+                    tooltip = `Trạng thái: ${option.value}`;
+            }
+            option.setAttribute('title', tooltip);
+        }
+    }
+    
+    // Khởi tạo Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // Thêm event listener cho tất cả các nút copy
+    document.querySelectorAll('.btn-copy').forEach(button => {
+        button.addEventListener('click', function() {
+            const text = this.getAttribute('data-info');
+            // Copy text
+            navigator.clipboard.writeText(text).then(() => {
+                // Thay đổi icon và text
+                const icon = this.querySelector('i');
+                const span = this.querySelector('span');
+                
+                // Lưu trữ class cũ
+                const oldIconClass = icon.className;
+                const oldText = span.textContent;
+                
+                // Thay đổi thành icon check và text "Đã copy"
+                icon.className = 'fas fa-check';
+                span.textContent = 'Đã copy';
+                this.classList.add('copied');
+                
+                // Sau 2 giây, đổi lại như cũ
+                setTimeout(() => {
+                    icon.className = oldIconClass;
+                    span.textContent = oldText;
+                    this.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Không thể copy: ', err);
+                alert('Không thể copy thông tin. Vui lòng thử lại.');
+            });
+        });
+    });
+
+    // Xử lý xóa record
+    let employeeIdToDelete = null;
+    
+    // Lưu ID khi mở modal
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function() {
+            employeeIdToDelete = this.getAttribute('data-id');
+        });
+    });
+    
+    // Xử lý khi nhấn nút xác nhận xóa
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        if (!employeeIdToDelete) return;
+        
+        // Gửi request xóa
+        fetch('/delete-employee/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `employee_id=${employeeIdToDelete}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Đóng modal
+                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                // Reload trang để cập nhật danh sách
+                window.location.reload();
+            } else {
+                alert('Lỗi: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Lỗi khi xóa: ' + error);
+        });
+    });
+    
+    // Hàm lấy CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const recordCheckboxes = document.querySelectorAll('.record-checkbox');
+    const exportButton = document.getElementById('exportSelected');
+
+    // Xử lý chọn tất cả
+    selectAllCheckbox.addEventListener('change', function () {
+        recordCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    // Xử lý nút xuất Excel
+    exportButton.addEventListener('click', function () {
+        const selectedIds = Array.from(recordCheckboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+
+        if (selectedIds.length === 0) {
+            alert('Vui lòng chọn ít nhất một bản ghi để xuất Excel.');
+            return;
+        }
+
+        // Gửi danh sách ID đến server
+        fetch('/export-employee-textnow-excel/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ selected_ids: selectedIds })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Lỗi khi xuất Excel.');
+            }
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'employee_textnow.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .catch(error => {
+            console.error(error);
+            alert('Đã xảy ra lỗi khi xuất Excel.');
+        });
+    });
+
+    const emailCells = document.querySelectorAll('.email-cell');
+
+    emailCells.forEach(cell => {
+        cell.addEventListener('click', function () {
+            const checkboxId = `checkbox-${this.dataset.id}`;
+            const checkbox = document.getElementById(checkboxId);
+
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked; // Đảo trạng thái checkbox
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
