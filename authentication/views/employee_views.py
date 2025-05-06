@@ -114,6 +114,7 @@ def get_available_emails_api(request):
             current_worksession = worksession_collection.find_one({
                 'created_at': {'$regex': f'^{today}'},
                 'owner': current_user
+
             })
 
             if not current_worksession:
@@ -125,7 +126,6 @@ def get_available_emails_api(request):
                     'total_accounts': 0
                 }
                 worksession_collection.insert_one(current_worksession)
-
             # Check for missing passwords
           
            
@@ -154,6 +154,7 @@ def get_available_emails_api(request):
 
             # Convert MongoDB documents to list of dictionaries and update records
             if missing_passwords:
+
                 return JsonResponse({
                     'success': False,
                     'error': f'Vui lòng bổ sung mật khẩu {" và ".join(missing_passwords)} cho ngày hôm nay',
@@ -219,6 +220,7 @@ def get_available_emails_api(request):
             
     except Exception as e:
         logger.error(f"Error in get_available_emails_api: {str(e)}")
+
         return JsonResponse({
             'success': False,
             'error': str(e)
@@ -263,6 +265,7 @@ def create_password_view(request):
             
         except Exception as e:
             logger.error(f"Error in create_password_view: {str(e)}", exc_info=True)
+
             return JsonResponse({
                 'success': False,
                 'error': str(e)
@@ -349,7 +352,7 @@ def search_textnow_api(request):
             client.close()
 
 @login_required
-def employee_verified_view(request):
+def employee_verified_view_1(request):
     try:
         # Kết nối MongoDB sử dụng thông tin từ settings
         client = MongoClient(settings.MONGODB_URI)

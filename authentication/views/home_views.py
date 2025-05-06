@@ -139,7 +139,8 @@ def home_view(request):
             'total_pages': 1,
             'has_more': False,
             'page_range': [1],
-            'start_index': 0
+            'start_index': 0,
+            'name': request.user.username
         })
         
     try:
@@ -153,7 +154,6 @@ def home_view(request):
         
         # Nếu là nhân viên, chuyển hướng về trang verified
         if user_role == 'nhanvien':
-            print('Chuyển hướng về trang verified với role:', user_role)
             return redirect('employee_verified')
         
         # Handle Excel file upload
@@ -270,7 +270,23 @@ def home_view(request):
             if 'created_at' in record:
                 try:
                     raw_time = record['created_at']
-                    imported_time = timezone.make_aware(raw_time, timezone.get_default_timezone())
+                    
+                    # Xử lý trường hợp raw_time là string
+                    if isinstance(raw_time, str):
+                        try:
+                            # Thử parse string thành datetime
+                            imported_time = datetime.fromisoformat(raw_time)
+                        except ValueError:
+                            logger.error(f"Invalid datetime string format: {raw_time}")
+                            record['time_info'] = None
+                            continue
+                    else:
+                        imported_time = raw_time
+                    
+                    # Đảm bảo imported_time là aware datetime
+                    if not timezone.is_aware(imported_time):
+                        imported_time = timezone.make_aware(imported_time, timezone.get_default_timezone())
+                    
                     current_time = get_current_time()
                     time_diff = current_time - imported_time
                     total_seconds = int(time_diff.total_seconds())
@@ -310,7 +326,7 @@ def home_view(request):
         page_range = range(max(1, page - 2), min(total_pages + 1, page + 3))
         start_index = skip + 1
         
-        logger.info(f"Retrieved {len(excel_data)} records for page {page}, total records: {total_records}")
+        # logger.info(f"Retrieved {len(excel_data)} records for page {page}, total records: {total_records}")
         
         return render(request, 'authentication/home.html', {
             'user_data': user_data,
@@ -328,23 +344,7 @@ def home_view(request):
         
     except Exception as e:
         logger.error(f"Error in home_view: {str(e)}")
-        messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
-        return render(request, 'authentication/home.html', {
-            'user_data': None,
-            'excel_data': [],
-            'can_import': False,
-            'can_update_status': False,
-            'allowed_status_updates': [],
-            'is_nhanvien': False,
-            'current_page': 1,
-            'total_pages': 1,
-            'has_more': False,
-            'page_range': [1],
-            'start_index': 0
-        })
-    finally:
-        if client is not None:
-            client.close()
+        return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
 
 # Chuyển đổi dữ liệu excel thành dạng email, password, refresh_token, client_id
 def parse_excel_data(text):
@@ -394,8 +394,8 @@ def sync_user_data(user_id):
             client.close()
             
     except Exception as e:
-        print(f"Error in sync_user_data: {str(e)}")
-        return False
+        logger.error(f"Error in sync_user_data: {str(e)}")
+        return JsonResponse({'status': 'error', 'message': str(e)})
 
 
 @login_required
@@ -814,7 +814,7 @@ def handle_browser_close(request):
             
     except Exception as e:
         logger.error(f"Error in handle_browser_close: {str(e)}")
-        return JsonResponse({'success': False, 'message': str(e)})
+        return JsonResponse({'status': 'error', 'message': str(e)})
     
     return JsonResponse({'success': False, 'message': 'User not authenticated'})
 
@@ -822,13 +822,13 @@ def handle_browser_close(request):
 def update_checkbox_status(request):
     if request.method == 'POST':
         try:
-            logger.info("Received checkbox status update request")
+            # logger.info("Received checkbox status update request")
             data = json.loads(request.body)
             record_id = data.get('record_id')
             status = data.get('status')
             is_checked = data.get('is_checked')
             
-            logger.info(f"Request data: record_id={record_id}, status={status}, is_checked={is_checked}")
+            # logger.info(f"Request data: record_id={record_id}, status={status}, is_checked={is_checked}")
             
             if not record_id or status is None or is_checked is None:
                 logger.error("Missing required data in request")
@@ -858,7 +858,7 @@ def update_checkbox_status(request):
                 # Chuyển đổi record_id thành ObjectId
                 try:
                     object_id = ObjectId(record_id)
-                    logger.info(f"Converted record_id to ObjectId: {object_id}")
+                    # logger.info(f"Converted record_id to ObjectId: {object_id}")
                 except Exception as e:
                     logger.error(f"Invalid ObjectId format: {record_id}, error: {str(e)}")
                     return JsonResponse({
@@ -873,17 +873,17 @@ def update_checkbox_status(request):
                     'updated_at': get_current_time().isoformat()
                 }
                 
-                logger.info(f"Updating record {object_id} with data: {update_data}")
+                # logger.info(f"Updating record {object_id} with data: {update_data}")
                 
                 result = excel_data_collection.update_one(
                     {'_id': object_id},
                     {'$set': update_data}
                 )
                 
-                logger.info(f"Update result: matched={result.matched_count}, modified={result.modified_count}")
+                # logger.info(f"Update result: matched={result.matched_count}, modified={result.modified_count}")
                 
                 if result.modified_count > 0:
-                    logger.info(f"Successfully updated status for record {object_id}")
+                    # logger.info(f"Successfully updated status for record {object_id}")
                     return JsonResponse({
                         'success': True,
                         'message': 'Cập nhật trạng thái thành công',
