@@ -46,13 +46,9 @@ class MongoDBConnection:
 
     def close(self):
         if self._client:
-            try:
-                self._client.close()
-            except Exception as e:
-                logger.error(f"Error closing MongoDB connection: {e}")
-            finally:
-                self._client = None
-                self._db = None
+            self._client.close()
+            self._client = None
+            self._db = None
 
 def get_mongodb_connection():
     return MongoDBConnection()
@@ -66,10 +62,10 @@ def get_collection_handle(collection_name):
     try:
         connection = get_mongodb_connection()
         collection = connection.get_collection(collection_name)
-        return collection
+        return collection, connection.client
     except Exception as e:
         logger.error(f"Error getting collection handle: {e}")
-        return None
+        return None, None
 
 def convert_to_object_id(id_str):
     try:

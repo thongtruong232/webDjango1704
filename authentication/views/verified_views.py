@@ -21,7 +21,7 @@ def employee_verified_view(request):
         users_collection, client = get_collection_handle('users')
         if users_collection is None:
             messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-            return render(request, 'authentication/employee_verified.html', {
+            return render(request, 'authentication/verified.html', {
                 'textnow_accounts': [],
                 'current_page': 1,
                 'total_pages': 1
@@ -97,7 +97,7 @@ def employee_verified_view(request):
                 'user_data': user_data
             }
 
-            return render(request, 'authentication/employee_verified.html', context)
+            return render(request, 'authentication/verified.html', context)
 
         finally:
             if client:

@@ -5,11 +5,13 @@ from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, redirect
 from .mongodb import get_collection_handle
 from datetime import datetime
+from django.utils import timezone
 import logging
 import json
 from django.contrib import messages
 from pymongo import MongoClient
 from django.conf import settings
+from datetime import datetime, time
 
 logger = logging.getLogger(__name__)
 
@@ -349,52 +351,107 @@ def search_textnow_api(request):
             client.close()
 
 @login_required
-def employee_verified_view(request):
+def verified_view(request):
     try:
-        # Kết nối MongoDB sử dụng thông tin từ settings
-        client = MongoClient(settings.MONGODB_URI)
-        db = client[settings.MONGODB_DATABASE]
-        collection = db['employee_textnow']
-        
-        # Lấy danh sách các trạng thái TN duy nhất để tạo dropdown
-        status_list = list(collection.distinct('status_account_TN'))
-        
-        # Lấy ngày hôm nay
-        today = datetime.now().strftime('%Y-%m-%d')
-        
-        # Query MongoDB với điều kiện ngày hôm nay
-        query = {
-            'created_at': {'$regex': f'^{today}'}
-        }
-        
-        # Lấy dữ liệu từ collection
-        records = list(collection.find(query, {'_id': 0}).sort('created_at', -1))
-        
-        # Format lại ngày trong records để chỉ hiển thị ngày tháng năm
-        for record in records:
-            if 'created_at' in record:
-                record['created_at'] = record['created_at'].split('T')[0]
-        
-        # Truyền dữ liệu vào template
-        context = {
-            'records': json.dumps(records),  # Convert sang JSON để dùng trong JavaScript
-            'total_records': len(records),
-            'status_list': status_list  # Thêm danh sách trạng thái
-        }
-        
-        return render(request, 'authentication/verified.html', context)
+        print('Đã vào trang verified')
+        # Lấy thông tin user từ MongoDB
+        users_collection, client = get_collection_handle('users')
+        if users_collection is None:
+            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
+            return render(request, 'authentication/verified.html', {
+                'textnow_accounts': [],
+                'current_page': 1,
+                'total_pages': 1
+            })
+
+        try:
+            # Lấy thông tin user
+            user_data = users_collection.find_one({'user_id': str(request.user.id)})
+            if not user_data:
+                messages.error(request, 'Không tìm thấy thông tin người dùng')
+                return redirect('login')
+
+            # Lấy dữ liệu TextNow accounts
+            textnow_collection, client = get_collection_handle('employee_textnow')
+            # query = {'assigned_to': str(request.user.id)}
             
+            # # Phân trang
+            # page = int(request.GET.get('page', 1))
+            # per_page = 10
+            # skip = (page - 1) * per_page
+
+            # # Đếm tổng số bản ghi
+            # total_records = textnow_collection.count_documents(query)
+            # total_pages = (total_records + per_page - 1) // per_page
+
+            # # Lấy dữ liệu phân trang
+            # accounts = list(textnow_collection.find(query)
+            #               .sort('created_at', -1)
+            #               .skip(skip)
+            #               .limit(per_page))
+            accounts = textnow_collection.find()
+
+            # Xử lý dữ liệu
+            processed_accounts = []
+            
+            for account in accounts:
+                try:
+                    # Thêm mongo_id
+                    account['mongo_id'] = str(account['_id'])
+                    
+                    # Xử lý thời gian với timezone
+                    if isinstance(account['created_at'], str):
+                        created_at = datetime.fromisoformat(account['created_at'])
+                    else:
+                        created_at = account['created_at']
+                    
+                    # Đảm bảo created_at có timezone
+                    if created_at.tzinfo is None:
+                        created_at = timezone.make_aware(created_at)
+                    
+                    now = timezone.now()
+                    time_diff = now - created_at
+                    
+                    if time_diff.days > 0:
+                        account['time_info'] = f"{time_diff.days} ngày trước"
+                    elif time_diff.seconds >= 3600:
+                        hours = time_diff.seconds // 3600
+                        account['time_info'] = f"{hours} giờ trước"
+                    else:
+                        minutes = time_diff.seconds // 60
+                        account['time_info'] = f"{minutes} phút trước"
+                        
+                except Exception as e:
+                    logger.error(f"Error processing account {account.get('_id')}: {str(e)}")
+                    continue
+                    
+                processed_accounts.append(account)
+
+            context = {
+                'textnow_accounts': processed_accounts,
+                # 'current_page': page,
+                # 'total_pages': total_pages,
+                'user_data': user_data
+            }
+
+            return render(request, 'authentication/verified.html', context)
+
+        finally:
+            if client:
+                try:
+                    client.close()
+                except Exception as e:
+                    logger.error(f"Error closing MongoDB connection: {str(e)}")
+
     except Exception as e:
-        logger.error(f"Error in employee_verified_view: {str(e)}", exc_info=True)
-        messages.error(request, 'Đã xảy ra lỗi khi tải dữ liệu')
+        logger.error(f"Error in verified_view: {str(e)}", exc_info=True)
+        messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
         return render(request, 'authentication/verified.html', {
-            'records': '[]',
-            'total_records': 0,
-            'status_list': []
+            'textnow_accounts': [],
+            'current_page': 1,
+            'total_pages': 1
         })
-    finally:
-        if 'client' in locals():
-            client.close()
+
 
 @login_required
 def create_email_view(request):
