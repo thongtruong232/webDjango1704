@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .mongodb import get_collection_handle
+from authentication.mongodb import MongoDBConnection, get_collection_handle
 from bson.objectid import ObjectId
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -22,6 +22,7 @@ from django.core.exceptions import ValidationError
 import time
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.conf import settings
 
 # Định nghĩa múi giờ GMT+7
 TIMEZONE = pytz.timezone('Asia/Bangkok')
@@ -33,31 +34,34 @@ def get_current_time():
     return timezone.now().astimezone(TIMEZONE)
 
 
-
 def login_view(request):
     if request.user.is_authenticated:
         print('Đã đăng nhập')
         # Kiểm tra role của user
-        users_collection, client = get_collection_handle('users')
-        if users_collection:
-            try:
-                user_data = users_collection.find_one({'user_id': str(request.user.id)})
-                if user_data:
-                    user_role = user_data.get('role')
-                    print(f'Role của user: {user_role}')
-                    if user_role == 'nhanvien':
-                        return redirect('employee_verified')
-                    else:
-                        return redirect('home')
+        with MongoDBConnection() as mongo:
+            if mongo is None or mongo.db is None:
+                messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
+                return redirect('login')
+                
+            users_collection = mongo.get_collection('users')
+            if users_collection is None:
+                messages.error(request, 'Không thể truy cập collection users')
+                return redirect('login')
+                
+            user_data = users_collection.find_one({'user_id': str(request.user.id)})
+            
+            if user_data:
+                user_role = user_data.get('role')
+                print(f'Role của user: {user_role}')
+                if user_role == 'nhanvien':
+                    return redirect('employee_verified')
                 else:
-                    # Nếu không tìm thấy user trong MongoDB, đăng xuất và chuyển về trang login
-                    logout(request)
-                    messages.error(request, 'Không tìm thấy thông tin người dùng')
-                    return redirect('login')
-            finally:
-                if client:
-                    client.close()
-        return redirect('home')
+                    return redirect('home')
+            else:
+                # Nếu không tìm thấy user trong MongoDB, đăng xuất và chuyển về trang login
+                logout(request)
+                messages.error(request, 'Không tìm thấy thông tin người dùng')
+                return redirect('login')
         
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -65,86 +69,79 @@ def login_view(request):
         
         try:
             with transaction.atomic():
-                # Kiểm tra user trong MongoDB
-                users_collection, client = get_collection_handle('users')
-                if users_collection is None:
-                    raise ValidationError('Không thể kết nối đến cơ sở dữ liệu')
-                
-                try:
-                    with client.start_session() as session:
-                        with session.start_transaction():
-                            # Tìm user trong MongoDB
-                            mongo_user = users_collection.find_one(
-                                {'username': username},
-                                session=session
-                            )
+                with MongoDBConnection() as mongo:
+                    if mongo is None or mongo.db is None:
+                        raise ValidationError('Không thể kết nối đến cơ sở dữ liệu')
+                    
+                    users_collection = mongo.get_collection('users')
+                    if users_collection is None:
+                        raise ValidationError('Không thể truy cập collection users')
+                    
+                    # Tìm user trong MongoDB
+                    mongo_user = users_collection.find_one({'username': username})
                             
-                            if mongo_user is None or mongo_user.get('password') != password:
-                                messages.error(request, 'Tên đăng nhập hoặc mật khẩu không đúng')
-                                return render(request, 'authentication/login.html')
+                    if mongo_user is None or mongo_user.get('password') != password:
+                        messages.error(request, 'Tên đăng nhập hoặc mật khẩu không đúng')
+                        return render(request, 'authentication/login.html')
                             
-                            # Kiểm tra user có tồn tại trong Django không
-                            user = None
-                            if 'user_id' in mongo_user:
-                                try:
-                                    user = User.objects.get(id=mongo_user['user_id'])
-                                except User.DoesNotExist:
-                                    pass
+                    # Kiểm tra user có tồn tại trong Django không
+                    user = None
+                    if 'user_id' in mongo_user:
+                        try:
+                            user = User.objects.get(id=mongo_user['user_id'])
+                        except User.DoesNotExist:
+                            pass
                             
-                            # Nếu không tìm thấy trong Django, tạo mới
-                            if user is None:
-                                if 'email' not in mongo_user:
-                                    mongo_user['email'] = f"{username}_{int(timezone.now().timestamp())}@example.com"
+                    # Nếu không tìm thấy trong Django, tạo mới
+                    if user is None:
+                        if 'email' not in mongo_user:
+                            mongo_user['email'] = f"{username}_{int(timezone.now().timestamp())}@example.com"
                                     
-                                user = User.objects.create_user(
-                                    username=username,
-                                    email=mongo_user['email'],
-                                    password=password,
-                                    role=mongo_user['role']
-                                )
+                        user = User.objects.create_user(
+                            username=username,
+                            email=mongo_user['email'],
+                            password=password
+                        )
                                 
-                                users_collection.update_one(
-                                    {'username': username},
-                                    {'$set': {'user_id': str(user.id)}},
-                                    session=session
-                                )
-                                mongo_user['user_id'] = str(user.id)
+                        users_collection.update_one(
+                            {'username': username},
+                            {'$set': {'user_id': str(user.id)}}
+                        )
+                        mongo_user['user_id'] = str(user.id)
                             
-                            # Tạo session_id mới
-                            session_id = request.session.session_key or request.session.create()
-                            request.session['activity_session_id'] = session_id
+                    # Tạo session_id mới
+                    session_id = request.session.session_key or request.session.create()
+                    request.session['activity_session_id'] = session_id
                             
-                            # Tạo OTP và lưu vào session
-                            otp_code = send_otp_email(username)
-                            if not otp_code:
-                                messages.error(request, 'Không thể gửi mã OTP, vui lòng thử lại sau')
-                                return render(request, 'authentication/login.html')
+                    # Tạo OTP và lưu vào session
+                    otp_code = send_otp_email(username)
+                    if not otp_code:
+                        messages.error(request, 'Không thể gửi mã OTP, vui lòng thử lại sau')
+                        return render(request, 'authentication/login.html')
                             
-                            # Lưu thông tin vào session
-                            request.session['pre_otp_user'] = user.id
-                            request.session['otp_username'] = username
-                            request.session['otp_required'] = True
-                            request.session['otp_code'] = otp_code
-                            request.session['otp_timestamp'] = time.time()
-                            request.session.set_expiry(3600)  # 1 giờ
+                    # Lưu thông tin vào session
+                    request.session['pre_otp_user'] = user.id
+                    request.session['otp_username'] = username
+                    request.session['otp_required'] = True
+                    request.session['otp_code'] = otp_code
+                    request.session['otp_timestamp'] = time.time()
+                    request.session.set_expiry(3600)  # 1 giờ
                             
-                            # Lưu session và kiểm tra
-                            request.session.save()
-                            if not request.session.session_key:
-                                logger.error("Failed to save session")
-                                messages.error(request, 'Có lỗi xảy ra, vui lòng thử lại')
-                                return render(request, 'authentication/login.html')
+                    # Lưu session và kiểm tra
+                    request.session.save()
+                    if not request.session.session_key:
+                        logger.error("Failed to save session")
+                        messages.error(request, 'Có lỗi xảy ra, vui lòng thử lại')
+                        return render(request, 'authentication/login.html')
                             
-                            # logger.info(f"Session saved with key: {request.session.session_key}")
-                            # logger.info(f"OTP code: {otp_code}")
-                            # logger.info(f"User ID: {user.id}")
+                    logger.info(f"Session saved with key: {request.session.session_key}")
+                    logger.info(f"OTP code: {otp_code}")
+                    logger.info(f"User ID: {user.id}")
                             
-                            return render(request, 'authentication/login.html', {
-                                'otp_required': True,
-                                'username': username
-                            })
-                finally:
-                    client.close()
+                    return render(request, 'authentication/login.html', {
+                        'otp_required': True,
+                        'username': username
+                    })
                     
         except ValidationError as e:
             messages.error(request, str(e))
@@ -153,6 +150,7 @@ def login_view(request):
             return render(request, 'authentication/login.html', {'error': 'Có lỗi xảy ra'})
     
     return render(request, 'authentication/login.html')
+
 
 def verify_otp_view(request):
     if request.method == 'POST':
@@ -537,4 +535,3 @@ def update_status(request):
                 users_client.close()
     else:
         return JsonResponse({'success': False, 'message': 'Phương thức không hợp lệ'})
-

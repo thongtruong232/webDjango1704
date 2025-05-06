@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Employee Dashboard</h2>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Thông tin cá nhân</h5>
+                    <p class="card-text">Username: {{ user_data.username }}</p>
+                    <p class="card-text">Role: {{ user_data.role }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Công việc</h5>
+                    <a href="{% url 'employee_work' %}" class="btn btn-primary">Đi đến trang làm việc</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

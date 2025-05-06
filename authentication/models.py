@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.utils import timezone
 
 try:
     from django.db.models import JSONField
@@ -42,3 +43,33 @@ class UserActivity(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.login_time}"
+
+class EmployeeTextNow(models.Model):
+    email = models.EmailField(unique=True)
+    password_email = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)  # password TextNow
+    password_TF = models.CharField(max_length=255, blank=True, null=True)  # password TextFree
+    supplier = models.CharField(max_length=50, blank=True, null=True)
+    status_account_TN = models.CharField(max_length=50, default='chưa tạo acc')
+    status_account_TF = models.CharField(max_length=50, blank=True, null=True)
+    refresh_token = models.TextField(blank=True, null=True)
+    client_id = models.CharField(max_length=255, blank=True, null=True)
+    full_information = models.TextField(blank=True, null=True)
+    created_by = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    sold_status_TN = models.BooleanField(default=False)
+    sold_status_TF = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'employee_textnow'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.email
+
+    def save(self, *args, **kwargs):
+        # Tự động tạo full_information khi lưu
+        if not self.full_information and self.refresh_token and self.client_id:
+            self.full_information = f"{self.email}|{self.password_email}|{self.refresh_token}|{self.client_id}"
+        super().save(*args, **kwargs)

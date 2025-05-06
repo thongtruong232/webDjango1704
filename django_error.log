@@ -661,3 +661,263 @@ ERROR 2025-05-06 12:04:04,009 consumers Error in WebSocket connect: Error 10061 
 ERROR 2025-05-06 12:04:04,589 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
 ERROR 2025-05-06 12:04:06,062 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
 ERROR 2025-05-06 12:40:03,516 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:35:11,672 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:35:23,193 log Internal Server Error: /
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\pymongo\collection.py", line 3478, in __next__
+    raise TypeError("'Collection' object is not iterable")
+TypeError: 'Collection' object is not iterable
+ERROR 2025-05-06 15:37:05,485 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:07,543 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:12,560 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:12,575 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:14,617 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:25,618 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:48,410 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:46:43,829 employee_views Error processing account 680f23f3b7fc59289c6a4167: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,831 employee_views Error processing account 680f23f3b7fc59289c6a4168: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,833 employee_views Error processing account 680f240db7fc59289c6a416d: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,834 employee_views Error processing account 680f3835bc409388a9aff38c: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,836 employee_views Error processing account 680f3e3e9a7034b37c1d7c2a: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,838 employee_views Error processing account 680f3e3e9a7034b37c1d7c2b: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,839 employee_views Error processing account 680f3e3e9a7034b37c1d7c2c: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,840 employee_views Error processing account 680f3e3e9a7034b37c1d7c2d: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,842 employee_views Error processing account 680f3e3e9a7034b37c1d7c2e: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,844 employee_views Error processing account 680f3e3e9a7034b37c1d7c2f: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,845 employee_views Error processing account 680f3e3e9a7034b37c1d7c30: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,847 employee_views Error processing account 680f3e3e9a7034b37c1d7c31: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,849 employee_views Error processing account 6816e167e75efe2bbaba5288: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,850 employee_views Error processing account 6816e1b7e75efe2bbaba5289: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,852 employee_views Error processing account 6816e1b7e75efe2bbaba528a: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,853 employee_views Error processing account 68174a4e2056bbaab1ad09b8: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,854 employee_views Error processing account 68174cca9350013cd1289895: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,856 employee_views Error processing account 68174dcb3d836b5924df0602: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,858 employee_views Error processing account 68174ddac4ae57cac9dc0f93: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,859 employee_views Error processing account 68174eac3fa7075b351ad0f7: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,861 employee_views Error processing account 6819a76215c516351f122508: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,862 employee_views Error processing account 6819a76215c516351f122509: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,864 employee_views Error processing account 6819a76215c516351f12250a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,545 employee_views Error processing account 680f23f3b7fc59289c6a4167: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,547 employee_views Error processing account 680f23f3b7fc59289c6a4168: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,548 employee_views Error processing account 680f240db7fc59289c6a416d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,550 employee_views Error processing account 680f3835bc409388a9aff38c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,551 employee_views Error processing account 680f3e3e9a7034b37c1d7c2a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,553 employee_views Error processing account 680f3e3e9a7034b37c1d7c2b: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,554 employee_views Error processing account 680f3e3e9a7034b37c1d7c2c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,556 employee_views Error processing account 680f3e3e9a7034b37c1d7c2d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,557 employee_views Error processing account 680f3e3e9a7034b37c1d7c2e: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,559 employee_views Error processing account 680f3e3e9a7034b37c1d7c2f: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,560 employee_views Error processing account 680f3e3e9a7034b37c1d7c30: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,562 employee_views Error processing account 680f3e3e9a7034b37c1d7c31: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,563 employee_views Error processing account 6816e167e75efe2bbaba5288: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,565 employee_views Error processing account 6816e1b7e75efe2bbaba5289: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,566 employee_views Error processing account 6816e1b7e75efe2bbaba528a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,568 employee_views Error processing account 68174a4e2056bbaab1ad09b8: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,570 employee_views Error processing account 68174cca9350013cd1289895: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,571 employee_views Error processing account 68174dcb3d836b5924df0602: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,573 employee_views Error processing account 68174ddac4ae57cac9dc0f93: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,574 employee_views Error processing account 68174eac3fa7075b351ad0f7: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,575 employee_views Error processing account 6819a76215c516351f122508: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,576 employee_views Error processing account 6819a76215c516351f122509: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,577 employee_views Error processing account 6819a76215c516351f12250a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,737 employee_views Error processing account 680f23f3b7fc59289c6a4167: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,739 employee_views Error processing account 680f23f3b7fc59289c6a4168: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,740 employee_views Error processing account 680f240db7fc59289c6a416d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,742 employee_views Error processing account 680f3835bc409388a9aff38c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,743 employee_views Error processing account 680f3e3e9a7034b37c1d7c2a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,744 employee_views Error processing account 680f3e3e9a7034b37c1d7c2b: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,745 employee_views Error processing account 680f3e3e9a7034b37c1d7c2c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,747 employee_views Error processing account 680f3e3e9a7034b37c1d7c2d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,748 employee_views Error processing account 680f3e3e9a7034b37c1d7c2e: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,749 employee_views Error processing account 680f3e3e9a7034b37c1d7c2f: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,750 employee_views Error processing account 680f3e3e9a7034b37c1d7c30: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,751 employee_views Error processing account 680f3e3e9a7034b37c1d7c31: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,752 employee_views Error processing account 6816e167e75efe2bbaba5288: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,753 employee_views Error processing account 6816e1b7e75efe2bbaba5289: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,755 employee_views Error processing account 6816e1b7e75efe2bbaba528a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,756 employee_views Error processing account 68174a4e2056bbaab1ad09b8: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,757 employee_views Error processing account 68174cca9350013cd1289895: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,758 employee_views Error processing account 68174dcb3d836b5924df0602: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,759 employee_views Error processing account 68174ddac4ae57cac9dc0f93: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,761 employee_views Error processing account 68174eac3fa7075b351ad0f7: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,762 employee_views Error processing account 6819a76215c516351f122508: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,764 employee_views Error processing account 6819a76215c516351f122509: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,765 employee_views Error processing account 6819a76215c516351f12250a: name 'timezone' is not defined
+ERROR 2025-05-06 15:49:58,964 employee_views Error in employee_verified_view: authentication/employee_verified.html
+Traceback (most recent call last):
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 15:49:59,130 log Internal Server Error: /verified/
+Traceback (most recent call last):
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\employee_views.py", line 449, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 15:51:42,831 employee_views Error in employee_verified_view: verified.html
+Traceback (most recent call last):
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: verified.html
+ERROR 2025-05-06 15:51:42,962 log Internal Server Error: /verified/
+Traceback (most recent call last):
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\employee_views.py", line 449, in employee_verified_view
+    return render(request, 'verified.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: verified.html
+ERROR 2025-05-06 15:57:42,427 verified_views Error in employee_verified_view: authentication/employee_verified.html
+Traceback (most recent call last):
+  File ".\authentication\views\verified_views.py", line 100, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 15:57:42,543 log Internal Server Error: /verified/
+Traceback (most recent call last):
+  File ".\authentication\views\verified_views.py", line 100, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\verified_views.py", line 112, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 16:00:44,363 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:07,959 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:21,708 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:23,745 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:28,792 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:28,808 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:30,843 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:30,858 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:04:36,257 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:05:02,537 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:09:47,859 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:10:24,662 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:10:43,868 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:11:16,545 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:14:32,673 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
