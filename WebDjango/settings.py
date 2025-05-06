@@ -229,7 +229,7 @@ USE_I18N = True
 USE_TZ = True
 
 # Redis Configuration
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')  # Mặc định là localhost
+REDIS_HOST = os.getenv('REDIS_HOST', '207.148.69.229')  # Mặc định là host IP
 REDIS_PORT = os.getenv('REDIS_PORT', '6379')
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'thongtruong232')
 
