@@ -15,10 +15,10 @@
         }
     }
     .mt-4 {
-        margin-top: 0.5rem !important;
+        margin-top: 0.1rem !important;
     }
     .container-fluid {
-        padding: 2rem 3rem;
+        padding: 1rem 3rem;
         max-width: 1800px;
         margin: 0 auto;
     }
@@ -222,6 +222,11 @@
 
     .table tbody tr:hover {
         background-color: #f8fafc;
+    }
+
+    .table-responsive {
+        max-height: 550px; /* Chiều cao tối đa của bảng */
+        overflow-y: auto; /* Thêm thanh cuộn dọc */
     }
 
     /* Badge styles */
@@ -694,8 +699,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <!-- Nút xuất Excel -->
-               
             </div>
         </div>
     </div>
