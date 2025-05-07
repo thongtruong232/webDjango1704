@@ -12,10 +12,14 @@ from django.contrib import messages
 from pymongo import MongoClient
 from django.conf import settings
 from datetime import datetime, time
-
+from authentication.permissions import (
+    role_required, can_manage_users, can_update_status, 
+    ROLES, get_allowed_status_updates
+)
 logger = logging.getLogger(__name__)
 
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def email_info_view(request):
     try:
         # Get MongoDB collection handle
@@ -91,6 +95,7 @@ def email_info_view(request):
             'error': str(e)
         }, status=500)
 
+@role_required('admin','quanly','kiemtra','nhanvien')
 @csrf_exempt
 @require_http_methods(["GET"])
 def get_available_emails_api(request):
@@ -227,6 +232,7 @@ def get_available_emails_api(request):
         }, status=500)
 
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def create_password_view(request):
     if request.method == 'POST':
         try:
@@ -275,6 +281,7 @@ def create_password_view(request):
 @csrf_exempt
 @require_http_methods(["GET"])
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def search_textnow_api(request):
     try:
         # Kết nối MongoDB
@@ -351,6 +358,7 @@ def search_textnow_api(request):
             client.close()
 
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def verified_view(request):
     try:
         print('Đã vào trang verified')
@@ -454,6 +462,7 @@ def verified_view(request):
 
 
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def create_email_view(request):
     try:
         # Get MongoDB collection handle
@@ -577,6 +586,7 @@ def create_email_view(request):
 @csrf_exempt
 @require_http_methods(["POST"])
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def create_textnow_api(request):
     try:
         # Get data from request
@@ -669,6 +679,7 @@ def create_textnow_api(request):
 @csrf_exempt
 @require_http_methods(["POST"])
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def save_worksession_api(request):
     try:
         # Get data from request
@@ -747,6 +758,7 @@ def save_worksession_api(request):
         }, status=500)
 
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def employee_dashboard_view(request):
     try:
         # Get user data from MongoDB
@@ -772,6 +784,7 @@ def employee_dashboard_view(request):
         return redirect('login')
 
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def employee_work_view(request):
     try:
         # Get user data from MongoDB
@@ -799,6 +812,7 @@ def employee_work_view(request):
 @csrf_exempt
 @require_http_methods(["POST"])
 @login_required
+@role_required('admin','quanly','kiemtra','nhanvien')
 def update_textnow_status_api(request):
     try:
         # Lấy dữ liệu từ request

@@ -194,26 +194,6 @@
                     document.getElementById('verifyOtpBtn').click();
                 }
             });
-
-            // Xử lý sự kiện đóng browser
-            window.addEventListener('beforeunload', function(e) {
-                // Chỉ gửi request nếu user đã đăng nhập
-                if (document.cookie.indexOf('sessionid') !== -1) {
-                    // Tạo form data
-                    const formData = new FormData();
-                    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
-
-                    // Gửi request bất đồng bộ
-                    fetch('{% url "handle_browser_close" %}', {
-                        method: 'POST',
-                        body: formData,
-                        credentials: 'same-origin',
-                        keepalive: true  // Cho phép request tiếp tục sau khi trang đóng
-                    }).catch(error => {
-                        console.error('Error sending browser close event:', error);
-                    });
-                }
-            });
         });
     </script>
 </body>

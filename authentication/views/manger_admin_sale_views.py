@@ -10,10 +10,14 @@ import openpyxl
 from openpyxl.utils import get_column_letter
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from authentication.permissions import (
+    role_required, can_manage_users, can_update_status, 
+    ROLES, get_allowed_status_updates
+)
 logger = logging.getLogger(__name__)
 
 @login_required
+@role_required('admin','quanly','kiemtra')
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
@@ -150,6 +154,7 @@ def manager_textnow_view(request):
 
 # Thêm view xử lý xóa
 @login_required
+@role_required('admin','quanly','kiemtra')
 def delete_employee(request):
     if request.method == 'POST':
         try:
@@ -173,6 +178,7 @@ def delete_employee(request):
 
 @csrf_exempt
 @login_required
+@role_required('admin','quanly','kiemtra')
 def export_employee_textnow_excel(request):
     if request.method == 'POST':
         try:
