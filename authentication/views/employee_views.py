@@ -12,10 +12,12 @@ from django.contrib import messages
 from pymongo import MongoClient
 from django.conf import settings
 from datetime import datetime, time
+from authentication.permissions import role_required
 
 logger = logging.getLogger(__name__)
 
 @login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def email_info_view(request):
     try:
         # Get MongoDB collection handle
@@ -747,6 +749,7 @@ def save_worksession_api(request):
         }, status=500)
 
 @login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def employee_dashboard_view(request):
     try:
         # Get user data from MongoDB
@@ -772,6 +775,7 @@ def employee_dashboard_view(request):
         return redirect('login')
 
 @login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def employee_work_view(request):
     try:
         # Get user data from MongoDB
