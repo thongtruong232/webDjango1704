@@ -10,7 +10,7 @@ import openpyxl
 from openpyxl.utils import get_column_letter
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from .mongodb import get_collection_handle
 logger = logging.getLogger(__name__)
 
 @login_required
@@ -125,8 +125,11 @@ def manager_textnow_view(request):
         
         status_list = list(collection.distinct('status_account_TN'))
         status_list = sorted([status for status in status_list if status])
-        
+  
+        users_collection, client = get_collection_handle('users')
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
         context = {
+            'user_data': user_data,
             'employees': employees,
             'date_type': date_type,
             'start_date': start_date,
