@@ -1,6 +1,8 @@
 from django.contrib import messages
 from .mongodb import get_collection_handle
 import logging
+import json
+from bson import json_util
 logger = logging.getLogger(__name__)
 from datetime import datetime, time
 from django.utils import timezone
@@ -22,7 +24,7 @@ def employee_verified_view(request):
         if users_collection is None:
             messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
             return render(request, 'authentication/verified.html', {
-                'textnow_accounts': [],
+                'textnow_accounts': '[]',
                 'current_page': 1,
                 'total_pages': 1
             })
@@ -34,25 +36,27 @@ def employee_verified_view(request):
                 messages.error(request, 'Không tìm thấy thông tin người dùng')
                 return redirect('login')
 
-            # Lấy dữ liệu TextNow accounts
+            # Lấy dữ liệu TextNow accounts với các tham số tìm kiếm
             textnow_collection, client = get_collection_handle('employee_textnow')
-            # query = {'assigned_to': str(request.user.id)}
             
-            # # Phân trang
-            # page = int(request.GET.get('page', 1))
-            # per_page = 10
-            # skip = (page - 1) * per_page
+            # Lấy các tham số tìm kiếm từ request
+            search_date = request.GET.get('date')
+            status_tn = request.GET.get('status_tn')
+            created_by = request.GET.get('created_by')
 
-            # # Đếm tổng số bản ghi
-            # total_records = textnow_collection.count_documents(query)
-            # total_pages = (total_records + per_page - 1) // per_page
+            # Xây dựng query
+            query = {}
+            if search_date:
+                start_date = datetime.strptime(search_date, '%Y-%m-%d')
+                end_date = start_date.replace(hour=23, minute=59, second=59)
+                query['created_at'] = {'$gte': start_date, '$lte': end_date}
+            if status_tn:
+                query['status_account_TN'] = status_tn
+            if created_by:
+                query['created_by'] = created_by
 
-            # # Lấy dữ liệu phân trang
-            # accounts = list(textnow_collection.find(query)
-            #               .sort('created_at', -1)
-            #               .skip(skip)
-            #               .limit(per_page))
-            accounts = textnow_collection.find()
+            # Lấy dữ liệu với query
+            accounts = list(textnow_collection.find(query).sort('created_at', -1))
 
             # Xử lý dữ liệu
             processed_accounts = []
@@ -90,11 +94,19 @@ def employee_verified_view(request):
                     
                 processed_accounts.append(account)
 
+            # Convert to JSON string using bson.json_util
+            textnow_accounts_json = json_util.dumps(processed_accounts)
+
+            # Lấy danh sách người tạo duy nhất
+            creators = list(textnow_collection.distinct('created_by'))
+
             context = {
-                'textnow_accounts': processed_accounts,
-                # 'current_page': page,
-                # 'total_pages': total_pages,
-                'user_data': user_data
+                'textnow_accounts': textnow_accounts_json,
+                'user_data': user_data,
+                'creators': creators,
+                'search_date': search_date or datetime.now().strftime('%Y-%m-%d'),
+                'status_tn': status_tn or '',
+                'created_by': created_by or ''
             }
 
             return render(request, 'authentication/verified.html', context)
@@ -109,8 +121,8 @@ def employee_verified_view(request):
     except Exception as e:
         logger.error(f"Error in employee_verified_view: {str(e)}", exc_info=True)
         messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
-        return render(request, 'authentication/employee_verified.html', {
-            'textnow_accounts': [],
+        return render(request, 'authentication/verified.html', {
+            'textnow_accounts': '[]',
             'current_page': 1,
             'total_pages': 1
         })
