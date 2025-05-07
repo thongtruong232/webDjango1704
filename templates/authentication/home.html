@@ -862,25 +862,5 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keypress', updateLastActivity);
     document.addEventListener('click', updateLastActivity);
 });
-
-// Xử lý đăng xuất khi tắt trình duyệt
-window.addEventListener('beforeunload', function(e) {
-    // Chỉ đăng xuất khi đóng tab/trình duyệt, không đăng xuất khi refresh
-    if (e.target.activeElement === null) {
-        // Gửi request đăng xuất
-        fetch(window.APP_CONFIG.logoutUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': window.APP_CONFIG.csrfToken
-            },
-            body: new URLSearchParams({
-                'csrfmiddlewaretoken': window.APP_CONFIG.csrfToken
-            })
-        }).catch(error => {
-            console.error('Error during logout:', error);
-        });
-    }
-});
 </script>
 {% endblock %} 
