@@ -947,3 +947,773 @@ ERROR 2025-05-07 14:04:55,265 login_views Error sending WebSocket notification: 
 ERROR 2025-05-07 14:05:11,673 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
 ERROR 2025-05-07 14:27:51,660 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
 ERROR 2025-05-07 14:36:52,932 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 15:03:18,583 login_views Error sending WebSocket notification: Error 22 connecting to 127.0.0.1:6379. 22.
+ERROR 2025-05-07 15:03:29,668 log Internal Server Error: /login/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\login_views.py", line 57, in login_view
+    return redirect('employee_verified')
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 41, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 130, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 86, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 694, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'employee_verified' not found. 'employee_verified' is not a valid view function or pattern name.
+ERROR 2025-05-07 15:03:29,674 basehttp "GET /login/?next=/verified/ HTTP/1.1" 500 98473
+ERROR 2025-05-07 15:03:46,069 employee_views Error in email_info_view: 'tuple' object has no attribute 'find_one'
+ERROR 2025-05-07 15:03:46,070 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:03:46,071 basehttp "GET /available-emails/ HTTP/1.1" 500 73
+ERROR 2025-05-07 15:04:28,523 employee_views Error in email_info_view: 'tuple' object has no attribute 'find_one'
+ERROR 2025-05-07 15:04:28,525 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:04:28,526 basehttp "GET /available-emails/ HTTP/1.1" 500 73
+ERROR 2025-05-07 15:04:56,748 employee_views Error in email_info_view: 'tuple' object has no attribute 'find_one'
+ERROR 2025-05-07 15:04:56,750 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:04:56,751 basehttp "GET /available-emails/ HTTP/1.1" 500 73
+ERROR 2025-05-07 15:05:08,160 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:05:16,475 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:07:23,291 employee_views Error in email_info_view: 'tuple' object has no attribute 'find_one'
+ERROR 2025-05-07 15:07:23,291 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:07:23,292 basehttp "GET /available-emails/ HTTP/1.1" 500 73
+ERROR 2025-05-07 15:07:24,355 employee_views Error in email_info_view: 'tuple' object has no attribute 'find_one'
+ERROR 2025-05-07 15:07:24,356 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:07:24,356 basehttp "GET /available-emails/ HTTP/1.1" 500 73
+ERROR 2025-05-07 15:14:34,749 employee_views Error in email_info_view: Cannot use MongoClient after close
+ERROR 2025-05-07 15:14:34,751 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:14:34,752 basehttp "GET /available-emails/ HTTP/1.1" 500 65
+ERROR 2025-05-07 15:14:37,124 employee_views Error in email_info_view: Cannot use MongoClient after close
+ERROR 2025-05-07 15:14:37,125 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:14:37,125 basehttp "GET /available-emails/ HTTP/1.1" 500 65
+ERROR 2025-05-07 15:15:14,995 employee_views Error in email_info_view: Cannot use MongoClient after close
+ERROR 2025-05-07 15:15:14,997 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:15:14,998 basehttp "GET /available-emails/ HTTP/1.1" 500 65
+ERROR 2025-05-07 15:15:46,521 employee_views Error in email_info_view: Cannot use MongoClient after close
+ERROR 2025-05-07 15:15:46,523 log Internal Server Error: /available-emails/
+ERROR 2025-05-07 15:15:46,525 basehttp "GET /available-emails/ HTTP/1.1" 500 65
+ERROR 2025-05-07 15:16:06,327 employee_views Error in email_info_view: name 'MongoDBConnection' is not defined
+ERROR 2025-05-07 15:16:06,380 log Internal Server Error: /available-emails/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\permissions.py", line 57, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\employee_views.py", line 103, in email_info_view
+    if worksession_client:
+NameError: name 'worksession_client' is not defined
+ERROR 2025-05-07 15:16:06,385 basehttp "GET /available-emails/ HTTP/1.1" 500 86977
+ERROR 2025-05-07 15:16:07,954 employee_views Error in email_info_view: name 'MongoDBConnection' is not defined
+ERROR 2025-05-07 15:16:07,995 log Internal Server Error: /available-emails/
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\permissions.py", line 57, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\employee_views.py", line 103, in email_info_view
+    if worksession_client:
+NameError: name 'worksession_client' is not defined
+ERROR 2025-05-07 15:16:07,999 basehttp "GET /available-emails/ HTTP/1.1" 500 86977
+ERROR 2025-05-07 15:17:28,496 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:17:30,174 employee_views Error in search_textnow_api: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\employee_views.py", line 347, in search_textnow_api
+    records = list(collection.find(query, projection).sort('created_at', -1))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:17:30,180 log Internal Server Error: /api/search-textnow/
+ERROR 2025-05-07 15:17:30,181 basehttp "GET /api/search-textnow/?date=2025-05-07 HTTP/1.1" 500 65
+ERROR 2025-05-07 15:17:32,629 employee_views Error in search_textnow_api: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\employee_views.py", line 347, in search_textnow_api
+    records = list(collection.find(query, projection).sort('created_at', -1))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:17:32,636 log Internal Server Error: /api/search-textnow/
+ERROR 2025-05-07 15:17:32,636 basehttp "GET /api/search-textnow/?date=2025-05-07 HTTP/1.1" 500 65
+ERROR 2025-05-07 15:18:19,471 employee_views Error in search_textnow_api: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\employee_views.py", line 347, in search_textnow_api
+    records = list(collection.find(query, projection).sort('created_at', -1))
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:18:19,477 log Internal Server Error: /api/search-textnow/
+ERROR 2025-05-07 15:18:19,478 basehttp "GET /api/search-textnow/?date=2025-05-07&status_tn=ch%C6%B0a+t%E1%BA%A1o+acc HTTP/1.1" 500 65
+ERROR 2025-05-07 15:22:25,863 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:22:38,228 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:22:59,412 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:23:30,128 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:23:31,859 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:23:33,066 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:23:35,507 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:23:37,925 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:24:13,267 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:25:13,820 verified_views Error in employee_verified_view: Cannot use MongoClient after close
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\main-finnal\webDjango1704\authentication\views\verified_views.py", line 34, in employee_verified_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+ERROR 2025-05-07 15:57:07,897 home_views Error in home_view: Cannot use MongoClient after close
+ERROR 2025-05-07 15:57:08,101 basehttp "GET / HTTP/1.1" 500 193916
+ERROR 2025-05-07 15:57:20,714 home_views Error in home_view: Cannot use MongoClient after close
+ERROR 2025-05-07 15:57:20,823 basehttp "GET / HTTP/1.1" 500 193932
+ERROR 2025-05-07 15:58:09,091 home_views Error in home_view: Cannot use MongoClient after close
+ERROR 2025-05-07 15:58:09,222 basehttp "GET / HTTP/1.1" 500 193916

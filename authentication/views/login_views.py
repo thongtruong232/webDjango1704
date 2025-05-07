@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from authentication.mongodb import MongoDBConnection, get_collection_handle
+from .mongodb import MongoDBConnection, get_collection_handle
 from bson.objectid import ObjectId
 from django.utils import timezone
 from django.views.decorators.http import require_POST

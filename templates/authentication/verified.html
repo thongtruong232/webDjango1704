@@ -468,29 +468,37 @@
         top: 20px;
         right: 20px;
         z-index: 9999;
-        animation: slideIn 0.5s ease-out;
+        min-width: 300px;
+        max-width: 400px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        animation: slideIn 0.3s ease-out;
     }
 
     .notification-content {
-        background: white;
-        border-radius: 8px;
-        padding: 16px 24px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         display: flex;
         align-items: center;
-        gap: 12px;
-        min-width: 300px;
+        padding: 16px;
     }
 
     .notification-icon {
+        margin-right: 12px;
         font-size: 24px;
-        color: #2ecc71;
+    }
+
+    .notification-icon.success {
+        color: var(--success-color);
+    }
+
+    .notification-icon.error {
+        color: var(--danger-color);
     }
 
     .notification-message {
-        color: #2c3e50;
+        flex: 1;
         font-size: 14px;
-        font-weight: 500;
+        color: #333;
     }
 
     @keyframes slideIn {
@@ -516,7 +524,7 @@
     }
 
     .notification-popup.hide {
-        animation: slideOut 0.5s ease-out forwards;
+        animation: slideOut 0.3s ease-out forwards;
     }
 </style>
 
@@ -525,14 +533,44 @@
 
 <script>
     function formatDate(dateString) {
+        if (!dateString) return '';
         const date = new Date(dateString);
         return date.toLocaleDateString('vi-VN', {
             year: 'numeric',
             month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+            day: '2-digit'
+        }).replace(/\//g, '-');
+    }
+
+    function formatDateToDDMMYYYY(dateString) {
+        if (!dateString) return '';
+        
+        // Nếu dateString đã là định dạng DD-MM-YYYY thì trả về luôn
+        if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+            return dateString;
+        }
+        
+        try {
+            // Tạo đối tượng Date từ chuỗi
+            const date = new Date(dateString);
+            
+            // Kiểm tra nếu date không hợp lệ
+            if (isNaN(date.getTime())) {
+                console.error('Invalid date:', dateString);
+                return dateString;
+            }
+            
+            // Lấy ngày, tháng, năm
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            
+            // Trả về chuỗi định dạng DD-MM-YYYY
+            return `${day}-${month}-${year}`;
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return dateString;
+        }
     }
 
     function getStatusClass(status) {
@@ -625,24 +663,41 @@
 
     function showNotification(message, type = 'success') {
         const popup = document.getElementById('notificationPopup');
+        if (!popup) {
+            console.error('Notification popup element not found');
+            return;
+        }
+
+        const icon = popup.querySelector('.notification-icon i');
         const messageElement = popup.querySelector('.notification-message');
-        const iconElement = popup.querySelector('.notification-icon i');
         
-        // Cập nhật nội dung và icon
+        if (!icon || !messageElement) {
+            console.error('Notification elements not found');
+            return;
+        }
+        
+        // Cập nhật nội dung
         messageElement.textContent = message;
-        iconElement.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-        iconElement.style.color = type === 'success' ? '#2ecc71' : '#e74c3c';
+        
+        // Cập nhật icon và màu sắc
+        if (type === 'success') {
+            icon.className = 'fas fa-check-circle';
+            icon.parentElement.className = 'notification-icon success';
+        } else {
+            icon.className = 'fas fa-times-circle';
+            icon.parentElement.className = 'notification-icon error';
+        }
         
         // Hiển thị popup
         popup.style.display = 'block';
         
         // Tự động ẩn sau 3 giây
         setTimeout(() => {
-            popup.classList.add('hide');
+            popup.style.animation = 'slideOut 0.3s ease-out';
             setTimeout(() => {
                 popup.style.display = 'none';
-                popup.classList.remove('hide');
-            }, 500);
+                popup.style.animation = 'slideIn 0.3s ease-out';
+            }, 300);
         }, 3000);
     }
 
@@ -652,6 +707,15 @@
         
         if (emails.length === 0) {
             showNotification('Vui lòng chọn ít nhất một bản ghi', 'error');
+            return;
+        }
+
+        // Xác nhận trước khi thực hiện
+        const confirmMessage = status === 'verified quay số' 
+            ? `Bạn có chắc chắn muốn đánh dấu ${emails.length} bản ghi là "Verified quay số"?`
+            : `Bạn có chắc chắn muốn đánh dấu ${emails.length} bản ghi là "Verified lỗi"?`;
+        
+        if (!confirm(confirmMessage)) {
             return;
         }
 
@@ -675,7 +739,7 @@
             Đang xử lý...
         `;
 
-        // Tạo timeout sau 3 phút
+        // Tạo timeout sau 1 phút
         const timeoutId = setTimeout(() => {
             // Khôi phục trạng thái cả hai nút
             activeButton.disabled = false;
@@ -683,19 +747,42 @@
             activeButton.innerHTML = originalSuccessText;
             errorButton.innerHTML = originalErrorText;
             showNotification('Đã hết thời gian chờ. Vui lòng thử lại.', 'error');
-        }, 180000); // 3 phút = 180000ms
+        }, 60000); // 1 phút = 60000ms
+
+        // Lấy CSRF token từ cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
 
         const promises = emails.map(email => {
             return fetch('/api/verified-textnow-update/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
                 },
                 body: JSON.stringify({
                     email: email,
                     status_tn: status
                 })
-            }).then(response => response.json());
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            });
         });
 
         Promise.all(promises)
@@ -725,7 +812,7 @@
                 clearTimeout(timeoutId);
                 
                 console.error('Error:', error);
-                showNotification('Có lỗi xảy ra khi cập nhật trạng thái', 'error');
+                showNotification(`Có lỗi xảy ra khi cập nhật trạng thái: ${error.message}`, 'error');
             })
             .finally(() => {
                 // Khôi phục trạng thái cả hai nút
@@ -782,7 +869,7 @@
                             ${record.status_account_TF}
                         </span>
                     </td>
-                    <td>${record.created_at}</td>
+                    <td>${formatDateToDDMMYYYY(record.created_at)}</td>
                     <td>${record.created_by || ''}</td>
                     <td>
                         <div class="d-flex gap-2">

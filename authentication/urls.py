@@ -28,7 +28,7 @@ urlpatterns = [
 
     # Employee urls
     path('create-mail/', views.create_email_view, name='create_email'),
-    path('verified/', views.employee_verified_view, name='verified'),
+    path('verified/', views.employee_verified_view, name='employee_verified'),
     path('employee/dashboard/', views.employee_dashboard_view, name='employee_dashboard'),
     path('employee/work/', views.employee_work_view, name='employee_work'),
     path('create-password/', views.create_password_view, name='create_password'),
