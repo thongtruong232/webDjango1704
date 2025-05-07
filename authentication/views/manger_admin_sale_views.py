@@ -17,7 +17,7 @@ from authentication.permissions import (
 logger = logging.getLogger(__name__)
 
 @login_required
-@role_required('admin')
+@role_required('admin','quanly','kiemtra')
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
@@ -154,7 +154,7 @@ def manager_textnow_view(request):
 
 # Thêm view xử lý xóa
 @login_required
-@role_required('admin')
+@role_required('admin','quanly','kiemtra')
 def delete_employee(request):
     if request.method == 'POST':
         try:
@@ -178,7 +178,7 @@ def delete_employee(request):
 
 @csrf_exempt
 @login_required
-@role_required('admin')
+@role_required('admin','quanly','kiemtra')
 def export_employee_textnow_excel(request):
     if request.method == 'POST':
         try:
