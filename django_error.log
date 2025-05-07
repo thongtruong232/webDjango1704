@@ -950,3 +950,5 @@ ERROR 2025-05-07 14:36:52,932 login_views Error sending WebSocket notification: 
 ERROR 2025-05-07 14:53:53,541 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
 ERROR 2025-05-07 14:54:20,570 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
 ERROR 2025-05-07 15:56:42,564 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 16:45:18,887 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 16:45:36,296 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
