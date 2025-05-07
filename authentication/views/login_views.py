@@ -293,10 +293,16 @@ def verify_otp_view(request):
                 )
                 
                 user_role = mongo_user.get('role')
-                if user_role in ['admin', 'quanly', 'kiemtra']:
+                if user_role in ['admin', 'quanly']:
                     return JsonResponse({
                         'success': True,
                         'redirect_url': '/home/',
+                        'message': 'Đăng nhập thành công'
+                    })
+                elif user_role == 'kiemtra':
+                    return JsonResponse({
+                        'success': True,
+                        'redirect_url': '/manager-admin-sale/',
                         'message': 'Đăng nhập thành công'
                     })
                 else:
