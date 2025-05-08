@@ -146,8 +146,8 @@ def login_view(request):
         except ValidationError as e:
             messages.error(request, str(e))
         except Exception as e:
-            logger.error(f"Login error: {str(e)}", exc_info=True)
-            messages.error(request, 'Có lỗi xảy ra, vui lòng thử lại sau')
+            logger.error(f"Login error: {str(e)}")
+            return render(request, 'authentication/login.html', {'error': 'Có lỗi xảy ra'})
     
     return render(request, 'authentication/login.html')
 
@@ -160,10 +160,10 @@ def verify_otp_view(request):
         username = request.session.get('otp_username')
         
         # Debug log
-        logger.info(f"Input OTP: {input_otp}")
-        logger.info(f"Session OTP: {session_otp}")
-        logger.info(f"Pre User ID: {pre_user_id}")
-        logger.info(f"Username: {username}")
+        # logger.info(f"Input OTP: {input_otp}")
+        # logger.info(f"Session OTP: {session_otp}")
+        # logger.info(f"Pre User ID: {pre_user_id}")
+        # logger.info(f"Username: {username}")
         
         # Kiểm tra session data
         if not all([input_otp, session_otp, pre_user_id, username]):
@@ -293,10 +293,16 @@ def verify_otp_view(request):
                 )
                 
                 user_role = mongo_user.get('role')
-                if user_role in ['admin', 'quanly', 'kiemtra']:
+                if user_role in ['admin', 'quanly']:
                     return JsonResponse({
                         'success': True,
                         'redirect_url': '/home/',
+                        'message': 'Đăng nhập thành công'
+                    })
+                elif user_role == 'kiemtra':
+                    return JsonResponse({
+                        'success': True,
+                        'redirect_url': '/manager-admin-sale/',
                         'message': 'Đăng nhập thành công'
                     })
                 else:

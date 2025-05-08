@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from .views.manger_admin_sale_views import manager_textnow_view, delete_employee, export_employee_textnow_excel
+from .views.employee_email_info_views import check_employee_password_today, get_employee_passwords
 
 urlpatterns = [
     path('', views.home_view, name='home'),
@@ -28,7 +29,7 @@ urlpatterns = [
 
     # Employee urls
     path('create-mail/', views.create_email_view, name='create_email'),
-    path('verified/', views.employee_verified_view, name='employee_verified'),
+    path('verified/', views.employee_verified_view, name='verified'),
     path('employee/dashboard/', views.employee_dashboard_view, name='employee_dashboard'),
     path('employee/work/', views.employee_work_view, name='employee_work'),
     path('create-password/', views.create_password_view, name='create_password'),
@@ -38,6 +39,8 @@ urlpatterns = [
     path('api/save-worksession/', views.save_worksession_api, name='save_worksession'),
     path('api/verified-textnow-update/', views.update_textnow_status_api, name='verified_textnow_api'),
     path('api/search-textnow/', views.search_textnow_api, name='search_textnow_api'),
+    path('api/check-employee-password-today/', check_employee_password_today, name='check_employee_password_today'),
+    path('api/get-employee-passwords/', get_employee_passwords, name='get_employee_passwords'),
     # admin manager
     path('manager-admin-sale/', manager_textnow_view, name='manager_textnow_view'),
     path('delete-employee/', delete_employee, name='delete_employee'),

@@ -1,6 +1,16 @@
 {% extends 'authentication/base.html' %}
 
 {% block content %}
+<!-- Thêm HTML cho popup thông báo -->
+<div id="notificationPopup" class="notification-popup" style="display: none;">
+    <div class="notification-content">
+        <div class="notification-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="notification-message"></div>
+    </div>
+</div>
+
 <div class="container-fluid py-1 ">
     <!-- Page Header -->
     <div class="sticky-header" style="width: 100%;">
@@ -451,21 +461,116 @@
     .table-responsive::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+
+    /* Thêm CSS cho popup thông báo */
+    .notification-popup {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        min-width: 300px;
+        max-width: 400px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        animation: slideIn 0.3s ease-out;
+    }
+
+    .notification-content {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+    }
+
+    .notification-icon {
+        margin-right: 12px;
+        font-size: 24px;
+    }
+
+    .notification-icon.success {
+        color: var(--success-color);
+    }
+
+    .notification-icon.error {
+        color: var(--danger-color);
+    }
+
+    .notification-message {
+        flex: 1;
+        font-size: 14px;
+        color: #333;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    .notification-popup.hide {
+        animation: slideOut 0.3s ease-out forwards;
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
     function formatDate(dateString) {
+        if (!dateString) return '';
         const date = new Date(dateString);
         return date.toLocaleDateString('vi-VN', {
             year: 'numeric',
             month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+            day: '2-digit'
+        }).replace(/\//g, '-');
+    }
+
+    function formatDateToDDMMYYYY(dateString) {
+        if (!dateString) return '';
+        
+        // Nếu dateString đã là định dạng DD-MM-YYYY thì trả về luôn
+        if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+            return dateString;
+        }
+        
+        try {
+            // Tạo đối tượng Date từ chuỗi
+            const date = new Date(dateString);
+            
+            // Kiểm tra nếu date không hợp lệ
+            if (isNaN(date.getTime())) {
+                console.error('Invalid date:', dateString);
+                return dateString;
+            }
+            
+            // Lấy ngày, tháng, năm
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            
+            // Trả về chuỗi định dạng DD-MM-YYYY
+            return `${day}-${month}-${year}`;
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return dateString;
+        }
     }
 
     function getStatusClass(status) {
@@ -556,47 +661,165 @@
         });
     }
 
+    function showNotification(message, type = 'success') {
+        const popup = document.getElementById('notificationPopup');
+        if (!popup) {
+            console.error('Notification popup element not found');
+            return;
+        }
+
+        const icon = popup.querySelector('.notification-icon i');
+        const messageElement = popup.querySelector('.notification-message');
+        
+        if (!icon || !messageElement) {
+            console.error('Notification elements not found');
+            return;
+        }
+        
+        // Cập nhật nội dung
+        messageElement.textContent = message;
+        
+        // Cập nhật icon và màu sắc
+        if (type === 'success') {
+            icon.className = 'fas fa-check-circle';
+            icon.parentElement.className = 'notification-icon success';
+        } else {
+            icon.className = 'fas fa-times-circle';
+            icon.parentElement.className = 'notification-icon error';
+        }
+        
+        // Hiển thị popup
+        popup.style.display = 'block';
+        
+        // Tự động ẩn sau 3 giây
+        setTimeout(() => {
+            popup.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                popup.style.display = 'none';
+                popup.style.animation = 'slideIn 0.3s ease-out';
+            }, 300);
+        }, 3000);
+    }
+
     function updateMultipleStatus(status) {
         const selectedRows = document.querySelectorAll('input[name="recordCheckbox"]:checked');
         const emails = Array.from(selectedRows).map(checkbox => checkbox.value);
         
         if (emails.length === 0) {
-            alert('Vui lòng chọn ít nhất một bản ghi');
+            showNotification('Vui lòng chọn ít nhất một bản ghi', 'error');
             return;
         }
+
+        // Xác nhận trước khi thực hiện
+        const confirmMessage = status === 'verified quay số' 
+            ? `Bạn có chắc chắn muốn đánh dấu ${emails.length} bản ghi là "Verified quay số"?`
+            : `Bạn có chắc chắn muốn đánh dấu ${emails.length} bản ghi là "Verified lỗi"?`;
+        
+        if (!confirm(confirmMessage)) {
+            return;
+        }
+
+        // Lấy cả hai nút
+        const successButton = document.getElementById('btnVerifiedSuccess');
+        const errorButton = document.getElementById('btnVerifiedError');
+        
+        // Lưu trạng thái ban đầu của các nút
+        const originalSuccessText = successButton.innerHTML;
+        const originalErrorText = errorButton.innerHTML;
+        
+        // Xác định nút đang được click và nút cần khóa
+        const activeButton = status === 'verified quay số' ? successButton : errorButton;
+        const inactiveButton = status === 'verified quay số' ? errorButton : successButton;
+        
+        // Thêm hiệu ứng loading cho nút đang xử lý và khóa nút còn lại
+        activeButton.disabled = true;
+        inactiveButton.disabled = true;
+        activeButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            Đang xử lý...
+        `;
+
+        // Tạo timeout sau 1 phút
+        const timeoutId = setTimeout(() => {
+            // Khôi phục trạng thái cả hai nút
+            activeButton.disabled = false;
+            inactiveButton.disabled = false;
+            activeButton.innerHTML = originalSuccessText;
+            errorButton.innerHTML = originalErrorText;
+            showNotification('Đã hết thời gian chờ. Vui lòng thử lại.', 'error');
+        }, 60000); // 1 phút = 60000ms
+
+        // Lấy CSRF token từ cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
 
         const promises = emails.map(email => {
             return fetch('/api/verified-textnow-update/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
                 },
                 body: JSON.stringify({
                     email: email,
                     status_tn: status
                 })
-            }).then(response => response.json());
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            });
         });
 
         Promise.all(promises)
             .then(results => {
+                // Hủy timeout vì đã hoàn thành
+                clearTimeout(timeoutId);
+                
                 const successCount = results.filter(result => result.success).length;
                 const errorCount = results.length - successCount;
 
                 if (successCount > 0) {
-                    // Refresh the page to show updated data
-                    window.location.reload();
+                    // Hiển thị thông báo thành công
+                    showNotification(`Cập nhật thành công ${successCount} bản ghi`);
+                    
+                    // Refresh trang sau 1 giây để hiển thị dữ liệu mới
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
                 }
 
                 if (errorCount > 0) {
-                    alert(`Cập nhật thành công ${successCount} bản ghi, thất bại ${errorCount} bản ghi`);
-                } else {
-                    alert(`Cập nhật thành công ${successCount} bản ghi`);
+                    showNotification(`Cập nhật thành công ${successCount} bản ghi, thất bại ${errorCount} bản ghi`, 'error');
                 }
             })
             .catch(error => {
+                // Hủy timeout vì đã có lỗi
+                clearTimeout(timeoutId);
+                
                 console.error('Error:', error);
-                alert('Có lỗi xảy ra khi cập nhật trạng thái');
+                showNotification(`Có lỗi xảy ra khi cập nhật trạng thái: ${error.message}`, 'error');
+            })
+            .finally(() => {
+                // Khôi phục trạng thái cả hai nút
+                activeButton.disabled = false;
+                inactiveButton.disabled = false;
+                activeButton.innerHTML = originalSuccessText;
+                errorButton.innerHTML = originalErrorText;
             });
     }
 
@@ -646,7 +869,7 @@
                             ${record.status_account_TF}
                         </span>
                     </td>
-                    <td>${record.created_at}</td>
+                    <td>${formatDateToDDMMYYYY(record.created_at)}</td>
                     <td>${record.created_by || ''}</td>
                     <td>
                         <div class="d-flex gap-2">
@@ -918,15 +1141,12 @@
     // Khởi tạo dữ liệu và hiển thị mặc định
     document.addEventListener('DOMContentLoaded', function() {
         // Parse records từ Django context và hiển thị ngay
-        const records = JSON.parse('{{ records|safe }}');
+        const records = JSON.parse('{{ textnow_accounts|safe }}');
         displayVerifiedRecords(records);
 
         // Set giá trị mặc định cho input date là ngày hôm nay
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('searchDate').value = today;
-
-        // Thực hiện tìm kiếm ban đầu để lấy danh sách người tạo
-        searchRecords();
 
         // Xử lý nút chọn tất cả
         document.getElementById('selectAll').addEventListener('change', function() {
@@ -950,6 +1170,28 @@
         // Xử lý nút Copy All
         document.getElementById('btnCopyAll').addEventListener('click', function() {
             copyAllSelected();
+        });
+
+        // Thêm xử lý cho phím Enter trong các input
+        document.getElementById('searchDate').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchRecords();
+            }
+        });
+
+        document.getElementById('statusTN').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchRecords();
+            }
+        });
+
+        document.getElementById('createdBy').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchRecords();
+            }
         });
     });
 </script>

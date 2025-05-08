@@ -15,10 +15,10 @@
         }
     }
     .mt-4 {
-        margin-top: 0.5rem !important;
+        margin-top: 0.1rem !important;
     }
     .container-fluid {
-        padding: 2rem 3rem;
+        padding: 1rem 3rem;
         max-width: 1800px;
         margin: 0 auto;
     }
@@ -49,10 +49,14 @@
 
     .search-form .row {
         margin: 0 -0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
     }
 
     .search-form [class*="col-"] {
         padding: 0 0.75rem;
+        margin-bottom: 1rem;
     }
 
     /* Form groups */
@@ -60,9 +64,11 @@
         background: #f8f9fa;
         border: 1px solid #e9ecef;
         border-radius: 8px;
-        padding: 10px 10px 10px 10px;
+        padding: 1rem;
         height: 100%;
         transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
     }
 
     .form-group:hover {
@@ -75,7 +81,7 @@
         font-size: 0.875rem;
         font-weight: 600;
         color: #4a5568;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
     }
 
     /* Inputs và Selects */
@@ -89,6 +95,7 @@
         color: #2d3748;
         background-color: #ffffff;
         transition: all 0.2s ease;
+        width: 100%;
     }
 
     .form-control:focus,
@@ -102,6 +109,7 @@
         display: flex;
         gap: 0.75rem;
         align-items: center;
+        flex: 1;
     }
 
     #date_type {
@@ -109,20 +117,110 @@
         flex-shrink: 0;
     }
 
+    #date_range_container {
+        flex: 1;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
     #date_separator {
         color: #64748b;
         font-weight: 500;
-        margin: 0 0.5rem;
+        white-space: nowrap;
     }
 
     /* Button container styles */
     .search-button-container {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-end;
+        justify-self: center;
         height: 100%;
         padding: 0;
+        width: 98%;
+
     }
+
+    .btn-primary {
+        width: 100%;
+        height: 42px;
+        background: linear-gradient(45deg, #4361ee, #3730a3);
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 24px; /* Thêm margin-top để căn với các input */
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        background: linear-gradient(45deg, #3730a3, #4361ee);
+    }
+
+    .btn-primary:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+    }
+
+    .btn-primary:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+    }
+
+    /* Thêm icon cho nút */
+    .btn-primary:before {
+        font-family: "Font Awesome 5 Free";
+        content: "\f002"; /* Search icon */
+        margin-right: 8px;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 992px) {
+        .search-form [class*="col-"] {
+            margin-bottom: 0;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .search-button-container {
+            margin-top: 0;
+        }
+        
+        .btn-primary {
+            margin-top: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .date-range-wrapper {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        #date_type {
+            width: 100% !important;
+        }
+
+        #date_range_container {
+            flex-direction: column;
+        }
+
+        #date_separator {
+            margin: 0.5rem 0;
+        }
+    }
+
+    /* Button styles */
     .btn-copy {
         padding: 0.5rem 0.75rem;
         border-radius: 6px;
@@ -153,50 +251,6 @@
         font-size: 12px;
         display: none;
     }
-    /* Button styles */
-    .btn-primary {
-        width: 70%;
-        height: 42px;
-        background: linear-gradient(45deg, #4361ee, #3730a3);
-        border: none;
-        border-radius: 8px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 0.95rem;
-        letter-spacing: 0.3px;
-        padding: 0.75rem 1.5rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        margin: auto 0;
-    }
-
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
-        background: linear-gradient(45deg, #3730a3, #4361ee);
-    }
-
-    .btn-primary:active {
-        transform: translateY(1px);
-        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
-    }
-
-    .btn-primary:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
-    }
-
-    /* Thêm icon cho nút */
-    .btn-primary:before {
-        font-family: "Font Awesome 5 Free";
-        content: "\f002"; /* Search icon */
-        margin-right: 8px;
-    }
 
     /* Table styles */
     .table {
@@ -222,6 +276,11 @@
 
     .table tbody tr:hover {
         background-color: #f8fafc;
+    }
+
+    .table-responsive {
+        max-height: 550px; /* Chiều cao tối đa của bảng */
+        overflow-y: auto; /* Thêm thanh cuộn dọc */
     }
 
     /* Badge styles */
@@ -257,41 +316,6 @@
     .btn-info:hover {
         background-color: #2563eb;
         transform: translateY(-1px);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .container-fluid {
-            padding: 1rem;
-        }
-
-        .search-form {
-            padding: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .date-range-wrapper {
-            flex-direction: column;
-        }
-
-        #date_type {
-            width: 100% !important;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .search-button-container {
-            padding-bottom: 0;
-            margin-top: 1rem;
-        }
-
-        .btn-primary {
-            height: 46px; /* Làm nút to hơn trên mobile */
-            font-size: 1rem;
-        }
     }
 
     /* Thêm CSS cho nút xóa */
@@ -400,6 +424,31 @@
         gap: 0.7em;
         cursor: pointer;
     }
+
+    /* Thêm CSS cho loading state của nút Excel */
+    .container-btn-file.loading {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    .container-btn-file .loading-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ffffff;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: none;
+    }
+
+    .container-btn-file.loading .loading-spinner {
+        display: block;
+    }
+
+    .container-btn-file.loading svg {
+        display: none;
+    }
+
     .container-btn-file > svg {
         margin-right: 0.7em;
         
@@ -490,15 +539,56 @@
         min-height: var(--sizer);
         max-height: var(--sizer);
     }
+
+    /* Loading overlay styles */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Disable form elements while loading */
+    .loading .form-control,
+    .loading .form-select,
+    .loading .btn {
+        pointer-events: none;
+        opacity: 0.7;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
+    <!-- Loading overlay -->
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Quản lý dánh sách hàng hoá</h2>
         <div class="d-flex justify-content-end">
             <button id="exportSelected" class="container-btn-file" style="text-decoration: none;">
+                <div class="loading-spinner"></div>
                 <svg
                     fill="#fff"
                     xmlns="http://www.w3.org/2000/svg"
@@ -575,6 +665,23 @@
 
                 <div class="col-md-2">
                     <div class="form-group">
+                        <label for="status_tf" class="form-label">Trạng thái TF</label>
+                        <select class="form-select status-select" id="status_tf" name="status_tf">
+                            <option value="">Tất cả</option>
+                            {% for status in status_list %}
+                            <option value="{{ status }}" {% if status_tf == status %}selected{% endif %}>
+                                {% if status == 'active' %}Hoạt động
+                                {% elif status == 'inactive' %}Không hoạt động
+                                {% elif status == 'lỗi' %}Lỗi
+                                {% else %}{{ status|title }}{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
                         <label for="created_by" class="form-label">Người tạo</label>
                         <select class="form-select" id="created_by" name="created_by">
                             <option value="">Tất cả</option>
@@ -595,10 +702,9 @@
                     </div>
                 </div>
 
-                <div class="col-md-2">
-                    <div class="form-group search-button-container">
+                <div class="col-md-12">
+                    <div class=" search-button-container">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i>
                             <span>Tìm kiếm</span>
                         </button>
                     </div>
@@ -678,11 +784,30 @@
                                 </button>
                             </td>
                             <td>
+                                <style>
+                                    .trash-container {
+                                        width: 40px;
+                                        height: 40px;
+                                        cursor: pointer;
+                                        background: none;
+                                        border: none;
+                                        padding: 0;
+                                    }
+                                    .trash-body, .trash-lid {
+                                        transition: transform 0.3s ease;
+                                    }
+                                    .trash-lid {
+                                        transform-origin: 30% 100%; /* Gốc xoay của nắp */
+                                    }
+                                    .trash-container:hover .trash-lid {
+                                        transform: rotate(-30deg); /* Xoay nắp khi hover */
+                                    }
+                                    </style>
                                 <button class="button btn-delete"
                                         data-id="{{ employee.id }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteModal"
-                                        title="Xóa bản ghi">
+                                        title="Xóa">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -694,8 +819,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <!-- Nút xuất Excel -->
-               
             </div>
         </div>
     </div>
@@ -776,28 +899,30 @@ document.addEventListener('DOMContentLoaded', function() {
     handleDateTypeChange();
 
     // Khởi tạo tooltips cho select options
-    const statusSelect = document.getElementById('status_tn');
-    const options = statusSelect.options;
+    const statusSelects = document.querySelectorAll('.status-select');
     
-    for (let option of options) {
-        if (option.value) {
-            let tooltip = '';
-            switch(option.value) {
-                case 'active':
-                    tooltip = 'Tài khoản đang hoạt động bình thường';
-                    break;
-                case 'inactive':
-                    tooltip = 'Tài khoản đã bị vô hiệu hóa';
-                    break;
-                case 'lỗi':
-                    tooltip = 'Tài khoản đang gặp sự cố';
-                    break;
-                default:
-                    tooltip = `Trạng thái: ${option.value}`;
+    statusSelects.forEach(select => {
+        const options = select.options;
+        for (let option of options) {
+            if (option.value) {
+                let tooltip = '';
+                switch(option.value) {
+                    case 'active':
+                        tooltip = 'Tài khoản đang hoạt động bình thường';
+                        break;
+                    case 'inactive':
+                        tooltip = 'Tài khoản đã bị vô hiệu hóa';
+                        break;
+                    case 'lỗi':
+                        tooltip = 'Tài khoản đang gặp sự cố';
+                        break;
+                    default:
+                        tooltip = `Trạng thái: ${option.value}`;
+                }
+                option.setAttribute('title', tooltip);
             }
-            option.setAttribute('title', tooltip);
         }
-    }
+    });
     
     // Khởi tạo Bootstrap tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
@@ -914,6 +1039,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Thêm class loading và vô hiệu hóa nút
+        this.classList.add('loading');
+
         // Gửi danh sách ID đến server
         fetch('/export-employee-textnow-excel/', {
             method: 'POST',
@@ -942,6 +1070,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error(error);
             alert('Đã xảy ra lỗi khi xuất Excel.');
+        })
+        .finally(() => {
+            // Xóa class loading và kích hoạt lại nút
+            this.classList.remove('loading');
         });
     });
 
@@ -954,6 +1086,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (checkbox) {
                 checkbox.checked = !checkbox.checked; // Đảo trạng thái checkbox
+            }
+        });
+    });
+
+    // Loading overlay handling
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    const searchForm = document.querySelector('form[method="GET"]');
+    const container = document.querySelector('.container-fluid');
+
+    searchForm.addEventListener('submit', function(e) {
+        // Show loading overlay
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+    });
+
+    // Show loading when form is submitted
+    document.querySelectorAll('.form-control, .form-select').forEach(element => {
+        element.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loadingOverlay.style.display = 'flex';
+                container.classList.add('loading');
             }
         });
     });

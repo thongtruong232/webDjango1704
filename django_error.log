@@ -595,1424 +595,369 @@ Traceback (most recent call last):
   File ".\authentication\views\login_views.py", line 169, in verify_otp_view
     if otp_expiry and current_time > otp_expiry:
 TypeError: can't compare offset-naive and offset-aware datetimes
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 72
-Internal Server Error: /available-emails/
+ERROR 2025-04-28 12:35:07,189 login_views 23920 24304 Error sending WebSocket notification: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:45,525 login_views 23920 26852 Error sending WebSocket notification: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:52,159 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:52,163 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:57,203 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:35:57,209 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,215 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,222 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,256 consumers 23920 28928 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:36:02,260 consumers 23920 28928 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:04,981 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:10,035 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:10,040 consumers 31704 22404 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,055 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,064 consumers 31704 22404 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,080 consumers 31704 22404 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:41:15,086 consumers 31704 22404 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:18,271 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:18,276 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:23,336 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:23,342 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,338 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,343 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,516 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:42:28,523 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:49,540 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:49,544 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:54,610 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:54,617 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,624 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,631 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,660 consumers 21908 5968 Error in WebSocket connect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:43:59,664 consumers 21908 5968 Error in WebSocket disconnect: Client sent AUTH, but no password is set
+ERROR 2025-04-28 12:45:41,469 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:45:48,538 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:45:53,566 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:45:55,601 consumers 5428 17960 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:50,166 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:52,204 consumers 5428 17960 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:57,218 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:49:57,281 consumers 5428 17960 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:50:17,116 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:50:24,188 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:51:18,214 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:51:20,244 consumers 13572 11972 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-04-28 12:51:25,349 consumers 13572 11972 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. 10061.
+ERROR 2025-05-06 10:25:28,891 login_views 30512 9884 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:27:41,182 login_views 3352 29508 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:28:14,970 login_views 3352 19616 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:03,907 login_views 3352 26000 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:19,679 login_views 3352 19424 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:48,269 consumers 3352 27112 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:32:50,306 consumers 3352 27112 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:42,737 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:49,817 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:55,886 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:43:57,924 consumers 21336 13948 Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 10:44:02,964 consumers 21336 13948 Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:01:43,582 login_views 19676 29096 Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:03:20,004 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:03:45,848 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:03:56,926 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:04:04,009 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:04:04,589 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:04:06,062 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 12:40:03,516 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:35:11,672 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:35:23,193 log Internal Server Error: /
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 795, in email_info_view
-    return render(request, 'authentication/employee_email_info.html', {
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 175, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 167, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in render
-    return SafeString("".join([node.render_annotated(context) for node in self]))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in <listcomp>
-    return SafeString("".join([node.render_annotated(context) for node in self]))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 966, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 471, in render
-    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
-    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
-    raise NoReverseMatch(msg)
-django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 801, in email_info_view
-    return redirect('employee_work')
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 48, in redirect
-    return redirect_class(resolve_url(to, *args, **kwargs))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 145, in resolve_url
-    return reverse(to, args=args, kwargs=kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
-    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
-    raise NoReverseMatch(msg)
-django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
-"GET /available-emails/ HTTP/1.1" 500 144014
-Internal Server Error: /available-emails/
+  File ".\authentication\views\home_views.py", line 128, in home_view
+    users_collection, client = get_collection_handle('users')
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\pymongo\collection.py", line 3478, in __next__
+    raise TypeError("'Collection' object is not iterable")
+TypeError: 'Collection' object is not iterable
+ERROR 2025-05-06 15:37:05,485 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:07,543 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:12,560 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:12,575 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:14,617 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:25,618 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:37:48,410 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 15:46:43,829 employee_views Error processing account 680f23f3b7fc59289c6a4167: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,831 employee_views Error processing account 680f23f3b7fc59289c6a4168: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,833 employee_views Error processing account 680f240db7fc59289c6a416d: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,834 employee_views Error processing account 680f3835bc409388a9aff38c: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,836 employee_views Error processing account 680f3e3e9a7034b37c1d7c2a: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,838 employee_views Error processing account 680f3e3e9a7034b37c1d7c2b: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,839 employee_views Error processing account 680f3e3e9a7034b37c1d7c2c: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,840 employee_views Error processing account 680f3e3e9a7034b37c1d7c2d: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,842 employee_views Error processing account 680f3e3e9a7034b37c1d7c2e: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,844 employee_views Error processing account 680f3e3e9a7034b37c1d7c2f: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,845 employee_views Error processing account 680f3e3e9a7034b37c1d7c30: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,847 employee_views Error processing account 680f3e3e9a7034b37c1d7c31: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,849 employee_views Error processing account 6816e167e75efe2bbaba5288: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,850 employee_views Error processing account 6816e1b7e75efe2bbaba5289: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,852 employee_views Error processing account 6816e1b7e75efe2bbaba528a: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,853 employee_views Error processing account 68174a4e2056bbaab1ad09b8: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,854 employee_views Error processing account 68174cca9350013cd1289895: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,856 employee_views Error processing account 68174dcb3d836b5924df0602: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,858 employee_views Error processing account 68174ddac4ae57cac9dc0f93: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,859 employee_views Error processing account 68174eac3fa7075b351ad0f7: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,861 employee_views Error processing account 6819a76215c516351f122508: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,862 employee_views Error processing account 6819a76215c516351f122509: name 'timezone' is not defined
+ERROR 2025-05-06 15:46:43,864 employee_views Error processing account 6819a76215c516351f12250a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,545 employee_views Error processing account 680f23f3b7fc59289c6a4167: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,547 employee_views Error processing account 680f23f3b7fc59289c6a4168: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,548 employee_views Error processing account 680f240db7fc59289c6a416d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,550 employee_views Error processing account 680f3835bc409388a9aff38c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,551 employee_views Error processing account 680f3e3e9a7034b37c1d7c2a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,553 employee_views Error processing account 680f3e3e9a7034b37c1d7c2b: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,554 employee_views Error processing account 680f3e3e9a7034b37c1d7c2c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,556 employee_views Error processing account 680f3e3e9a7034b37c1d7c2d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,557 employee_views Error processing account 680f3e3e9a7034b37c1d7c2e: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,559 employee_views Error processing account 680f3e3e9a7034b37c1d7c2f: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,560 employee_views Error processing account 680f3e3e9a7034b37c1d7c30: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,562 employee_views Error processing account 680f3e3e9a7034b37c1d7c31: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,563 employee_views Error processing account 6816e167e75efe2bbaba5288: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,565 employee_views Error processing account 6816e1b7e75efe2bbaba5289: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,566 employee_views Error processing account 6816e1b7e75efe2bbaba528a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,568 employee_views Error processing account 68174a4e2056bbaab1ad09b8: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,570 employee_views Error processing account 68174cca9350013cd1289895: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,571 employee_views Error processing account 68174dcb3d836b5924df0602: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,573 employee_views Error processing account 68174ddac4ae57cac9dc0f93: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,574 employee_views Error processing account 68174eac3fa7075b351ad0f7: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,575 employee_views Error processing account 6819a76215c516351f122508: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,576 employee_views Error processing account 6819a76215c516351f122509: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:00,577 employee_views Error processing account 6819a76215c516351f12250a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,737 employee_views Error processing account 680f23f3b7fc59289c6a4167: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,739 employee_views Error processing account 680f23f3b7fc59289c6a4168: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,740 employee_views Error processing account 680f240db7fc59289c6a416d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,742 employee_views Error processing account 680f3835bc409388a9aff38c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,743 employee_views Error processing account 680f3e3e9a7034b37c1d7c2a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,744 employee_views Error processing account 680f3e3e9a7034b37c1d7c2b: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,745 employee_views Error processing account 680f3e3e9a7034b37c1d7c2c: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,747 employee_views Error processing account 680f3e3e9a7034b37c1d7c2d: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,748 employee_views Error processing account 680f3e3e9a7034b37c1d7c2e: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,749 employee_views Error processing account 680f3e3e9a7034b37c1d7c2f: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,750 employee_views Error processing account 680f3e3e9a7034b37c1d7c30: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,751 employee_views Error processing account 680f3e3e9a7034b37c1d7c31: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,752 employee_views Error processing account 6816e167e75efe2bbaba5288: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,753 employee_views Error processing account 6816e1b7e75efe2bbaba5289: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,755 employee_views Error processing account 6816e1b7e75efe2bbaba528a: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,756 employee_views Error processing account 68174a4e2056bbaab1ad09b8: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,757 employee_views Error processing account 68174cca9350013cd1289895: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,758 employee_views Error processing account 68174dcb3d836b5924df0602: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,759 employee_views Error processing account 68174ddac4ae57cac9dc0f93: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,761 employee_views Error processing account 68174eac3fa7075b351ad0f7: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,762 employee_views Error processing account 6819a76215c516351f122508: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,764 employee_views Error processing account 6819a76215c516351f122509: name 'timezone' is not defined
+ERROR 2025-05-06 15:48:47,765 employee_views Error processing account 6819a76215c516351f12250a: name 'timezone' is not defined
+ERROR 2025-05-06 15:49:58,964 employee_views Error in employee_verified_view: authentication/employee_verified.html
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 795, in email_info_view
-    return render(request, 'authentication/employee_email_info.html', {
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 175, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 167, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in render
-    return SafeString("".join([node.render_annotated(context) for node in self]))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 1005, in <listcomp>
-    return SafeString("".join([node.render_annotated(context) for node in self]))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 966, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 471, in render
-    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
-    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
-    raise NoReverseMatch(msg)
-django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 801, in email_info_view
-    return redirect('employee_work')
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 48, in redirect
-    return redirect_class(resolve_url(to, *args, **kwargs))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 145, in resolve_url
-    return reverse(to, args=args, kwargs=kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\base.py", line 88, in reverse
-    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
-    raise NoReverseMatch(msg)
-django.urls.exceptions.NoReverseMatch: Reverse for 'employee_work' not found. 'employee_work' is not a valid view function or pattern name.
-"GET /available-emails/ HTTP/1.1" 500 144304
-Internal Server Error: /available-emails/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 204, in _get_response
-    self.check_response(response, callback)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 332, in check_response
-    raise ValueError(
-ValueError: The view authentication.views.employee_views.email_info_view didn't return an HttpResponse object. It returned None instead.
-"GET /available-emails/ HTTP/1.1" 500 69807
-Internal Server Error: /available-emails/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 204, in _get_response
-    self.check_response(response, callback)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 332, in check_response
-    raise ValueError(
-ValueError: The view authentication.views.employee_views.email_info_view didn't return an HttpResponse object. It returned None instead.
-"GET /available-emails/ HTTP/1.1" 500 69808
-Internal Server Error: /available-emails/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 204, in _get_response
-    self.check_response(response, callback)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 332, in check_response
-    raise ValueError(
-ValueError: The view authentication.views.employee_views.email_info_view didn't return an HttpResponse object. It returned None instead.
-"GET /available-emails/ HTTP/1.1" 500 69808
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /login/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 42, in login_view
-    if users_collection:
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 311, in __bool__
-    raise NotImplementedError(
-NotImplementedError: Collection objects do not implement truth value testing or bool(). Please compare with None instead: collection is not None
-"GET /login/ HTTP/1.1" 500 73629
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 65
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 66
-Internal Server Error: /api/available-emails/
-"GET /api/available-emails/ HTTP/1.1" 500 66
-Internal Server Error: /create-mail/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 306, in create_email_view
-    return render(request, 'authentication/create_email.html')
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
     template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
     raise TemplateDoesNotExist(template_name, chain=chain)
-django.template.exceptions.TemplateDoesNotExist: authentication/create_email.html
-"GET /create-mail/ HTTP/1.1" 500 87699
-Internal Server Error: /create-mail/
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 15:49:59,130 log Internal Server Error: /verified/
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 305, in create_email_view
-    return render(request, 'authentication/create_email.html')
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
     template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
     raise TemplateDoesNotExist(template_name, chain=chain)
-django.template.exceptions.TemplateDoesNotExist: authentication/create_email.html
-"GET /create-mail/ HTTP/1.1" 500 87699
-Internal Server Error: /create-mail/
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py", line 305, in create_email_view
-    return render(request, 'authentication/create_email.html')
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 24, in render
+  File ".\authentication\views\employee_views.py", line 449, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
     template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
     raise TemplateDoesNotExist(template_name, chain=chain)
-django.template.exceptions.TemplateDoesNotExist: authentication/create_email.html
-"GET /create-mail/ HTTP/1.1" 500 87699
-Internal Server Error: /create-mail/
-"GET /create-mail/ HTTP/1.1" 500 63
-Internal Server Error: /create-mail/
-"GET /create-mail/ HTTP/1.1" 500 63
-Internal Server Error: /api/create-textnow/
-"POST /api/create-textnow/ HTTP/1.1" 500 66
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 40
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 40
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 40
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 40
-Internal Server Error: /
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 15:51:42,831 employee_views Error in employee_verified_view: verified.html
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73395
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73395
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73395
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73395
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73227
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73532
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73532
-Internal Server Error: /login/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
-    if client:
-UnboundLocalError: local variable 'client' referenced before assignment
-"POST /login/ HTTP/1.1" 500 69327
-Internal Server Error: /login/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
-    if client:
-UnboundLocalError: local variable 'client' referenced before assignment
-"POST /login/ HTTP/1.1" 500 69327
-Internal Server Error: /login/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\login_views.py", line 72, in login_view
-    if client:
-UnboundLocalError: local variable 'client' referenced before assignment
-"POST /login/ HTTP/1.1" 500 69331
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73822
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73043
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73042
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73369
-Internal Server Error: /create-password/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\employee_views.py", line 262, in create_password_view
-    if client:
-UnboundLocalError: local variable 'client' referenced before assignment
-"POST /create-password/ HTTP/1.1" 500 74848
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73051
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73051
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73052
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73051
-Internal Server Error: /work/
-"GET /work/ HTTP/1.1" 500 141
-Internal Server Error: /work/
-"GET /work/ HTTP/1.1" 500 141
-Internal Server Error: /work/
-"GET /work/ HTTP/1.1" 500 141
-Internal Server Error: /work/
-"GET /work/ HTTP/1.1" 500 141
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 141
-Internal Server Error: /verified/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\employee_views.py", line 295, in employee_verified_view
-    if client:
-UnboundLocalError: local variable 'client' referenced before assignment
-"GET /verified/ HTTP/1.1" 500 73141
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73043
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73043
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73361
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73372
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73042
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 55, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 197, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 72912
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 93
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 93
-Internal Server Error: /available-emails/
-"GET /available-emails/ HTTP/1.1" 500 79
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 74727
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73237
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73354
-Internal Server Error: /manager/admin
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 170, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 162, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 938, in render
-    bit = node.render_annotated(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 905, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 127, in render
-    compiled_parent = self.get_parent(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 124, in get_parent
-    return self.find_template(parent, context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 103, in find_template
-    template, origin = context.template.engine.find_template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 129, in find_template
-    raise TemplateDoesNotExist(name, tried=tried)
-django.template.exceptions.TemplateDoesNotExist: base.html
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 82, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 63, in render
-    reraise(exc, self.backend)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 84, in reraise
-    raise new from exc
-django.template.exceptions.TemplateDoesNotExist: base.html
-"GET /manager/admin HTTP/1.1" 500 139224
-Internal Server Error: /manager-admin-sale
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 170, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 162, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 938, in render
-    bit = node.render_annotated(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 905, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 127, in render
-    compiled_parent = self.get_parent(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 124, in get_parent
-    return self.find_template(parent, context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 103, in find_template
-    template, origin = context.template.engine.find_template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 129, in find_template
-    raise TemplateDoesNotExist(name, tried=tried)
-django.template.exceptions.TemplateDoesNotExist: base.html
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 82, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 63, in render
-    reraise(exc, self.backend)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 84, in reraise
-    raise new from exc
-django.template.exceptions.TemplateDoesNotExist: base.html
-"GET /manager-admin-sale HTTP/1.1" 500 139299
-Internal Server Error: /manager-admin-sale/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 170, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 162, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 938, in render
-    bit = node.render_annotated(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 905, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 127, in render
-    compiled_parent = self.get_parent(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 124, in get_parent
-    return self.find_template(parent, context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 103, in find_template
-    template, origin = context.template.engine.find_template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 129, in find_template
-    raise TemplateDoesNotExist(name, tried=tried)
-django.template.exceptions.TemplateDoesNotExist: base.html
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 82, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 63, in render
-    reraise(exc, self.backend)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 84, in reraise
-    raise new from exc
-django.template.exceptions.TemplateDoesNotExist: base.html
-"GET /manager-admin-sale/ HTTP/1.1" 500 139314
-Internal Server Error: /manager-admin-sale/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 170, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 162, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 938, in render
-    bit = node.render_annotated(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 905, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 127, in render
-    compiled_parent = self.get_parent(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 124, in get_parent
-    return self.find_template(parent, context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 103, in find_template
-    template, origin = context.template.engine.find_template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 129, in find_template
-    raise TemplateDoesNotExist(name, tried=tried)
-django.template.exceptions.TemplateDoesNotExist: base.html
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 82, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 63, in render
-    reraise(exc, self.backend)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 84, in reraise
-    raise new from exc
-django.template.exceptions.TemplateDoesNotExist: base.html
-"GET /manager-admin-sale/ HTTP/1.1" 500 139314
-Internal Server Error: /manager-admin-sale/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 170, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 162, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 938, in render
-    bit = node.render_annotated(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 905, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 127, in render
-    compiled_parent = self.get_parent(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 124, in get_parent
-    return self.find_template(parent, context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 103, in find_template
-    template, origin = context.template.engine.find_template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 129, in find_template
-    raise TemplateDoesNotExist(name, tried=tried)
-django.template.exceptions.TemplateDoesNotExist: base.html
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 88, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 63, in render
-    reraise(exc, self.backend)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 84, in reraise
-    raise new from exc
-django.template.exceptions.TemplateDoesNotExist: base.html
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 61, in render
-    return self.template.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 170, in render
-    return self._render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 162, in _render
-    return self.nodelist.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 938, in render
-    bit = node.render_annotated(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 905, in render_annotated
-    return self.render(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 127, in render
-    compiled_parent = self.get_parent(context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 124, in get_parent
-    return self.find_template(parent, context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader_tags.py", line 103, in find_template
-    template, origin = context.template.engine.find_template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 129, in find_template
-    raise TemplateDoesNotExist(name, tried=tried)
-django.template.exceptions.TemplateDoesNotExist: base.html
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 95, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 62, in render_to_string
-    return template.render(context, request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 63, in render
-    reraise(exc, self.backend)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 84, in reraise
-    raise new from exc
-django.template.exceptions.TemplateDoesNotExist: base.html
-"GET /manager-admin-sale/ HTTP/1.1" 500 203107
-Internal Server Error: /manager-admin-sale/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\smartif.py", line 175, in translate_token
-    op = OPERATORS[token]
-KeyError: '!=='
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 136, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
     template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 964, in do_if
-    condition = TemplateIfParser(parser, bits).parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 897, in __init__
-    super().__init__(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\smartif.py", line 166, in __init__
-    mapped_tokens.append(self.translate_token(token))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\smartif.py", line 177, in translate_token
-    return self.create_var(token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 900, in create_var
-    return TemplateLiteral(self.template_parser.compile_filter(value), value)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 662, in __init__
-    raise TemplateSyntaxError("Could not parse the remainder: '%s' "
-django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '!==' from '!=='
-
-During handling of the above exception, another exception occurred:
-
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: verified.html
+ERROR 2025-05-06 15:51:42,962 log Internal Server Error: /verified/
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\smartif.py", line 175, in translate_token
-    op = OPERATORS[token]
-KeyError: '!=='
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 144, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+  File ".\authentication\views\employee_views.py", line 437, in employee_verified_view
+    return render(request, 'verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
     template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 964, in do_if
-    condition = TemplateIfParser(parser, bits).parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 897, in __init__
-    super().__init__(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\smartif.py", line 166, in __init__
-    mapped_tokens.append(self.translate_token(token))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\smartif.py", line 177, in translate_token
-    return self.create_var(token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 900, in create_var
-    return TemplateLiteral(self.template_parser.compile_filter(value), value)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 662, in __init__
-    raise TemplateSyntaxError("Could not parse the remainder: '%s' "
-django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '!==' from '!=='
-"GET /manager-admin-sale/?date_type=range&single_date=&status_tn=&created_by=nhanvien_user&search= HTTP/1.1" 500 316309
-Internal Server Error: /manager-admin-sale/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 766, in __init__
-    self.literal = float(var)
-ValueError: could not convert string to float: 'employee._id'
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: verified.html
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 782, in __init__
-    self.literal = mark_safe(unescape_string_literal(var))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\functional.py", line 228, in wrapper
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
     return func(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\text.py", line 388, in unescape_string_literal
-    raise ValueError("Not a string literal: %r" % s)
-ValueError: Not a string literal: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 135, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
-    template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 814, in do_for
-    nodelist_loop = parser.parse(('empty', 'endfor',))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 449, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 447, in parse
-    filter_expression = self.compile_filter(token.contents)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 648, in __init__
-    var_obj = Variable(var)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 787, in __init__
-    raise TemplateSyntaxError("Variables and attributes may "
-django.template.exceptions.TemplateSyntaxError: Variables and attributes may not begin with underscores: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 766, in __init__
-    self.literal = float(var)
-ValueError: could not convert string to float: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 782, in __init__
-    self.literal = mark_safe(unescape_string_literal(var))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\functional.py", line 228, in wrapper
-    return func(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\text.py", line 388, in unescape_string_literal
-    raise ValueError("Not a string literal: %r" % s)
-ValueError: Not a string literal: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 143, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+  File ".\authentication\views\employee_views.py", line 449, in employee_verified_view
+    return render(request, 'verified.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
     template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 814, in do_for
-    nodelist_loop = parser.parse(('empty', 'endfor',))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 449, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 447, in parse
-    filter_expression = self.compile_filter(token.contents)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 648, in __init__
-    var_obj = Variable(var)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 787, in __init__
-    raise TemplateSyntaxError("Variables and attributes may "
-django.template.exceptions.TemplateSyntaxError: Variables and attributes may not begin with underscores: 'employee._id'
-"GET /manager-admin-sale/?date_type=single&start_date=2025-04-27&end_date=2025-04-27&status_tn=&created_by=&search= HTTP/1.1" 500 348890
-Internal Server Error: /manager-admin-sale/
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: verified.html
+ERROR 2025-05-06 15:57:42,427 verified_views Error in employee_verified_view: authentication/employee_verified.html
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 766, in __init__
-    self.literal = float(var)
-ValueError: could not convert string to float: 'employee._id'
+  File ".\authentication\views\verified_views.py", line 100, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 15:57:42,543 log Internal Server Error: /verified/
+Traceback (most recent call last):
+  File ".\authentication\views\verified_views.py", line 100, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 782, in __init__
-    self.literal = mark_safe(unescape_string_literal(var))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\functional.py", line 228, in wrapper
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
     return func(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\text.py", line 388, in unescape_string_literal
-    raise ValueError("Not a string literal: %r" % s)
-ValueError: Not a string literal: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 137, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
-    template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 814, in do_for
-    nodelist_loop = parser.parse(('empty', 'endfor',))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 449, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 447, in parse
-    filter_expression = self.compile_filter(token.contents)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 648, in __init__
-    var_obj = Variable(var)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 787, in __init__
-    raise TemplateSyntaxError("Variables and attributes may "
-django.template.exceptions.TemplateSyntaxError: Variables and attributes may not begin with underscores: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 766, in __init__
-    self.literal = float(var)
-ValueError: could not convert string to float: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 782, in __init__
-    self.literal = mark_safe(unescape_string_literal(var))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\functional.py", line 228, in wrapper
-    return func(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\text.py", line 388, in unescape_string_literal
-    raise ValueError("Not a string literal: %r" % s)
-ValueError: Not a string literal: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 145, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+  File ".\authentication\views\verified_views.py", line 112, in employee_verified_view
+    return render(request, 'authentication/employee_verified.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
     template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 814, in do_for
-    nodelist_loop = parser.parse(('empty', 'endfor',))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 449, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 447, in parse
-    filter_expression = self.compile_filter(token.contents)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 648, in __init__
-    var_obj = Variable(var)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 787, in __init__
-    raise TemplateSyntaxError("Variables and attributes may "
-django.template.exceptions.TemplateSyntaxError: Variables and attributes may not begin with underscores: 'employee._id'
-"GET /manager-admin-sale/?date_type=single&start_date=2025-04-27&end_date=2025-04-27&status_tn=&created_by=&search= HTTP/1.1" 500 345500
-Internal Server Error: /manager-admin-sale/
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 766, in __init__
-    self.literal = float(var)
-ValueError: could not convert string to float: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 782, in __init__
-    self.literal = mark_safe(unescape_string_literal(var))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\functional.py", line 228, in wrapper
-    return func(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\text.py", line 388, in unescape_string_literal
-    raise ValueError("Not a string literal: %r" % s)
-ValueError: Not a string literal: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 137, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
-    template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 814, in do_for
-    nodelist_loop = parser.parse(('empty', 'endfor',))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 449, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 447, in parse
-    filter_expression = self.compile_filter(token.contents)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 648, in __init__
-    var_obj = Variable(var)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 787, in __init__
-    raise TemplateSyntaxError("Variables and attributes may "
-django.template.exceptions.TemplateSyntaxError: Variables and attributes may not begin with underscores: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 766, in __init__
-    self.literal = float(var)
-ValueError: could not convert string to float: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 782, in __init__
-    self.literal = mark_safe(unescape_string_literal(var))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\functional.py", line 228, in wrapper
-    return func(*args, **kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\utils\text.py", line 388, in unescape_string_literal
-    raise ValueError("Not a string literal: %r" % s)
-ValueError: Not a string literal: 'employee._id'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\manger_admin_sale_views.py", line 145, in manager_textnow_view
-    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
-    content = loader.render_to_string(template_name, context, request, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
-    template = get_template(template_name, using=using)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 15, in get_template
-    return engine.get_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\backends\django.py", line 34, in get_template
-    return Template(self.engine.get_template(template_name), self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 143, in get_template
-    template, origin = self.find_template(template_name)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\engine.py", line 125, in find_template
-    template = loader.get_template(name, skip=skip)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loaders\base.py", line 29, in get_template
-    return Template(
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 155, in __init__
-    self.nodelist = self.compile_nodelist()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 193, in compile_nodelist
-    return parser.parse()
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 478, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 476, in parse
-    compiled_result = compile_func(self, token)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\defaulttags.py", line 814, in do_for
-    nodelist_loop = parser.parse(('empty', 'endfor',))
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 449, in parse
-    raise self.error(token, e)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 447, in parse
-    filter_expression = self.compile_filter(token.contents)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 563, in compile_filter
-    return FilterExpression(token, self)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 648, in __init__
-    var_obj = Variable(var)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\base.py", line 787, in __init__
-    raise TemplateSyntaxError("Variables and attributes may "
-django.template.exceptions.TemplateSyntaxError: Variables and attributes may not begin with underscores: 'employee._id'
-"GET /manager-admin-sale/?date_type=single&start_date=2025-04-27&end_date=2025-04-27&status_tn=&created_by=&search= HTTP/1.1" 500 345500
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 74204
-Internal Server Error: /
-Traceback (most recent call last):
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
-    response = get_response(request)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
-    return view_func(request, *args, **kwargs)
-  File "C:\Users\MT GAMING\Desktop\git thong\WebDjango\authentication\views\home_views.py", line 128, in home_view
-    users_collection, client = get_collection_handle('users')
-TypeError: 'Collection' object is not iterable
-"GET / HTTP/1.1" 500 73766
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/employee_verified.html
+ERROR 2025-05-06 16:00:44,363 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:07,959 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:21,708 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:23,745 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:28,792 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:28,808 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:30,843 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:01:30,858 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:04:36,257 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:05:02,537 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:09:47,859 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:10:24,662 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:10:43,868 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:11:16,545 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-06 16:14:32,673 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 09:58:36,220 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 11:57:11,710 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 11:57:31,057 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 12:05:50,764 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:46:30,336 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:47:25,913 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:48:00,093 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:48:16,456 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:48:38,420 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:49:03,426 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:49:34,032 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:54:55,209 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:55:19,374 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:55:31,776 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:56:47,529 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:57:06,528 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:57:13,609 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:57:14,288 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:57:37,735 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:57:56,989 consumers Error in WebSocket connect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:57:59,035 consumers Error in WebSocket disconnect: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 13:58:18,115 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 14:04:55,265 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 14:05:11,673 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 14:27:51,660 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 14:36:52,932 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 14:53:53,541 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 14:54:20,570 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 15:56:42,564 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 16:45:18,887 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-07 16:45:36,296 login_views Error sending WebSocket notification: Error 10061 connecting to 127.0.0.1:6379. Connect call failed ('127.0.0.1', 6379).
+ERROR 2025-05-08 11:52:37,928 login_views Error sending WebSocket notification: Error 22 connecting to 127.0.0.1:6379. 22.
+ERROR 2025-05-08 11:52:50,089 home_views Error in home_view: Cannot use MongoClient after close
+ERROR 2025-05-08 11:52:50,205 basehttp "GET / HTTP/1.1" 500 193655
+ERROR 2025-05-08 11:53:12,555 home_views Error in home_view: Cannot use MongoClient after close
+ERROR 2025-05-08 11:53:12,656 basehttp "GET / HTTP/1.1" 500 193882
+ERROR 2025-05-08 11:53:14,861 home_views Error in home_view: Cannot use MongoClient after close
+ERROR 2025-05-08 11:53:14,963 basehttp "GET / HTTP/1.1" 500 194019
+ERROR 2025-05-08 11:53:26,592 home_views Error in home_view: Cannot use MongoClient after close
+ERROR 2025-05-08 11:53:26,717 basehttp "GET / HTTP/1.1" 500 194019

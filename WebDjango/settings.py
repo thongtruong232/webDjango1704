@@ -14,12 +14,42 @@ from pathlib import Path
 import os
 import re
 import environ
+import logging
 
+# Configure logging
+logger = logging.getLogger(__name__)
 
-env = environ.Env()
-environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Initialize environ
+env = environ.Env()
+
+# Đọc file .env từ thư mục gốc của project
+env_path = os.path.join(BASE_DIR, '.env')
+logger.info(f"Looking for .env file at: {env_path}")
+
+if os.path.exists(env_path):
+    logger.info(f"Found .env file at: {env_path}")
+    env.read_env(env_path)
+    logger.info("Successfully loaded .env file")
+else:
+    logger.warning(f".env file not found at: {env_path}")
+    # Thử tìm file .env ở các vị trí khác
+    alternative_paths = [
+        os.path.join(BASE_DIR.parent, '.env'),
+        os.path.join(os.path.dirname(BASE_DIR), '.env'),
+        os.path.join(os.getcwd(), '.env')
+    ]
+    
+    for path in alternative_paths:
+        if os.path.exists(path):
+            logger.info(f"Found .env file at alternative location: {path}")
+            env.read_env(path)
+            logger.info("Successfully loaded .env file from alternative location")
+            break
+    else:
+        logger.error("Could not find .env file in any location")
 
 
 # Quick-start development settings - unsuitable for production
@@ -93,7 +123,7 @@ DATABASES = {
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_SECURE = False  # Set to True in production
 SESSION_COOKIE_DOMAIN = None  # Set to your domain in production
-SESSION_COOKIE_AGE = 3600  # 1 hour
+SESSION_COOKIE_AGE = 86400  # 24 giờ
 SESSION_COOKIE_HTTPONLY = True
 SESSION_SAVE_EVERY_REQUEST = True  # Save session on every request
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Keep session alive after browser close
@@ -199,15 +229,27 @@ USE_I18N = True
 USE_TZ = True
 
 # Redis Configuration
-REDIS_HOST = os.getenv('REDIS_HOST', '127.0.0.1')
+REDIS_HOST = os.getenv('REDIS_HOST', '207.148.69.229')  # Mặc định là host IP
 REDIS_PORT = os.getenv('REDIS_PORT', '6379')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'thongtruong232')
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/1',
+        'LOCATION': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': REDIS_PASSWORD,
+            'SOCKET_CONNECT_TIMEOUT': 5,
+            'SOCKET_TIMEOUT': 5,
+            'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
+            'CONNECTION_POOL_CLASS_KWARGS': {
+                'max_connections': 50,
+                'timeout': 20
+            },
+            'MAX_CONNECTIONS': 1000,
+            'RETRY_ON_TIMEOUT': True,
+            'IGNORE_EXCEPTIONS': True,  # Bỏ qua lỗi kết nối tạm thời
         }
     }
 }
@@ -217,9 +259,20 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [f'redis://{REDIS_HOST}:{REDIS_PORT}/0'],
-            'capacity': 1500,  # Số lượng message tối đa trong channel
-            'expiry': 3600,  # Thời gian hết hạn của message (giây)
+            'hosts': [{
+                'address': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0',
+                'password': REDIS_PASSWORD
+            }],
+            'capacity': 1500,
+            'expiry': 3600,
+            'group_expiry': 3600,
+            'prefix': 'asgi',
+            'channel_capacity': {
+                'http.request': 200,
+                'http.response*': 200,
+                'websocket.send*': 200,
+            },
+            'symmetric_encryption_keys': [SECRET_KEY],  # Mã hóa dữ liệu WebSocket
         },
     },
 }
@@ -227,21 +280,40 @@ CHANNEL_LAYERS = {
 # Channels Configuration
 ASGI_APPLICATION = 'WebDjango.asgi.application'
 
+# Logging settings
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
         'file': {
-            'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'django_error.log',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
+            'formatter': 'verbose',
+            'encoding': 'utf-8',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
             'propagate': True,
         },
     },
 }
+
+# WebSocket settings
+CHANNELS_WS_PROTOCOLS = ['websocket']
+CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1']
+CHANNELS_WS_HEARTBEAT = 30  # seconds
+CHANNELS_WS_PING_INTERVAL = 20  # seconds
+CHANNELS_WS_PING_TIMEOUT = 10  # seconds

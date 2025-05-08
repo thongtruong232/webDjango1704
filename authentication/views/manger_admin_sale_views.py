@@ -10,8 +10,22 @@ import openpyxl
 from openpyxl.utils import get_column_letter
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from authentication.permissions import (
+    role_required, can_manage_users, can_update_status, 
+    ROLES, get_allowed_status_updates
+)
 logger = logging.getLogger(__name__)
+
+def get_collection_handle(collection_name):
+    """Helper function to get MongoDB collection handle"""
+    try:
+        client = MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db[collection_name]
+        return collection, client
+    except Exception as e:
+        logger.error(f"Error connecting to MongoDB: {str(e)}")
+        raise
 
 @login_required
 def manager_textnow_view(request):
@@ -39,6 +53,7 @@ def manager_textnow_view(request):
 
         # Lấy tham số tìm kiếm từ request
         status_tn = request.GET.get('status_tn')
+        status_tf = request.GET.get('status_tf')
         date_type = request.GET.get('date_type', 'single')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
@@ -47,6 +62,7 @@ def manager_textnow_view(request):
         
         print("Search parameters:", {
             'status_tn': status_tn,
+            'status_tf': status_tf,
             'date_type': date_type,
             'start_date': start_date,
             'end_date': end_date,
@@ -86,7 +102,13 @@ def manager_textnow_view(request):
         if status_tn:
             status_query = {'status_account_TN': status_tn}
             status_count = collection.count_documents(status_query)
-            print(f"Documents matching status {status_tn}:", status_count)
+            print(f"Documents matching TN status {status_tn}:", status_count)
+            query.update(status_query)
+            
+        if status_tf:
+            status_query = {'status_account_TF': status_tf}
+            status_count = collection.count_documents(status_query)
+            print(f"Documents matching TF status {status_tf}:", status_count)
             query.update(status_query)
         
         if created_by:
@@ -123,15 +145,23 @@ def manager_textnow_view(request):
         creators = list(collection.distinct('created_by'))
         creators = sorted([creator for creator in creators if creator])
         
-        status_list = list(collection.distinct('status_account_TN'))
+        # Lấy danh sách trạng thái từ cả TN và TF
+        status_list = list(set(
+            list(collection.distinct('status_account_TN')) + 
+            list(collection.distinct('status_account_TF'))
+        ))
         status_list = sorted([status for status in status_list if status])
-        
+  
+        users_collection, client = get_collection_handle('users')
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
         context = {
+            'user_data': user_data,
             'employees': employees,
             'date_type': date_type,
             'start_date': start_date,
             'end_date': end_date,
             'status_tn': status_tn,
+            'status_tf': status_tf,
             'status_list': status_list,
             'created_by': created_by,
             'search_query': search_query,

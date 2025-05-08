@@ -1467,6 +1467,20 @@
             // Thêm xử lý sự kiện cho nút Mua Mail Đồng Văn
             buyDongVanBtn.addEventListener('click', async function() {
                 try {
+                    // Kiểm tra bản ghi employee password
+                    const checkResponse = await fetch('/api/check-employee-password-today/');
+                    const checkData = await checkResponse.json();
+                    
+                    if (!checkData.success) {
+                        throw new Error(checkData.error);
+                    }
+                    
+                    if (!checkData.has_record) {
+                        showModal('Vui lòng thêm mật khẩu TextNow và TextFree trước khi mua mail!');
+                        return;
+                    }
+
+                    // Nếu đã có bản ghi, tiếp tục lấy danh sách mail
                     const response = await fetch('https://api.dongvanfb.net/user/account_type?apikey=GfeXobVqUdD8WTDwvtKE6GBPC');
                     const data = await response.json();
                     
@@ -1477,7 +1491,7 @@
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('Có lỗi xảy ra khi gọi API');
+                    alert('Có lỗi xảy ra: ' + error.message);
                 }
             });
 
@@ -1669,46 +1683,66 @@
                 return;
             }
 
-            // Kiểm tra mật khẩu từ email gần nhất
-            const existingData = localStorage.getItem('employee_worksession');
-            let existingEmails = [];
-            if (existingData) {
-                existingEmails = JSON.parse(existingData);
-            }
-
-            const lastEmail = existingEmails.length > 0 ? existingEmails[existingEmails.length - 1] : null;
-            const defaultPassTN = lastEmail ? lastEmail.pass_TN : "";
-            const defaultPassTF = lastEmail ? lastEmail.pass_TF : "";
-
-            // Kiểm tra nếu không có mật khẩu
-            if (!defaultPassTN || !defaultPassTF || defaultPassTN.trim() === "" || defaultPassTF.trim() === "") {
-                const missingPasswords = [];
-                if (!defaultPassTN || defaultPassTN.trim() === "") missingPasswords.push("TextNow");
-                if (!defaultPassTF || defaultPassTF.trim() === "") missingPasswords.push("TextFree");
-
-                const modal = document.getElementById('passwordModal');
-                const modalMessage = document.getElementById('modalMessage');
-                modalMessage.innerHTML = `
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <strong>Không thể mua mail!</strong><br>
-                        Vui lòng cung cấp mật khẩu cho các ứng dụng sau:<br>
-                        ${missingPasswords.join(", ")}
-                    </div>
-                `;
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-                closePurchaseModal(); // Đóng modal mua hàng
-                return;
-            }
-
             try {
+                // Lấy mật khẩu từ MongoDB thông qua API
+                const passwordResponse = await fetch('/api/get-employee-passwords/');
+                const passwordData = await passwordResponse.json();
+                console.log(passwordData);
+                if (!passwordData.success) {
+                    console.log('hellôp');
+                    const modal = document.getElementById('passwordModal');
+                    const modalMessage = document.getElementById('modalMessage');
+                    modalMessage.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Không thể mua mail!</strong><br>
+                            ${passwordData.error}
+                        </div>
+                    `;
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    closePurchaseModal();
+                    return;
+                }
+
+                const defaultPassTN = passwordData.pass_tn;
+                const defaultPassTF = passwordData.pass_tf;
+
+                // Kiểm tra nếu không có mật khẩu
+                if (!defaultPassTN || !defaultPassTF || defaultPassTN.trim() === "" || defaultPassTF.trim() === "") {
+                    const missingPasswords = [];
+                    if (!defaultPassTN || defaultPassTN.trim() === "") missingPasswords.push("TextNow");
+                    if (!defaultPassTF || defaultPassTF.trim() === "") missingPasswords.push("TextFree");
+
+                    const modal = document.getElementById('passwordModal');
+                    const modalMessage = document.getElementById('modalMessage');
+                    modalMessage.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Không thể mua mail!</strong><br>
+                            Vui lòng cung cấp mật khẩu cho các ứng dụng sau:<br>
+                            ${missingPasswords.join(", ")}
+                        </div>
+                    `;
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                    closePurchaseModal();
+                    return;
+                }
+
+                // Tiếp tục với việc mua mail
                 const response = await fetch(`https://api.dongvanfb.net/user/buy?apikey=GfeXobVqUdD8WTDwvtKE6GBPC&account_type=${currentMailData.id}&quality=${quantity}&type=full`);
                 const data = await response.json();
                 
                 if (data.status && data.error_code === 200) {
                     // Xử lý dữ liệu trả về
                     const listData = data.data.list_data;
+                    const existingData = localStorage.getItem('employee_worksession');
+                    let existingEmails = [];
+                    if (existingData) {
+                        existingEmails = JSON.parse(existingData);
+                    }
+
                     const newEmails = listData.map(item => {
                         const [email, password, refreshToken, clientId] = item.split('|');
                         return {
@@ -1732,7 +1766,7 @@
 
                     // Cập nhật giao diện
                     displayEmails(updatedEmails);
-                    // Lưu vào server
+                    
                     // Hiển thị thông báo thành công
                     alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.data.order_code}\nSố dư còn lại: ${data.data.balance.toLocaleString('vi-VN')} VNĐ`);
                     

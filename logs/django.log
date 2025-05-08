@@ -1,0 +1,849 @@
+INFO 2025-05-08 11:55:47,182 autoreload 20084 11972 Watching for file changes with StatReloader
+INFO 2025-05-08 11:55:51,745 basehttp 20084 3168 "GET / HTTP/1.1" 200 62532
+WARNING 2025-05-08 11:56:01,358 log 20084 3168 Not Found: /verifed
+WARNING 2025-05-08 11:56:01,359 basehttp 20084 3168 "GET /verifed HTTP/1.1" 404 8743
+INFO 2025-05-08 11:56:11,081 basehttp 20084 3168 "GET /verified HTTP/1.1" 301 0
+INFO 2025-05-08 11:56:11,827 basehttp 20084 3168 "GET /verified/ HTTP/1.1" 200 65222
+INFO 2025-05-08 11:56:16,574 basehttp 20084 3168 "GET /api/search-textnow/?date=2025-05-07 HTTP/1.1" 200 7516
+INFO 2025-05-08 11:56:22,647 basehttp 20084 3168 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 146
+INFO 2025-05-08 11:56:25,625 basehttp 20084 3168 "GET /api/search-textnow/?date=2025-05-07 HTTP/1.1" 200 7516
+INFO 2025-05-08 11:56:29,295 basehttp 20084 3168 "GET /api/search-textnow/?date=2025-05-07&status_tn=t%E1%BA%A1o+acc+th%C3%A0nh+c%C3%B4ng HTTP/1.1" 200 177
+INFO 2025-05-08 11:56:31,547 basehttp 20084 3168 "GET /api/search-textnow/?date=2025-05-07 HTTP/1.1" 200 7516
+INFO 2025-05-08 11:56:36,775 autoreload 20084 11972 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 11:56:37,803 autoreload 16932 19616 Watching for file changes with StatReloader
+INFO 2025-05-08 11:56:44,605 autoreload 16932 19616 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\verified.html changed, reloading.
+INFO 2025-05-08 11:56:45,611 autoreload 7972 16276 Watching for file changes with StatReloader
+INFO 2025-05-08 11:56:50,277 basehttp 7972 7804 "GET /api/search-textnow/?date=2025-05-06 HTTP/1.1" 200 146
+INFO 2025-05-08 11:56:53,615 basehttp 7972 7804 "GET /api/search-textnow/?date=2025-05-06 HTTP/1.1" 200 146
+INFO 2025-05-08 11:57:34,132 autoreload 7972 16276 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\verified.html changed, reloading.
+INFO 2025-05-08 11:57:35,233 autoreload 16448 20796 Watching for file changes with StatReloader
+INFO 2025-05-08 11:57:39,293 basehttp 16448 14212 "GET /available-emails/ HTTP/1.1" 200 72109
+INFO 2025-05-08 11:57:43,231 basehttp 16448 14212 "GET /api/available-emails/ HTTP/1.1" 200 155
+INFO 2025-05-08 11:57:45,255 basehttp 16448 17088 "GET /create-password/ HTTP/1.1" 200 7742
+INFO 2025-05-08 11:57:45,288 basehttp 16448 14212 - Broken pipe from ('127.0.0.1', 54401)
+
+INFO 2025-05-08 11:57:46,219 basehttp 16448 17088 - Broken pipe from ('127.0.0.1', 54402)
+
+INFO 2025-05-08 11:57:57,760 basehttp 16448 10784 "POST /create-password/ HTTP/1.1" 200 81
+INFO 2025-05-08 11:58:05,114 basehttp 16448 10784 "POST /create-password/ HTTP/1.1" 200 81
+INFO 2025-05-08 11:58:08,971 basehttp 16448 1976 "GET /available-emails/ HTTP/1.1" 200 72109
+INFO 2025-05-08 11:58:09,561 basehttp 16448 10784 - Broken pipe from ('127.0.0.1', 54475)
+
+INFO 2025-05-08 11:58:09,572 basehttp 16448 1976 - Broken pipe from ('127.0.0.1', 54498)
+
+INFO 2025-05-08 11:58:13,560 basehttp 16448 23180 "GET /api/available-emails/ HTTP/1.1" 200 4642
+INFO 2025-05-08 11:58:24,742 autoreload 16448 20796 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\verified.html changed, reloading.
+INFO 2025-05-08 11:58:25,730 autoreload 2692 14372 Watching for file changes with StatReloader
+INFO 2025-05-08 11:58:34,315 basehttp 2692 18008 "POST /api/create-textnow/ HTTP/1.1" 200 289
+INFO 2025-05-08 11:58:34,958 basehttp 2692 18008 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 11:58:37,919 basehttp 2692 18008 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 11:58:38,446 basehttp 2692 11784 "GET /available-emails/ HTTP/1.1" 200 76766
+INFO 2025-05-08 11:58:39,096 basehttp 2692 11784 - Broken pipe from ('127.0.0.1', 54587)
+
+INFO 2025-05-08 11:58:41,346 basehttp 2692 18008 "GET /api/search-textnow/?date=2025-05-06 HTTP/1.1" 200 160
+INFO 2025-05-08 11:58:43,908 basehttp 2692 18008 "GET /api/search-textnow/?date=2025-05-08 HTTP/1.1" 200 988
+INFO 2025-05-08 11:58:48,615 basehttp 2692 18008 "GET /verified/ HTTP/1.1" 200 67202
+INFO 2025-05-08 11:58:53,418 basehttp 2692 18008 "GET /api/search-textnow/?date=2025-05-08 HTTP/1.1" 200 988
+INFO 2025-05-08 11:58:57,471 basehttp 2692 18008 "POST /api/verified-textnow-update/ HTTP/1.1" 200 92
+INFO 2025-05-08 11:58:59,126 basehttp 2692 18008 "GET /verified/ HTTP/1.1" 200 67190
+INFO 2025-05-08 11:59:04,188 basehttp 2692 18008 "GET /api/search-textnow/?date=2025-05-08 HTTP/1.1" 200 976
+INFO 2025-05-08 12:03:39,728 basehttp 2692 18008 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:04:41,210 basehttp 2692 18008 "GET /api/search-textnow/?date=2025-05-08 HTTP/1.1" 200 976
+INFO 2025-05-08 12:04:47,069 basehttp 2692 18008 "GET /api/search-textnow/?date=2025-05-06 HTTP/1.1" 200 160
+INFO 2025-05-08 12:08:39,703 basehttp 2692 18008 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:10:36,620 basehttp 2692 18008 "GET /manager-admin-sale/ HTTP/1.1" 302 0
+ERROR 2025-05-08 12:10:36,701 log 2692 18008 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 148, in home_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 12:10:36,719 basehttp 2692 18008 "GET / HTTP/1.1" 500 193479
+INFO 2025-05-08 12:11:39,827 autoreload 2692 14372 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\manger_admin_sale_views.py changed, reloading.
+INFO 2025-05-08 12:11:40,914 autoreload 22888 13344 Watching for file changes with StatReloader
+INFO 2025-05-08 12:11:44,384 autoreload 22888 13344 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\manger_admin_sale_views.py changed, reloading.
+INFO 2025-05-08 12:11:45,376 autoreload 11284 22484 Watching for file changes with StatReloader
+INFO 2025-05-08 12:11:48,820 autoreload 11284 22484 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\manger_admin_sale_views.py changed, reloading.
+INFO 2025-05-08 12:11:49,808 autoreload 21208 2660 Watching for file changes with StatReloader
+INFO 2025-05-08 12:12:01,591 basehttp 21208 14540 "GET /manager-admin-sale/ HTTP/1.1" 200 33937
+INFO 2025-05-08 12:12:07,301 basehttp 21208 14540 "GET /manager-admin-sale/?date_type=single&start_date=&end_date=&status_tn=&created_by=&search=&csrfmiddlewaretoken=P9ERT2KCr8peyF3PdrJvcOavnx5NeATNURVYzqaPVll6dHHRYsTzQqwQtZXCgCls HTTP/1.1" 200 33612
+INFO 2025-05-08 12:12:12,472 basehttp 21208 14540 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&created_by=&search=&csrfmiddlewaretoken=S0XApIFkx356QPBnBEXbXZX99k1pmaRFXIeH565x1g1YvRfpmF7fBBjufMTeocjk HTTP/1.1" 200 33612
+INFO 2025-05-08 12:12:17,029 basehttp 21208 14540 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&created_by=&search=&csrfmiddlewaretoken=i2rYWkBo9vQiBCxHFEHMjf0UQWrYy2B8nKI5CI1BDIMagEbJqFRQXRmfWojNA43N HTTP/1.1" 200 33612
+INFO 2025-05-08 12:12:22,533 basehttp 21208 14540 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-08&end_date=2025-05-08&status_tn=&created_by=&search=&csrfmiddlewaretoken=vBDymITk08A28Uj2ZmVaItDmaSulxoS9AjUF26jxulwUNWX4Kn5em5ZHgkmazqkO HTTP/1.1" 200 33612
+INFO 2025-05-08 12:12:34,897 autoreload 21208 2660 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 12:12:35,902 autoreload 1252 16740 Watching for file changes with StatReloader
+INFO 2025-05-08 12:12:39,971 basehttp 1252 10320 "GET /manager-admin-sale/?date_type=single&start_date=&end_date=&status_tn=&created_by=&search=&csrfmiddlewaretoken=9xbTx06MZPwKGnNGJbR1bNQOzFKrwy5defs0dowZt2sClprIuc15Ppc9F7CgyAxS HTTP/1.1" 200 33612
+INFO 2025-05-08 12:13:23,907 autoreload 1252 16740 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\manger_admin_sale_views.py changed, reloading.
+INFO 2025-05-08 12:13:24,927 autoreload 15032 19000 Watching for file changes with StatReloader
+INFO 2025-05-08 12:13:38,385 autoreload 15032 19000 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\manger_admin_sale_views.py changed, reloading.
+INFO 2025-05-08 12:13:39,392 autoreload 22868 2332 Watching for file changes with StatReloader
+INFO 2025-05-08 12:13:44,935 basehttp 22868 8296 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:13:47,522 basehttp 22868 8620 "GET /manager-admin-sale/?date_type=single&start_date=&end_date=&status_tn=&created_by=&search=&csrfmiddlewaretoken=9xbTx06MZPwKGnNGJbR1bNQOzFKrwy5defs0dowZt2sClprIuc15Ppc9F7CgyAxS HTTP/1.1" 200 75328
+INFO 2025-05-08 12:13:53,972 basehttp 22868 8620 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&created_by=&search=&csrfmiddlewaretoken=mk1mAKjJynTE30FhaHmOX4Pc0Od1VPrGr2itg8JW2APwI2jjVIwSBGbx6g5QXRTl HTTP/1.1" 302 0
+ERROR 2025-05-08 12:13:54,056 log 22868 8620 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 148, in home_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 12:13:54,075 basehttp 22868 8620 "GET / HTTP/1.1" 500 193828
+INFO 2025-05-08 12:14:07,671 autoreload 22868 2332 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\manger_admin_sale_views.py changed, reloading.
+INFO 2025-05-08 12:14:09,267 autoreload 7372 11192 Watching for file changes with StatReloader
+INFO 2025-05-08 12:14:12,501 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=single&start_date=&end_date=&status_tn=&created_by=&search=&csrfmiddlewaretoken=9xbTx06MZPwKGnNGJbR1bNQOzFKrwy5defs0dowZt2sClprIuc15Ppc9F7CgyAxS HTTP/1.1" 200 75653
+INFO 2025-05-08 12:14:19,392 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&created_by=&search=&csrfmiddlewaretoken=ZidpGDRgSFhBCpHemaKS4FPSds46DqQq40uwm1htmSdthrlg7bUWIhbdjUWVFsi5 HTTP/1.1" 200 68043
+INFO 2025-05-08 12:14:25,511 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-08&end_date=2025-05-08&status_tn=&created_by=&search=&csrfmiddlewaretoken=aV9dqobDpH4Ovo3bku4Cn6RJITuvi71WfDqk6MBQTU0GaqHd5veG1Id4Olmkk9tB HTTP/1.1" 200 38809
+INFO 2025-05-08 12:14:37,853 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=range&start_date=2025-05-01&end_date=2025-05-08&status_tn=&created_by=&search=&csrfmiddlewaretoken=hI12RYTFHxC70A5tFmcpYWzdHLE46Kosmqi9xmjSbKyZFCJvqnmtCyVyNdwT8MQ7 HTTP/1.1" 200 75348
+INFO 2025-05-08 12:14:47,094 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-08&end_date=2025-05-08&status_tn=&created_by=&search=&csrfmiddlewaretoken=GvukqZo8QFBji1tAwTbqclQ0qo8f45yVLdLr6nOlkSxbX37ChUluQXclwQ04670A HTTP/1.1" 200 38809
+INFO 2025-05-08 12:15:00,628 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-08&end_date=2025-05-08&status_tn=&created_by=&search=&csrfmiddlewaretoken=AC6RVcMx1aqKTqFqrQExbD4hYf0J0GXJFknYBAcKvnmCysjscROBPfqC4HSy2Ipo HTTP/1.1" 200 38809
+INFO 2025-05-08 12:15:08,894 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=single&start_date=0001-01-01&end_date=0001-01-01&status_tn=&created_by=&search=&csrfmiddlewaretoken=DF3vhMr45Igpfc7V7MSHVLsx5JxyZFsuInkCXaRhzVchUeLXSN2LznOSbbpn1HU9 HTTP/1.1" 200 35333
+INFO 2025-05-08 12:15:13,724 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=range&start_date=0001-01-01&end_date=0001-01-01&status_tn=&created_by=&search=&csrfmiddlewaretoken=OSnHVZVPVODXwdCjS5kCh7SfR0StHrpeTAEOBnl2p1zPbfglD6uGVJeAXsKiJtRT HTTP/1.1" 200 35333
+INFO 2025-05-08 12:15:23,319 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=range&start_date=0001-01-01&end_date=2025-08-05&status_tn=&created_by=&search=&csrfmiddlewaretoken=rnTjbfa2TXpKwhYgJyy2l0DTs5B0oxz0w5aqRDAfnalCbjCiuzI6ZCZeyxtPqz1F HTTP/1.1" 200 75348
+INFO 2025-05-08 12:16:07,286 basehttp 7372 13044 "GET /manager-admin-sale/?date_type=range&start_date=0001-01-01&end_date=2025-08-05&status_tn=verified+quay+s%E1%BB%91&created_by=&search=&csrfmiddlewaretoken=5gI7e3WcVF6hPGYfe8mik4CFGd0L5YHFaYZeUrmppS29uIChZ9wmYGY0MFSA709k HTTP/1.1" 200 64409
+INFO 2025-05-08 12:16:13,508 basehttp 7372 13044 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 8762
+INFO 2025-05-08 12:17:19,230 autoreload 7372 11192 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:17:20,239 autoreload 21616 8372 Watching for file changes with StatReloader
+INFO 2025-05-08 12:17:23,833 basehttp 21616 22796 "GET /manager-admin-sale/?date_type=range&start_date=0001-01-01&end_date=2025-08-05&status_tn=verified+quay+s%E1%BB%91&created_by=&search=&csrfmiddlewaretoken=5gI7e3WcVF6hPGYfe8mik4CFGd0L5YHFaYZeUrmppS29uIChZ9wmYGY0MFSA709k HTTP/1.1" 200 65239
+INFO 2025-05-08 12:17:26,561 autoreload 21616 8372 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:17:27,569 autoreload 22752 15120 Watching for file changes with StatReloader
+INFO 2025-05-08 12:17:34,111 autoreload 22752 15120 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:17:34,640 basehttp 22752 3076 "GET /manager-admin-sale/?date_type=range&start_date=0001-01-01&end_date=2025-08-05&status_tn=verified+quay+s%E1%BB%91&created_by=&search=&csrfmiddlewaretoken=nlTLXY6vwXsoSXixiAsefOLMO0vyGefLs3aSDmwI0aogxZWz3BCiTq77UsnnIgHq HTTP/1.1" 200 66147
+INFO 2025-05-08 12:17:36,106 autoreload 12776 3132 Watching for file changes with StatReloader
+INFO 2025-05-08 12:17:39,687 autoreload 12776 3132 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:17:40,679 autoreload 4608 20808 Watching for file changes with StatReloader
+INFO 2025-05-08 12:17:43,907 basehttp 4608 18552 "GET /manager-admin-sale/?date_type=range&start_date=0001-01-01&end_date=2025-08-05&status_tn=verified+quay+s%E1%BB%91&created_by=&search=&csrfmiddlewaretoken=nlTLXY6vwXsoSXixiAsefOLMO0vyGefLs3aSDmwI0aogxZWz3BCiTq77UsnnIgHq HTTP/1.1" 200 66147
+INFO 2025-05-08 12:17:51,670 basehttp 4608 18552 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=verified+quay+s%E1%BB%91&created_by=&search=&csrfmiddlewaretoken=3RWLP5Q28vZ3sr5mtBwsZEM8Z5ISzj2B8zdSvtgfCIVV7tJoeCGwDg8t5xAHBlug HTTP/1.1" 200 66147
+INFO 2025-05-08 12:17:57,688 basehttp 4608 18552 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&created_by=&search=&csrfmiddlewaretoken=5F0wOO8NOX4yrmEthWQ8orDDDLJBXYqdanhDucy0ia0q6oiv2X0c23ZYJdBqZ0SS HTTP/1.1" 200 40545
+INFO 2025-05-08 12:18:24,749 basehttp 4608 18552 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 5764
+INFO 2025-05-08 12:18:40,240 basehttp 4608 18552 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:19:46,787 autoreload 4608 20808 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:19:47,795 autoreload 20164 16628 Watching for file changes with StatReloader
+INFO 2025-05-08 12:19:53,863 basehttp 20164 7636 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&created_by=&search=&csrfmiddlewaretoken=5F0wOO8NOX4yrmEthWQ8orDDDLJBXYqdanhDucy0ia0q6oiv2X0c23ZYJdBqZ0SS HTTP/1.1" 200 41110
+INFO 2025-05-08 12:19:57,730 basehttp 20164 7636 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 5765
+INFO 2025-05-08 12:20:04,983 autoreload 20164 16628 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:20:06,071 autoreload 21048 14128 Watching for file changes with StatReloader
+INFO 2025-05-08 12:20:11,676 basehttp 21048 14392 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&created_by=&search=&csrfmiddlewaretoken=5F0wOO8NOX4yrmEthWQ8orDDDLJBXYqdanhDucy0ia0q6oiv2X0c23ZYJdBqZ0SS HTTP/1.1" 200 41162
+INFO 2025-05-08 12:20:20,477 autoreload 21048 14128 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:20:21,549 autoreload 6724 10444 Watching for file changes with StatReloader
+INFO 2025-05-08 12:20:27,963 basehttp 6724 8236 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&created_by=&search=&csrfmiddlewaretoken=5F0wOO8NOX4yrmEthWQ8orDDDLJBXYqdanhDucy0ia0q6oiv2X0c23ZYJdBqZ0SS HTTP/1.1" 200 41402
+INFO 2025-05-08 12:20:30,591 basehttp 6724 8236 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 5763
+INFO 2025-05-08 12:20:47,643 basehttp 6724 8236 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=&created_by=&search=&csrfmiddlewaretoken=W3kZC3a8U7v8GNbNPKIPqg7x77yph8OQ1LB6irAlokr0lPPPALST4StSdzqejagv HTTP/1.1" 200 77943
+INFO 2025-05-08 12:21:38,857 autoreload 6724 10444 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:21:39,941 autoreload 312 22276 Watching for file changes with StatReloader
+INFO 2025-05-08 12:21:46,682 autoreload 312 22276 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:21:47,693 autoreload 11940 19588 Watching for file changes with StatReloader
+INFO 2025-05-08 12:21:54,403 autoreload 11940 19588 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:21:55,380 autoreload 10284 16212 Watching for file changes with StatReloader
+INFO 2025-05-08 12:22:06,495 autoreload 10284 16212 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\manger_admin_sale_views.py changed, reloading.
+INFO 2025-05-08 12:22:07,461 autoreload 16928 17220 Watching for file changes with StatReloader
+INFO 2025-05-08 12:22:14,557 basehttp 16928 12596 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=&created_by=&search=&csrfmiddlewaretoken=W3kZC3a8U7v8GNbNPKIPqg7x77yph8OQ1LB6irAlokr0lPPPALST4StSdzqejagv HTTP/1.1" 200 79454
+INFO 2025-05-08 12:22:18,938 basehttp 16928 12596 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=&created_by=&search=&csrfmiddlewaretoken=W3kZC3a8U7v8GNbNPKIPqg7x77yph8OQ1LB6irAlokr0lPPPALST4StSdzqejagv HTTP/1.1" 200 79454
+INFO 2025-05-08 12:22:26,458 basehttp 16928 12596 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=&status_tf=t%E1%BA%A1o+acc+th%C3%A0nh+c%C3%B4ng&created_by=&search=&csrfmiddlewaretoken=rwnmWSs9FbpPasqRNvxpaOlHSetG5sTvweEtCgSm9olHPu4TywHtOqH2YGlv7ula HTTP/1.1" 200 79462
+INFO 2025-05-08 12:22:34,053 basehttp 16928 12596 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=ias8gSbxTJRXOl4ysAfjNfcCRvtAIAlpnSJfWgBKnWNPtnIAdBpnrRyXXXlpKCN4 HTTP/1.1" 200 79454
+INFO 2025-05-08 12:22:43,498 basehttp 16928 12596 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&status_tf=&created_by=&search=&csrfmiddlewaretoken=nbu2G36a7YKRjVsAY5GfE7nr5jKZKR4GsTL9mrwnBbGJYX6CJ6QjiJJMbLCOMTwl HTTP/1.1" 200 42913
+INFO 2025-05-08 12:22:49,299 basehttp 16928 12596 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&status_tf=verified+quay+s%E1%BB%91&created_by=&search=&csrfmiddlewaretoken=JJIAURm9yFEf3cjUmRskvaTChWec6cVfOrZHAfMm2SA7IeXW7SCo9MfXno618enU HTTP/1.1" 200 39455
+INFO 2025-05-08 12:22:58,259 basehttp 16928 12596 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&status_tf=&created_by=&search=&csrfmiddlewaretoken=7z0T5f1GsNpj0XsMJc88ZRJJ4MVDNVz5chh0LDrTW0lbFZ6OudicDt54aeNsPX1K HTTP/1.1" 200 42913
+INFO 2025-05-08 12:23:33,434 autoreload 16928 17220 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:23:34,447 autoreload 14436 21536 Watching for file changes with StatReloader
+INFO 2025-05-08 12:23:40,047 basehttp 14436 16932 "GET /manager-admin-sale/?date_type=range&start_date=2000-01-01&end_date=2025-08-05&status_tn=l%E1%BB%97i&status_tf=&created_by=&search=&csrfmiddlewaretoken=7z0T5f1GsNpj0XsMJc88ZRJJ4MVDNVz5chh0LDrTW0lbFZ6OudicDt54aeNsPX1K HTTP/1.1" 200 42561
+INFO 2025-05-08 12:23:40,111 basehttp 14436 19204 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:24:03,583 basehttp 14436 19204 "GET /manager-admin-sale/?date_type=single&start_date=2000-05-08&end_date=2000-05-08&status_tn=l%E1%BB%97i&status_tf=&created_by=&search=&csrfmiddlewaretoken=8yTuiPjI3f0I1keZuahNh6Ekapc1RYPgdgaBYdJVxsWAGmS1fbrRVI0FgR4QT0hV HTTP/1.1" 200 39095
+INFO 2025-05-08 12:24:09,704 basehttp 14436 19204 "GET /manager-admin-sale/?date_type=single&start_date=2000-05-08&end_date=2000-05-08&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=Ljt4qDV0VZHifamhHqiljEr31js29TgWQ1Kb61ldpcDaUc0jsrspXgNo7LkRbVIB HTTP/1.1" 200 39087
+INFO 2025-05-08 12:24:17,426 basehttp 14436 19204 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-08&end_date=2025-05-08&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=ICX3KobqKTziP4QIUChZDK3N3vSCnHpFNkeaqMBDe6vau6uKFDr3hmp89XKrpJRk HTTP/1.1" 200 42563
+INFO 2025-05-08 12:24:24,638 basehttp 14436 19204 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 71797
+INFO 2025-05-08 12:24:56,201 autoreload 14436 21536 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:24:57,236 autoreload 13492 11588 Watching for file changes with StatReloader
+INFO 2025-05-08 12:25:01,770 autoreload 13492 11588 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:25:02,750 autoreload 19908 23092 Watching for file changes with StatReloader
+INFO 2025-05-08 12:25:06,862 basehttp 19908 12368 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 71797
+INFO 2025-05-08 12:25:10,807 basehttp 19908 12368 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 71797
+INFO 2025-05-08 12:25:13,439 autoreload 19908 23092 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:25:14,449 autoreload 11500 12024 Watching for file changes with StatReloader
+INFO 2025-05-08 12:25:22,418 autoreload 11500 12024 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:25:23,439 autoreload 10340 21744 Watching for file changes with StatReloader
+INFO 2025-05-08 12:25:26,997 basehttp 10340 3256 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72537
+WARNING 2025-05-08 12:25:31,482 log 10340 3256 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:25:31,483 basehttp 10340 3256 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:26:07,071 autoreload 10340 21744 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:26:08,131 autoreload 2844 8332 Watching for file changes with StatReloader
+INFO 2025-05-08 12:26:11,532 basehttp 2844 4896 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72538
+WARNING 2025-05-08 12:26:11,590 log 2844 4896 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:26:11,591 basehttp 2844 4896 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:26:21,437 autoreload 2844 8332 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:26:22,525 autoreload 9388 6308 Watching for file changes with StatReloader
+INFO 2025-05-08 12:26:25,641 basehttp 9388 13988 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72538
+WARNING 2025-05-08 12:26:25,703 log 9388 13988 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:26:25,704 basehttp 9388 13988 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+WARNING 2025-05-08 12:26:43,608 log 9388 13988 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:26:43,609 basehttp 9388 13988 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:27:15,147 autoreload 9388 6308 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:27:16,182 autoreload 2444 1444 Watching for file changes with StatReloader
+INFO 2025-05-08 12:27:19,585 basehttp 2444 9016 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72528
+WARNING 2025-05-08 12:27:19,646 log 2444 9016 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:27:19,647 basehttp 2444 9016 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:27:23,650 autoreload 2444 1444 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:27:24,656 autoreload 12624 19944 Watching for file changes with StatReloader
+INFO 2025-05-08 12:27:32,568 autoreload 12624 19944 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:27:33,545 autoreload 13164 23096 Watching for file changes with StatReloader
+INFO 2025-05-08 12:27:37,802 basehttp 13164 18456 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72526
+WARNING 2025-05-08 12:27:37,858 log 13164 18456 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:27:37,859 basehttp 13164 18456 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:27:51,072 autoreload 13164 23096 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:27:52,077 autoreload 21932 20444 Watching for file changes with StatReloader
+INFO 2025-05-08 12:27:58,953 autoreload 21932 20444 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:27:59,993 autoreload 10560 8040 Watching for file changes with StatReloader
+INFO 2025-05-08 12:28:03,318 basehttp 10560 2012 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72538
+WARNING 2025-05-08 12:28:03,372 log 10560 2012 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:28:03,373 basehttp 10560 2012 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:28:07,486 autoreload 10560 8040 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:28:08,505 autoreload 10432 9808 Watching for file changes with StatReloader
+INFO 2025-05-08 12:28:11,768 basehttp 10432 4768 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72480
+WARNING 2025-05-08 12:28:11,831 log 10432 4768 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:28:11,832 basehttp 10432 4768 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:28:18,270 autoreload 10432 9808 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:28:19,325 autoreload 2248 20840 Watching for file changes with StatReloader
+INFO 2025-05-08 12:28:22,559 basehttp 2248 23344 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72470
+WARNING 2025-05-08 12:28:22,615 log 2248 23344 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:28:22,616 basehttp 2248 23344 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:28:40,157 basehttp 2248 23344 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:29:25,800 autoreload 2248 20840 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:29:26,897 autoreload 22312 21404 Watching for file changes with StatReloader
+INFO 2025-05-08 12:29:33,716 autoreload 22312 21404 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:29:34,690 autoreload 22140 6132 Watching for file changes with StatReloader
+INFO 2025-05-08 12:29:42,377 basehttp 22140 23324 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72489
+WARNING 2025-05-08 12:29:42,456 log 22140 23324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:29:42,457 basehttp 22140 23324 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:30:18,400 autoreload 22140 6132 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:30:19,850 autoreload 20988 22320 Watching for file changes with StatReloader
+INFO 2025-05-08 12:30:24,863 basehttp 20988 1616 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72486
+WARNING 2025-05-08 12:30:24,915 log 20988 1616 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:30:24,916 basehttp 20988 1616 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 8866
+INFO 2025-05-08 12:30:32,008 autoreload 20988 22320 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 12:30:33,038 autoreload 19880 12564 Watching for file changes with StatReloader
+INFO 2025-05-08 12:30:36,321 basehttp 19880 12980 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72486
+INFO 2025-05-08 12:30:40,726 basehttp 19880 12980 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72486
+INFO 2025-05-08 12:30:42,750 basehttp 19880 16728 "GET /available-emails/ HTTP/1.1" 200 76766
+INFO 2025-05-08 12:30:43,849 basehttp 19880 16728 - Broken pipe from ('127.0.0.1', 56610)
+
+INFO 2025-05-08 12:30:44,109 basehttp 19880 12980 - Broken pipe from ('127.0.0.1', 56611)
+
+INFO 2025-05-08 12:35:43,786 basehttp 19880 14664 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:35:56,908 autoreload 19880 12564 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 12:35:57,970 autoreload 13892 17168 Watching for file changes with StatReloader
+INFO 2025-05-08 12:36:06,822 autoreload 13892 17168 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 12:36:07,842 autoreload 2340 18860 Watching for file changes with StatReloader
+INFO 2025-05-08 12:36:19,135 autoreload 2340 18860 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:36:20,143 autoreload 11448 22236 Watching for file changes with StatReloader
+INFO 2025-05-08 12:36:49,357 autoreload 11448 22236 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 12:36:50,419 autoreload 18000 6724 Watching for file changes with StatReloader
+INFO 2025-05-08 12:36:55,268 autoreload 18000 6724 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 12:36:56,279 autoreload 7972 21344 Watching for file changes with StatReloader
+INFO 2025-05-08 12:37:05,528 autoreload 7972 21344 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 12:37:06,492 autoreload 9428 6012 Watching for file changes with StatReloader
+INFO 2025-05-08 12:37:10,275 basehttp 9428 7856 "GET /available-emails/ HTTP/1.1" 200 77459
+INFO 2025-05-08 12:37:11,774 basehttp 9428 7856 "GET /api/check-employee-password-today/ HTTP/1.1" 200 79
+INFO 2025-05-08 12:37:19,062 basehttp 9428 7856 "GET /api/check-employee-password-today/ HTTP/1.1" 200 79
+INFO 2025-05-08 12:37:22,573 basehttp 9428 7856 "GET /api/check-employee-password-today/ HTTP/1.1" 200 79
+WARNING 2025-05-08 12:37:26,675 log 9428 7856 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:37:26,676 basehttp 9428 7856 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9085
+INFO 2025-05-08 12:37:33,682 basehttp 9428 7856 "GET /api/check-employee-password-today/ HTTP/1.1" 200 79
+INFO 2025-05-08 12:37:47,233 autoreload 9428 6012 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:37:48,264 autoreload 22800 7816 Watching for file changes with StatReloader
+INFO 2025-05-08 12:37:52,338 autoreload 22800 7816 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:37:53,362 autoreload 1284 18336 Watching for file changes with StatReloader
+INFO 2025-05-08 12:38:24,361 autoreload 1284 18336 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:38:25,340 autoreload 12400 22944 Watching for file changes with StatReloader
+INFO 2025-05-08 12:38:31,096 autoreload 12400 22944 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:38:32,125 autoreload 14520 2320 Watching for file changes with StatReloader
+INFO 2025-05-08 12:38:36,704 basehttp 14520 9544 "GET /api/check-employee-password-today/ HTTP/1.1" 200 80
+INFO 2025-05-08 12:38:44,597 autoreload 14520 2320 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:38:45,569 autoreload 10492 1400 Watching for file changes with StatReloader
+INFO 2025-05-08 12:39:27,569 autoreload 10492 1400 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:39:28,546 autoreload 18520 6532 Watching for file changes with StatReloader
+INFO 2025-05-08 12:39:33,943 basehttp 18520 15056 "GET /available-emails/ HTTP/1.1" 200 77459
+INFO 2025-05-08 12:39:33,963 basehttp 18520 11500 - Broken pipe from ('127.0.0.1', 57105)
+
+WARNING 2025-05-08 12:39:34,011 log 18520 16644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:39:34,012 basehttp 18520 16644 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9085
+INFO 2025-05-08 12:39:34,567 basehttp 18520 15056 - Broken pipe from ('127.0.0.1', 57106)
+
+INFO 2025-05-08 12:39:35,555 basehttp 18520 16644 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:39:39,713 basehttp 18520 16644 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:40:16,696 basehttp 18520 16644 "GET /api/check-employee-password-today/ HTTP/1.1" 200 113
+INFO 2025-05-08 12:40:18,777 basehttp 18520 16644 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:40:19,210 basehttp 18520 16644 "GET /create-password/ HTTP/1.1" 200 7742
+INFO 2025-05-08 12:40:21,903 basehttp 18520 16644 - Broken pipe from ('127.0.0.1', 57150)
+
+INFO 2025-05-08 12:40:25,268 basehttp 18520 11396 "POST /create-password/ HTTP/1.1" 200 81
+INFO 2025-05-08 12:40:32,271 basehttp 18520 11396 "POST /create-password/ HTTP/1.1" 200 81
+INFO 2025-05-08 12:40:35,864 basehttp 18520 11396 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:40:37,903 basehttp 18520 15428 "GET /available-emails/ HTTP/1.1" 200 77459
+INFO 2025-05-08 12:40:38,501 basehttp 18520 15428 - Broken pipe from ('127.0.0.1', 57270)
+
+INFO 2025-05-08 12:42:24,045 autoreload 18520 6532 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:42:25,124 autoreload 19236 17292 Watching for file changes with StatReloader
+INFO 2025-05-08 12:42:32,155 autoreload 19236 17292 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-08 12:42:33,127 autoreload 1472 6700 Watching for file changes with StatReloader
+INFO 2025-05-08 12:42:52,220 autoreload 1472 6700 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:42:53,260 autoreload 12292 23472 Watching for file changes with StatReloader
+INFO 2025-05-08 12:42:58,074 autoreload 12292 23472 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:42:59,090 autoreload 1568 9856 Watching for file changes with StatReloader
+INFO 2025-05-08 12:43:06,059 basehttp 1568 19204 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:43:11,195 basehttp 1568 12948 "GET /available-emails/ HTTP/1.1" 200 78391
+INFO 2025-05-08 12:43:11,845 basehttp 1568 12948 - Broken pipe from ('127.0.0.1', 57429)
+
+INFO 2025-05-08 12:43:13,645 basehttp 1568 19204 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:43:20,337 basehttp 1568 19204 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:43:54,055 autoreload 1568 9856 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:43:55,122 autoreload 16068 2864 Watching for file changes with StatReloader
+INFO 2025-05-08 12:43:57,980 basehttp 16068 8440 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:44:00,834 basehttp 16068 8440 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+WARNING 2025-05-08 12:44:01,479 log 16068 8440 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:44:01,480 basehttp 16068 8440 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:44:05,610 basehttp 16068 5840 "GET /create-password/ HTTP/1.1" 200 7742
+WARNING 2025-05-08 12:44:05,682 log 16068 11992 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:44:05,688 basehttp 16068 11992 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:44:05,777 basehttp 16068 18588 - Broken pipe from ('127.0.0.1', 57545)
+
+INFO 2025-05-08 12:44:06,557 basehttp 16068 5840 - Broken pipe from ('127.0.0.1', 57566)
+
+WARNING 2025-05-08 12:44:06,954 log 16068 11992 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:44:06,955 basehttp 16068 11992 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:44:08,902 basehttp 16068 11992 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:44:33,521 basehttp 16068 11992 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:44:47,480 basehttp 16068 11992 "GET /api/available-emails/ HTTP/1.1" 200 4642
+INFO 2025-05-08 12:44:57,043 basehttp 16068 11992 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:45:00,363 basehttp 16068 11992 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:45:34,305 basehttp 16068 11992 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:46:22,184 basehttp 16068 3168 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+WARNING 2025-05-08 12:46:22,250 log 16068 3168 Not Found: /favicon.ico
+WARNING 2025-05-08 12:46:22,251 basehttp 16068 3168 "GET /favicon.ico HTTP/1.1" 404 9179
+INFO 2025-05-08 12:46:32,627 basehttp 16068 3168 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:46:46,746 basehttp 16068 11992 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:48:39,434 autoreload 16068 2864 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:48:40,556 autoreload 17744 16468 Watching for file changes with StatReloader
+INFO 2025-05-08 12:48:44,209 autoreload 17744 16468 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:48:45,190 autoreload 9412 19380 Watching for file changes with StatReloader
+INFO 2025-05-08 12:48:54,299 basehttp 9412 12896 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:49:06,152 basehttp 9412 12896 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:49:07,252 basehttp 9412 12896 "GET /available-emails/ HTTP/1.1" 200 83075
+WARNING 2025-05-08 12:49:07,338 log 9412 16000 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:49:07,340 basehttp 9412 16000 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:49:07,694 basehttp 9412 14028 - Broken pipe from ('127.0.0.1', 57906)
+
+INFO 2025-05-08 12:49:07,990 basehttp 9412 12896 - Broken pipe from ('127.0.0.1', 57869)
+
+INFO 2025-05-08 12:49:08,950 basehttp 9412 16000 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:49:18,040 basehttp 9412 16000 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:50:06,876 autoreload 9412 19380 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:50:07,886 autoreload 17624 1560 Watching for file changes with StatReloader
+INFO 2025-05-08 12:50:55,783 autoreload 17624 1560 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-08 12:50:56,833 autoreload 17328 13576 Watching for file changes with StatReloader
+INFO 2025-05-08 12:51:00,211 basehttp 17328 12192 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:51:00,360 basehttp 17328 15672 "GET /available-emails/ HTTP/1.1" 200 83076
+WARNING 2025-05-08 12:51:00,417 log 17328 12192 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:51:00,418 basehttp 17328 12192 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:51:01,684 basehttp 17328 15672 - Broken pipe from ('127.0.0.1', 58027)
+
+INFO 2025-05-08 12:51:02,167 basehttp 17328 12192 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:51:04,852 basehttp 17328 12192 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:51:55,803 autoreload 17328 13576 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:51:56,865 autoreload 312 4600 Watching for file changes with StatReloader
+INFO 2025-05-08 12:52:08,749 basehttp 312 19920 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:52:12,375 basehttp 312 19920 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:53:35,760 autoreload 312 4600 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:53:36,810 autoreload 18200 11280 Watching for file changes with StatReloader
+INFO 2025-05-08 12:54:03,822 autoreload 18200 11280 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:54:04,812 autoreload 12448 6756 Watching for file changes with StatReloader
+INFO 2025-05-08 12:54:27,597 autoreload 12448 6756 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:54:28,535 autoreload 22988 7416 Watching for file changes with StatReloader
+INFO 2025-05-08 12:54:32,604 autoreload 22988 7416 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:54:33,601 autoreload 18132 12856 Watching for file changes with StatReloader
+INFO 2025-05-08 12:54:54,263 autoreload 18132 12856 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:54:55,238 autoreload 15784 12156 Watching for file changes with StatReloader
+INFO 2025-05-08 12:55:02,093 autoreload 15784 12156 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:55:03,132 autoreload 14612 19788 Watching for file changes with StatReloader
+INFO 2025-05-08 12:55:11,213 basehttp 14612 23544 "GET /available-emails/ HTTP/1.1" 200 83076
+WARNING 2025-05-08 12:55:11,284 log 14612 14644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:55:11,285 basehttp 14612 14644 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:55:11,926 basehttp 14612 23544 - Broken pipe from ('127.0.0.1', 58414)
+
+INFO 2025-05-08 12:55:14,032 basehttp 14612 13708 - Broken pipe from ('127.0.0.1', 58412)
+
+INFO 2025-05-08 12:55:30,718 basehttp 14612 14644 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:55:33,740 basehttp 14612 14644 "GET /api/get-employee-passwords/ HTTP/1.1" 200 123
+INFO 2025-05-08 12:55:39,887 autoreload 14612 19788 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:55:40,951 autoreload 22468 9696 Watching for file changes with StatReloader
+INFO 2025-05-08 12:56:20,626 autoreload 22468 9696 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:56:21,618 autoreload 12624 7228 Watching for file changes with StatReloader
+INFO 2025-05-08 12:56:27,535 autoreload 12624 7228 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:56:28,646 autoreload 16936 2508 Watching for file changes with StatReloader
+INFO 2025-05-08 12:56:32,875 basehttp 16936 13716 "GET /available-emails/ HTTP/1.1" 200 83076
+WARNING 2025-05-08 12:56:32,915 log 16936 13716 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:56:32,916 basehttp 16936 13716 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:56:37,209 basehttp 16936 13716 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:56:40,207 basehttp 16936 13716 "GET /api/get-employee-passwords/ HTTP/1.1" 200 138
+INFO 2025-05-08 12:57:07,916 autoreload 16936 2508 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:57:08,972 autoreload 21380 19364 Watching for file changes with StatReloader
+INFO 2025-05-08 12:57:44,204 autoreload 21380 19364 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:57:45,219 autoreload 21492 18684 Watching for file changes with StatReloader
+INFO 2025-05-08 12:59:06,689 autoreload 21492 18684 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:59:07,766 autoreload 8156 18476 Watching for file changes with StatReloader
+INFO 2025-05-08 12:59:15,221 autoreload 8156 18476 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:59:16,253 autoreload 11572 12048 Watching for file changes with StatReloader
+INFO 2025-05-08 12:59:19,829 basehttp 11572 18520 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 12:59:20,030 basehttp 11572 4848 "GET /available-emails/ HTTP/1.1" 200 83872
+WARNING 2025-05-08 12:59:20,093 log 11572 18520 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-08 12:59:20,094 basehttp 11572 18520 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9290
+INFO 2025-05-08 12:59:20,928 basehttp 11572 4848 - Broken pipe from ('127.0.0.1', 58767)
+
+INFO 2025-05-08 12:59:24,543 basehttp 11572 18520 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 12:59:39,821 autoreload 11572 12048 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 12:59:40,812 autoreload 18020 17428 Watching for file changes with StatReloader
+INFO 2025-05-08 12:59:44,119 basehttp 18020 7660 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-08 13:00:22,341 autoreload 18020 17428 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 13:00:23,378 autoreload 15860 5936 Watching for file changes with StatReloader
+INFO 2025-05-08 13:01:03,171 autoreload 15860 5936 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 13:01:04,230 autoreload 18068 12300 Watching for file changes with StatReloader
+INFO 2025-05-08 13:01:12,217 autoreload 18068 12300 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-08 13:01:13,262 autoreload 10360 7128 Watching for file changes with StatReloader
+INFO 2025-05-08 13:04:24,128 basehttp 10360 9244 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:09:21,722 basehttp 10360 9244 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:11:20,638 autoreload 10360 7128 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:11:21,629 autoreload 1868 17576 Watching for file changes with StatReloader
+INFO 2025-05-08 13:11:35,538 autoreload 1868 17576 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:11:36,578 autoreload 22540 16420 Watching for file changes with StatReloader
+INFO 2025-05-08 13:11:47,015 basehttp 22540 21256 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72486
+INFO 2025-05-08 13:12:05,340 autoreload 22540 16420 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:12:07,093 autoreload 19556 19900 Watching for file changes with StatReloader
+INFO 2025-05-08 13:12:14,447 basehttp 19556 13072 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 72396
+INFO 2025-05-08 13:12:30,694 autoreload 19556 19900 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:12:31,725 autoreload 1756 3100 Watching for file changes with StatReloader
+INFO 2025-05-08 13:14:24,942 basehttp 1756 14148 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:14:51,738 basehttp 1756 14148 "GET /manage-users/ HTTP/1.1" 302 0
+ERROR 2025-05-08 13:14:51,837 log 1756 14148 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 148, in home_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 13:14:51,851 basehttp 1756 14148 "GET / HTTP/1.1" 500 193863
+INFO 2025-05-08 13:14:56,066 basehttp 1756 14148 "GET /work-management/ HTTP/1.1" 302 0
+ERROR 2025-05-08 13:14:56,161 log 1756 14148 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 148, in home_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 13:14:56,171 basehttp 1756 14148 "GET / HTTP/1.1" 500 193879
+INFO 2025-05-08 13:14:58,399 basehttp 1756 14148 "GET /work-time-stats/ HTTP/1.1" 302 0
+ERROR 2025-05-08 13:14:58,478 log 1756 14148 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 148, in home_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 13:14:58,494 basehttp 1756 14148 "GET / HTTP/1.1" 500 193879
+INFO 2025-05-08 13:19:21,683 basehttp 1756 14148 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:21:23,136 autoreload 1756 3100 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:21:24,159 autoreload 14824 22640 Watching for file changes with StatReloader
+INFO 2025-05-08 13:21:38,735 basehttp 14824 10856 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 73327
+INFO 2025-05-08 13:21:59,483 basehttp 14824 10856 "POST /delete-employee/ HTTP/1.1" 200 21
+INFO 2025-05-08 13:22:02,015 basehttp 14824 10856 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 68383
+INFO 2025-05-08 13:23:17,517 autoreload 14824 22640 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:23:18,535 autoreload 1712 21872 Watching for file changes with StatReloader
+INFO 2025-05-08 13:23:29,757 basehttp 1712 14132 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 74719
+INFO 2025-05-08 13:23:49,515 autoreload 1712 21872 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:23:50,542 autoreload 11508 20884 Watching for file changes with StatReloader
+INFO 2025-05-08 13:23:59,849 basehttp 11508 5460 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 68383
+INFO 2025-05-08 13:24:24,357 basehttp 11508 5460 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:24:56,946 autoreload 11508 20884 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:24:58,806 autoreload 12752 17692 Watching for file changes with StatReloader
+INFO 2025-05-08 13:25:04,317 basehttp 12752 21544 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 75367
+INFO 2025-05-08 13:29:24,091 basehttp 12752 21544 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:29:33,251 basehttp 12752 21544 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 75367
+ERROR 2025-05-08 13:29:42,469 log 12752 21544 Internal Server Error: /
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 148, in home_view
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1982, in _retry_internal
+    return _ClientConnectionRetryable(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\contrib\auth\decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\MT GAMING\AppData\Roaming\Python\Python39\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 13:29:42,482 basehttp 12752 21544 "GET / HTTP/1.1" 500 193211
+INFO 2025-05-08 13:29:46,722 basehttp 12752 21544 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 75367
+INFO 2025-05-08 13:29:53,724 autoreload 12752 17692 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:29:54,775 autoreload 9452 22036 Watching for file changes with StatReloader
+INFO 2025-05-08 13:30:00,449 basehttp 9452 15624 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 68383
+INFO 2025-05-08 13:34:23,582 basehttp 9452 15624 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:35:44,070 autoreload 9452 22036 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:35:45,082 autoreload 1688 2224 Watching for file changes with StatReloader
+INFO 2025-05-08 13:35:53,574 basehttp 1688 8668 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 85327
+INFO 2025-05-08 13:36:29,542 autoreload 1688 2224 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:36:30,561 autoreload 12124 21420 Watching for file changes with StatReloader
+INFO 2025-05-08 13:36:37,646 basehttp 12124 6948 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 85327
+INFO 2025-05-08 13:36:55,571 autoreload 12124 21420 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:36:57,242 autoreload 4788 22812 Watching for file changes with StatReloader
+INFO 2025-05-08 13:38:11,153 autoreload 4788 22812 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:38:12,190 autoreload 21604 10776 Watching for file changes with StatReloader
+INFO 2025-05-08 13:38:40,555 basehttp 21604 3052 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 85439
+INFO 2025-05-08 13:39:22,408 basehttp 21604 3052 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:41:11,281 autoreload 21604 10776 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:41:12,796 autoreload 13076 7820 Watching for file changes with StatReloader
+INFO 2025-05-08 13:41:23,490 basehttp 13076 15364 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 85391
+INFO 2025-05-08 13:42:28,948 autoreload 13076 7820 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:42:30,499 autoreload 16508 18148 Watching for file changes with StatReloader
+INFO 2025-05-08 13:42:37,822 basehttp 16508 17332 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 76919
+INFO 2025-05-08 13:43:04,402 basehttp 16508 17332 "GET / HTTP/1.1" 200 61927
+INFO 2025-05-08 13:44:21,656 basehttp 16508 8164 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:46:34,589 autoreload 16508 18148 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:46:35,696 autoreload 8668 10772 Watching for file changes with StatReloader
+INFO 2025-05-08 13:46:42,765 basehttp 8668 16092 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 76911
+INFO 2025-05-08 13:47:03,278 autoreload 8668 10772 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:47:04,307 autoreload 11444 4212 Watching for file changes with StatReloader
+INFO 2025-05-08 13:47:11,407 basehttp 11444 6140 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 76919
+INFO 2025-05-08 13:49:24,281 basehttp 11444 6140 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:51:02,585 autoreload 11444 4212 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 13:51:03,674 autoreload 21228 14404 Watching for file changes with StatReloader
+INFO 2025-05-08 13:51:09,513 basehttp 21228 1368 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 76927
+INFO 2025-05-08 13:54:22,393 basehttp 21228 1368 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 13:59:21,743 basehttp 21228 1368 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-08 14:00:10,916 autoreload 21228 14404 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 14:00:11,975 autoreload 15124 12964 Watching for file changes with StatReloader
+INFO 2025-05-08 14:00:19,945 basehttp 15124 16540 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 101215
+INFO 2025-05-08 14:01:05,633 autoreload 15124 12964 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-08 14:01:06,656 autoreload 4732 8260 Watching for file changes with StatReloader
+INFO 2025-05-08 14:01:11,413 basehttp 4732 7628 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 76919
