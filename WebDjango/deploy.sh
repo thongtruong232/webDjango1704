@@ -1,80 +1,50 @@
 #!/bin/bash
 
 # === CONFIGURATION ===
-PROJECT_DIR="/WebDjango"              # Thư mục chứa dự án Django (theo cấu trúc của bạn)
-VENV_DIR="/WebDjango/.venv"            # Thư mục chứa virtualenv (nếu có)
-DJANGO_MODULE="WebDjango.asgi:application"  # Module ASGI của dự án
-BRANCH="main"                         # Nhánh Git bạn sử dụng (có thể là 'main', 'master' hoặc nhánh khác)
+PROJECT_DIR="/WebDjango"
+DJANGO_MODULE="WebDjango.asgi:application"
+PROJECT_NAME="webdjango"
+COMPOSE_PROJECT_NAME="webdjango"  # Tên project cho docker-compose
 
 # === DEPLOY PROCESS ===
-echo "Bắt đầu quá trình deploy..."
+echo "=== Bắt đầu quá trình deploy cho project $COMPOSE_PROJECT_NAME ==="
 
 # 1. Chuyển đến thư mục dự án
 cd $PROJECT_DIR || exit
 
-# 2. Kích hoạt virtualenv
-echo "Kích hoạt virtualenv..."
-source $VENV_DIR/bin/activate
+# 2. Dừng và xóa các container của project hiện tại
+echo "Dừng và xóa các container của project $COMPOSE_PROJECT_NAME..."
+COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME docker compose down
 
-# 3. Lấy mã nguồn mới nhất từ Git repository
-# echo "Cập nhật mã nguồn từ Git repository..."
-# git fetch origin
-# git reset --hard origin/$BRANCH
+# 3. Xóa các volume chỉ của project hiện tại
+echo "Xóa các volume của project $COMPOSE_PROJECT_NAME..."
+docker volume rm ${COMPOSE_PROJECT_NAME}_static_volume ${COMPOSE_PROJECT_NAME}_redis_data ${COMPOSE_PROJECT_NAME}_mongodb_data 2>/dev/null || true
 
-#  Build lại Docker image
-echo "Build lại Docker image..."
-docker compose build
+# 4. Xóa các image chỉ của project hiện tại
+echo "Xóa các image của project $COMPOSE_PROJECT_NAME..."
+docker rmi $(docker images -q ${COMPOSE_PROJECT_NAME}_web) 2>/dev/null || true
 
-# Dừng và xóa các container cũ + volume (static, cache...)
-echo "Dọn dẹp container cũ..."
-docker compose down -v
+# 5. Build lại Docker image cho project hiện tại
+echo "Build lại Docker image cho project $COMPOSE_PROJECT_NAME..."
+COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME docker compose build --no-cache
 
+# 6. Khởi động lại toàn bộ hệ thống của project hiện tại
+echo "Khởi động lại hệ thống cho project $COMPOSE_PROJECT_NAME..."
+COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME docker compose up -d
 
-# Khởi động lại toàn bộ hệ thống
-echo "Khởi động lại hệ thống..."
-docker compose up -d
-
-
-# Chờ vài giây để Django container sẵn sàng
+# 7. Chờ container sẵn sàng
 echo "Chờ container sẵn sàng..."
-sleep 5
+sleep 10
 
-
-# Cài đặt các gói mới (nếu có thay đổi trong requirements.txt)
-echo "Cài đặt dependencies mới..."
-pip install -r requirements.txt
-
-
-# Chạy migrate & collectstatic bên trong container
-echo "Chạy migrate và thu thập static files..."
-docker compose exec $PROJECT_NAME bash -c "
-  python manage.py migrate &&
-  python manage.py collectstatic --noinput
+# 8. Chạy migrate và collectstatic trong container của project hiện tại
+echo "Chạy migrate và collectstatic cho project $COMPOSE_PROJECT_NAME..."
+COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME docker compose exec $PROJECT_NAME bash -c "
+    python manage.py migrate --noinput &&
+    python manage.py collectstatic --noinput
 "
 
-echo "Deploy thành công, giao diện đã được cập nhật!"
+# 9. Kiểm tra logs của project hiện tại
+echo "Kiểm tra logs của project $COMPOSE_PROJECT_NAME..."
+COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME docker compose logs --tail=50
 
-# 5. Chạy migrate nếu có thay đổi cơ sở dữ liệu
-echo "Chạy database migrations..."
-python manage.py migrate
-
-# 6. Collect static files (nếu thay đổi trong static files)
-echo "Thu thập static files..."
-python manage.py collectstatic --noinput
-
-# 7. Dừng Daphne nếu đang chạy
-echo "Dừng Daphne nếu đang chạy..."
-PID=$(ps aux | grep daphne | grep "$DJANGO_MODULE" | grep -v grep | awk '{print $2}')
-if [ -n "$PID" ]; then
-  kill "$PID"
-  echo "Đã dừng Daphne (PID $PID)"
-else
-  echo "Không tìm thấy Daphne đang chạy."
-fi
-
-# 8. Khởi động lại Daphne
-echo "Khởi động lại Daphne..."
-nohup daphne -b 0.0.0.0 -p 8001 $DJANGO_MODULE > daphne.log 2>&1 &
-
-# 9. Xác nhận quá trình hoàn tất
-echo "Deploy thành công!"
+echo "=== Deploy hoàn tất cho project $COMPOSE_PROJECT_NAME ==="

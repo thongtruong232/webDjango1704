@@ -37,5 +37,13 @@ RUN python manage.py collectstatic --noinput
 # Expose port 8001
 EXPOSE 8001
 
-# Command để chạy server
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8001", "--websocket-timeout", "86400", "--proxy-headers", "--access-log", "-", "WebDjango.asgi:application"] 
+# Command để chạy server với các tham số phù hợp
+CMD ["daphne", \
+     "-b", "0.0.0.0", \
+     "-p", "8001", \
+     "--websocket-timeout", "86400", \
+     "--proxy-headers", \
+     "--access-log", "-", \
+     "--websocket-ping-interval", "20", \
+     "--websocket-ping-timeout", "10", \
+     "WebDjango.asgi:application"] 
