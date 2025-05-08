@@ -17,9 +17,9 @@ echo "Kích hoạt virtualenv..."
 source $VENV_DIR/bin/activate
 
 # 3. Lấy mã nguồn mới nhất từ Git repository
-echo "Cập nhật mã nguồn từ Git repository..."
-git fetch origin
-git reset --hard origin/$BRANCH
+# echo "Cập nhật mã nguồn từ Git repository..."
+# git fetch origin
+# git reset --hard origin/$BRANCH
 
 #  Build lại Docker image
 echo "Build lại Docker image..."

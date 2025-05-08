@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'authentication.apps.AuthenticationConfig',
     'channels',
 ]
@@ -249,7 +250,7 @@ CACHES = {
             },
             'MAX_CONNECTIONS': 1000,
             'RETRY_ON_TIMEOUT': True,
-            'IGNORE_EXCEPTIONS': True,  # Bỏ qua lỗi kết nối tạm thời
+            'IGNORE_EXCEPTIONS': True,
         }
     }
 }
