@@ -2,7 +2,7 @@
 
 # === CONFIGURATION ===
 PROJECT_DIR="/WebDjango"              # Thư mục chứa dự án Django (theo cấu trúc của bạn)
-VENV_DIR="/WebDjango/venv"            # Thư mục chứa virtualenv (nếu có)
+VENV_DIR="/WebDjango/.venv"            # Thư mục chứa virtualenv (nếu có)
 DJANGO_MODULE="WebDjango.asgi:application"  # Module ASGI của dự án
 BRANCH="main"                         # Nhánh Git bạn sử dụng (có thể là 'main', 'master' hoặc nhánh khác)
 

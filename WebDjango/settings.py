@@ -286,7 +286,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
     },
@@ -294,29 +294,18 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
-            'level': 'ERROR',  # Chỉ hiển thị lỗi
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'django_error.log',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
-            'level': 'ERROR',  # Chỉ ghi lỗi
+            'encoding': 'utf-8',
         },
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'ERROR',  # Tắt log database operations
-            'propagate': False,
-        },
-        'authentication': {
-            'handlers': ['console', 'file'],
-            'level': 'ERROR',
+            'level': 'INFO',
             'propagate': True,
         },
     },
