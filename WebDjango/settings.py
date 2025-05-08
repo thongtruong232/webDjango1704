@@ -273,7 +273,7 @@ CHANNEL_LAYERS = {
                 'http.response*': 200,
                 'websocket.send*': 200,
             },
-            'symmetric_encryption_keys': [SECRET_KEY],  # Mã hóa dữ liệu WebSocket
+            'symmetric_encryption_keys': [SECRET_KEY],
         },
     },
 }
@@ -314,7 +314,7 @@ LOGGING = {
 
 # WebSocket settings
 CHANNELS_WS_PROTOCOLS = ['websocket']
-CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1']
+CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1', '*']
 CHANNELS_WS_HEARTBEAT = 30  # seconds
 CHANNELS_WS_PING_INTERVAL = 20  # seconds
 CHANNELS_WS_PING_TIMEOUT = 10  # seconds
