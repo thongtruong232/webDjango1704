@@ -37,13 +37,16 @@ RUN python manage.py collectstatic --noinput
 # Expose port 8001
 EXPOSE 8001
 
-# Command để chạy server với các tham số phù hợp
-CMD ["daphne", \
-     "-b", "0.0.0.0", \
-     "-p", "8001", \
-     "--websocket-timeout", "86400", \
+# Command để chạy server với Uvicorn
+CMD ["uvicorn", \
+     "WebDjango.asgi:application", \
+     "--host", "0.0.0.0", \
+     "--port", "8001", \
+     "--workers", "4", \
      "--proxy-headers", \
-     "--access-log", "-", \
-     "--websocket-ping-interval", "20", \
-     "--websocket-ping-timeout", "10", \
-     "WebDjango.asgi:application"] 
+     "--forwarded-allow-ips", "*", \
+     "--timeout-keep-alive", "86400", \
+     "--ws", "auto", \
+     "--ws-ping-interval", "20", \
+     "--ws-ping-timeout", "10", \
+     "--log-level", "info"] 

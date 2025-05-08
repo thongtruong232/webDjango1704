@@ -281,6 +281,20 @@ CHANNEL_LAYERS = {
 # Channels Configuration
 ASGI_APPLICATION = 'WebDjango.asgi.application'
 
+# WebSocket settings
+CHANNELS_WS_PROTOCOLS = ['websocket']
+CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1', '*']
+CHANNELS_WS_HEARTBEAT = 30  # seconds
+CHANNELS_WS_PING_INTERVAL = 20  # seconds
+CHANNELS_WS_PING_TIMEOUT = 10  # seconds
+
+# Uvicorn settings
+UVICORN_WS_PING_INTERVAL = 20
+UVICORN_WS_PING_TIMEOUT = 10
+UVICORN_TIMEOUT_KEEP_ALIVE = 86400
+UVICORN_WORKERS = 4
+UVICORN_LOG_LEVEL = 'info'
+
 # Logging settings
 LOGGING = {
     'version': 1,
@@ -311,15 +325,3 @@ LOGGING = {
         },
     },
 }
-
-# WebSocket settings
-CHANNELS_WS_PROTOCOLS = ['websocket']
-CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1', '*']
-CHANNELS_WS_HEARTBEAT = 30  # seconds
-CHANNELS_WS_PING_INTERVAL = 20  # seconds
-CHANNELS_WS_PING_TIMEOUT = 10  # seconds
-
-# Daphne settings
-DAPHNE_WEBSOCKET_TIMEOUT = 86400
-DAPHNE_WEBSOCKET_PING_INTERVAL = 20
-DAPHNE_WEBSOCKET_PING_TIMEOUT = 10
