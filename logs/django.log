@@ -2076,3 +2076,27 @@ INFO 2025-05-09 17:03:19,630 basehttp 19628 6984 "GET /manager-admin-sale/?date_
 INFO 2025-05-09 17:03:22,130 basehttp 19628 6984 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 33260
 INFO 2025-05-09 17:04:41,462 basehttp 19628 6984 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 22191
 INFO 2025-05-09 17:06:28,577 basehttp 19628 6984 "POST /api/save-worksession/ HTTP/1.1" 200 104
+WARNING 2025-05-09 17:39:14,645 log 19176 12104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:39:29,254 log 19176 12104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:39:51,431 log 19176 12104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:39:55,493 log 19176 12104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:41:01,593 log 19176 12104 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:42:07,889 log 2228 7656 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:49:38,417 log 10724 6528 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:51:51,459 log 5128 12772 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:55:36,946 log 11740 15296 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:56:59,477 log 7632 19532 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:57:10,327 log 7632 19532 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:57:12,078 log 7632 19532 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:57:16,949 log 7632 19532 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:57:24,216 log 7632 19532 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:57:26,967 log 7632 19532 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 17:59:58,459 log 14544 14608 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 18:02:06,975 log 5428 14896 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 18:02:15,749 log 5428 14896 Not Found: /favicon.ico
+WARNING 2025-05-09 18:04:42,048 log 2432 17208 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 18:06:45,597 log 18612 17632 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 18:07:37,662 log 16528 1560 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 18:08:37,879 log 16528 1560 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 18:08:39,648 log 16528 1560 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 18:08:49,522 log 16528 1560 Not Found: /.well-known/appspecific/com.chrome.devtools.json

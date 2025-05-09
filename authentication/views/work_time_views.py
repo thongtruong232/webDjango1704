@@ -30,43 +30,45 @@ def get_current_time():
 @login_required
 @role_required(['admin', 'quanly'])
 def work_time_stats(request):
-    # Lấy thông tin filter từ request
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-    user_id = request.GET.get('user_id')
-    export_excel = request.GET.get('export') == 'true'  # Thêm flag xuất Excel
-
-    # logger.info(f"work_time_stats called with params - start_date: {start_date}, end_date: {end_date}, user_id: {user_id}")
-
-    # Xử lý ngày tháng
-    if not end_date:
-        end_date = timezone.now().astimezone(TIMEZONE).date()
-    else:
-        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-    
-    if not start_date:
-        start_date = end_date - timedelta(days=30)
-    else:
-        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-
-    # Kết nối MongoDB
-    users_collection, client = get_collection_handle('users')
-    if users_collection is None:
-        logger.error("Failed to connect to MongoDB users collection")
-        messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu MongoDB')
-        return render(request, 'authentication/work_time_stats.html', {
-            'stats': [],
-            'start_date': start_date,
-            'end_date': end_date,
-            'selected_user': user_id,
-            'users': [],
-            'user_data': None
-        })
-
+    client = None
     try:
-        # Lấy danh sách người dùng từ MongoDB
-        mongo_users = list(users_collection.find({}, {'user_id': 1, 'username': 1, 'role': 1, 'is_active': 1}))
-        
+        # Lấy thông tin filter từ request
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        user_id = request.GET.get('user_id')
+        export_excel = request.GET.get('export') == 'true'
+
+        # Kết nối MongoDB trước
+        users_collection, client = get_collection_handle('users')
+        if users_collection is None:
+            logger.error("Failed to connect to MongoDB users collection")
+            raise Exception("Không thể kết nối đến cơ sở dữ liệu MongoDB")
+
+        # Lấy thông tin user sau khi đã có kết nối
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        if not user_data:
+            logger.warning(f"User data not found for ID: {request.user.id}")
+
+        # Xử lý ngày tháng
+        try:
+            if not end_date:
+                end_date = timezone.now().astimezone(TIMEZONE).date()
+            else:
+                end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+            
+            if not start_date:
+                start_date = end_date - timedelta(days=30)
+            else:
+                start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        except ValueError as e:
+            logger.error(f"Error parsing dates: {str(e)}")
+            raise Exception("Định dạng ngày không hợp lệ")
+
+        # Lấy danh sách người dùng từ MongoDB với default value cho is_active
+        mongo_users = list(users_collection.find({}, {'user_id': 1, 'username': 1, 'role': 1}))
+        if not mongo_users:
+            logger.warning("No users found in MongoDB")
+            
         # Lấy collection work_time
         work_time_collection = client['work_time']['stats']
         
@@ -84,155 +86,76 @@ def work_time_stats(request):
         # Lấy thống kê từ collection work_time
         stats = []
         for mongo_user in mongo_users:
-            user_query = query.copy()
-            user_query['user_id'] = str(mongo_user['user_id'])
-            
-            # Lấy thống kê của user
-            user_stats = list(work_time_collection.find(user_query).sort('date', -1))
-            
-            if user_stats:
-                # Tính tổng số phiên và thời gian
-                total_sessions = len(user_stats)
+            try:
+                user_query = query.copy()
+                user_query['user_id'] = str(mongo_user['user_id'])
                 
-                # Tính tổng thời gian làm việc
-                total_duration = 0
-                for stat in user_stats:
-                    if 'duration' in stat:
-                        total_duration += stat['duration']
-                    elif 'logout_time' in stat and stat['logout_time']:
-                        login_time = datetime.fromisoformat(stat['login_time'])
-                        logout_time = datetime.fromisoformat(stat['logout_time'])
-                        duration = (logout_time - login_time).total_seconds()
-                        total_duration += duration
+                # Lấy thống kê của user
+                user_stats = list(work_time_collection.find(user_query).sort('date', -1))
                 
-                total_hours = round(total_duration / 3600, 2)
-                average_hours = round(total_hours / total_sessions, 2) if total_sessions > 0 else 0
-                
-                # Format lại các phiên làm việc
-                formatted_activities = []
-                for stat in user_stats:
-                    try:
-                        login_time = datetime.fromisoformat(stat['login_time'])
-                        logout_time = datetime.fromisoformat(stat['logout_time']) if stat.get('logout_time') else None
-                        
-                        if 'duration' not in stat and logout_time:
-                            duration = (logout_time - login_time).total_seconds()
-                            duration_str = str(logout_time - login_time)
-                        else:
-                            duration = stat.get('duration', 0)
-                            duration_str = stat.get('duration_str', '0:00:00')
-                        
-                        formatted_activities.append({
-                            'login_time': login_time,
-                            'logout_time': logout_time,
-                            'session_duration': duration_str,
-                            'session_id': stat['session_id']
-                        })
+                if user_stats:
+                    # Tính tổng số phiên và thời gian
+                    total_sessions = len(user_stats)
+                    total_duration = 0
+                    formatted_activities = []
 
-                        # logger.info(f'login_time: {login_time}, logout_time: {logout_time}')
-                    except Exception as e:
-                        logger.error(f"Error formatting activity: {str(e)}", exc_info=True)
-                        continue
-                
-                stats.append({
-                    'user': {
-                        'id': mongo_user['user_id'],
-                        'username': mongo_user['username'],
-                        'is_active': mongo_user['is_active']
-                    },
-                    'total_sessions': total_sessions,
-                    'total_hours': total_hours,
-                    'average_session': average_hours,
-                    'activities': formatted_activities
-                })
+                    for stat in user_stats:
+                        try:
+                            # Xử lý thời gian đăng nhập/đăng xuất
+                            login_time = datetime.fromisoformat(stat['login_time'])
+                            logout_time = None
+                            if stat.get('logout_time'):
+                                try:
+                                    logout_time = datetime.fromisoformat(stat['logout_time'])
+                                except ValueError as e:
+                                    logger.error(f"Invalid logout_time format: {stat['logout_time']}, Error: {str(e)}")
+                                    continue
 
-        # Nếu yêu cầu xuất Excel
-        if export_excel:
-            # Tạo file Excel trong bộ nhớ
-            output = BytesIO()
-            workbook = xlsxwriter.Workbook(output)
-            worksheet = workbook.add_worksheet()
+                            # Tính duration
+                            if 'duration' in stat:
+                                duration = stat['duration']
+                            elif logout_time:
+                                duration = (logout_time - login_time).total_seconds()
+                            else:
+                                duration = 0
 
-            # Định dạng cho header
-            header_format = workbook.add_format({
-                'bold': True,
-                'bg_color': '#f8f9fa',
-                'border': 1,
-                'align': 'center'
-            })
+                            total_duration += duration
 
-            # Định dạng cho các ô dữ liệu
-            cell_format = workbook.add_format({
-                'border': 1,
-                'align': 'center'
-            })
+                            # Format duration string
+                            hours = int(duration // 3600)
+                            minutes = int((duration % 3600) // 60)
+                            seconds = int(duration % 60)
+                            duration_str = f"{hours}:{minutes:02d}:{seconds:02d}"
 
-            # Viết tiêu đề báo cáo
-            worksheet.merge_range('A1:C1', 'BÁO CÁO THỐNG KÊ THỜI GIAN LÀM VIỆC', header_format)
-            
-            # Viết thông tin về khoảng thời gian và nhân viên
-            worksheet.write(2, 0, 'Từ ngày', header_format)
-            worksheet.write(2, 1, start_date.strftime('%d/%m/%Y'), cell_format)
-            worksheet.write(3, 0, 'Đến ngày', header_format)
-            worksheet.write(3, 1, end_date.strftime('%d/%m/%Y'), cell_format)
-            
-            # Thêm thông tin nhân viên nếu được chọn
-            if user_id:
-                selected_user = next((user for user in mongo_users if str(user['user_id']) == user_id), None)
-                if selected_user:
-                    worksheet.write(4, 0, 'Nhân viên', header_format)
-                    worksheet.write(4, 1, selected_user['username'], cell_format)
+                            formatted_activities.append({
+                                'login_time': login_time,
+                                'logout_time': logout_time,
+                                'session_duration': duration_str,
+                                'session_id': stat['session_id']
+                            })
 
-            # Viết header cho bảng thống kê
-            headers = ['Nhân viên', 'Tổng thời gian (giờ)', 'Thời gian trung bình/phiên (giờ)']
-            for col, header in enumerate(headers):
-                worksheet.write(6, col, header, header_format)
+                        except Exception as e:
+                            logger.error(f"Error processing stat for user {mongo_user.get('username', 'Unknown')}: {str(e)}", exc_info=True)
+                            continue
 
-            # Viết dữ liệu thống kê
-            row = 7
-            for stat in stats:
-                # Nếu có chọn nhân viên cụ thể, chỉ xuất dữ liệu của nhân viên đó
-                if user_id and str(stat['user']['id']) != user_id:
-                    continue
-                    
-                data = [
-                    stat['user']['username'],
-                    stat['total_hours'],
-                    stat['average_session']
-                ]
-                for col, value in enumerate(data):
-                    worksheet.write(row, col, value, cell_format)
-                row += 1
+                    total_hours = round(total_duration / 3600, 2)
+                    average_hours = round(total_hours / total_sessions, 2) if total_sessions > 0 else 0
 
-            # Điều chỉnh độ rộng cột
-            column_widths = [25, 20, 25]
-            for i, width in enumerate(column_widths):
-                worksheet.set_column(i, i, width)
+                    stats.append({
+                        'user': {
+                            'id': mongo_user['user_id'],
+                            'username': mongo_user.get('username', 'Unknown'),
+                            'is_active': True  # Default to True since we can't determine actual status
+                        },
+                        'total_sessions': total_sessions,
+                        'total_hours': total_hours,
+                        'average_session': average_hours,
+                        'activities': formatted_activities
+                    })
 
-            # Đóng workbook
-            workbook.close()
-
-            # Chuẩn bị response
-            output.seek(0)
-            response = HttpResponse(
-                output.read(),
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            )
-            
-            # Tạo tên file dựa trên thông tin lọc
-            filename = f"thong_ke_thoi_gian_lam_viec_{start_date.strftime('%d-%m-%Y')}_{end_date.strftime('%d-%m-%Y')}"
-            if user_id:
-                selected_user = next((user for user in mongo_users if str(user['user_id']) == user_id), None)
-                if selected_user:
-                    filename += f"_{selected_user['username']}"
-            filename += ".xlsx"
-            
-            response['Content-Disposition'] = f'attachment; filename={filename}'
-            
-            return response
-
-        # Lấy thông tin user từ MongoDB
-        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+            except Exception as e:
+                logger.error(f"Error processing user {mongo_user.get('username', 'Unknown')}: {str(e)}", exc_info=True)
+                continue
 
         context = {
             'stats': stats,
@@ -240,20 +163,32 @@ def work_time_stats(request):
             'end_date': end_date,
             'selected_user': user_id,
             'users': mongo_users,
-            'user_data': user_data
+            'user_data': user_data or request.user  # Fallback to request.user if user_data is None
         }
         
         return render(request, 'authentication/work_time_stats.html', context)
         
+    except ValueError as e:
+        logger.error(f"Value Error in work_time_stats: {str(e)}", exc_info=True)
+        messages.error(request, 'Định dạng dữ liệu không hợp lệ')
+        return render(request, 'authentication/work_time_stats.html', {
+            'stats': [],
+            'start_date': None,
+            'end_date': None,
+            'selected_user': None,
+            'users': [],
+            'user_data': request.user
+        })
     except Exception as e:
+        logger.error(f"Error in work_time_stats: {str(e)}", exc_info=True)
         messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
         return render(request, 'authentication/work_time_stats.html', {
             'stats': [],
-            'start_date': start_date,
-            'end_date': end_date,
-            'selected_user': user_id,
+            'start_date': start_date if 'start_date' in locals() else None,
+            'end_date': end_date if 'end_date' in locals() else None,
+            'selected_user': user_id if 'user_id' in locals() else None,
             'users': [],
-            'user_data': None
+            'user_data': request.user
         })
     finally:
         if client:
@@ -261,6 +196,7 @@ def work_time_stats(request):
                 client.close()
             except Exception as e:
                 logger.error(f"Error closing MongoDB connection: {str(e)}")
+
 @login_required
 def user_activity_stream(request):
     """Stream user activity events using Server-Sent Events"""

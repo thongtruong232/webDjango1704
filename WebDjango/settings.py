@@ -230,10 +230,29 @@ USE_I18N = True
 USE_TZ = True
 
 # Redis Configuration
-REDIS_HOST = os.getenv('REDIS_HOST', '207.148.69.229')  # Mặc định là host IP
+REDIS_HOST = os.getenv('REDIS_HOST', '207.148.69.229')
 REDIS_PORT = os.getenv('REDIS_PORT', '6379')
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD', 'thongtruong232')
 
+# Channel layer settings
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0'],
+            'capacity': 1500,
+            'expiry': 3600,
+            'group_expiry': 3600,
+            'prefix': 'asgi',
+            'symmetric_encryption_keys': [SECRET_KEY],
+            'channel_capacity': {
+                'user_activity': 1000
+            }
+        }
+    }
+}
+
+# Cache settings
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -243,39 +262,16 @@ CACHES = {
             'PASSWORD': REDIS_PASSWORD,
             'SOCKET_CONNECT_TIMEOUT': 5,
             'SOCKET_TIMEOUT': 5,
+            'RETRY_ON_TIMEOUT': True,
             'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
             'CONNECTION_POOL_CLASS_KWARGS': {
                 'max_connections': 50,
                 'timeout': 20
             },
             'MAX_CONNECTIONS': 1000,
-            'RETRY_ON_TIMEOUT': True,
             'IGNORE_EXCEPTIONS': True,
         }
     }
-}
-
-# Channel layer settings
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [{
-                'address': f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0',
-                'password': REDIS_PASSWORD
-            }],
-            'capacity': 1500,
-            'expiry': 3600,
-            'group_expiry': 3600,
-            'prefix': 'asgi',
-            'channel_capacity': {
-                'http.request': 200,
-                'http.response*': 200,
-                'websocket.send*': 200,
-            },
-            'symmetric_encryption_keys': [SECRET_KEY],
-        },
-    },
 }
 
 # Channels Configuration

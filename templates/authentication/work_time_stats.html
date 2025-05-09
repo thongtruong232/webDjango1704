@@ -175,41 +175,75 @@
             socket.close();
         }
 
-        // Xác định protocol dựa trên protocol hiện tại của trang
+        // Xác định protocol và host dựa trên môi trường
         const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${wsProtocol}//${window.location.host}/ws/user_activity/`;
+        const host = window.location.hostname;
+        const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
+        const wsUrl = `${wsProtocol}//${host}:${port}/ws/user_activity/`;
         
         console.log('Connecting to WebSocket:', wsUrl);
         
         try {
             socket = new WebSocket(wsUrl);
+            let heartbeatInterval = null;
+            let missedHeartbeats = 0;
+            const maxMissedHeartbeats = 3;
+            let reconnectTimeout = null;
+            let isReconnecting = false;
 
-            // Thêm timeout cho kết nối
+            // Thêm timeout cho kết nối ban đầu
             const connectionTimeout = setTimeout(() => {
                 if (socket.readyState !== WebSocket.OPEN) {
                     console.error('WebSocket connection timeout');
                     socket.close();
+                    // Thử kết nối với host nếu local thất bại
+                    if (host === 'localhost' || host === '127.0.0.1') {
+                        const hostWsUrl = `${wsProtocol}//207.148.69.229:81/ws/user_activity/`;
+                        console.log('Trying host connection:', hostWsUrl);
+                        socket = new WebSocket(hostWsUrl);
+                    }
                 }
             }, 5000);
 
             socket.onopen = function(e) {
                 clearTimeout(connectionTimeout);
-                console.log('WebSocket connected successfully');
+                console.log('WebSocket connected successfully to:', wsUrl);
                 reconnectAttempts = 0;
-                // Yêu cầu trạng thái ban đầu
+                isReconnecting = false;
                 socket.send(JSON.stringify({type: 'get_initial_status'}));
+
+                // Bắt đầu kiểm tra heartbeat
+                heartbeatInterval = setInterval(() => {
+                    if (missedHeartbeats >= maxMissedHeartbeats) {
+                        console.log('Too many missed heartbeats, reconnecting...');
+                        clearInterval(heartbeatInterval);
+                        socket.close();
+                        if (!isReconnecting) {
+                            isReconnecting = true;
+                            reconnectTimeout = setTimeout(() => {
+                                connectWebSocket();
+                            }, 1000);
+                        }
+                    }
+                }, 35000);
             };
 
             socket.onmessage = function(e) {
                 try {
                     const data = JSON.parse(e.data);
-                    // console.log('Received WebSocket message:', data);
+                    if (data.type === 'ping') {
+                        // Reset missed heartbeats counter và trả lời pong
+                        missedHeartbeats = 0;
+                        socket.send(JSON.stringify({type: 'pong'}));
+                        return;
+                    }
 
+                    // Xử lý các loại tin nhắn khác
                     if (data.type === 'activity_status') {
-                        updateUserStatus(data);
+                        queueStatusUpdate(data);
                     } else if (data.type === 'initial_status' && Array.isArray(data.statuses)) {
                         data.statuses.forEach(status => {
-                            setTimeout(() => updateUserStatus(status), 0);
+                            setTimeout(() => queueStatusUpdate(status), 0);
                         });
                     }
                 } catch (error) {
@@ -219,35 +253,41 @@
 
             socket.onerror = function(e) {
                 clearTimeout(connectionTimeout);
+                clearInterval(heartbeatInterval);
                 console.error('WebSocket error:', e);
-                // Thêm thông tin chi tiết về lỗi
-                if (e.target.readyState === WebSocket.CLOSED) {
-                    console.error('WebSocket connection was closed');
-                } else if (e.target.readyState === WebSocket.CONNECTING) {
-                    console.error('WebSocket connection failed to establish');
-                }
                 
-                if (reconnectAttempts < maxReconnectAttempts) {
+                if (!isReconnecting && reconnectAttempts < maxReconnectAttempts) {
                     reconnectAttempts++;
                     console.log(`Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})...`);
-                    setTimeout(connectWebSocket, 5000);
+                    isReconnecting = true;
+                    reconnectTimeout = setTimeout(() => {
+                        connectWebSocket();
+                    }, Math.min(1000 * Math.pow(2, reconnectAttempts), 30000)); // Exponential backoff with max 30s
                 }
             };
 
             socket.onclose = function(e) {
                 clearTimeout(connectionTimeout);
+                clearInterval(heartbeatInterval);
                 console.log('WebSocket connection closed:', e);
-                // Thêm thông tin chi tiết về việc đóng kết nối
-                if (e.wasClean) {
-                    console.log(`Connection closed cleanly, code=${e.code} reason=${e.reason}`);
-                } else {
-                    console.log('Connection died');
-                }
                 
-                if (reconnectAttempts < maxReconnectAttempts) {
+                if (!isReconnecting && reconnectAttempts < maxReconnectAttempts) {
                     reconnectAttempts++;
                     console.log(`Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})...`);
-                    setTimeout(connectWebSocket, 5000);
+                    isReconnecting = true;
+                    reconnectTimeout = setTimeout(() => {
+                        connectWebSocket();
+                    }, Math.min(1000 * Math.pow(2, reconnectAttempts), 30000));
+                }
+            };
+
+            return () => {
+                // Cleanup function
+                clearTimeout(connectionTimeout);
+                clearInterval(heartbeatInterval);
+                clearTimeout(reconnectTimeout);
+                if (socket) {
+                    socket.close();
                 }
             };
         } catch (error) {
