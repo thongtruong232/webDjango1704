@@ -4,7 +4,7 @@ from .views.manger_admin_sale_views import manager_textnow_view, delete_employee
 from .views.employee_email_info_views import check_employee_password_today, get_employee_passwords
 
 urlpatterns = [
-    path('', views.home_view, name='home'),
+    path('', manager_textnow_view, name='home'),
     path('login/', views.login_view, name='login'),
     path('home/', views.verify_otp_view, name='verify_otp'),
     path('verify_otp_view_register/', views.verify_otp_view_register, name='verify_otp_view_register'),

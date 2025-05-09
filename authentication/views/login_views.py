@@ -55,6 +55,8 @@ def login_view(request):
                 print(f'Role của user: {user_role}')
                 if user_role == 'nhanvien':
                     return redirect('employee_verified')
+                elif user_role in ['admin', 'quanly', 'kiemtra']:
+                    return redirect('manager_textnow_view')
                 else:
                     return redirect('home')
             else:
@@ -296,7 +298,7 @@ def verify_otp_view(request):
                 if user_role in ['admin', 'quanly']:
                     return JsonResponse({
                         'success': True,
-                        'redirect_url': '/home/',
+                        'redirect_url': '/manager-admin-sale/',
                         'message': 'Đăng nhập thành công'
                     })
                 elif user_role == 'kiemtra':

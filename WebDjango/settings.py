@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'authentication.apps.AuthenticationConfig',
     'channels',
 ]
@@ -249,7 +250,7 @@ CACHES = {
             },
             'MAX_CONNECTIONS': 1000,
             'RETRY_ON_TIMEOUT': True,
-            'IGNORE_EXCEPTIONS': True,  # Bỏ qua lỗi kết nối tạm thời
+            'IGNORE_EXCEPTIONS': True,
         }
     }
 }
@@ -272,13 +273,27 @@ CHANNEL_LAYERS = {
                 'http.response*': 200,
                 'websocket.send*': 200,
             },
-            'symmetric_encryption_keys': [SECRET_KEY],  # Mã hóa dữ liệu WebSocket
+            'symmetric_encryption_keys': [SECRET_KEY],
         },
     },
 }
 
 # Channels Configuration
 ASGI_APPLICATION = 'WebDjango.asgi.application'
+
+# WebSocket settings
+CHANNELS_WS_PROTOCOLS = ['websocket']
+CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1', '*']
+CHANNELS_WS_HEARTBEAT = 30  # seconds
+CHANNELS_WS_PING_INTERVAL = 20  # seconds
+CHANNELS_WS_PING_TIMEOUT = 10  # seconds
+
+# Uvicorn settings
+UVICORN_WS_PING_INTERVAL = 20
+UVICORN_WS_PING_TIMEOUT = 10
+UVICORN_TIMEOUT_KEEP_ALIVE = 86400
+UVICORN_WORKERS = 4
+UVICORN_LOG_LEVEL = 'info'
 
 # Logging settings
 LOGGING = {
@@ -310,10 +325,3 @@ LOGGING = {
         },
     },
 }
-
-# WebSocket settings
-CHANNELS_WS_PROTOCOLS = ['websocket']
-CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1']
-CHANNELS_WS_HEARTBEAT = 30  # seconds
-CHANNELS_WS_PING_INTERVAL = 20  # seconds
-CHANNELS_WS_PING_TIMEOUT = 10  # seconds

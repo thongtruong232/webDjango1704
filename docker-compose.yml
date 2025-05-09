@@ -31,7 +31,7 @@ services:
       - "6379"
     volumes:
       - redis_data:/data
-    command: redis-server --port 6379
+    command: redis-server --requirepass thongtruong232 --port 6379
     networks:
       - app_network
 

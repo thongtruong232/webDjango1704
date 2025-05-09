@@ -847,6 +847,45 @@ INFO 2025-05-08 14:00:19,945 basehttp 15124 16540 "GET /manager-admin-sale/?date
 INFO 2025-05-08 14:01:05,633 autoreload 15124 12964 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
 INFO 2025-05-08 14:01:06,656 autoreload 4732 8260 Watching for file changes with StatReloader
 INFO 2025-05-08 14:01:11,413 basehttp 4732 7628 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-07&end_date=2025-05-07&status_tn=&status_tf=&created_by=&search=&csrfmiddlewaretoken=8OSIwiiHKZCG1CQrwG4Ze79lX6KbBCkpdw9PcGIUecyyGEuthHe3SJvG3yC0DEM4 HTTP/1.1" 200 76919
+WARNING 2025-05-08 14:14:32,093 log 9764 11040 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /verified/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 994, in _save_table
+    raise DatabaseError("Forced update did not affect any rows.")
+django.db.utils.DatabaseError: Forced update did not affect any rows.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\utils\deprecation.py", line 152, in __acall__
+    response = await sync_to_async(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
 INFO 2025-05-08 14:04:22,497 basehttp 4732 7628 "POST /api/save-worksession/ HTTP/1.1" 200 104
 INFO 2025-05-08 14:09:22,053 basehttp 4732 7628 "POST /api/save-worksession/ HTTP/1.1" 200 104
 INFO 2025-05-08 14:14:22,159 basehttp 4732 2256 "POST /api/save-worksession/ HTTP/1.1" 200 104
