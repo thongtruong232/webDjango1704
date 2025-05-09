@@ -14,26 +14,35 @@ from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
 )
+
 logger = logging.getLogger(__name__)
+
+# Singleton MongoDB client
+_mongo_client = None
+
+def get_mongo_client():
+    global _mongo_client
+    if _mongo_client is None:
+        _mongo_client = MongoClient(settings.MONGODB_URI)
+    return _mongo_client
 
 def get_collection_handle(collection_name):
     """Helper function to get MongoDB collection handle"""
     try:
-        client = MongoClient(settings.MONGODB_URI)
+        client = get_mongo_client()
         db = client[settings.MONGODB_DATABASE]
         collection = db[collection_name]
-        return collection, client
+        return collection
     except Exception as e:
         logger.error(f"Error connecting to MongoDB: {str(e)}")
         raise
 
 @login_required
+@role_required('admin')  # Yêu cầu quyền admin
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
-        client = MongoClient(settings.MONGODB_URI)
-        db = client[settings.MONGODB_DATABASE]
-        collection = db['employee_textnow']
+        collection = get_collection_handle('employee_textnow')
 
         # Định nghĩa projection ngay từ đầu
         projection = {
@@ -54,6 +63,8 @@ def manager_textnow_view(request):
         # Lấy tham số tìm kiếm từ request
         status_tn = request.GET.get('status_tn')
         status_tf = request.GET.get('status_tf')
+        sold_status_tn = request.GET.get('sold_status_tn')
+        sold_status_tf = request.GET.get('sold_status_tf')
         date_type = request.GET.get('date_type', 'single')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
@@ -63,6 +74,8 @@ def manager_textnow_view(request):
         print("Search parameters:", {
             'status_tn': status_tn,
             'status_tf': status_tf,
+            'sold_status_tn': sold_status_tn,
+            'sold_status_tf': sold_status_tf,
             'date_type': date_type,
             'start_date': start_date,
             'end_date': end_date,
@@ -110,6 +123,20 @@ def manager_textnow_view(request):
             status_count = collection.count_documents(status_query)
             print(f"Documents matching TF status {status_tf}:", status_count)
             query.update(status_query)
+
+        if sold_status_tn:
+            sold_status = sold_status_tn.lower() == 'true'
+            sold_query = {'sold_status_TN': sold_status}
+            sold_count = collection.count_documents(sold_query)
+            print(f"Documents matching TN sold status {sold_status}:", sold_count)
+            query.update(sold_query)
+
+        if sold_status_tf:
+            sold_status = sold_status_tf.lower() == 'true'
+            sold_query = {'sold_status_TF': sold_status}
+            sold_count = collection.count_documents(sold_query)
+            print(f"Documents matching TF sold status {sold_status}:", sold_count)
+            query.update(sold_query)
         
         if created_by:
             creator_query = {'created_by': created_by}
@@ -152,7 +179,7 @@ def manager_textnow_view(request):
         ))
         status_list = sorted([status for status in status_list if status])
   
-        users_collection, client = get_collection_handle('users')
+        users_collection = get_collection_handle('users')
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         context = {
             'user_data': user_data,
@@ -162,6 +189,8 @@ def manager_textnow_view(request):
             'end_date': end_date,
             'status_tn': status_tn,
             'status_tf': status_tf,
+            'sold_status_tn': sold_status_tn,
+            'sold_status_tf': sold_status_tf,
             'status_list': status_list,
             'created_by': created_by,
             'search_query': search_query,
@@ -178,15 +207,13 @@ def manager_textnow_view(request):
         }
         return render(request, 'authentication/manager_textnow_admin_sale.html', context)
 
-# Thêm view xử lý xóa
 @login_required
+@role_required('admin')  # Yêu cầu quyền admin
 def delete_employee(request):
     if request.method == 'POST':
         try:
             employee_id = request.POST.get('employee_id')
-            client = MongoClient(settings.MONGODB_URI)
-            db = client[settings.MONGODB_DATABASE]
-            collection = db['employee_textnow']
+            collection = get_collection_handle('employee_textnow')
             
             # Chuyển string ID thành ObjectId
             result = collection.delete_one({'_id': ObjectId(employee_id)})
@@ -203,6 +230,7 @@ def delete_employee(request):
 
 @csrf_exempt
 @login_required
+@role_required('admin')  # Yêu cầu quyền admin
 def export_employee_textnow_excel(request):
     if request.method == 'POST':
         try:
@@ -211,9 +239,7 @@ def export_employee_textnow_excel(request):
             selected_ids = data.get('selected_ids', [])
 
             # Kết nối MongoDB
-            client = MongoClient(settings.MONGODB_URI)
-            db = client[settings.MONGODB_DATABASE]
-            collection = db['employee_textnow']
+            collection = get_collection_handle('employee_textnow')
 
             # Truy vấn các bản ghi được chọn
             query = {'_id': {'$in': [ObjectId(id) for id in selected_ids]}}
@@ -284,3 +310,49 @@ def export_employee_textnow_excel(request):
             return JsonResponse({'status': 'error', 'message': str(e)})
 
     return JsonResponse({'status': 'error', 'message': 'Phương thức không được hỗ trợ'})
+
+@csrf_exempt
+@login_required
+@role_required('admin')  # Yêu cầu quyền admin
+def update_sold_status(request):
+    if request.method == 'POST':
+        try:
+            # Lấy dữ liệu từ request
+            data = json.loads(request.body)
+            employee_ids = data.get('employee_ids', [])
+            sold_status = data.get('sold_status', True)
+            type = data.get('type', 'TN')  # Mặc định là TN nếu không có type
+
+            # Kết nối MongoDB
+            collection = get_collection_handle('employee_textnow')
+
+            # Xác định trường cần cập nhật dựa vào type
+            update_field = 'sold_status_TF' if type == 'TF' else 'sold_status_TN'
+
+            # Cập nhật trạng thái cho các record được chọn
+            result = collection.update_many(
+                {'_id': {'$in': [ObjectId(id) for id in employee_ids]}},
+                {'$set': {update_field: sold_status}}
+            )
+
+            if result.modified_count > 0:
+                return JsonResponse({
+                    'status': 'success',
+                    'message': f'Đã cập nhật {result.modified_count} record'
+                })
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Không có record nào được cập nhật'
+                })
+
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            })
+
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Phương thức không được hỗ trợ'
+    })

@@ -799,7 +799,7 @@
                     
                     // Refresh trang sau 1 giây để hiển thị dữ liệu mới
                     setTimeout(() => {
-                        window.location.reload();
+                        searchRecords();
                     }, 1000);
                 }
 
@@ -846,7 +846,7 @@
 
         if (records && records.length > 0) {
             records.forEach((record, index) => {
-                const isVerified = record.status_account_TN === 'verified quay số' || record.status_account_TN === 'verified lỗi';
+                const isVerified = record.status_account_TN === 'verified quay số' || record.status_account_TN === 'verified lỗi' || record.status_account_TN === 'lỗi';
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>
@@ -977,7 +977,7 @@
 
                 // Refresh trang sau 1 giây
                 setTimeout(() => {
-                    window.location.reload();
+                    searchRecords();
                 }, 1000);
             } else {
                 alert('Lỗi khi cập nhật: ' + data.error);

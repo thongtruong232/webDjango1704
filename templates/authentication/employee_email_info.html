@@ -1208,6 +1208,7 @@
                         <td>${email.pass_TF}</td>
                         <td>
                             <select class="form-select status-select" data-email="${email.email}" data-type="tn" ${email.is_reg_acc ? 'disabled' : ''}>
+                                <option value="trống" ${email.status_tn === 'trống' ? 'selected' : ''}>Trống</option>
                                 <option value="chưa tạo acc" ${email.status_tn === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
                                 <option value="tạo acc thành công" ${email.status_tn === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
                                 <option value="acc lỗi" ${email.status_tn === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
@@ -1215,6 +1216,7 @@
                         </td>
                         <td>
                             <select class="form-select status-select" data-email="${email.email}" data-type="tf" ${email.is_reg_acc ? 'disabled' : ''}>
+                                <option value="trống" ${email.status_tf === 'trống' ? 'selected' : ''}>Trống</option>
                                 <option value="chưa tạo acc" ${email.status_tf === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
                                 <option value="tạo acc thành công" ${email.status_tf === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
                                 <option value="acc lỗi" ${email.status_tf === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
