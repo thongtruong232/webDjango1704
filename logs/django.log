@@ -1893,3 +1893,186 @@ INFO 2025-05-09 12:49:42,709 autoreload 18208 20648 Watching for file changes wi
 INFO 2025-05-09 12:51:07,521 basehttp 18208 18056 "POST /api/save-worksession/ HTTP/1.1" 200 104
 INFO 2025-05-09 12:56:06,573 basehttp 18208 18056 "POST /api/save-worksession/ HTTP/1.1" 200 104
 INFO 2025-05-09 12:58:09,897 basehttp 18208 18056 "GET /verified/ HTTP/1.1" 200 64006
+INFO 2025-05-09 13:20:22,175 autoreload 15472 11200 Watching for file changes with StatReloader
+INFO 2025-05-09 13:20:54,269 basehttp 15472 6084 "GET /available-emails/ HTTP/1.1" 200 79518
+INFO 2025-05-09 13:25:55,518 basehttp 15472 17220 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 13:30:55,327 basehttp 15472 17220 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 13:33:19,217 basehttp 15472 1424 "GET /manager-admin-sale/ HTTP/1.1" 200 108080
+INFO 2025-05-09 13:33:33,738 basehttp 15472 1424 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 7912
+INFO 2025-05-09 13:34:03,475 basehttp 15472 1424 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-08&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=t9xiqS13FSvO4MWpNHe8MZHSHg5l787Ap2vcYaGPM1grrZzzh4vo93cpIvPCQclo HTTP/1.1" 200 70424
+INFO 2025-05-09 13:35:55,502 basehttp 15472 1424 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 13:40:55,601 basehttp 15472 1424 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 13:41:51,596 autoreload 15472 11200 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\manager_textnow_admin_sale.html changed, reloading.
+INFO 2025-05-09 13:41:53,298 autoreload 956 15764 Watching for file changes with StatReloader
+INFO 2025-05-09 13:41:57,475 basehttp 956 15352 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-08&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=t9xiqS13FSvO4MWpNHe8MZHSHg5l787Ap2vcYaGPM1grrZzzh4vo93cpIvPCQclo HTTP/1.1" 200 80501
+INFO 2025-05-09 13:44:07,490 basehttp 956 15352 "GET /manager-admin-sale/?date_type=range&start_date=2025-05-09&end_date=2025-05-08&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=qGGmHK8iMLjRJEoBZo3HhgHNYC3MtztAmzEgf2N4TU4u6R1LtLkXEkckZRN3cDHo HTTP/1.1" 200 64540
+INFO 2025-05-09 13:44:09,003 basehttp 956 15352 "GET /manager-admin-sale/?date_type=range&start_date=2025-05-09&end_date=2025-05-08&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=6lDf53OCCj4WbkuFX6Llp1Yv2WLH2Kww2eB9DltoJsPzyx7Prt2BM5t23bvYLOKk HTTP/1.1" 200 64540
+INFO 2025-05-09 13:44:11,554 basehttp 956 15352 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=6PnHmkYlXE5Hv3zpeo45OsaPkWaxwmCf2IlBUCD74NQkSgczILllbwFmlbUOfqQ3 HTTP/1.1" 200 73763
+INFO 2025-05-09 13:44:26,756 basehttp 956 15352 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=ci96mNhs6gGTnIUfXaGjV8PYtt52LWOq8b70U5WedprwKVxprxXzickvuIPju02e HTTP/1.1" 200 73763
+INFO 2025-05-09 13:45:35,711 basehttp 956 15352 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 13:45:37,034 basehttp 956 15352 "GET /available-emails/ HTTP/1.1" 200 79518
+INFO 2025-05-09 13:45:37,733 basehttp 956 15352 - Broken pipe from ('127.0.0.1', 59099)
+
+INFO 2025-05-09 13:50:37,985 basehttp 956 16704 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 13:53:10,515 basehttp 956 16704 "GET /work-time-stats/ HTTP/1.1" 200 19705
+WARNING 2025-05-09 13:53:10,614 log 956 12728 Not Found: /ws/user_activity/
+WARNING 2025-05-09 13:53:10,615 basehttp 956 12728 "GET /ws/user_activity/ HTTP/1.1" 404 9390
+INFO 2025-05-09 13:55:18,391 basehttp 956 16704 "GET /verified/ HTTP/1.1" 200 59191
+INFO 2025-05-09 13:55:39,609 basehttp 956 16704 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:00:39,699 basehttp 956 16704 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:00:46,631 basehttp 956 16704 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 4992
+INFO 2025-05-09 14:00:51,800 basehttp 956 16704 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 4992
+INFO 2025-05-09 14:01:02,665 basehttp 956 16704 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 4992
+INFO 2025-05-09 14:01:09,032 basehttp 956 16704 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 4992
+INFO 2025-05-09 14:01:10,503 basehttp 956 16704 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 4992
+INFO 2025-05-09 14:05:38,551 basehttp 956 6692 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:06:17,377 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 7416
+INFO 2025-05-09 14:06:31,216 basehttp 956 6692 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=NKCiID3zdVRc4oO2GodwfuCeskxVGC4bJDAcgVIlk4CPrBrcaLuMCy7LtzhcpGiZ HTTP/1.1" 200 107278
+INFO 2025-05-09 14:07:02,448 basehttp 956 6692 "POST /api/verified-textnow-update/ HTTP/1.1" 200 92
+INFO 2025-05-09 14:07:04,232 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 7403
+INFO 2025-05-09 14:10:39,746 basehttp 956 6692 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:15:40,632 basehttp 956 6692 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:15:55,753 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 7403
+INFO 2025-05-09 14:20:39,701 basehttp 956 6692 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:24:08,858 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 9828
+INFO 2025-05-09 14:25:38,384 basehttp 956 6692 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:28:01,500 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 9828
+INFO 2025-05-09 14:28:09,636 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 9828
+INFO 2025-05-09 14:28:13,536 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 9828
+INFO 2025-05-09 14:28:26,451 basehttp 956 6692 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=cktmSyUKJd1deITU5MrRrhLVzk6jmb8C8drgqQzwQmMQBVw4z9I7OlgsAzQA5fmq HTTP/1.1" 200 121261
+INFO 2025-05-09 14:28:52,893 basehttp 956 6692 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=kQW41d75rk2RYZU4koD2o962XlQ7V5qAgJUYzvMRytNulcxeOLUiLdBzYAAoE9Eo HTTP/1.1" 200 121261
+INFO 2025-05-09 14:29:01,836 basehttp 956 6692 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=0drQp1fiOyEjyTB7PWTnX2qiVYkzBWwSW6pKXjU4VHpWV6ehjjaDk6VPWd4Qk0KG HTTP/1.1" 200 121261
+INFO 2025-05-09 14:29:33,799 basehttp 956 6692 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=U5GlbWrTgFFTLumw3XBe9aFWeAgwsW7GQYEfJe6FnOqw8HZGxkSuweatfP0Nb0lu HTTP/1.1" 200 121261
+INFO 2025-05-09 14:30:13,920 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 9828
+INFO 2025-05-09 14:30:28,483 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09&created_by=Hieu HTTP/1.1" 200 9830
+INFO 2025-05-09 14:30:40,471 basehttp 956 6692 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:30:44,148 basehttp 956 6692 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 9828
+INFO 2025-05-09 14:31:59,061 basehttp 956 22280 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 11444
+INFO 2025-05-09 14:32:00,608 basehttp 956 22280 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 11444
+INFO 2025-05-09 14:35:38,663 basehttp 956 22280 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:40:38,507 basehttp 956 22280 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:45:41,205 basehttp 956 22280 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:50:39,778 basehttp 956 22280 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 14:55:42,687 basehttp 956 22280 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:00:38,729 basehttp 956 22280 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:05:41,433 basehttp 956 13300 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:10:39,611 basehttp 956 13300 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:15:40,608 basehttp 956 13300 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:20:38,553 basehttp 956 13300 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:25:39,709 basehttp 956 13300 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:30:39,569 basehttp 956 13300 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:33:43,210 basehttp 956 4180 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 18716
+INFO 2025-05-09 15:33:47,850 basehttp 956 4180 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 18716
+INFO 2025-05-09 15:34:01,501 basehttp 956 4180 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 18716
+INFO 2025-05-09 15:35:38,489 basehttp 956 4180 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:40:39,407 basehttp 956 4180 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:42:58,203 basehttp 956 4180 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 19524
+INFO 2025-05-09 15:43:26,550 basehttp 956 4180 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=onvdP5NkYT25XFGBZWgemvRNtM7xIHb8kgt7nns652NIkSjLtjxuJzmku1ROrLpW HTTP/1.1" 200 177661
+INFO 2025-05-09 15:45:40,425 basehttp 956 4180 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:46:09,095 basehttp 956 4180 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 21140
+INFO 2025-05-09 15:47:56,596 basehttp 956 4180 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 21140
+INFO 2025-05-09 15:48:09,450 basehttp 956 4180 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 21140
+INFO 2025-05-09 15:50:39,734 basehttp 956 4180 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:50:39,810 basehttp 956 1548 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=jafgnXg4csBv49iLSxKQWhhCft8io2Hxf3daVfVQjBm8rmVVmU16jlM9gISz76Vl HTTP/1.1" 200 187061
+INFO 2025-05-09 15:50:51,230 basehttp 956 1548 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=fNQArfnplewUdX6qSmZ8ONjeSiW78FHCbGOuZx2bsnhxAaJAmJgobROLTxGoRJVq HTTP/1.1" 200 187061
+INFO 2025-05-09 15:51:04,124 basehttp 956 1548 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 21140
+INFO 2025-05-09 15:51:06,384 basehttp 956 1548 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 21140
+INFO 2025-05-09 15:51:53,327 basehttp 956 1548 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:51:54,825 basehttp 956 4180 "GET /available-emails/ HTTP/1.1" 200 79518
+INFO 2025-05-09 15:51:57,650 basehttp 956 4180 - Broken pipe from ('127.0.0.1', 61112)
+
+WARNING 2025-05-09 15:52:26,088 log 956 1548 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 15:52:26,089 basehttp 956 1548 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9483
+INFO 2025-05-09 15:52:33,827 basehttp 956 1548 "GET /available-emails/ HTTP/1.1" 200 79518
+WARNING 2025-05-09 15:52:33,903 log 956 1548 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 15:52:33,904 basehttp 956 1548 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9483
+INFO 2025-05-09 15:52:48,299 basehttp 956 1548 "GET /available-emails/ HTTP/1.1" 200 74052
+WARNING 2025-05-09 15:52:48,355 log 956 1548 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-09 15:52:48,356 basehttp 956 1548 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9483
+INFO 2025-05-09 15:52:52,847 basehttp 956 1548 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:53:05,063 basehttp 956 1548 "GET /api/get-employee-passwords/ HTTP/1.1" 200 143
+INFO 2025-05-09 15:53:41,750 basehttp 956 1548 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:54:13,038 basehttp 956 1548 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:54:59,554 autoreload 956 15764 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-09 15:55:01,320 autoreload 16648 4688 Watching for file changes with StatReloader
+INFO 2025-05-09 15:55:15,387 autoreload 16648 4688 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-09 15:55:16,398 autoreload 16720 13416 Watching for file changes with StatReloader
+INFO 2025-05-09 15:55:19,632 basehttp 16720 20824 "GET /available-emails/ HTTP/1.1" 200 75195
+INFO 2025-05-09 15:55:19,820 basehttp 16720 1352 - Broken pipe from ('127.0.0.1', 62108)
+
+INFO 2025-05-09 15:55:20,527 basehttp 16720 20824 - Broken pipe from ('127.0.0.1', 62106)
+
+INFO 2025-05-09 15:55:22,902 basehttp 16720 16816 "GET /available-emails/ HTTP/1.1" 200 75994
+INFO 2025-05-09 15:55:22,955 basehttp 16720 10744 - Broken pipe from ('127.0.0.1', 62109)
+
+INFO 2025-05-09 15:55:23,641 basehttp 16720 16816 - Broken pipe from ('127.0.0.1', 62153)
+
+INFO 2025-05-09 15:55:26,924 basehttp 16720 13888 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:55:30,141 basehttp 16720 13888 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:58:14,529 autoreload 16720 13416 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-09 15:58:16,440 autoreload 14904 21892 Watching for file changes with StatReloader
+INFO 2025-05-09 15:58:25,726 autoreload 14904 21892 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-09 15:58:26,707 autoreload 19628 13140 Watching for file changes with StatReloader
+INFO 2025-05-09 15:59:04,006 basehttp 19628 10320 "GET /available-emails/ HTTP/1.1" 200 75510
+INFO 2025-05-09 15:59:04,709 basehttp 19628 10320 - Broken pipe from ('127.0.0.1', 62383)
+
+INFO 2025-05-09 15:59:05,489 basehttp 19628 13020 - Broken pipe from ('127.0.0.1', 62372)
+
+INFO 2025-05-09 15:59:05,734 basehttp 19628 15648 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:59:08,739 basehttp 19628 15648 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:59:09,882 basehttp 19628 15648 "GET /available-emails/ HTTP/1.1" 200 75510
+INFO 2025-05-09 15:59:10,584 basehttp 19628 15648 - Broken pipe from ('127.0.0.1', 62412)
+
+INFO 2025-05-09 15:59:18,200 basehttp 19628 10324 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:59:22,353 basehttp 19628 10324 "GET /api/get-employee-passwords/ HTTP/1.1" 200 143
+INFO 2025-05-09 15:59:26,742 basehttp 19628 10324 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:59:29,818 basehttp 19628 10324 "GET /available-emails/ HTTP/1.1" 200 76309
+INFO 2025-05-09 15:59:30,472 basehttp 19628 10324 - Broken pipe from ('127.0.0.1', 62438)
+
+INFO 2025-05-09 15:59:31,874 basehttp 19628 16680 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 15:59:34,009 basehttp 19628 16680 "GET /available-emails/ HTTP/1.1" 200 76309
+INFO 2025-05-09 15:59:34,811 basehttp 19628 16680 - Broken pipe from ('127.0.0.1', 62499)
+
+INFO 2025-05-09 15:59:45,948 basehttp 19628 9432 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:59:50,473 basehttp 19628 10552 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-09 15:59:54,646 basehttp 19628 10552 "GET /api/get-employee-passwords/ HTTP/1.1" 200 143
+INFO 2025-05-09 16:00:00,533 basehttp 19628 10552 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:00:05,559 basehttp 19628 10552 "GET /available-emails/ HTTP/1.1" 200 77110
+INFO 2025-05-09 16:00:06,181 basehttp 19628 10552 - Broken pipe from ('127.0.0.1', 62599)
+
+INFO 2025-05-09 16:05:06,584 basehttp 19628 10396 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:10:08,504 basehttp 19628 10396 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:15:06,841 basehttp 19628 10396 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:20:06,543 basehttp 19628 10396 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:21:25,644 basehttp 19628 10396 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:21:27,536 basehttp 19628 4444 "GET /available-emails/ HTTP/1.1" 200 77110
+INFO 2025-05-09 16:21:28,245 basehttp 19628 4444 - Broken pipe from ('127.0.0.1', 63390)
+
+INFO 2025-05-09 16:26:28,587 basehttp 19628 15348 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:31:28,572 basehttp 19628 15348 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:36:28,557 basehttp 19628 13804 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:36:53,851 basehttp 19628 13804 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=72pkwcHSkELLJjv5aF1glgEa61rr4AhR3Vne4umErNwo6w8fE2iwIk9H7gbINEvF HTTP/1.1" 200 229361
+INFO 2025-05-09 16:41:28,558 basehttp 19628 13804 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:46:28,538 basehttp 19628 13804 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:51:28,809 basehttp 19628 13804 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 16:56:29,235 basehttp 19628 13804 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 17:01:30,710 basehttp 19628 13804 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-09 17:01:46,530 basehttp 19628 13804 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=D9XRHK7sefNt43XotcY5NLUUY2rKzcJez2VLf2Meloy6rgAyXzflaPprZhb1igX2 HTTP/1.1" 200 252861
+INFO 2025-05-09 17:01:54,999 basehttp 19628 6984 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=KBInleAofBZlS16L61Bzq24JuGyUMyLLGuGhTwfamKKYfeJVAoSPN6zgvVibvCZz HTTP/1.1" 200 252861
+INFO 2025-05-09 17:01:58,475 basehttp 19628 6984 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 32452
+INFO 2025-05-09 17:02:02,738 basehttp 19628 6984 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=PvhL8qdRbXsRABgkBLMVr54Kht0QqAbYLofFGISDi6duXOTu583bO9zhiIK79EpM HTTP/1.1" 200 252861
+INFO 2025-05-09 17:02:06,536 basehttp 19628 6984 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=eUNKd6hkg4REpEkfBTmK8KU20IapwDFvaNLELoW6ndChMRXp5gD0vOpz1XUGfHTj HTTP/1.1" 200 257561
+INFO 2025-05-09 17:02:20,681 basehttp 19628 6984 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 33260
+INFO 2025-05-09 17:02:22,484 basehttp 19628 6984 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 33260
+INFO 2025-05-09 17:03:08,367 basehttp 19628 6984 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=VyhKydA45UoRtm4dWoHUyEecQye6viS5RrfE6vfQc39uQzHnqLYaVIJJRNYnem6T HTTP/1.1" 200 257561
+INFO 2025-05-09 17:03:12,829 basehttp 19628 6984 "GET /work-time-stats/ HTTP/1.1" 200 19705
+WARNING 2025-05-09 17:03:12,909 log 19628 10684 Not Found: /ws/user_activity/
+WARNING 2025-05-09 17:03:12,910 basehttp 19628 10684 "GET /ws/user_activity/ HTTP/1.1" 404 9390
+INFO 2025-05-09 17:03:12,911 basehttp 19628 10684 - Broken pipe from ('127.0.0.1', 64994)
+
+WARNING 2025-05-09 17:03:17,972 log 19628 21908 Not Found: /ws/user_activity/
+WARNING 2025-05-09 17:03:17,973 basehttp 19628 21908 "GET /ws/user_activity/ HTTP/1.1" 404 9390
+INFO 2025-05-09 17:03:19,630 basehttp 19628 6984 "GET /manager-admin-sale/?date_type=single&start_date=2025-05-09&end_date=2025-05-09&status_tn=&status_tf=&sold_status_tn=&sold_status_tf=&created_by=&search=&csrfmiddlewaretoken=VyhKydA45UoRtm4dWoHUyEecQye6viS5RrfE6vfQc39uQzHnqLYaVIJJRNYnem6T HTTP/1.1" 200 257561
+INFO 2025-05-09 17:03:22,130 basehttp 19628 6984 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 33260
+INFO 2025-05-09 17:04:41,462 basehttp 19628 6984 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 22191
+INFO 2025-05-09 17:06:28,577 basehttp 19628 6984 "POST /api/save-worksession/ HTTP/1.1" 200 104
