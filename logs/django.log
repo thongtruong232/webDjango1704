@@ -2076,3 +2076,492 @@ INFO 2025-05-09 17:03:19,630 basehttp 19628 6984 "GET /manager-admin-sale/?date_
 INFO 2025-05-09 17:03:22,130 basehttp 19628 6984 "GET /api/search-textnow/?date=2025-05-09 HTTP/1.1" 200 33260
 INFO 2025-05-09 17:04:41,462 basehttp 19628 6984 "POST /export-employee-textnow-excel/ HTTP/1.1" 200 22191
 INFO 2025-05-09 17:06:28,577 basehttp 19628 6984 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 11:40:34,394 autoreload 19496 19064 Watching for file changes with StatReloader
+WARNING 2025-05-10 11:41:45,086 log 19496 7776 Bad Request: /api/create-area-phone/
+WARNING 2025-05-10 11:41:45,087 basehttp 19496 7776 "POST /api/create-area-phone/ HTTP/1.1" 400 78
+INFO 2025-05-10 11:42:08,798 basehttp 19496 7776 "POST /api/create-area-phone/ HTTP/1.1" 201 247
+INFO 2025-05-10 11:42:45,459 basehttp 19496 7776 "POST /api/create-area-phone/ HTTP/1.1" 201 247
+INFO 2025-05-10 11:44:18,063 autoreload 19496 19064 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 11:44:19,097 autoreload 5884 22172 Watching for file changes with StatReloader
+INFO 2025-05-10 11:44:28,356 autoreload 5884 22172 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 11:44:29,395 autoreload 9004 2524 Watching for file changes with StatReloader
+INFO 2025-05-10 12:11:22,969 autoreload 9004 2524 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:11:23,992 autoreload 12120 2956 Watching for file changes with StatReloader
+INFO 2025-05-10 12:11:32,074 autoreload 12120 2956 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:11:33,094 autoreload 9380 11800 Watching for file changes with StatReloader
+INFO 2025-05-10 12:13:03,974 basehttp 9380 8632 "POST /api/create-area-phone/ HTTP/1.1" 201 247
+INFO 2025-05-10 12:13:22,227 autoreload 9380 11800 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:13:23,265 autoreload 2480 6316 Watching for file changes with StatReloader
+INFO 2025-05-10 12:13:40,703 basehttp 2480 16088 "POST /api/create-area-phone/ HTTP/1.1" 201 298
+INFO 2025-05-10 12:13:54,832 basehttp 2480 16088 "POST /api/create-area-phone/ HTTP/1.1" 201 292
+INFO 2025-05-10 12:14:17,055 basehttp 2480 16088 "POST /api/create-area-phone/ HTTP/1.1" 201 290
+INFO 2025-05-10 12:14:52,739 basehttp 2480 16088 "POST /api/create-area-phone/ HTTP/1.1" 201 292
+INFO 2025-05-10 12:15:07,382 basehttp 2480 16088 "POST /api/create-area-phone/ HTTP/1.1" 201 292
+INFO 2025-05-10 12:15:24,243 basehttp 2480 16088 "POST /api/create-area-phone/ HTTP/1.1" 201 292
+INFO 2025-05-10 12:15:36,614 autoreload 2480 6316 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:15:37,641 autoreload 22912 23408 Watching for file changes with StatReloader
+INFO 2025-05-10 12:15:54,801 autoreload 22912 23408 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:15:55,831 autoreload 9212 23180 Watching for file changes with StatReloader
+INFO 2025-05-10 12:16:03,936 autoreload 9212 23180 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:16:04,964 autoreload 9164 21024 Watching for file changes with StatReloader
+INFO 2025-05-10 12:16:21,327 basehttp 9164 14536 "POST /api/create-area-phone/ HTTP/1.1" 201 289
+INFO 2025-05-10 12:16:40,350 basehttp 9164 14536 "POST /api/create-area-phone/ HTTP/1.1" 201 289
+INFO 2025-05-10 12:16:57,260 basehttp 9164 14536 "POST /api/create-area-phone/ HTTP/1.1" 201 292
+INFO 2025-05-10 12:17:11,971 basehttp 9164 14536 "POST /api/create-area-phone/ HTTP/1.1" 201 290
+INFO 2025-05-10 12:17:34,477 autoreload 9164 21024 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:17:35,498 autoreload 11356 12320 Watching for file changes with StatReloader
+INFO 2025-05-10 12:18:14,308 basehttp 11356 15132 "POST /api/create-area-phone/ HTTP/1.1" 201 292
+INFO 2025-05-10 12:20:21,570 autoreload 11356 12320 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:20:22,597 autoreload 4280 18492 Watching for file changes with StatReloader
+WARNING 2025-05-10 12:20:32,860 log 4280 1452 Bad Request: /api/create-area-phone/
+WARNING 2025-05-10 12:20:32,865 basehttp 4280 1452 "POST /api/create-area-phone/ HTTP/1.1" 400 110
+INFO 2025-05-10 12:21:15,371 autoreload 4280 18492 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:21:16,339 autoreload 11076 15844 Watching for file changes with StatReloader
+ERROR 2025-05-10 12:21:40,568 log 11076 11448 Internal Server Error: /api/create-area-phone/
+ERROR 2025-05-10 12:21:40,569 basehttp 11076 11448 "POST /api/create-area-phone/ HTTP/1.1" 500 67
+INFO 2025-05-10 12:22:17,738 autoreload 11076 15844 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:22:18,741 autoreload 9660 19532 Watching for file changes with StatReloader
+INFO 2025-05-10 12:23:11,891 autoreload 9660 19532 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:23:12,915 autoreload 20476 10360 Watching for file changes with StatReloader
+INFO 2025-05-10 12:24:40,885 autoreload 20476 10360 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:24:41,873 autoreload 1752 9820 Watching for file changes with StatReloader
+INFO 2025-05-10 12:25:00,876 basehttp 1752 15632 "POST /api/create-area-phone/ HTTP/1.1" 207 6910
+INFO 2025-05-10 12:27:19,824 autoreload 1752 9820 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:27:20,837 autoreload 14500 16852 Watching for file changes with StatReloader
+INFO 2025-05-10 12:27:48,847 basehttp 14500 18232 "POST /api/create-area-phone/ HTTP/1.1" 207 6910
+INFO 2025-05-10 12:28:22,240 autoreload 14500 16852 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:28:23,242 autoreload 16672 14356 Watching for file changes with StatReloader
+INFO 2025-05-10 12:28:26,488 basehttp 16672 19164 "POST /api/create-area-phone/ HTTP/1.1" 207 6910
+INFO 2025-05-10 12:28:39,601 autoreload 16672 14356 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:28:40,610 autoreload 2676 6332 Watching for file changes with StatReloader
+INFO 2025-05-10 12:28:51,135 basehttp 2676 3048 "POST /api/create-area-phone/ HTTP/1.1" 201 16484
+INFO 2025-05-10 12:37:47,917 basehttp 2676 21380 "POST /api/create-area-phone/ HTTP/1.1" 207 6100
+INFO 2025-05-10 12:38:42,596 autoreload 2676 6332 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:38:43,622 autoreload 15176 12668 Watching for file changes with StatReloader
+INFO 2025-05-10 12:38:47,161 autoreload 15176 12668 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:38:48,142 autoreload 15652 20104 Watching for file changes with StatReloader
+INFO 2025-05-10 12:38:56,138 autoreload 15652 20104 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:38:57,139 autoreload 12340 18444 Watching for file changes with StatReloader
+INFO 2025-05-10 12:47:50,561 autoreload 12340 18444 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:47:51,607 autoreload 15784 10500 Watching for file changes with StatReloader
+INFO 2025-05-10 12:50:27,030 autoreload 15784 10500 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:50:28,043 autoreload 9820 15100 Watching for file changes with StatReloader
+INFO 2025-05-10 12:51:05,387 autoreload 9820 15100 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 12:51:06,389 autoreload 20284 8864 Watching for file changes with StatReloader
+INFO 2025-05-10 13:18:58,436 autoreload 20284 8864 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 13:18:59,486 autoreload 9692 11152 Watching for file changes with StatReloader
+INFO 2025-05-10 13:22:24,517 autoreload 9692 11152 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 13:22:25,510 autoreload 9068 3584 Watching for file changes with StatReloader
+INFO 2025-05-10 13:24:56,341 autoreload 9068 3584 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 13:24:57,365 autoreload 21988 10992 Watching for file changes with StatReloader
+INFO 2025-05-10 13:25:08,849 autoreload 21988 10992 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 13:25:09,849 autoreload 17972 6492 Watching for file changes with StatReloader
+INFO 2025-05-10 13:25:16,770 autoreload 17972 6492 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 13:25:17,801 autoreload 9916 6512 Watching for file changes with StatReloader
+INFO 2025-05-10 13:25:31,452 autoreload 9916 6512 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-10 13:25:32,475 autoreload 12736 7404 Watching for file changes with StatReloader
+INFO 2025-05-10 13:31:33,100 autoreload 12736 7404 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-10 13:31:34,187 autoreload 16508 20976 Watching for file changes with StatReloader
+INFO 2025-05-10 13:31:51,116 autoreload 16508 20976 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\urls.py changed, reloading.
+INFO 2025-05-10 13:31:52,079 autoreload 11612 17984 Watching for file changes with StatReloader
+WARNING 2025-05-10 13:32:17,195 log 11612 4892 Not Found: /api/api/get-random-area-phones/
+WARNING 2025-05-10 13:32:17,196 basehttp 11612 4892 "GET /api/api/get-random-area-phones/?quantity=10 HTTP/1.1" 404 9848
+INFO 2025-05-10 13:32:32,589 basehttp 11612 4892 "GET /api/get-random-area-phones/?quantity=10 HTTP/1.1" 200 79
+INFO 2025-05-10 13:33:05,883 autoreload 11612 17984 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 13:33:06,896 autoreload 4804 9024 Watching for file changes with StatReloader
+INFO 2025-05-10 13:33:12,224 basehttp 4804 21916 "GET /api/get-random-area-phones/?quantity=10 HTTP/1.1" 200 79
+INFO 2025-05-10 13:35:05,323 autoreload 4804 9024 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 13:35:06,334 autoreload 22088 9076 Watching for file changes with StatReloader
+INFO 2025-05-10 13:35:09,889 autoreload 22088 9076 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 13:35:10,875 autoreload 13724 15488 Watching for file changes with StatReloader
+INFO 2025-05-10 13:35:14,669 basehttp 13724 16952 "GET /api/get-random-area-phones/?quantity=10 HTTP/1.1" 200 2237
+INFO 2025-05-10 13:36:10,820 autoreload 13724 15488 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 13:36:11,820 autoreload 6936 21776 Watching for file changes with StatReloader
+INFO 2025-05-10 13:37:03,007 autoreload 6936 21776 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 13:37:04,011 autoreload 9876 17724 Watching for file changes with StatReloader
+INFO 2025-05-10 13:37:54,212 autoreload 9876 17724 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 13:37:55,260 autoreload 22256 9692 Watching for file changes with StatReloader
+INFO 2025-05-10 13:44:08,562 basehttp 22256 18744 "GET /available-emails/ HTTP/1.1" 302 0
+INFO 2025-05-10 13:44:08,579 basehttp 22256 18744 "GET /login/?next=/available-emails/ HTTP/1.1" 200 8823
+WARNING 2025-05-10 13:44:08,678 log 22256 18744 Not Found: /favicon.ico
+WARNING 2025-05-10 13:44:08,679 basehttp 22256 18744 "GET /favicon.ico HTTP/1.1" 404 9776
+INFO 2025-05-10 13:44:41,007 autoreload 22256 9692 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\otpsend.py changed, reloading.
+INFO 2025-05-10 13:44:42,019 autoreload 19556 21292 Watching for file changes with StatReloader
+INFO 2025-05-10 13:44:43,862 basehttp 19556 5056 "GET /login/?next=/available-emails/ HTTP/1.1" 200 8823
+INFO 2025-05-10 13:44:55,222 basehttp 19556 5056 "POST /login/ HTTP/1.1" 200 8822
+INFO 2025-05-10 13:45:12,464 basehttp 19556 5056 "POST /home/ HTTP/1.1" 200 107
+INFO 2025-05-10 13:45:13,260 basehttp 19556 5056 "GET /verified/ HTTP/1.1" 200 113983
+INFO 2025-05-10 13:45:25,521 basehttp 19556 5056 "GET /available-emails/ HTTP/1.1" 200 76306
+INFO 2025-05-10 13:45:28,911 basehttp 19556 5056 "GET /api/available-emails/ HTTP/1.1" 200 155
+INFO 2025-05-10 13:45:30,505 basehttp 19556 5056 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 13:45:30,838 basehttp 19556 5056 "GET /create-password/ HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:30,908 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:30,972 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,033 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,095 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,166 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,230 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,289 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,348 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,407 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,465 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,525 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,585 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,647 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,709 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,767 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,828 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,889 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:31,951 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:32,011 basehttp 19556 5056 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:32,747 basehttp 19556 5056 - Broken pipe from ('127.0.0.1', 51571)
+
+INFO 2025-05-10 13:45:33,121 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,181 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,241 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,304 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,368 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,437 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,503 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,568 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,638 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,703 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,765 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,828 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,890 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:33,953 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:34,016 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:34,080 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:34,143 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:34,210 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:34,278 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:34,341 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,443 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,505 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,567 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,628 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,690 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,751 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,810 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,875 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:39,944 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,015 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,082 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,148 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,214 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,290 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,352 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,412 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,505 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,584 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,650 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:40,717 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:47,243 basehttp 19556 14272 "GET /create-mail/ HTTP/1.1" 200 7911
+INFO 2025-05-10 13:45:56,171 basehttp 19556 14272 "GET /create-password/ HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,237 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,302 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,366 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,427 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,491 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,558 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,627 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,698 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,770 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,837 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,906 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:56,978 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:57,044 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:57,105 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:57,167 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:57,231 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:57,296 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:57,363 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:57,442 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:58,559 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:58,622 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:58,684 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:58,748 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:58,813 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:58,879 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:58,948 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,017 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,090 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,161 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,233 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,313 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,374 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,441 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,517 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,593 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,657 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,726 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,793 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:45:59,862 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:04,951 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,019 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,083 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,149 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,210 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,273 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,333 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,396 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,470 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,544 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,606 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,669 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,736 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,806 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,881 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:05,953 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:06,020 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:06,082 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:06,157 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:06,227 basehttp 19556 14272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:09,668 autoreload 19556 21292 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 13:46:10,867 autoreload 4440 12008 Watching for file changes with StatReloader
+INFO 2025-05-10 13:46:13,797 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:13,870 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:13,947 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,021 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,089 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,154 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,212 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,275 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,340 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,403 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,465 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,531 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,596 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,661 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,720 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,782 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,843 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,907 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:14,969 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:15,034 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,156 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,222 basehttp 4440 6132 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,285 basehttp 4440 6132 - Broken pipe from ('127.0.0.1', 51727)
+
+INFO 2025-05-10 13:46:16,504 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,571 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,638 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,703 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,768 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,838 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,910 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:16,968 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,025 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,084 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,140 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,203 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,263 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,321 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,380 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,439 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,503 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,567 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,633 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:17,696 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,568 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,627 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,685 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,745 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,804 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,864 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,923 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:18,982 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,047 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,110 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,185 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,256 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,315 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,372 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,428 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,483 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,542 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,601 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,668 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:19,733 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,281 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,346 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,412 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,471 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,534 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,594 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,653 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,721 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,783 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,846 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,913 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:20,978 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,044 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,102 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,161 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,221 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,283 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,350 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,415 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:21,480 basehttp 4440 8272 "GET / HTTP/1.1" 302 0
+INFO 2025-05-10 13:46:23,433 basehttp 4440 8272 "GET /create-password/ HTTP/1.1" 200 7742
+INFO 2025-05-10 13:46:31,624 basehttp 4440 8272 "POST /create-password/ HTTP/1.1" 200 81
+INFO 2025-05-10 13:46:39,624 basehttp 4440 8272 "POST /create-password/ HTTP/1.1" 200 81
+INFO 2025-05-10 13:46:49,153 basehttp 4440 8272 "GET /available-emails/ HTTP/1.1" 200 137534
+INFO 2025-05-10 13:47:16,870 basehttp 4440 8272 "GET /api/available-emails/ HTTP/1.1" 200 29
+INFO 2025-05-10 13:47:29,997 basehttp 4440 8272 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 13:47:31,371 basehttp 4440 8272 "GET /available-emails/ HTTP/1.1" 200 76306
+INFO 2025-05-10 13:47:32,098 basehttp 4440 8272 - Broken pipe from ('127.0.0.1', 51728)
+
+INFO 2025-05-10 13:47:37,282 basehttp 4440 1384 "GET /api/available-emails/ HTTP/1.1" 200 29
+INFO 2025-05-10 13:47:43,330 basehttp 4440 1384 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 13:47:44,301 basehttp 4440 1384 "GET /available-emails/ HTTP/1.1" 200 76306
+INFO 2025-05-10 13:47:51,077 basehttp 4440 1384 - Broken pipe from ('127.0.0.1', 51805)
+
+INFO 2025-05-10 13:48:03,402 basehttp 4440 3260 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-10 13:48:09,202 basehttp 4440 3260 "GET /api/get-employee-passwords/ HTTP/1.1" 200 151
+INFO 2025-05-10 13:50:45,333 basehttp 4440 3260 "GET /api/get-employee-passwords/ HTTP/1.1" 200 151
+INFO 2025-05-10 13:52:32,773 basehttp 4440 3260 "GET /api/get-employee-passwords/ HTTP/1.1" 200 151
+INFO 2025-05-10 13:52:41,013 basehttp 4440 3260 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 13:52:44,161 basehttp 4440 3260 "GET /available-emails/ HTTP/1.1" 200 76306
+INFO 2025-05-10 13:52:44,720 basehttp 4440 3260 - Broken pipe from ('127.0.0.1', 51846)
+
+INFO 2025-05-10 13:52:55,551 basehttp 4440 4028 "GET /create-mail/ HTTP/1.1" 200 7911
+WARNING 2025-05-10 13:53:12,637 log 4440 4028 Bad Request: /create-mail/
+WARNING 2025-05-10 13:53:12,638 basehttp 4440 4028 "POST /create-mail/ HTTP/1.1" 400 101
+WARNING 2025-05-10 13:53:21,169 log 4440 4028 Bad Request: /create-mail/
+WARNING 2025-05-10 13:53:21,170 basehttp 4440 4028 "POST /create-mail/ HTTP/1.1" 400 101
+ERROR 2025-05-10 13:54:46,433 log 4440 13876 Internal Server Error: /api/available-emails/
+ERROR 2025-05-10 13:54:46,435 basehttp 4440 13876 "GET /api/available-emails/ HTTP/1.1" 500 79
+WARNING 2025-05-10 13:54:52,024 log 4440 13876 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:54:52,025 basehttp 4440 13876 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+ERROR 2025-05-10 13:55:03,756 log 4440 13876 Internal Server Error: /api/available-emails/
+ERROR 2025-05-10 13:55:03,758 basehttp 4440 13876 "GET /api/available-emails/ HTTP/1.1" 500 79
+INFO 2025-05-10 13:55:42,738 autoreload 4440 12008 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 13:55:44,663 autoreload 23208 2992 Watching for file changes with StatReloader
+INFO 2025-05-10 13:55:48,778 basehttp 23208 13828 "GET /api/available-emails/ HTTP/1.1" 200 4837
+INFO 2025-05-10 13:57:29,225 autoreload 23208 2992 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 13:57:31,001 autoreload 10500 3852 Watching for file changes with StatReloader
+INFO 2025-05-10 13:57:38,092 autoreload 10500 3852 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 13:57:39,123 autoreload 16728 16512 Watching for file changes with StatReloader
+INFO 2025-05-10 13:57:43,112 basehttp 16728 21736 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 13:57:43,351 basehttp 16728 22556 "GET /available-emails/ HTTP/1.1" 200 81077
+WARNING 2025-05-10 13:57:43,430 log 16728 21736 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:57:43,431 basehttp 16728 21736 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 13:57:44,133 basehttp 16728 22556 - Broken pipe from ('127.0.0.1', 52328)
+
+INFO 2025-05-10 13:58:13,911 basehttp 16728 21736 "GET /available-emails/ HTTP/1.1" 200 76269
+WARNING 2025-05-10 13:58:13,989 log 16728 21736 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:58:13,991 basehttp 16728 21736 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 13:58:17,399 basehttp 16728 21736 "GET /api/available-emails/ HTTP/1.1" 200 4848
+INFO 2025-05-10 13:58:46,067 autoreload 16728 16512 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 13:58:47,834 autoreload 18616 18844 Watching for file changes with StatReloader
+INFO 2025-05-10 13:58:58,920 basehttp 18616 19168 "GET /api/available-emails/ HTTP/1.1" 200 4846
+INFO 2025-05-10 13:59:31,120 autoreload 18616 18844 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 13:59:33,201 autoreload 23352 13520 Watching for file changes with StatReloader
+INFO 2025-05-10 13:59:37,962 autoreload 23352 13520 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 13:59:38,945 autoreload 16264 17672 Watching for file changes with StatReloader
+ERROR 2025-05-10 13:59:43,923 log 16264 14976 Internal Server Error: /available-emails/
+ERROR 2025-05-10 13:59:43,924 basehttp 16264 14976 "GET /available-emails/ HTTP/1.1" 500 79
+WARNING 2025-05-10 13:59:43,983 log 16264 17196 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:59:43,984 basehttp 16264 17196 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 13:59:44,105 basehttp 16264 8376 - Broken pipe from ('127.0.0.1', 52495)
+
+INFO 2025-05-10 13:59:45,475 basehttp 16264 14976 - Broken pipe from ('127.0.0.1', 52493)
+
+INFO 2025-05-10 13:59:47,904 basehttp 16264 17196 "GET /available-emails/ HTTP/1.1" 200 85729
+WARNING 2025-05-10 13:59:47,955 log 16264 17196 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:59:47,956 basehttp 16264 17196 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:00:10,896 autoreload 16264 17672 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:00:12,188 autoreload 9152 15784 Watching for file changes with StatReloader
+INFO 2025-05-10 14:00:15,796 basehttp 9152 8004 "GET /available-emails/ HTTP/1.1" 200 85803
+WARNING 2025-05-10 14:00:15,852 log 9152 8004 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:00:15,853 basehttp 9152 8004 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:01:32,095 autoreload 9152 15784 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:01:34,159 autoreload 17488 12420 Watching for file changes with StatReloader
+INFO 2025-05-10 14:01:43,584 autoreload 17488 12420 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:01:44,661 autoreload 23216 18552 Watching for file changes with StatReloader
+INFO 2025-05-10 14:01:55,137 autoreload 23216 18552 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:01:56,258 autoreload 10716 11836 Watching for file changes with StatReloader
+INFO 2025-05-10 14:02:10,218 autoreload 10716 11836 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:02:11,246 autoreload 2224 6680 Watching for file changes with StatReloader
+INFO 2025-05-10 14:02:20,553 autoreload 2224 6680 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:02:21,633 autoreload 10696 16204 Watching for file changes with StatReloader
+INFO 2025-05-10 14:03:59,698 autoreload 10696 16204 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:04:00,774 autoreload 14228 7972 Watching for file changes with StatReloader
+INFO 2025-05-10 14:04:27,701 basehttp 14228 8228 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 14:04:29,572 basehttp 14228 9696 "GET /available-emails/ HTTP/1.1" 200 85803
+INFO 2025-05-10 14:04:30,266 basehttp 14228 9696 - Broken pipe from ('127.0.0.1', 64947)
+
+INFO 2025-05-10 14:04:33,749 basehttp 14228 8228 "GET /api/available-emails/ HTTP/1.1" 200 4840
+INFO 2025-05-10 14:05:54,092 autoreload 14228 7972 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:05:55,707 autoreload 1852 18996 Watching for file changes with StatReloader
+INFO 2025-05-10 14:06:07,269 autoreload 1852 18996 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_views.py changed, reloading.
+INFO 2025-05-10 14:06:08,336 autoreload 10424 20528 Watching for file changes with StatReloader
+INFO 2025-05-10 14:06:14,283 autoreload 10424 20528 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:06:15,308 autoreload 21580 13724 Watching for file changes with StatReloader
+INFO 2025-05-10 14:06:31,615 autoreload 21580 13724 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:06:32,667 autoreload 19112 18356 Watching for file changes with StatReloader
+WARNING 2025-05-10 14:06:42,585 log 19112 12208 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:06:42,586 basehttp 19112 12208 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:07:00,536 basehttp 19112 12208 "GET /available-emails/ HTTP/1.1" 200 76235
+WARNING 2025-05-10 14:07:00,605 log 19112 12208 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:07:00,605 basehttp 19112 12208 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:07:04,076 basehttp 19112 12208 "GET /api/available-emails/ HTTP/1.1" 200 4984
+INFO 2025-05-10 14:07:23,420 autoreload 19112 18356 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:07:24,897 autoreload 14104 2856 Watching for file changes with StatReloader
+WARNING 2025-05-10 14:07:36,680 log 14104 16904 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:07:36,681 basehttp 14104 16904 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+ERROR 2025-05-10 14:08:48,256 log 14104 9584 Internal Server Error: /available-emails/
+ERROR 2025-05-10 14:08:48,256 basehttp 14104 9584 "GET /available-emails/ HTTP/1.1" 500 79
+WARNING 2025-05-10 14:08:48,324 log 14104 12852 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:08:48,325 basehttp 14104 12852 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:08:48,387 basehttp 14104 16904 - Broken pipe from ('127.0.0.1', 65191)
+
+INFO 2025-05-10 14:08:48,963 basehttp 14104 9584 - Broken pipe from ('127.0.0.1', 65252)
+
+INFO 2025-05-10 14:08:51,347 basehttp 14104 12852 "GET /available-emails/ HTTP/1.1" 200 81207
+WARNING 2025-05-10 14:08:51,395 log 14104 12852 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:08:51,396 basehttp 14104 12852 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:08:53,376 basehttp 14104 12852 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 14:08:54,381 basehttp 14104 12852 "GET /available-emails/ HTTP/1.1" 200 78912
+WARNING 2025-05-10 14:08:54,432 log 14104 20712 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:08:54,436 basehttp 14104 20712 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:08:54,901 autoreload 14104 2856 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:08:55,110 basehttp 14104 12852 - Broken pipe from ('127.0.0.1', 65280)
+
+INFO 2025-05-10 14:08:56,917 autoreload 17468 7056 Watching for file changes with StatReloader
+INFO 2025-05-10 14:09:02,853 autoreload 17468 7056 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:09:03,959 autoreload 19984 17952 Watching for file changes with StatReloader
+INFO 2025-05-10 14:09:08,334 basehttp 19984 17908 "GET /available-emails/ HTTP/1.1" 200 78912
+INFO 2025-05-10 14:09:12,623 basehttp 19984 4872 - Broken pipe from ('127.0.0.1', 65375)
+
+INFO 2025-05-10 14:09:12,858 basehttp 19984 17908 - Broken pipe from ('127.0.0.1', 65376)
+
+INFO 2025-05-10 14:10:33,289 autoreload 19984 17952 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 14:10:34,874 autoreload 16540 9152 Watching for file changes with StatReloader
+INFO 2025-05-10 14:11:09,707 autoreload 16540 9152 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 14:11:10,715 autoreload 4992 15656 Watching for file changes with StatReloader
+INFO 2025-05-10 14:11:40,899 basehttp 4992 17948 "GET /api/get-random-area-phones/?quantity=10 HTTP/1.1" 200 79
+INFO 2025-05-10 14:11:55,592 autoreload 4992 15656 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 14:11:56,680 autoreload 12372 17164 Watching for file changes with StatReloader
+INFO 2025-05-10 14:12:03,358 basehttp 12372 15568 "GET /api/get-random-area-phones/?quantity=10 HTTP/1.1" 200 79
+INFO 2025-05-10 14:12:07,842 basehttp 12372 15568 "GET /api/get-random-area-phones/?quantity=10 HTTP/1.1" 200 79
+INFO 2025-05-10 14:12:18,510 autoreload 12372 17164 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\authentication\views\employee_email_info_views.py changed, reloading.
+INFO 2025-05-10 14:12:19,548 autoreload 9456 22252 Watching for file changes with StatReloader
+INFO 2025-05-10 14:12:24,081 basehttp 9456 21408 "GET /api/get-random-area-phones/?quantity=10 HTTP/1.1" 200 2269
+INFO 2025-05-10 14:14:07,263 basehttp 9456 17868 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-10 14:14:10,278 basehttp 9456 17868 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 14:14:10,539 basehttp 9456 21496 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+WARNING 2025-05-10 14:14:17,226 log 9456 21496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:14:17,227 basehttp 9456 21496 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:15:58,573 basehttp 9456 21496 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-10 14:16:43,938 autoreload 9456 22252 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:16:45,243 autoreload 9604 14368 Watching for file changes with StatReloader
+WARNING 2025-05-10 14:16:58,450 log 9604 22068 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:16:58,451 basehttp 9604 22068 "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 9887
+INFO 2025-05-10 14:17:27,611 autoreload 9604 14368 C:\Users\MT GAMING\Desktop\git thong\webDjango1704\templates\authentication\employee_email_info.html changed, reloading.
+INFO 2025-05-10 14:17:28,617 autoreload 17556 15600 Watching for file changes with StatReloader
+INFO 2025-05-10 14:19:11,928 basehttp 17556 14240 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 14:24:09,236 basehttp 17556 14240 "POST /api/save-worksession/ HTTP/1.1" 200 104
+INFO 2025-05-10 14:25:22,596 basehttp 17556 14240 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+INFO 2025-05-10 14:25:25,401 basehttp 17556 14240 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112

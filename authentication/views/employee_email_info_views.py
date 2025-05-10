@@ -97,4 +97,42 @@ def get_employee_passwords(request):
     finally:
         # Đóng kết nối MongoDB
         if 'client' in locals():
+            client.close()
+
+@api_view(['GET'])
+def get_random_area_phones(request):
+    try:
+        # Lấy số lượng từ query parameter, mặc định là 5 nếu không có
+        quantity = int(request.GET.get('quantity', 5))
+        
+        # Kết nối tới MongoDB
+        client = pymongo.MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['area_phone']
+
+        # Sử dụng $sample để lấy random records
+        random_records = list(collection.aggregate([
+            {'$sample': {'size': quantity}}
+        ]))
+        for record in random_records:
+            record['_id'] = str(record['_id'])
+        if random_records:
+            return JsonResponse({
+                'success': True,
+                'data': random_records,
+                'message': f'Đã lấy {len(random_records)} bản ghi area_phone ngẫu nhiên'
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': 'Không tìm thấy bản ghi area_phone nào'
+            })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
+    finally:
+        # Đóng kết nối MongoDB
+        if 'client' in locals():
             client.close() 

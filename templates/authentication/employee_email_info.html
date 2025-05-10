@@ -72,6 +72,8 @@
 
         .table {
             margin-bottom: 0;
+            width: 100%;
+            table-layout: fixed;
         }
 
         .table th {
@@ -81,12 +83,18 @@
             border: none;
             padding: 12px;
             white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
         }
 
         .table td {
             padding: 12px;
             vertical-align: middle;
             border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .email-row:hover {
@@ -144,35 +152,53 @@
         }
 
         .table-responsive {
-            max-height: 730px;
+            max-height: calc(100vh - 200px);
             overflow-y: auto;
             overflow-x: auto;
+            margin: 0;
+            padding: 0;
         }
 
         .table-responsive::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
+            height: 8px;
         }
 
         .table-responsive::-webkit-scrollbar-track {
             background: #f1f1f1;
+            border-radius: 4px;
         }
 
         .table-responsive::-webkit-scrollbar-thumb {
             background: #888;
-            border-radius: 3px;
+            border-radius: 4px;
         }
 
         .table-responsive::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
 
-        @media (max-width: 768px) {
-            .action-buttons {
-                flex-direction: column;
+        @media (max-width: 1400px) {
+            .table th, .table td {
+                padding: 8px;
+                font-size: 0.9rem;
             }
-            
-            .btn {
-                width: 100%;
+
+            .table .form-select {
+                padding: 4px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .table th, .table td {
+                padding: 6px;
+                font-size: 0.85rem;
+            }
+
+            .table .form-select {
+                padding: 3px;
+                font-size: 0.8rem;
             }
         }
 
@@ -523,118 +549,6 @@
         .mail-card-parent:hover .mail-card {
             transform: rotate3d(1, 1, 0, 25deg);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Style cho thanh scroll */
-        #mailListModal .modal-body::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        #mailListModal .modal-body::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-        }
-
-        #mailListModal .modal-body::-webkit-scrollbar-thumb {
-            background: linear-gradient(145deg, #3498db, #2980b9);
-            border-radius: 10px;
-            border: 2px solid #f0f2f5;
-        }
-
-        #mailListModal .modal-body::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(145deg, #2980b9, #3498db);
-        }
-
-        /* Thêm style cho nút copy */
-        .copy-btn {
-            padding: 4px 8px;
-            font-size: 14px;
-            background-color: var(--primary-color);
-            border: none;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-
-        .copy-btn:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-1px);
-        }
-
-        .copy-btn i {
-            color: white;
-        }
-
-        /* Style cho tooltip thông báo copy */
-        .copy-tooltip {
-            position: fixed;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 14px;
-            z-index: 1000;
-            display: none;
-        }
-
-        /* Thêm style cho từng cột để tối ưu chiều rộng */
-        .table th:nth-child(1), /* Checkbox */
-        .table td:nth-child(1) {
-            width: 40px;
-            min-width: 40px;
-        }
-
-        .table th:nth-child(2), /* STT */
-        .table td:nth-child(2) {
-            width: 60px;
-            min-width: 60px;
-        }
-
-        .table th:nth-child(3), /* Email */
-        .table td:nth-child(3) {
-            width: 250px;
-            min-width: 250px;
-        }
-
-        .table th:nth-child(4), /* Mật khẩu Mail */
-        .table td:nth-child(4) {
-            width: 150px;
-            min-width: 150px;
-        }
-
-        .table th:nth-child(5), /* Trạng thái Mail */
-        .table td:nth-child(5) {
-            width: 150px;
-            min-width: 150px;
-        }
-
-        .table th:nth-child(6), /* Mật khẩu Tn */
-        .table td:nth-child(6) {
-            width: 150px;
-            min-width: 150px;
-        }
-
-        .table th:nth-child(7), /* Mật khẩu TF */
-        .table td:nth-child(7) {
-            width: 150px;
-            min-width: 150px;
-        }
-
-        .table th:nth-child(8), /* Trạng thái Tn */
-        .table td:nth-child(8) {
-            width: 180px;
-            min-width: 180px;
-        }
-
-        .table th:nth-child(9), /* Trạng thái Tf */
-        .table td:nth-child(9) {
-            width: 180px;
-            min-width: 180px;
-        }
-
-        .table th:nth-child(10), /* Sao chép */
-        .table td:nth-child(10) {
-            width: 80px;
-            min-width: 80px;
         }
 
         /* Style cho các ô trong bảng */
@@ -1140,8 +1054,8 @@
                         <th>STT</th>
                         <th>Email</th>
                         <th>Mật khẩu Mail</th>
-                        <th>Trạng thái Mail</th>
-
+                        <th>Mã vùng</th>
+                        <th>Tên vùng </th>
                         <th>Mật khẩu Tn</th>
                         <th>Mật khẩu TF</th>
                         <th>Trạng thái Tn</th>
@@ -1233,11 +1147,8 @@
                         <td>${index + 1}</td>
                         <td>${email.email}</td>
                         <td>${email.password}</td>
-                        <td>
-                            <span class="status-badge status-available">
-                                ${email.status}
-                            </span>
-                        </td>
+                        <td>${email.area_phone}</td>
+                        <td>${email.main_area}</td>
                         <td>${email.pass_TN}</td>
                         <td>${email.pass_TF}</td>
                         <td>
@@ -1788,7 +1699,20 @@
                         existingEmails = JSON.parse(existingData);
                     }
 
-                    const newEmails = listData.map(item => {
+                    // Lấy area_phone ngẫu nhiên
+                    const areaPhoneResponse = await fetch(`/api/get-random-area-phones/?quantity=${quantity}`);
+                    const areaPhoneData = await areaPhoneResponse.json();
+                    
+                    if (!areaPhoneData.success) {
+                        throw new Error('Không thể lấy area_phone: ' + areaPhoneData.error);
+                    }
+
+                    const areaPhones = areaPhoneData.data;
+                    if (areaPhones.length !== quantity) {
+                        throw new Error('Số lượng area_phone không khớp với số lượng mail đã mua');
+                    }
+
+                    const newEmails = listData.map((item, index) => {
                         const [email, password, refreshToken, clientId] = item.split('|');
                         return {
                             email: email,
@@ -1802,6 +1726,9 @@
                             status_tf: "chưa tạo acc",
                             is_provided: false,
                             supplier: "Dong Van",
+                            area_phone: areaPhones[index]['code_area_phone'],
+                            main_area: areaPhones[index]['main_area']
+                             // Thêm area_phone vào mỗi email
                         };
                     });
 

@@ -124,6 +124,7 @@ def get_available_emails_api(request):
         email_collection = db['employee_email']
         pass_Tn = db['employee_passwordregproduct']
         worksession_collection = db['employee_worksession']
+        area_phone_collection = db['area_phone']  # Add area_phone collection
 
         try:
             # Get current user and datetime
@@ -177,8 +178,10 @@ def get_available_emails_api(request):
                     'missing_passwords': True
                 })
             processed_emails = []
-
-            for email in available_emails:
+            random_area_phones = list(area_phone_collection.aggregate([
+                {'$sample': {'size': 5}}  # Get 5 random records
+            ]))
+            for email, area_phone in zip(available_emails, random_area_phones):
                 # Update the record in MongoDB
                 email_collection.update_one(
                     {'_id': email['_id']},
@@ -191,24 +194,26 @@ def get_available_emails_api(request):
                         }
                     }
                 )
-
+                print(random_area_phones[0]['code_area_phone'])
                 # Create new email record
                 new_email = {
-                    'email': email.get('email'),
-                    'password': email.get('password'),
-                    'refresh_token': email.get('refresh_token'),
-                    'client_id': email.get('client_id'),
-                    'status': 'đã được cấp phát',
-                    'status_tn': 'chưa tạo acc',
-                    'status_tf': 'chưa tạo acc',
-                    'sub_status': email.get('sub_status'),
-                    'supplier': email.get('supplier'),
-                    'created_at': email.get('created_at'),
-                    'is_provided': True,
-                    'date_get': current_datetime,
-                    'pass_TN': pass_Tn_today.get('password') if pass_Tn_today else None,
-                    'pass_TF': pass_Tf_today.get('password') if pass_Tf_today else None,
-                }
+                                'email': email.get('email'),
+                                'password': email.get('password'),
+                                'refresh_token': email.get('refresh_token'),
+                                'client_id': email.get('client_id'),
+                                'status': 'đã được cấp phát',
+                                'status_tn': 'chưa tạo acc',
+                                'status_tf': 'chưa tạo acc',
+                                'sub_status': email.get('sub_status'),
+                                'supplier': email.get('supplier'),
+                                'created_at': email.get('created_at'),
+                                'is_provided': True,
+                                'date_get': current_datetime,
+                                'pass_TN': pass_Tn_today.get('password') if pass_Tn_today else None,
+                                'pass_TF': pass_Tf_today.get('password') if pass_Tf_today else None,
+                                'area_phone': area_phone.get('code_area_phone') if area_phone else None,
+                                'main_area': area_phone.get('main_area') if area_phone else None
+                            }
 
                 # Add to processed emails list
                 processed_emails.append(new_email)
@@ -245,7 +250,7 @@ def get_available_emails_api(request):
             client.close()
 
 @login_required
-@role_required(['admin', 'quanly', 'kiemtra'])
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def create_password_view(request):
     if request.method == 'POST':
         client = None
@@ -647,7 +652,7 @@ def create_textnow_api(request):
         for account in accounts:
             # Validate required fields
             required_fields = ['email', 'password', 'pass_TN', 'pass_TF', 'status_tn', 
-                             'status_tf', 'supplier']
+                             'status_tf', 'supplier','area_phone']
             if not all(field in account for field in required_fields):
                 continue
 
@@ -658,6 +663,7 @@ def create_textnow_api(request):
                 'password': account['pass_TN'],
                 'password_TF': account['pass_TF'],
                 'supplier': account['supplier'],
+                'area_phone': account['area_phone'],
                 'status_account_TN': account['status_tn'],
                 'status_account_TF': account['status_tf'],
                 'refresh_token': account.get('refresh_token', ''),
@@ -939,4 +945,96 @@ def update_textnow_status_api(request):
         }, status=500)
     finally:
         if client:
-            client.close() 
+            client.close()
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_area_phone_api(request):
+    client = None
+    try:
+        # Lấy dữ liệu từ request (danh sách các đối tượng)
+        data_list = json.loads(request.body)
+
+        if not isinstance(data_list, list):
+            return JsonResponse({
+                'success': False,
+                'error': 'Dữ liệu phải là một danh sách các đối tượng JSON'
+            }, status=400)
+
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        area_phone_collection = db['area_phone']
+
+        inserted_items = []
+        errors = []
+
+        for item in data_list:
+            codeAreaPhone = item.get('code_area_phone')
+            country = item.get('country')
+            state = item.get('state')
+            main_area = item.get('main_area')
+            print(codeAreaPhone, country, state, main_area)
+            if not codeAreaPhone or not country or not state or not main_area:
+                errors.append({
+                    'codeAreaPhone': codeAreaPhone,
+                    'error': 'Thiếu trường bắt buộc'
+                })
+                continue
+
+            if area_phone_collection.find_one({'code_area_phone': codeAreaPhone}):
+                errors.append({
+                    'codeAreaPhone': codeAreaPhone,
+                    'error': 'Code đã tồn tại'
+                })
+                continue
+
+            current_time = datetime.now().isoformat()
+            new_area_phone = {
+                'code_area_phone': codeAreaPhone,
+                'country': country,
+                'state': state,
+                'main_area': main_area,
+                'created_at': current_time,
+                'updated_at': current_time
+            }
+
+            result = area_phone_collection.insert_one(new_area_phone)
+
+            inserted_items.append({
+                'id': str(result.inserted_id),
+                'code': codeAreaPhone,
+                'country': country,
+                'state': state,
+                'main_area': main_area,
+                'created_at': current_time,
+                'updated_at': current_time
+            })
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Xử lý xong danh sách area phone',
+            'inserted': inserted_items,
+            'errors': errors
+        }, status=207 if errors else 201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Dữ liệu không hợp lệ'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Error in create_area_phone_api: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+    finally:
+        if client:
+            client.close()

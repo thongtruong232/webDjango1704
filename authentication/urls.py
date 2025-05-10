@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views.manger_admin_sale_views import manager_textnow_view, delete_employee, export_employee_textnow_excel, update_sold_status
-from .views.employee_email_info_views import check_employee_password_today, get_employee_passwords
+from .views.employee_email_info_views import check_employee_password_today, get_employee_passwords,get_random_area_phones
 
 urlpatterns = [
     path('', manager_textnow_view, name='home'),
@@ -41,6 +41,8 @@ urlpatterns = [
     path('api/search-textnow/', views.search_textnow_api, name='search_textnow_api'),
     path('api/check-employee-password-today/', check_employee_password_today, name='check_employee_password_today'),
     path('api/get-employee-passwords/', get_employee_passwords, name='get_employee_passwords'),
+    path('api/create-area-phone/', views.create_area_phone_api, name='create_area_phone_api'),
+    path('api/get-random-area-phones/', get_random_area_phones, name='get_random_area_phones'),
     # admin manager
     path('manager-admin-sale/', manager_textnow_view, name='manager_textnow_view'),
     path('delete-employee/', delete_employee, name='delete_employee'),
