@@ -15,6 +15,7 @@ from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
 )
+from .mongodb import get_collection_handle
 logger = logging.getLogger(__name__)
 
 @login_required
@@ -84,10 +85,13 @@ def email_info_view(request):
         for email in created_textnow_emails:
             if 'is_reg_acc' in email:
                 email['is_reg_acc'] = 'true' if email['is_reg_acc'] else 'false'
-
+        users_collection, client = get_collection_handle('users')
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        
         # Prepare context data
         print(created_textnow_emails)
         context = {
+            'user_data': user_data,
             'emails': json.dumps(created_textnow_emails),  # Convert to JSON string
             'total_accounts': total_accounts,
             'worksession': current_worksession

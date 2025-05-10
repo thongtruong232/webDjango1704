@@ -126,225 +126,38 @@ def seconds_to_days_hours(seconds):
 def home_view(request):
     # Get user data from MongoDB
     users_collection, client = get_collection_handle('users')
-    if users_collection is None or client is None:
+    if users_collection is None:
         messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-        return render(request, 'authentication/home.html', {
-            'user_data': None,
-            'excel_data': [],
-            'can_import': False,
-            'can_update_status': False,
-            'allowed_status_updates': [],
-            'is_nhanvien': False,
-            'current_page': 1,
-            'total_pages': 1,
-            'has_more': False,
-            'page_range': [1],
-            'start_index': 0,
-            'name': request.user.username
-        })
-        
+        return redirect('login')
+
     try:
-        # Lấy user data một lần và sử dụng lại
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         if not user_data:
             messages.error(request, 'Không tìm thấy thông tin người dùng')
             return redirect('login')
-            
-        user_role = user_data.get('role', 'nhanvien')
+
+        user_role = user_data.get('role')
         
-        # Nếu là nhân viên, chuyển hướng về trang verified
+        # Chuyển hướng dựa trên role
         if user_role == 'nhanvien':
-            return redirect('employee_verified')
-        
-        # Handle Excel file upload
-        if request.method == 'POST' and request.FILES.get('excel_file'):
-            if not can_manage_users(request.user.id):
-                messages.error(request, 'Bạn không có quyền import dữ liệu')
-                return redirect('home')
-                
-            excel_file = request.FILES['excel_file']
-            
-            # Save the uploaded file temporarily
-            fs = FileSystemStorage()
-            filename = fs.save(excel_file.name, excel_file)
-            file_path = fs.path(filename)
-            
-            try:
-                # Read Excel file
-                df = pd.read_excel(file_path)
-
-                # Get Excel data collection
-                excel_data_collection, excel_client = get_collection_handle('employee_textnow')
-                if excel_data_collection is None:
-                    messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-                    return redirect('home')
-
-                # Process and save data
-                records = []
-                for index, row in df.iterrows():
-
-                    email, password, refresh_token, client_id = parse_excel_data(row['Mail'])
-
-                    record = {
-                        'stt': index + 1,
-                        'Email': email,
-                        'Pass': password,
-                        'PassFree': str(row['PassFree']) if pd.notna(row['PassFree']) else 'Chưa cập nhật',
-                        'PassTexNow': str(row['PassTextNow']) if pd.notna(row['PassTextNow']) else 'Chưa cập nhật',
-                        'status': str(row['Trạng thái']) if pd.notna(row['Trạng thái']) else 'Chưa rõ',
-                        'imported_at': get_current_time().isoformat(),
-                        'imported_by': str(request.user.id),
-                        'imported_by_username': request.user.username,
-                        'time': str(row['Time']) if pd.notna(row['Time']) else 'Chưa rõ',
-                        'all_info_mail': row['Mail']
-                    }
-                    records.append(record)
-
-
-                # Insert records in bulk
-                if records:
-                    excel_data_collection.insert_many(records)
-                    # Không thêm message từ server, để client xử lý
-                    success_message = f'Đã import thành công {len(records)} email'
-                    return JsonResponse({
-                        'success': True,
-                        'message': success_message
-                    })
-
-                excel_client.close()
-                
-            except Exception as e:
-                messages.error(request, f'Lỗi khi import dữ liệu: {str(e)}')
-            finally:
-                # Clean up temporary file
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-                
-            return redirect('home')
-            
-        # Get Excel data based on user role
-        excel_data_collection, excel_client = get_collection_handle('employee_textnow')
-        if excel_data_collection is None:
-            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-            return render(request, 'authentication/home.html', {
-                'user_data': user_data,
-                'excel_data': [],
-                'can_import': False,
-                'can_update_status': False,
-                'allowed_status_updates': [],
-                'is_nhanvien': user_role == 'nhanvien',
-                'current_page': 1,
-                'total_pages': 1,
-                'has_more': False,
-                'page_range': [1],
-                'start_index': 0
+            return redirect('employee_email_info')
+        elif user_role == 'kiemtra':
+            return redirect('verified')
+        elif user_role in ['admin', 'quanly']:
+            return render(request, 'authentication/manager_textnow_admin_sale.html', {
+                'user_data': user_data
             })
-            
-        # Get pagination parameters
-        page = int(request.GET.get('page', 1))
-        
-        # Điều chỉnh số lượng bản ghi hiển thị dựa trên role
-        if user_role in ['admin', 'quanly']:
-            per_page = 50  # Hiển thị nhiều hơn cho admin và quanly
         else:
-            per_page = 10  # Giữ nguyên cho các role khác
-            
-        skip = (page - 1) * per_page
-        
-        # Get total count
-        total_records = excel_data_collection.count_documents({})
-        total_pages = (total_records + per_page - 1) // per_page
-        
-        # Get records based on role
-        cursor = excel_data_collection.find().sort('imported_at', -1).skip(skip).limit(per_page)
-        
-        # Convert cursor to list and add mongo_id
-        excel_data = []
-        for record in cursor:
-            # Thêm mongo_id vào record
-            record['mongo_id'] = str(record.get('_id'))
-            # Đảm bảo có trường status
-            if 'status' not in record:
-                record['status'] = 'Chưa sử dụng'
-            # Thêm thông tin thời gian
-            if 'created_at' in record:
-                try:
-                    raw_time = record['created_at']
-                    
-                    # Xử lý trường hợp raw_time là string
-                    if isinstance(raw_time, str):
-                        try:
-                            # Thử parse string thành datetime
-                            imported_time = datetime.fromisoformat(raw_time)
-                        except ValueError:
-                            logger.error(f"Invalid datetime string format: {raw_time}")
-                            record['time_info'] = None
-                            continue
-                    else:
-                        imported_time = raw_time
-                    
-                    # Đảm bảo imported_time là aware datetime
-                    if not timezone.is_aware(imported_time):
-                        imported_time = timezone.make_aware(imported_time, timezone.get_default_timezone())
-                    
-                    current_time = get_current_time()
-                    time_diff = current_time - imported_time
-                    total_seconds = int(time_diff.total_seconds())
+            messages.error(request, 'Bạn không có quyền truy cập')
+            return redirect('login')
 
-                    days, hours = seconds_to_days_hours(total_seconds)
-
-                    if total_seconds < 0:
-                        # Thời gian còn lại
-                        record['time_info'] = {
-                            'type': 'remaining',
-                            'days': abs(days),
-                            'hours': abs(hours),
-                        }
-                    else:
-                        # Thời gian đã trôi qua
-                        record['time_info'] = {
-                            'type': 'elapsed',
-                            'days': days,
-                            'hours': hours,
-                        }
-
-                except Exception as e:
-                    logger.error(f"Error processing time info: {str(e)}")
-                    record['time_info'] = None
-            else:
-                record['time_info'] = None
-                
-            excel_data.append(record)
-        
-        excel_client.close()
-        
-        # Get allowed status updates
-        allowed_status_updates = get_allowed_status_updates(request.user.id)
-        
-        # Calculate pagination info
-        has_more = page < total_pages
-        page_range = range(max(1, page - 2), min(total_pages + 1, page + 3))
-        start_index = skip + 1
-        
-        # logger.info(f"Retrieved {len(excel_data)} records for page {page}, total records: {total_records}")
-        
-        return render(request, 'authentication/home.html', {
-            'user_data': user_data,
-            'excel_data': excel_data,
-            'can_import': can_manage_users(request.user.id),
-            'can_update_status': can_update_status(request.user.id),
-            'allowed_status_updates': allowed_status_updates,
-            'is_nhanvien': user_role == 'nhanvien',
-            'current_page': page,
-            'total_pages': total_pages,
-            'has_more': has_more,
-            'page_range': page_range,
-            'start_index': start_index
-        })
-        
     except Exception as e:
         logger.error(f"Error in home_view: {str(e)}")
-        return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+        messages.error(request, 'Có lỗi xảy ra')
+        return redirect('login')
+    finally:
+        if client:
+            client.close()
 
 # Chuyển đổi dữ liệu excel thành dạng email, password, refresh_token, client_id
 def parse_excel_data(text):

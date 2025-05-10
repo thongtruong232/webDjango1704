@@ -2,9 +2,10 @@ from django.urls import path
 from . import views
 from .views.manger_admin_sale_views import manager_textnow_view, delete_employee, export_employee_textnow_excel, update_sold_status
 from .views.employee_email_info_views import check_employee_password_today, get_employee_passwords
+from .views.employee_views import email_info_view
 
 urlpatterns = [
-    path('', manager_textnow_view, name='home'),
+    path('', views.home_view, name='home'),
     path('login/', views.login_view, name='login'),
     path('home/', views.verify_otp_view, name='verify_otp'),
     path('verify_otp_view_register/', views.verify_otp_view_register, name='verify_otp_view_register'),
@@ -34,6 +35,7 @@ urlpatterns = [
     path('employee/work/', views.employee_work_view, name='employee_work'),
     path('create-password/', views.create_password_view, name='create_password'),
     path('available-emails/', views.email_info_view, name='available_emails'),
+    path('employee_email_info/', email_info_view, name='employee_email_info'),
     path('api/available-emails/', views.get_available_emails_api, name='get_available_emails_api'),
     path('api/create-textnow/', views.create_textnow_api, name='create_textnow_api'),
     path('api/save-worksession/', views.save_worksession_api, name='save_worksession'),
