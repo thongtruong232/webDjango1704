@@ -56,9 +56,9 @@ def login_view(request):
                 if user_role == 'nhanvien':
                     return redirect('employee_verified')
                 elif user_role in ['admin', 'quanly', 'kiemtra']:
-                    return redirect('manager_textnow_view')
+                    return redirect('manager_admin_sale')
                 else:
-                    return redirect('home')
+                    return redirect('manager_admin_sale')
             else:
                 # Nếu không tìm thấy user trong MongoDB, đăng xuất và chuyển về trang login
                 logout(request)
@@ -295,22 +295,16 @@ def verify_otp_view(request):
                 )
                 
                 user_role = mongo_user.get('role')
-                if user_role in ['admin', 'quanly']:
+                if user_role == 'nhanvien':
                     return JsonResponse({
                         'success': True,
-                        'redirect_url': '/manager-admin-sale/',
-                        'message': 'Đăng nhập thành công'
-                    })
-                elif user_role == 'kiemtra':
-                    return JsonResponse({
-                        'success': True,
-                        'redirect_url': '/manager-admin-sale/',
+                        'redirect_url': '/verified/',
                         'message': 'Đăng nhập thành công'
                     })
                 else:
                     return JsonResponse({
                         'success': True,
-                        'redirect_url': '/verified/',
+                        'redirect_url': '/manager-admin-sale/',
                         'message': 'Đăng nhập thành công'
                     })
                     

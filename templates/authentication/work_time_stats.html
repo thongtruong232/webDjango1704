@@ -43,8 +43,13 @@
 
 
 <div class="container mt-4">
+    <!-- Debug info -->
+    <div id="debug-info" style="display: none;">
+        <pre id="debug-content"></pre>
+    </div>
+
     <!-- Hidden div to store user IDs -->
-    <div id="user-stats" data-user-ids="{% for stat in stats %}{{ stat.user.id }}{% if not forloop.last %},{% endif %}{% endfor %}"></div>
+    <div id="user-stats" data-user-ids="{% for stat in stats %}{{ stat.user.id|stringformat:"s" }}{% if not forloop.last %},{% endif %}{% endfor %}"></div>
 
     <h2 class="mb-4">Thống kê thời gian làm việc</h2>
 
@@ -71,7 +76,7 @@
                     <select name="user_id" class="form-select">
                         <option value="">Tất cả</option>
                         {% for user in users %}
-                        <option value="{{ user.user_id }}" {% if selected_user == user.user_id|stringformat:"s" %}selected{% endif %}>
+                        <option value="{{ user.user_id|stringformat:"s" }}" {% if selected_user == user.user_id|stringformat:"s" %}selected{% endif %}>
                             {{ user.username }}
                         </option>
                         {% endfor %}
@@ -101,27 +106,27 @@
                     </thead>
                     <tbody>
                         {% for stat in stats %}
-                        <tr data-user-id="{{ stat.user.id }}">
+                        <tr data-user-id="{{ stat.user.id|stringformat:"s" }}">
                             <td>{{ stat.user.username }}</td>
                             <td>{{ stat.total_sessions }}</td>
                             <td>{{ stat.total_hours }}</td>
                             <td>{{ stat.average_session }}</td>
                             <td class="activity-status">
-                                <span class="status-container" data-user-id="{{ stat.user.id }}">
+                                <span class="status-container" data-user-id="{{ stat.user.id|stringformat:"s" }}">
                                     <span class="status-indicator"></span>
                                     <span class="status-text"></span>
                                 </span>
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" 
-                                        data-bs-target="#details-{{ stat.user.id }}">
+                                        data-bs-target="#details-{{ stat.user.id|stringformat:"s" }}">
                                     Xem chi tiết
                                 </button>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="6">
-                                <div class="collapse" id="details-{{ stat.user.id }}">
+                                <div class="collapse" id="details-{{ stat.user.id|stringformat:"s" }}">
                                     <div class="card card-body">
                                         <div class="table-responsive">
                                             <table class="table table-sm">
@@ -132,9 +137,9 @@
                                                         <th>Thời gian làm việc</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody id="activity-details-{{ stat.user.id }}">
+                                                <tbody id="activity-details-{{ stat.user.id|stringformat:"s" }}">
                                                     {% for activity in stat.activities|dictsortreversed:"login_time"|slice:":20" %}
-                                                    <tr data-user-id="{{ stat.user.id }}" data-session-id="{{ activity.session_id }}">
+                                                    <tr data-user-id="{{ stat.user.id|stringformat:"s" }}" data-session-id="{{ activity.session_id }}">
                                                         <td>{% if activity.login_time %}{{ activity.login_time|date:"d/m/Y H:i" }}{% else %}Chưa có dữ liệu{% endif %}</td>
                                                         <td>{% if activity.logout_time %}{{ activity.logout_time|date:"d/m/Y H:i" }}{% else %}Chưa đăng xuất{% endif %}</td>
                                                         <td>
@@ -146,11 +151,6 @@
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
-                                            {% if stat.activities|length > 20 %}
-                                            <div class="text-muted text-center mt-2">
-                                                <small>Hiển thị 20 bản ghi gần nhất trong tổng số {{ stat.activities|length }} bản ghi</small>
-                                            </div>
-                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -169,6 +169,7 @@
     let reconnectAttempts = 0;
     const maxReconnectAttempts = 5;
     const statusContainers = new Map();
+    const pendingUpdates = new Map();
 
     function connectWebSocket() {
         if (socket) {
@@ -442,16 +443,145 @@
         }
     }
 
+    // Hàm chuẩn hóa user ID
+    function normalizeUserId(userId) {
+        try {
+            // Đảm bảo ID luôn là string và loại bỏ khoảng trắng
+            const normalized = String(userId).trim();
+            console.log('Normalizing user ID:', { 
+                original: userId, 
+                normalized: normalized,
+                type: typeof normalized
+            });
+            return normalized;
+        } catch (e) {
+            console.error('Lỗi khi chuẩn hóa user ID:', e);
+            return null;
+        }
+    }
+
+    // Hàm tìm status container với xử lý ID linh hoạt
+    function findStatusContainer(userId, updateData = null) {
+        const normalizedId = normalizeUserId(userId);
+        if (!normalizedId) {
+            console.error('Invalid user ID:', userId);
+            return null;
+        }
+
+        console.log('Finding container for user ID:', { 
+            original: userId, 
+            normalized: normalizedId,
+            cached: statusContainers.has(normalizedId)
+        });
+
+        // Kiểm tra cache trước
+        if (statusContainers.has(normalizedId)) {
+            const container = statusContainers.get(normalizedId);
+            console.log('Found container in cache:', container);
+            return container;
+        }
+
+        // Tìm trong DOM với nhiều cách khác nhau
+        let container = document.querySelector(`.status-container[data-user-id="${normalizedId}"]`);
+        console.log('Direct query result:', container);
+        
+        // Nếu không tìm thấy, thử tìm trong tất cả các container
+        if (!container) {
+            console.log('Searching in all containers...');
+            const allContainers = document.querySelectorAll('.status-container');
+            console.log('Total containers found:', allContainers.length);
+            
+            for (const cont of allContainers) {
+                const containerId = normalizeUserId(cont.getAttribute('data-user-id'));
+                console.log('Checking container:', { 
+                    element: cont,
+                    id: containerId,
+                    matches: containerId === normalizedId,
+                    containerIdType: typeof containerId,
+                    normalizedIdType: typeof normalizedId
+                });
+                
+                if (containerId === normalizedId) {
+                    container = cont;
+                    break;
+                }
+            }
+        }
+
+        // Nếu tìm thấy, lưu vào cache
+        if (container) {
+            console.log('Caching container for ID:', normalizedId);
+            statusContainers.set(normalizedId, container);
+        } else if (updateData) {
+            console.warn('No container found for ID:', normalizedId);
+            // Lưu update vào pending queue
+            if (pendingUpdates.has(normalizedId)) {
+                const updates = pendingUpdates.get(normalizedId);
+                updates.push(updateData);
+            } else {
+                pendingUpdates.set(normalizedId, [updateData]);
+            }
+        }
+
+        return container;
+    }
+
+    // Debug function
+    function debugLog(message, data) {
+        const debugContent = document.getElementById('debug-content');
+        if (debugContent) {
+            const timestamp = new Date().toISOString();
+            const logMessage = `[${timestamp}] ${message}: ${JSON.stringify(data, null, 2)}\n`;
+            debugContent.textContent += logMessage;
+        }
+        console.log(message, data);
+    }
+
     // Khởi tạo khi DOM đã sẵn sàng
     document.addEventListener('DOMContentLoaded', function() {
-        // Lưu trữ tất cả các container vào Map
+        debugLog('Initializing status containers...');
+        
+        // Log all user IDs from the hidden div
+        const userStatsDiv = document.getElementById('user-stats');
+        const allUserIds = userStatsDiv ? userStatsDiv.getAttribute('data-user-ids').split(',') : [];
+        debugLog('All user IDs from data attribute:', allUserIds);
+
+        // Lưu trữ tất cả các container vào Map với ID đã chuẩn hóa
         const containers = document.querySelectorAll('.status-container');
+        debugLog('Found containers:', containers.length);
+        
         containers.forEach(container => {
             const userId = container.getAttribute('data-user-id');
             if (userId) {
-                statusContainers.set(userId, container);
+                const normalizedId = normalizeUserId(userId);
+                if (normalizedId) {
+                    debugLog('Caching container:', { 
+                        originalId: userId,
+                        normalizedId: normalizedId,
+                        container: container,
+                        originalType: typeof userId,
+                        normalizedType: typeof normalizedId
+                    });
+                    statusContainers.set(normalizedId, container);
+                }
             }
         });
+        
+        debugLog('Cached containers:', Array.from(statusContainers.keys()));
+
+        // Xử lý các pending updates
+        if (pendingUpdates.size > 0) {
+            debugLog('Processing pending updates:', pendingUpdates.size);
+            pendingUpdates.forEach((updates, userId) => {
+                const container = findStatusContainer(userId);
+                if (container) {
+                    updates.forEach(update => {
+                        updateStatusDisplay(container, update);
+                    });
+                    pendingUpdates.delete(userId);
+                }
+            });
+        }
         
         // Kết nối WebSocket
         connectWebSocket();

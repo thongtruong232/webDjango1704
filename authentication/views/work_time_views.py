@@ -93,6 +93,19 @@ def work_time_stats(request):
                 # Lấy thống kê của user
                 user_stats = list(work_time_collection.find(user_query).sort('date', -1))
                 
+                # Tạo thống kê mặc định cho user
+                user_stat = {
+                    'user': {
+                        'id': mongo_user['user_id'],
+                        'username': mongo_user.get('username', 'Unknown'),
+                        'is_active': True  # Default to True since we can't determine actual status
+                    },
+                    'total_sessions': 0,
+                    'total_hours': 0,
+                    'average_session': 0,
+                    'activities': []
+                }
+                
                 if user_stats:
                     # Tính tổng số phiên và thời gian
                     total_sessions = len(user_stats)
@@ -141,17 +154,14 @@ def work_time_stats(request):
                     total_hours = round(total_duration / 3600, 2)
                     average_hours = round(total_hours / total_sessions, 2) if total_sessions > 0 else 0
 
-                    stats.append({
-                        'user': {
-                            'id': mongo_user['user_id'],
-                            'username': mongo_user.get('username', 'Unknown'),
-                            'is_active': True  # Default to True since we can't determine actual status
-                        },
+                    user_stat.update({
                         'total_sessions': total_sessions,
                         'total_hours': total_hours,
                         'average_session': average_hours,
                         'activities': formatted_activities
                     })
+
+                stats.append(user_stat)
 
             except Exception as e:
                 logger.error(f"Error processing user {mongo_user.get('username', 'Unknown')}: {str(e)}", exc_info=True)
