@@ -2523,3 +2523,5 @@ WARNING 2025-05-12 19:11:18,137 log 19240 11648 Not Found: /.well-known/appspeci
 WARNING 2025-05-12 19:16:37,614 log 19240 11648 Not Found: /favicon.ico
 WARNING 2025-05-12 19:35:03,290 log 19240 11648 Not Found: /favicon.ico
 WARNING 2025-05-12 19:42:28,664 log 19240 11648 Not Found: /favicon.ico
+WARNING 2025-05-12 20:19:36,155 log 20760 22076 Not Found: /favicon.ico
+WARNING 2025-05-12 20:20:25,071 log 20760 22076 Not Found: /favicon.ico

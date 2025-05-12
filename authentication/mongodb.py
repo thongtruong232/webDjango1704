@@ -4,8 +4,13 @@ import logging
 from typing import Optional, Tuple
 from pymongo.collection import Collection
 from pymongo.database import Database
+import dns.resolver
 
 logger = logging.getLogger(__name__)
+
+# Cấu hình DNS resolver
+dns.resolver.default_resolver = dns.resolver.Resolver(configure=False)
+dns.resolver.default_resolver.nameservers = ['8.8.8.8', '8.8.4.4']
 
 class MongoDBConnection:
     def __init__(self):
@@ -14,8 +19,15 @@ class MongoDBConnection:
 
     def __enter__(self):
         try:
-            self.client = MongoClient(settings.MONGODB_URI)
+            self.client = MongoClient(
+                settings.MONGODB_URI,
+                serverSelectionTimeoutMS=5000,  # Timeout 5 giây
+                connectTimeoutMS=5000,
+                socketTimeoutMS=5000
+            )
             self.db = self.client[settings.MONGODB_DATABASE]
+            # Test kết nối
+            self.client.server_info()
             return self
         except Exception as e:
             logger.error(f"Error connecting to MongoDB: {str(e)}")
@@ -42,7 +54,12 @@ def get_collection_handle(collection_name: str) -> Tuple[Optional[Collection], O
         or (None, None) if connection fails
     """
     try:
-        client = MongoClient(settings.MONGODB_URI)
+        client = MongoClient(
+            settings.MONGODB_URI,
+            serverSelectionTimeoutMS=5000,  # Timeout 5 giây
+            connectTimeoutMS=5000,
+            socketTimeoutMS=5000
+        )
         db = client[settings.MONGODB_DATABASE]
         collection = db[collection_name]
         return collection, client
