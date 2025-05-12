@@ -42,18 +42,36 @@ def get_current_time():
 @login_required
 @role_required('admin')
 def manage_users(request):
-    users_collection, client = get_collection_handle('users')
-    users = list(users_collection.find())
-    client.close()
-    # Get user data from MongoDB
-    user_data = users_collection.find_one({'user_id': str(request.user.id)})
-    context = {
-        'user_data': user_data,
-        'users': users,
-        'roles': ROLES.keys(),
-    }
+    client = None
+    try:
+        users_collection, client = get_collection_handle('users')
+        if users_collection is None:
+            messages.error(request, 'Không thể kết nối đến MongoDB')
+            return redirect('home')
 
-    return render(request, 'authentication/manage_users.html', context)
+        # Get all users
+        users = list(users_collection.find())
+        
+        # Get user data from MongoDB
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        
+        context = {
+            'user_data': user_data,
+            'users': users,
+            'roles': ROLES.keys(),
+        }
+
+        return render(request, 'authentication/manage_users.html', context)
+    except Exception as e:
+        logger.error(f"Error in manage_users: {str(e)}")
+        messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
+        return redirect('home')
+    finally:
+        if client:
+            try:
+                client.close()
+            except:
+                pass
 
 @login_required
 @role_required('admin')
