@@ -180,11 +180,7 @@ def register_otp(request):
                 })
             
             # Kiểm tra username đã tồn tại trong Django không
-            if User.objects.filter(username=username_register).exists():
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác'
-                })
+            user_in_django = User.objects.filter(username=username_register).first()
             
             # Kiểm tra username đã tồn tại trong MongoDB không
             users_collection, client = get_collection_handle('users')
@@ -193,43 +189,45 @@ def register_otp(request):
                     'success': False,
                     'message': 'Không thể kết nối đến cơ sở dữ liệu'
                 })
-                
             try:
                 mongo_user = users_collection.find_one({'username': username_register})
-                if mongo_user is not None:
+                if user_in_django and mongo_user:
                     return JsonResponse({
                         'success': False,
                         'message': 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác'
                     })
-                
-                # Nếu username chưa tồn tại, gửi OTP
+                elif user_in_django and not mongo_user:
+                    # Nếu user chỉ tồn tại ở Django, xóa user ở Django
+                    user_in_django.delete()
+                    # Cho phép tạo mới (gửi OTP)
+                elif not user_in_django and mongo_user:
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác'
+                    })
+                # Nếu username chưa tồn tại ở cả hai, hoặc vừa xóa ở Django, gửi OTP
                 otp_code = send_otp_email(username_register)
                 if not otp_code:
                     return JsonResponse({
                         'success': False,
                         'message': 'Không thể gửi mã OTP, vui lòng thử lại sau'
                     })
-                    
                 request.session['otp_username'] = username_register
                 request.session['otp_required'] = True
                 request.session['otp_code'] = otp_code
                 request.session.save()
-
                 return JsonResponse({
                     'success': True,
                     'message': 'OTP đã được gửi thành công'
                 })
-                
             finally:
                 client.close()
-                
         except Exception as e:
             logger.error(f'Error in register_otp: {str(e)}')
             return JsonResponse({
                 'success': False,
                 'message': f'Có lỗi xảy ra khi tạo OTP: {str(e)}'
             })
-            
     return JsonResponse({
         'success': False,
         'message': 'Phương thức không được hỗ trợ'
@@ -399,7 +397,7 @@ def delete_user(request):
             })
         
         try:
-            # Xóa user khỏi MongoDB trước
+            # Lấy thông tin user từ MongoDB trước khi xóa
             users_collection, client = get_collection_handle('users')
             if users_collection is None:
                 return JsonResponse({
@@ -407,45 +405,64 @@ def delete_user(request):
                     'message': 'Không thể kết nối đến cơ sở dữ liệu'
                 })
             
-            mongo_result = users_collection.delete_one({'user_id': user_id})
-            
-            # Nếu xóa thành công trong MongoDB, xóa trong Django
-            if mongo_result.deleted_count > 0:
-                try:
-                    user = User.objects.get(id=user_id)
-                    user.delete()
-                    client.close()
-                    return JsonResponse({
-                        'success': True,
-                        'message': 'Xóa user thành công'
-                    })
-                except User.DoesNotExist:
-                    # Nếu không tìm thấy user trong Django, rollback MongoDB
-                    users_collection.insert_one({
-                        'user_id': user_id,
-                        'username': user.username,
-                        'email': user.email,
-                        'password': user.password,
-                        'role': user.role,
-                        'created_at': user.created_at
-                    })
-                    client.close()
-                    return JsonResponse({
-                        'success': False,
-                        'message': 'Không tìm thấy user trong Django'
-                    })
-            else:
-                client.close()
+            mongo_user = users_collection.find_one({'user_id': user_id})
+            if not mongo_user:
                 return JsonResponse({
                     'success': False,
                     'message': 'Không tìm thấy user trong MongoDB'
                 })
+
+            # Lưu thông tin user để có thể rollback nếu cần
+            user_backup = mongo_user.copy()
             
+            # Xóa user khỏi MongoDB
+            mongo_result = users_collection.delete_one({'user_id': user_id})
+            
+            if mongo_result.deleted_count > 0:
+                try:
+                    # Xóa user khỏi Django
+                    user = User.objects.get(id=user_id)
+                    user.delete()
+                    
+                    # Ghi log hoạt động
+                    logger.info(f'User {user_id} đã được xóa thành công')
+                    
+                    return JsonResponse({
+                        'success': True,
+                        'message': 'Xóa user thành công'
+                    })
+                    
+                except User.DoesNotExist:
+                    # Nếu không tìm thấy user trong Django, rollback MongoDB
+                    users_collection.insert_one(user_backup)
+                    logger.error(f'Không tìm thấy user {user_id} trong Django, đã rollback MongoDB')
+                    return JsonResponse({
+                        'success': False,
+                        'message': 'Không tìm thấy user trong Django'
+                    })
+                except Exception as e:
+                    # Nếu có lỗi khi xóa trong Django, rollback MongoDB
+                    users_collection.insert_one(user_backup)
+                    logger.error(f'Lỗi khi xóa user {user_id} trong Django: {str(e)}, đã rollback MongoDB')
+                    return JsonResponse({
+                        'success': False,
+                        'message': f'Lỗi khi xóa user trong Django: {str(e)}'
+                    })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Không thể xóa user khỏi MongoDB'
+                })
+                
         except Exception as e:
+            logger.error(f'Lỗi khi xóa user {user_id}: {str(e)}')
             return JsonResponse({
                 'success': False,
-                'message': str(e)
+                'message': f'Có lỗi xảy ra: {str(e)}'
             })
+        finally:
+            if 'client' in locals():
+                client.close()
     
     return JsonResponse({
         'success': False,

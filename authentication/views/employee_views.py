@@ -85,6 +85,7 @@ def email_info_view(request):
         for email in created_textnow_emails:
             if 'is_reg_acc' in email:
                 email['is_reg_acc'] = 'true' if email['is_reg_acc'] else 'false'
+                
         users_collection, client = get_collection_handle('users')
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         

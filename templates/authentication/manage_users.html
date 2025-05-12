@@ -3,6 +3,9 @@
 {% block title %}Quản lý người dùng{% endblock %}
 
 {% block content %}
+<!-- Add Font Awesome CDN in the head section -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Quản lý người dùng</h5>
@@ -209,6 +212,8 @@
     }
 
     document.getElementById("createUserBtn").addEventListener("click", function () {
+        const createUserBtn = document.getElementById("createUserBtn");
+        createUserBtn.disabled = true;
         const username = document.getElementById("username_register").value.trim();
         const password = document.getElementById("password_register").value.trim();
 
@@ -257,6 +262,7 @@
             .then(data => {
                 if (data.exists) {
                     showError('usernameError', 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác');
+                    createUserBtn.disabled = false;
                 } else {
                     // Nếu username chưa tồn tại, hiển thị loading và gửi OTP
                     showLoadingModal();
@@ -280,12 +286,11 @@
             .then(data => {
                 if (data) {
                     closeLoadingModal();
-                    
+                    createUserBtn.disabled = false;
                     if (data.success) {
                         // Nếu OTP được tạo thành công, hiển thị modal nhập OTP
                         const otpModal = new bootstrap.Modal(document.getElementById("otpModal_register"));
                         otpModal.show();
-                        
                         // Focus vào input OTP khi modal hiển thị
                         document.getElementById("otpModal_register").addEventListener('shown.bs.modal', function () {
                             const otpInput = document.getElementById("otpInput");
@@ -295,13 +300,18 @@
                     } else {
                         showError('usernameError', data.message || 'Có lỗi xảy ra khi tạo OTP');
                     }
+                } else {
+                    createUserBtn.disabled = false;
                 }
             })
             .catch(error => {
                 closeLoadingModal();
+                createUserBtn.disabled = false;
                 console.error('Error:', error);
                 showError('usernameError', error.message || 'Có lỗi xảy ra');
             });
+        } else {
+            createUserBtn.disabled = false;
         }
     });
 
@@ -399,6 +409,18 @@
                 }
             }, 2000);
         }
+    }
+
+    // Đảm bảo nút 'Tạo' bị khóa khi modal OTP hiển thị và mở lại khi modal đóng
+    const createUserBtn = document.getElementById('createUserBtn');
+    const otpModalEl = document.getElementById('otpModal_register');
+    if (otpModalEl && createUserBtn) {
+        otpModalEl.addEventListener('shown.bs.modal', function () {
+            createUserBtn.disabled = true;
+        });
+        otpModalEl.addEventListener('hidden.bs.modal', function () {
+            createUserBtn.disabled = false;
+        });
     }
 </script>
 

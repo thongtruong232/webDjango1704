@@ -38,7 +38,7 @@ def get_collection_handle(collection_name):
         raise
 
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required(['admin', 'quanly'])
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
@@ -138,7 +138,7 @@ def manager_textnow_view(request):
             print(f"Documents matching TF sold status {sold_status}:", sold_count)
             query.update(sold_query)
         
-        if created_by:
+        if created_by and created_by.strip() != "":
             creator_query = {'created_by': created_by}
             creator_count = collection.count_documents(creator_query)
             print(f"Documents matching creator {created_by}:", creator_count)
@@ -208,7 +208,7 @@ def manager_textnow_view(request):
         return render(request, 'authentication/manager_textnow_admin_sale.html', context)
 
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required(['admin', 'quanly'])
 def delete_employee(request):
     if request.method == 'POST':
         try:
@@ -230,7 +230,7 @@ def delete_employee(request):
 
 @csrf_exempt
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required(['admin', 'quanly'])
 def export_employee_textnow_excel(request):
     if request.method == 'POST':
         try:
@@ -313,7 +313,7 @@ def export_employee_textnow_excel(request):
 
 @csrf_exempt
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required(['admin', 'quanly'])
 def update_sold_status(request):
     if request.method == 'POST':
         try:

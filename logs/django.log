@@ -2166,3 +2166,360 @@ ERROR 2025-05-10 12:30:40,485 log 14848 19488 Internal Server Error: /employee_e
 WARNING 2025-05-10 12:33:06,470 log 10012 4904 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-10 12:41:26,316 log 10012 4904 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-10 12:42:22,250 log 19668 9192 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 12:52:00,782 log 18184 15568 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /api/save-worksession/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 994, in _save_table
+    raise DatabaseError("Forced update did not affect any rows.")
+django.db.utils.DatabaseError: Forced update did not affect any rows.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\utils\deprecation.py", line 152, in __acall__
+    response = await sync_to_async(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+WARNING 2025-05-10 12:52:02,807 log 18184 15568 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /api/save-worksession/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 994, in _save_table
+    raise DatabaseError("Forced update did not affect any rows.")
+django.db.utils.DatabaseError: Forced update did not affect any rows.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\utils\deprecation.py", line 152, in __acall__
+    response = await sync_to_async(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+WARNING 2025-05-10 12:52:03,949 log 18184 15568 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /api/save-worksession/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 994, in _save_table
+    raise DatabaseError("Forced update did not affect any rows.")
+django.db.utils.DatabaseError: Forced update did not affect any rows.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\utils\deprecation.py", line 152, in __acall__
+    response = await sync_to_async(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+WARNING 2025-05-10 12:53:29,910 log 4932 18496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 12:53:36,725 log 4932 18496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:00:02,999 log 17988 2996 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:00:06,211 log 17988 2996 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:19:01,022 log 15568 23448 Not Found: /favicon.ico
+WARNING 2025-05-10 13:19:09,499 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:20:19,892 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:20:22,296 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:20:27,650 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:20:29,873 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:20:32,454 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:21:10,491 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:24:28,679 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:39:49,900 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:39:55,293 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:44:26,224 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:45:21,373 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:48:07,179 log 15568 23448 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:50:23,141 log 20600 17596 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+ERROR 2025-05-10 13:50:55,367 log 20272 13496 Internal Server Error: /manage-users/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\permissions.py", line 54, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\manage_users_views.py", line 56, in manage_users
+    return render(request, 'authentication/manage_users.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 457: 'endblock'. Did you forget to register or load this tag?
+WARNING 2025-05-10 13:50:55,470 log 20272 13496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+ERROR 2025-05-10 13:51:18,486 log 21644 11660 Internal Server Error: /manage-users/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\permissions.py", line 54, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\manage_users_views.py", line 56, in manage_users
+    return render(request, 'authentication/manage_users.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 457: 'endblock'. Did you forget to register or load this tag?
+WARNING 2025-05-10 13:51:18,600 log 21644 11660 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:51:20,371 log 21644 11660 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:51:22,677 log 21644 11660 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+ERROR 2025-05-10 13:51:26,468 log 21644 11660 Internal Server Error: /manage-users/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'endblock'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\permissions.py", line 54, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\manage_users_views.py", line 56, in manage_users
+    return render(request, 'authentication/manage_users.html', context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\backends\django.py", line 33, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\engine.py", line 175, in get_template
+    template, origin = self.find_template(template_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
+    nodelist = parser.parse()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 457: 'endblock'. Did you forget to register or load this tag?
+WARNING 2025-05-10 13:51:26,557 log 21644 11660 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:53:02,536 log 22796 2848 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:53:10,905 log 22796 2848 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 13:56:33,257 log 16420 10684 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:00:40,499 log 14724 13928 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:01:49,588 log 11800 1716 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:02:56,068 log 10008 17576 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:04:34,996 log 22164 13788 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:05:45,661 log 23176 22260 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:09:23,660 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:09:30,490 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:09:50,649 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:10:00,788 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:10:29,682 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:10:32,330 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:11:39,609 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:11:42,903 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:20:48,733 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:20:52,037 log 23400 12592 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:23:44,546 log 12368 16348 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:24:07,084 log 12368 16348 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:26:46,098 log 17544 5132 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:27:01,486 log 14196 21376 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:28:26,627 log 14196 21376 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:29:56,685 log 13324 12280 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-10 14:30:18,919 log 13324 12280 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:19:30,125 log 13172 1252 Not Found: /favicon.ico
+WARNING 2025-05-12 13:20:33,126 log 13172 1252 Not Found: /favicon.ico
+WARNING 2025-05-12 13:45:41,676 log 13172 1252 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:45:58,797 log 13172 1252 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:50:39,331 log 8496 13024 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:50:48,750 log 8496 13024 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:51:37,446 log 6372 18368 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:52:53,427 log 8412 8132 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 13:53:05,275 log 8412 8132 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 17:11:31,886 log 19240 11648 Not Found: /favicon.ico
+WARNING 2025-05-12 17:12:22,088 log 19240 11648 Not Found: /favicon.ico
+WARNING 2025-05-12 17:13:20,064 log 19240 11648 Not Found: /favicon.ico
+WARNING 2025-05-12 19:06:40,388 log 19240 11648 Not Found: /favicon.ico
+WARNING 2025-05-12 19:11:18,137 log 19240 11648 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-12 19:16:37,614 log 19240 11648 Not Found: /favicon.ico
+WARNING 2025-05-12 19:35:03,290 log 19240 11648 Not Found: /favicon.ico
+WARNING 2025-05-12 19:42:28,664 log 19240 11648 Not Found: /favicon.ico
