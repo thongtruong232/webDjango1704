@@ -295,7 +295,8 @@ def verify_otp_view(request):
                 )
                 
                 user_role = mongo_user.get('role')
-                if user_role in ['admin', 'quanly']:
+                # Sử dụng ROLES để xác định trang chuyển hướng
+                if user_role == 'admin' or user_role == 'quanly':
                     return JsonResponse({
                         'success': True,
                         'redirect_url': '/manager-admin-sale/',
@@ -307,10 +308,17 @@ def verify_otp_view(request):
                         'redirect_url': '/manager-admin-sale/',
                         'message': 'Đăng nhập thành công'
                     })
-                else:
+                elif user_role == 'nhanvien':
                     return JsonResponse({
                         'success': True,
                         'redirect_url': '/verified/',
+                        'message': 'Đăng nhập thành công'
+                    })
+                else:
+                    # Fallback về trang home nếu role không xác định
+                    return JsonResponse({
+                        'success': True,
+                        'redirect_url': '/home/',
                         'message': 'Đăng nhập thành công'
                     })
                     

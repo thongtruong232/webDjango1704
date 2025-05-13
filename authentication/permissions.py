@@ -4,18 +4,18 @@ from django.contrib import messages
 from .views.mongodb_employee import get_collection_handle_employee
 # Define user roles
 ROLES = {
-    'admin': ['admin', 'quanly', 'kiemtra', 'nhanvien'],
-    'quanly': ['quanly', 'kiemtra', 'nhanvien'],
-    'kiemtra': ['kiemtra'],
-    'nhanvien': ['nhanvien']
+    'admin': ['admin', 'quanly', 'kiemtra', 'nhanvien'],  # Admin có quyền truy cập tất cả
+    'quanly': ['quanly', 'kiemtra', 'nhanvien'],  # Quản lý có quyền truy cập trừ admin
+    'kiemtra': ['kiemtra', 'nhanvien'],  # Kiểm tra có quyền truy cập verified và nhanvien
+    'nhanvien': ['nhanvien']  # Nhân viên chỉ có quyền truy cập chức năng của mình
 }
 
 # Define allowed status updates for each role
 ALLOWED_STATUS_UPDATES = {
-    'admin': ['Chưa sử dụng', 'Đã đăng ký', 'Email lỗi', 'Đã kiểm tra', 'Kiểm tra lỗi'],
-    'quanly': ['Chưa sử dụng', 'Đã đăng ký', 'Email lỗi', 'Đã kiểm tra', 'Kiểm tra lỗi'],
-    'kiemtra': ['Đã kiểm tra', 'Kiểm tra lỗi'],
-    'nhanvien': ['Đã đăng ký', 'Email lỗi']
+    'admin': ['Chưa sử dụng', 'Đã đăng ký', 'Email lỗi', 'Đã kiểm tra', 'Kiểm tra lỗi', 'Đã xử lý', 'Đang xử lý', 'Chưa xử lý'],
+    'quanly': ['Chưa sử dụng', 'Đã đăng ký', 'Email lỗi', 'Đã kiểm tra', 'Kiểm tra lỗi', 'Đã xử lý', 'Đang xử lý', 'Chưa xử lý'],
+    'kiemtra': ['Đã kiểm tra', 'Kiểm tra lỗi', 'Đã xử lý', 'Đang xử lý'],
+    'nhanvien': ['Đã đăng ký', 'Email lỗi', 'Đang xử lý']
 }
 
 def get_user_role(user_id):

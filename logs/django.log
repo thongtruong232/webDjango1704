@@ -3019,3 +3019,6 @@ INFO 2025-05-13 13:23:21,856 basehttp 10576 16028 "GET /api/check-employee-passw
 WARNING 2025-05-13 14:54:46,958 log 14032 12652 Not Found: /favicon.ico
 WARNING 2025-05-13 14:56:38,659 log 14032 12652 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-13 14:56:38,717 log 14032 12652 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 15:45:08,586 log 17364 23424 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 15:45:10,250 log 17364 23424 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 15:45:20,122 log 17364 23424 Not Found: /.well-known/appspecific/com.chrome.devtools.json
