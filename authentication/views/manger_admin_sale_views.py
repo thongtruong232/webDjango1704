@@ -14,25 +14,15 @@ from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
 )
-
 logger = logging.getLogger(__name__)
-
-# Singleton MongoDB client
-_mongo_client = None
-
-def get_mongo_client():
-    global _mongo_client
-    if _mongo_client is None:
-        _mongo_client = MongoClient(settings.MONGODB_URI)
-    return _mongo_client
 
 def get_collection_handle(collection_name):
     """Helper function to get MongoDB collection handle"""
     try:
-        client = get_mongo_client()
+        client = MongoClient(settings.MONGODB_URI)
         db = client[settings.MONGODB_DATABASE]
         collection = db[collection_name]
-        return collection
+        return collection, client
     except Exception as e:
         logger.error(f"Error connecting to MongoDB: {str(e)}")
         raise
@@ -42,7 +32,9 @@ def get_collection_handle(collection_name):
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
-        collection = get_collection_handle('employee_textnow')
+        client = MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['employee_textnow']
 
         # Định nghĩa projection ngay từ đầu
         projection = {
@@ -63,80 +55,43 @@ def manager_textnow_view(request):
         # Lấy tham số tìm kiếm từ request
         status_tn = request.GET.get('status_tn')
         status_tf = request.GET.get('status_tf')
-        sold_status_tn = request.GET.get('sold_status_tn')
-        sold_status_tf = request.GET.get('sold_status_tf')
         date_type = request.GET.get('date_type', 'single')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
         created_by = request.GET.get('created_by')
         search_query = request.GET.get('search', '')
         
-        print("Search parameters:", {
-            'status_tn': status_tn,
-            'status_tf': status_tf,
-            'sold_status_tn': sold_status_tn,
-            'sold_status_tf': sold_status_tf,
-            'date_type': date_type,
-            'start_date': start_date,
-            'end_date': end_date,
-            'created_by': created_by,
-            'search_query': search_query
-        })
-        
         # Xây dựng query
         query = {}
         
-        # Xử lý query theo thời gian
+        # Xử lý query theo thời gian - Sử dụng $gte và $lt thay vì regex
         if date_type == 'single' and start_date:
             try:
-                date_query = {'created_at': {'$regex': f'^{start_date}'}}
-                date_count = collection.count_documents(date_query)
-                print(f"Documents matching single date {start_date}:", date_count)
-                query.update(date_query)
+                start = datetime.strptime(start_date, '%Y-%m-%d')
+                end = start + timedelta(days=1)
+                query['created_at'] = {
+                    '$gte': start.strftime('%Y-%m-%d'),
+                    '$lt': end.strftime('%Y-%m-%d')
+                }
             except ValueError as e:
-                print(f"Single date parsing error: {e}")
+                logger.error(f"Single date parsing error: {e}")
         elif date_type == 'range' and start_date and end_date:
             try:
                 start = datetime.strptime(start_date, '%Y-%m-%d')
                 end = datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)
-                date_query = {
-                    'created_at': {
-                        '$gte': start.strftime('%Y-%m-%d'),
-                        '$lt': end.strftime('%Y-%m-%d')
-                    }
+                query['created_at'] = {
+                    '$gte': start.strftime('%Y-%m-%d'),
+                    '$lt': end.strftime('%Y-%m-%d')
                 }
-                date_count = collection.count_documents(date_query)
-                print(f"Documents matching date range {start_date} to {end_date}:", date_count)
-                query.update(date_query)
             except ValueError as e:
-                print(f"Date range parsing error: {e}")
+                logger.error(f"Date range parsing error: {e}")
         
-        # Xử lý các điều kiện tìm kiếm khác
+        # Xử lý các điều kiện tìm kiếm khác - Sử dụng exact match thay vì regex khi có thể
         if status_tn:
-            status_query = {'status_account_TN': status_tn}
-            status_count = collection.count_documents(status_query)
-            print(f"Documents matching TN status {status_tn}:", status_count)
-            query.update(status_query)
+            query['status_account_TN'] = status_tn
             
         if status_tf:
-            status_query = {'status_account_TF': status_tf}
-            status_count = collection.count_documents(status_query)
-            print(f"Documents matching TF status {status_tf}:", status_count)
-            query.update(status_query)
-
-        if sold_status_tn:
-            sold_status = sold_status_tn.lower() == 'true'
-            sold_query = {'sold_status_TN': sold_status}
-            sold_count = collection.count_documents(sold_query)
-            print(f"Documents matching TN sold status {sold_status}:", sold_count)
-            query.update(sold_query)
-
-        if sold_status_tf:
-            sold_status = sold_status_tf.lower() == 'true'
-            sold_query = {'sold_status_TF': sold_status}
-            sold_count = collection.count_documents(sold_query)
-            print(f"Documents matching TF sold status {sold_status}:", sold_count)
-            query.update(sold_query)
+            query['status_account_TF'] = status_tf
         
         if created_by and created_by.strip() != "":
             creator_query = {'created_by': created_by}
@@ -145,21 +100,23 @@ def manager_textnow_view(request):
             query.update(creator_query)
             
         if search_query:
-            text_query = {
-                '$or': [
-                    {'email': {'$regex': search_query, '$options': 'i'}},
-                    {'textnow_username': {'$regex': search_query, '$options': 'i'}}
-                ]
-            }
-            text_count = collection.count_documents(text_query)
-            print(f"Documents matching search text {search_query}:", text_count)
-            query.update(text_query)
+            # Sử dụng text index nếu có, nếu không thì dùng regex với case-insensitive
+            query['$or'] = [
+                {'email': {'$regex': f'^{search_query}', '$options': 'i'}},
+                {'textnow_username': {'$regex': f'^{search_query}', '$options': 'i'}}
+            ]
 
-        print("Final query:", query)
-        
-        # Thực hiện truy vấn
-        employees = list(collection.find(query, projection))
-        print(f"Found {len(employees)} documents with query conditions")
+        # Thêm phân trang
+        page = int(request.GET.get('page', 1))
+        per_page = 50  # Số lượng kết quả mỗi trang
+        skip = (page - 1) * per_page
+
+        # Thực hiện truy vấn với phân trang
+        total_documents = collection.count_documents(query)
+        employees = list(collection.find(query, projection)
+                        .sort('created_at', -1)  # Sắp xếp theo thời gian tạo mới nhất
+                        .skip(skip)
+                        .limit(per_page))
 
         # Format lại ngày
         for employee in employees:
@@ -168,19 +125,22 @@ def manager_textnow_view(request):
             if 'created_at' in employee:
                 employee['created_at'] = datetime.strptime(employee['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
         
-        # Lấy danh sách người tạo và trạng thái
+        # Lấy danh sách người tạo và trạng thái - Cache kết quả
         creators = list(collection.distinct('created_by'))
         creators = sorted([creator for creator in creators if creator])
         
-        # Lấy danh sách trạng thái từ cả TN và TF
         status_list = list(set(
             list(collection.distinct('status_account_TN')) + 
             list(collection.distinct('status_account_TF'))
         ))
         status_list = sorted([status for status in status_list if status])
   
-        users_collection = get_collection_handle('users')
+        users_collection, client = get_collection_handle('users')
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        
+        # Tính toán thông tin phân trang
+        total_pages = (total_documents + per_page - 1) // per_page
+        
         context = {
             'user_data': user_data,
             'employees': employees,
@@ -189,31 +149,35 @@ def manager_textnow_view(request):
             'end_date': end_date,
             'status_tn': status_tn,
             'status_tf': status_tf,
-            'sold_status_tn': sold_status_tn,
-            'sold_status_tf': sold_status_tf,
             'status_list': status_list,
             'created_by': created_by,
             'search_query': search_query,
-            'creators': creators
+            'creators': creators,
+            'current_page': page,
+            'total_pages': total_pages,
+            'total_documents': total_documents,
+            'per_page': per_page
         }
         
         return render(request, 'authentication/manager_textnow_admin_sale.html', context)
         
     except Exception as e:
-        print(f"Error in query: {str(e)}")
         logger.error(f"Error in manager_textnow_view: {str(e)}", exc_info=True)
         context = {
             'error': f'Lỗi: {str(e)}'
         }
         return render(request, 'authentication/manager_textnow_admin_sale.html', context)
 
+# Thêm view xử lý xóa
 @login_required
 @role_required(['admin', 'quanly'])
 def delete_employee(request):
     if request.method == 'POST':
         try:
             employee_id = request.POST.get('employee_id')
-            collection = get_collection_handle('employee_textnow')
+            client = MongoClient(settings.MONGODB_URI)
+            db = client[settings.MONGODB_DATABASE]
+            collection = db['employee_textnow']
             
             # Chuyển string ID thành ObjectId
             result = collection.delete_one({'_id': ObjectId(employee_id)})
@@ -239,7 +203,9 @@ def export_employee_textnow_excel(request):
             selected_ids = data.get('selected_ids', [])
 
             # Kết nối MongoDB
-            collection = get_collection_handle('employee_textnow')
+            client = MongoClient(settings.MONGODB_URI)
+            db = client[settings.MONGODB_DATABASE]
+            collection = db['employee_textnow']
 
             # Truy vấn các bản ghi được chọn
             query = {'_id': {'$in': [ObjectId(id) for id in selected_ids]}}
