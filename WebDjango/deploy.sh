@@ -26,13 +26,6 @@ fi
 # 2. Chuyển đến thư mục dự án
 cd $PROJECT_DIR || exit
 
-# 3. Kiểm tra và kích hoạt virtualenv
-if [ ! -d "$VENV_DIR" ]; then
-    echo "Lỗi: Virtualenv không tồn tại: $VENV_DIR"
-    exit 1
-fi
-echo "Kích hoạt virtualenv..."
-source $VENV_DIR/bin/activate
 
 # 4. Kiểm tra phiên bản Python và các package
 echo "Kiểm tra phiên bản Python và các package..."
