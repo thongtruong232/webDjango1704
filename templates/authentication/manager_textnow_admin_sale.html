@@ -903,42 +903,87 @@
             <!-- Thêm phần thống kê -->
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <div class="alert alert-success d-flex align-items-center">
-                        <i class="fas fa-check-circle me-2"></i>
+                    <div class="alert alert-success d-flex align-items-center gap-2">
+                        <i class="fas fa-check-circle me-2" style="font-size: 30px;"></i>
                         <div>
                             <strong>Tổng số TextNow đã bán:</strong>
                             <span id="totalTNSold" class="ms-2 badge bg-primary">0</span>
+                            <div id="dateRangeInfoTN" class="small text-muted mt-1"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="alert alert-success d-flex align-items-center">
-                        <i class="fas fa-check-circle me-2"></i>
+                    <div class="alert alert-success d-flex align-items-center gap-2">
+                        <i class="fas fa-check-circle me-2" style="font-size: 30px;"></i>
                         <div>
                             <strong>Tổng số TextFree đã bán:</strong>
                             <span id="totalTFSold" class="ms-2 badge bg-primary">0</span>
+                            <div id="dateRangeInfoTF" class="small text-muted mt-1"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="alert alert-warning d-flex align-items-center">
-                        <i class="fas fa-clock me-2"></i>
+                    <div class="alert alert-warning d-flex align-items-center gap-2">
+                        <i class="fas fa-clock me-2" style="font-size: 30px;"></i>
                         <div>
                             <strong>Tổng số TextNow chưa bán:</strong>
                             <span id="totalTNUnsold" class="ms-2 badge bg-warning">0</span>
+                            <div id="dateRangeInfoTNUnsold" class="small text-muted mt-1"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="alert alert-warning d-flex align-items-center">
-                        <i class="fas fa-clock me-2"></i>
+                    <div class="alert alert-warning d-flex align-items-center gap-2">
+                        <i class="fas fa-clock me-2" style="font-size: 30px;"></i>
                         <div>
                             <strong>Tổng số TextFree chưa bán:</strong>
                             <span id="totalTFUnsold" class="ms-2 badge bg-warning">0</span>
+                            <div id="dateRangeInfoTFUnsold" class="small text-muted mt-1"></div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Thêm hàng mới cho thống kê theo sold_status -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="alert alert-info d-flex align-items-center gap-2">
+                        <i class="fas fa-shopping-cart me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextNow đã bán:</strong>
+                            <span id="totalTNSoldStatus" class="ms-2 badge bg-info">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-info d-flex align-items-center gap-2">
+                        <i class="fas fa-shopping-cart me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextFree đã bán:</strong>
+                            <span id="totalTFSoldStatus" class="ms-2 badge bg-info">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-secondary d-flex align-items-center gap-2" style="cursor: pointer;" id="unsoldTextNowStats">
+                        <i class="fas fa-box me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextNow hàng tồn:</strong>
+                            <span id="totalTNUnsoldStatus" class="ms-2 badge bg-secondary">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-secondary d-flex align-items-center gap-2" style="cursor: pointer;" id="unsoldTextFreeStats">
+                        <i class="fas fa-box me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextFree hàng tồn:</strong>
+                            <span id="totalTFUnsoldStatus" class="ms-2 badge bg-secondary">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -1160,6 +1205,66 @@
                 <tbody id="selectedRecordsBody">
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm Modal hiển thị danh sách ngày TextNow hàng tồn -->
+<div class="modal fade" id="unsoldTextNowModal" tabindex="-1" aria-labelledby="unsoldTextNowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unsoldTextNowModalLabel">Danh sách TextNow hàng tồn theo ngày</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Số lượng</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unsoldTextNowTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm Modal hiển thị danh sách ngày TextNow/TextFree hàng tồn -->
+<div class="modal fade" id="unsoldStatsModal" tabindex="-1" aria-labelledby="unsoldStatsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unsoldStatsModalLabel">Danh sách hàng tồn theo ngày</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Số lượng</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unsoldStatsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
         </div>
     </div>
 </div>
@@ -1726,8 +1831,49 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Thêm hàm tính toán tổng số record đã bán và chưa bán
-    function updateSoldCounts() {
+    // Hàm lấy số liệu thống kê từ server
+    function fetchSoldStatusCounts() {
+        // Hiển thị loading overlay
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const container = document.querySelector('.container-fluid');
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+
+        // Gọi API để lấy số liệu thống kê
+        fetch('/api/get-sold-status-counts/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Cập nhật hiển thị cho các ô thống kê mới
+                    document.getElementById('totalTNSoldStatus').textContent = data.counts.tn_sold;
+                    document.getElementById('totalTFSoldStatus').textContent = data.counts.tf_sold;
+                    document.getElementById('totalTNUnsoldStatus').textContent = data.counts.tn_unsold;
+                    document.getElementById('totalTFUnsoldStatus').textContent = data.counts.tf_unsold;
+                } else {
+                    console.error('Error fetching sold status counts:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // Ẩn loading overlay
+                loadingOverlay.style.display = 'none';
+                container.classList.remove('loading');
+            });
+    }
+
+    // Gọi hàm lấy số liệu khi trang được tải
+    fetchSoldStatusCounts();
+
+    // Gọi lại hàm khi form tìm kiếm được submit
+    document.querySelector('form[method="GET"]').addEventListener('submit', function() {
+        // Đợi trang reload xong
+        window.addEventListener('load', fetchSoldStatusCounts);
+    });
+
+    // Hàm cập nhật số liệu hiển thị (chỉ cho các ô thống kê cũ)
+    function updateDisplayCounts() {
         const rows = document.querySelectorAll('tbody tr');
         let tnSoldCount = 0;
         let tfSoldCount = 0;
@@ -1754,17 +1900,145 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        // Chỉ cập nhật các ô thống kê cũ
         document.getElementById('totalTNSold').textContent = tnSoldCount;
         document.getElementById('totalTFSold').textContent = tfSoldCount;
         document.getElementById('totalTNUnsold').textContent = tnUnsoldCount;
         document.getElementById('totalTFUnsold').textContent = tfUnsoldCount;
     }
 
-    // Gọi hàm cập nhật số liệu khi trang được tải
-    updateSoldCounts();
+    // Gọi hàm cập nhật số liệu hiển thị khi trang được tải
+    updateDisplayCounts();
 
-    // Cập nhật số liệu sau mỗi lần reload trang
-    window.addEventListener('load', updateSoldCounts);
+    // Thêm hàm cập nhật thông tin ngày tháng
+    function updateDateRangeInfo() {
+        const dateType = document.getElementById('date_type').value;
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        
+        // Format date function
+        function formatDate(date) {
+            return date.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Get date range text
+        let dateRangeText;
+        if (dateType === 'single' && startDate) {
+            const date = new Date(startDate);
+            dateRangeText = `Ngày: ${formatDate(date)}`;
+        } else if (dateType === 'range' && startDate && endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            dateRangeText = `Từ ${formatDate(start)} đến ${formatDate(end)}`;
+        } else {
+            dateRangeText = 'Tất cả thời gian';
+        }
+
+        // Update all date range info elements
+        const dateRangeElements = [
+            'dateRangeInfoTN',
+            'dateRangeInfoTF',
+            'dateRangeInfoTNUnsold',
+            'dateRangeInfoTFUnsold'
+        ];
+
+        dateRangeElements.forEach(elementId => {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = dateRangeText;
+            }
+        });
+    }
+
+    // Cập nhật thông tin ngày tháng khi trang được tải
+    updateDateRangeInfo();
+
+    // Cập nhật thông tin ngày tháng khi thay đổi loại ngày
+    document.getElementById('date_type').addEventListener('change', updateDateRangeInfo);
+
+    // Cập nhật thông tin ngày tháng khi thay đổi ngày
+    document.getElementById('start_date').addEventListener('change', updateDateRangeInfo);
+    document.getElementById('end_date').addEventListener('change', updateDateRangeInfo);
+
+    // Xử lý click vào thống kê TextNow hàng tồn
+    document.getElementById('unsoldTextNowStats').addEventListener('click', function() {
+        fetchUnsoldStats('TN');
+    });
+
+    // Xử lý click vào thống kê TextFree hàng tồn
+    document.getElementById('unsoldTextFreeStats').addEventListener('click', function() {
+        fetchUnsoldStats('TF');
+    });
+
+    // Hàm chung để lấy và hiển thị thống kê hàng tồn
+    function fetchUnsoldStats(type) {
+        // Hiển thị loading overlay
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const container = document.querySelector('.container-fluid');
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+
+        // Gọi API lấy danh sách ngày với type tương ứng
+        fetch(`/api/get-textnow-unsold-dates/?type=${type}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const tbody = document.getElementById('unsoldStatsTableBody');
+                    tbody.innerHTML = ''; // Xóa nội dung cũ
+
+                    // Cập nhật tiêu đề modal dựa vào type
+                    const modalTitle = document.getElementById('unsoldStatsModalLabel');
+                    modalTitle.textContent = `Danh sách ${data.type} hàng tồn theo ngày`;
+
+                    data.dates.forEach(item => {
+                        const row = document.createElement('tr');
+                        
+                        // Tạo cell ngày
+                        const dateCell = document.createElement('td');
+                        dateCell.textContent = item.date;
+                        
+                        // Tạo cell số lượng
+                        const countCell = document.createElement('td');
+                        countCell.textContent = item.count;
+                        
+                        // Tạo cell trạng thái
+                        const statusCell = document.createElement('td');
+                        if (item.check_add_area_phone) {
+                            statusCell.innerHTML = '<span class="badge bg-warning">Cần thêm mã vùng</span>';
+                        } else {
+                            statusCell.innerHTML = '<span class="badge bg-success">Bình thường</span>';
+                        }
+                        
+                        // Thêm các cell vào row
+                        row.appendChild(dateCell);
+                        row.appendChild(countCell);
+                        row.appendChild(statusCell);
+                        
+                        // Thêm row vào tbody
+                        tbody.appendChild(row);
+                    });
+
+                    // Hiển thị modal
+                    const modal = new bootstrap.Modal(document.getElementById('unsoldStatsModal'));
+                    modal.show();
+                } else {
+                    alert('Có lỗi xảy ra khi lấy dữ liệu: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi lấy dữ liệu');
+            })
+            .finally(() => {
+                // Ẩn loading overlay
+                loadingOverlay.style.display = 'none';
+                container.classList.remove('loading');
+            });
+    }
 });
 </script>
 {% endblock %}

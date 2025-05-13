@@ -38,7 +38,7 @@ def get_collection_handle(collection_name):
         raise
 
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required('kiemtra')  # Yêu cầu quyền admin
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
@@ -250,6 +250,7 @@ def export_employee_textnow_excel(request):
                 'password_TF': 1,
                 'status_account_TN': 1,
                 'status_account_TF': 1,
+                'area_phone': 1,
                 'created_at': 1,
                 'created_by': 1,
                 'full_information': 1,
@@ -265,9 +266,8 @@ def export_employee_textnow_excel(request):
 
             # Header
             headers = [
-                "Email", "Password Email", "Password", "Password TF",
-                "TN Status", "TF Status", "TN Sold", "TF Sold",
-                "Người tạo", "Ngày tạo", "Thông tin"
+                "Email", "Password Email", "Đầu số mã vùng", "Password", "Password TF",
+                "TN Sold", "TF Sold","Người tạo", "Ngày tạo", "Thông tin", 
             ]
             ws.append(headers)
 
@@ -276,10 +276,9 @@ def export_employee_textnow_excel(request):
                 ws.append([
                     emp.get('email', ''),
                     emp.get('password_email', ''),
+                    emp.get('area_phone', ''),
                     emp.get('password', ''),
                     emp.get('password_TF', ''),
-                    emp.get('status_account_TN', ''),
-                    emp.get('status_account_TF', ''),
                     emp.get('sold_status_TN', ''),
                     emp.get('sold_status_TF', ''),
                     emp.get('created_by', ''),
@@ -356,3 +355,123 @@ def update_sold_status(request):
         'status': 'error',
         'message': 'Phương thức không được hỗ trợ'
     })
+
+@login_required
+@role_required('kiemtra')  # Yêu cầu quyền admin
+def get_sold_status_counts(request):
+    try:
+        # Kết nối MongoDB
+        collection = get_collection_handle('employee_textnow')
+        
+        # Đếm số lượng record theo sold_status_TN và sold_status_TF
+        tn_sold = collection.count_documents({'sold_status_TN': True})
+        tn_unsold = collection.count_documents({'sold_status_TN': False})
+        tf_sold = collection.count_documents({'sold_status_TF': True})
+        tf_unsold = collection.count_documents({'sold_status_TF': False})
+        
+        return JsonResponse({
+            'status': 'success',
+            'counts': {
+                'tn_sold': tn_sold,
+                'tn_unsold': tn_unsold,
+                'tf_sold': tf_sold,
+                'tf_unsold': tf_unsold
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Error in get_sold_status_counts: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)
+
+def get_total_textnow_status_counts(request):
+    try:
+        # Lấy type từ query parameter
+        type = request.GET.get('type', 'TN').upper()  # Mặc định là TN nếu không có type
+        
+        # Kết nối MongoDB
+        collection = get_collection_handle('employee_textnow')
+
+        # Lấy ngày hiện tại
+        today = datetime.now()
+        
+        # Xác định trường sold_status dựa vào type
+        sold_status_field = 'sold_status_TN' if type == 'TN' else 'sold_status_TF'
+        
+        # Sử dụng aggregation để nhóm theo ngày và đếm số lượng record
+        pipeline = [
+            {
+                '$match': {
+                    sold_status_field: False
+                }
+            },
+            {
+                '$addFields': {
+                    'parsed_date': {
+                        '$dateFromString': {
+                            'dateString': {
+                                '$substr': ['$created_at', 0, 10]  # Lấy phần YYYY-MM-DD
+                            },
+                            'format': '%Y-%m-%d'
+                        }
+                    }
+                }
+            },
+            {
+                '$group': {
+                    '_id': {
+                        '$dateToString': {
+                            'format': '%d-%m-%Y',
+                            'date': '$parsed_date'
+                        }
+                    },
+                    'count': {'$sum': 1},
+                    'date_obj': {'$first': '$parsed_date'}  # Lưu lại đối tượng date để so sánh
+                }
+            },
+            {
+                '$project': {
+                    '_id': 0,
+                    'date': '$_id',
+                    'count': 1,
+                    'date_obj': 1
+                }
+            },
+            {
+                '$sort': {
+                    'date': -1  # Sắp xếp theo ngày giảm dần
+                }
+            }
+        ]
+        
+        # Thực hiện aggregation
+        results = list(collection.aggregate(pipeline))
+        
+        # Xử lý thêm thuộc tính check_add_area_phone
+        for result in results:
+            # Chuyển đổi date_obj từ MongoDB date sang Python datetime
+            result_date = result['date_obj']
+            # Tính số ngày chênh lệch
+            days_diff = (today - result_date).days
+            # Thêm thuộc tính check_add_area_phone nếu cách hơn 5 ngày
+            if days_diff > 5 and type == 'TN':
+                result['check_add_area_phone'] = True
+            else:
+                result['check_add_area_phone'] = False
+            # Xóa trường date_obj vì không cần thiết trong response
+            del result['date_obj']
+        
+        return JsonResponse({
+            'status': 'success',
+            'dates': results,
+            'type': type
+        })
+        
+    except Exception as e:
+        logger.error(f"Error in get_total_textnow_status_counts: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views.manger_admin_sale_views import manager_textnow_view, delete_employee, export_employee_textnow_excel, update_sold_status
+from .views.manger_admin_sale_views import manager_textnow_view, delete_employee, export_employee_textnow_excel, update_sold_status, get_sold_status_counts, get_total_textnow_status_counts
 from .views.employee_email_info_views import check_employee_password_today, get_employee_passwords,get_random_area_phones
 
 urlpatterns = [
@@ -52,5 +52,7 @@ urlpatterns = [
     path('delete-employee/', delete_employee, name='delete_employee'),
     path('export-employee-textnow-excel/', export_employee_textnow_excel, name='export_employee_textnow_excel'),
     path('update-sold-status/', update_sold_status, name='update_sold_status'),
+    path('api/get-sold-status-counts/', get_sold_status_counts, name='get_sold_status_counts'),
+    path('api/get-textnow-unsold-dates/', get_total_textnow_status_counts, name='get_total_textnow_status_counts'),
 ]
 
