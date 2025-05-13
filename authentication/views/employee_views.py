@@ -6,11 +6,16 @@ from django.shortcuts import render, redirect
 from pymongo import MongoClient
 from django.conf import settings
 from datetime import datetime
+import random
+from rest_framework.response import Response
 from django.utils import timezone
 import logging
 import json
 from django.contrib import messages
 from datetime import datetime, time
+import pymongo
+from rest_framework.decorators import api_view
+
 from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
@@ -125,6 +130,7 @@ def get_available_emails_api(request):
         pass_Tn = db['employee_passwordregproduct']
         worksession_collection = db['employee_worksession']
         area_phone_collection = db['area_phone']  # Add area_phone collection
+        phone_message_collection = db['phone_message']
 
         try:
             # Get current user and datetime
@@ -181,7 +187,10 @@ def get_available_emails_api(request):
             random_area_phones = list(area_phone_collection.aggregate([
                 {'$sample': {'size': 5}}  # Get 5 random records
             ]))
-            for email, area_phone in zip(available_emails, random_area_phones):
+            random_phones_message = list(phone_message_collection.aggregate([
+                {'$sample': {'size': 5}}  # Get 5 random records
+            ]))
+            for email, area_phone, phone_message in zip(available_emails, random_area_phones,random_phones_message):
                 # Update the record in MongoDB
                 email_collection.update_one(
                     {'_id': email['_id']},
@@ -212,7 +221,7 @@ def get_available_emails_api(request):
                                 'pass_TN': pass_Tn_today.get('password') if pass_Tn_today else None,
                                 'pass_TF': pass_Tf_today.get('password') if pass_Tf_today else None,
                                 'area_phone': area_phone.get('code_area_phone') if area_phone else None,
-                                'main_area': area_phone.get('main_area') if area_phone else None
+                                'phone_number': phone_message.get('phone_number') if area_phone else None
                             }
 
                 # Add to processed emails list
@@ -1038,3 +1047,148 @@ def create_area_phone_api(request):
     finally:
         if client:
             client.close()
+
+@api_view(['POST'])
+def create__phone_message_api(request):
+    client = None
+    try:
+        # Lấy dữ liệu từ request (danh sách các đối tượng)
+        data_list = json.loads(request.body)
+
+        if not isinstance(data_list, list):
+            return JsonResponse({
+                'success': False,
+                'error': 'Dữ liệu phải là một danh sách các đối tượng JSON'
+            }, status=400)
+
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        phone_message_collection = db['phone_message']
+
+        inserted_items = []
+        errors = []
+
+        for item in data_list:
+            phoneNumber = item.get('phone_number')
+            country = item.get('country')
+            print(phoneNumber, country)
+            if not phoneNumber or not country :
+                errors.append({
+                    'phoneNumber': phoneNumber,
+                    'error': 'Thiếu trường bắt buộc'
+                })
+                continue
+
+            if phone_message_collection.find_one({'phone_number': phoneNumber}):
+                errors.append({
+                    'phoneNumber': phoneNumber,
+                    'error': 'số điện thoại đã được thêm vào database'
+                })
+                continue
+
+            current_time = datetime.now().isoformat()
+            new_area_phone = {
+                'phone_number': phoneNumber,
+                'country': country,
+                'created_at': current_time,
+                'updated_at': current_time
+            }
+
+            result = phone_message_collection.insert_one(new_area_phone)
+
+            inserted_items.append({
+                'id': str(result.inserted_id),
+                'phone_number': phoneNumber,
+                'country': country,
+                'created_at': current_time,
+                'updated_at': current_time
+            })
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Xử lý xong danh sách area phone',
+            'inserted': inserted_items,
+            'errors': errors
+        }, status=207 if errors else 201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Dữ liệu không hợp lệ'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Error in create_area_phone_api: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+    finally:
+        if client:
+            client.close()
+
+@api_view(['GET'])
+def get_random_phones_message(request):
+    """
+    API endpoint để lấy ngẫu nhiên một số lượng area phone
+    """
+    try:
+        # Lấy số lượng cần lấy từ query params
+        quantity = int(request.GET.get('quantity', 5))  # Mặc định là 5 nếu không có
+
+        # Validate quantity
+        if quantity <= 0:
+            return JsonResponse({
+                'success': False,
+                'error': 'Số lượng phải lớn hơn 0'
+            })
+
+        # Kết nối MongoDB
+        client = pymongo.MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['phone_message']
+
+        # Lấy tất cả area phones
+        all_phones = list(collection.find())
+        
+        if not all_phones:
+            return JsonResponse({
+                'success': False,
+                'error': 'Không có area phone nào trong database'
+            })
+
+        # Chọn ngẫu nhiên quantity số lượng phones
+        if quantity > len(all_phones):
+            quantity = len(all_phones)  # Giới hạn số lượng nếu yêu cầu nhiều hơn số có sẵn
+
+        random_phones = random.sample(all_phones, quantity)
+
+        # Chuyển đổi ObjectId thành string
+        for phone in random_phones:
+            phone['_id'] = str(phone['_id'])
+
+        return JsonResponse({
+            'success': True,
+            'data': random_phones,
+            'message': f'Đã lấy {len(random_phones)} area phone ngẫu nhiên'
+        })
+
+    except ValueError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Số lượng không hợp lệ'
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
+    finally:
+        if 'client' in locals():
+            client.close() 

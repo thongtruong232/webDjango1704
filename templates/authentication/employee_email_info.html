@@ -97,6 +97,13 @@
             text-overflow: ellipsis;
         }
 
+        /* Thêm style đặc biệt cho cột email */
+        .table td:nth-child(3) {
+            white-space: normal;
+            word-break: break-all;
+            text-align: left;
+        }
+
         .email-row:hover {
             background-color: rgba(52, 152, 219, 0.05);
         }
@@ -301,8 +308,12 @@
                 transform: translate(-50%, -40%);
                 opacity: 0;
             }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                opacity: 0.8;
+            }
             to {
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%) scale(1);
                 opacity: 1;
             }
         }
@@ -556,6 +567,7 @@
             padding: 12px;
             vertical-align: middle;
             border-bottom: 1px solid var(--border-color);
+            text-align: center;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1050,17 +1062,17 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="selectAll"></th>
-                        <th>STT</th>
-                        <th>Email</th>
+                        <th style="width: 70px;"><input type="checkbox" id="selectAll"></th>
+                        <th style="width: 50px;">STT</th>
+                        <th style="width: 250px;">Email</th>
                         <th>Mật khẩu Mail</th>
-                        <th>Mã vùng</th>
-                        <th>Tên vùng </th>
+                        <th style="width: 80px;">Mã vùng</th>
+                        <th>Số điện thoại</th>
                         <th>Mật khẩu Tn</th>
                         <th>Mật khẩu TF</th>
                         <th>Trạng thái Tn</th>
                         <th>Trạng thái Tf</th>
-                        <th>Sao chép</th>
+                        <th style="width: 100px;">Sao chép</th>
                     </tr>
                 </thead>
                 <tbody id="emailsTableBody">
@@ -1148,7 +1160,7 @@
                         <td>${email.email}</td>
                         <td>${email.password}</td>
                         <td>${email.area_phone}</td>
-                        <td>${email.main_area}</td>
+                        <td>${email.phone_number}</td>
                         <td>${email.pass_TN}</td>
                         <td>${email.pass_TF}</td>
                         <td>
@@ -1232,8 +1244,15 @@
 
             // Hiển thị modal xác nhận khi bấm nút "Lấy Email Dự Trữ"
             fetchEmailsBtn.addEventListener('click', function () {
-                confirmFetchModal.style.display = 'block';
-                document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi modal mở
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                loadingOverlay.style.display = 'flex';
+                
+                // Simulate a small delay to show loading (optional)
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                    confirmFetchModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi modal mở
+                }, 300);
             });
 
             // Hàm đóng modal xác nhận
@@ -1244,6 +1263,9 @@
 
             // Hàm xác nhận và gọi API
             window.confirmFetchEmails = async function () {
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                loadingOverlay.style.display = 'flex';
+                
                 closeConfirmFetchModal(); // Đóng modal xác nhận
                 try {
                     const response = await fetch('/api/available-emails/');
@@ -1278,6 +1300,8 @@
                 } catch (error) {
                     console.error('Error:', error);
                     alert('Có lỗi xảy ra khi gọi API');
+                } finally {
+                    loadingOverlay.style.display = 'none';
                 }
             };
 
@@ -1702,7 +1726,10 @@
                     // Lấy area_phone ngẫu nhiên
                     const areaPhoneResponse = await fetch(`/api/get-random-area-phones/?quantity=${quantity}`);
                     const areaPhoneData = await areaPhoneResponse.json();
-                    
+                    const phoneMessageResponse = await fetch(`/api/get-random-phones-message/?quantity=${quantity}`);
+                    const phoneData = await phoneMessageResponse.json();
+                    console.log(phoneData);
+                    console.log(areaPhoneData);
                     if (!areaPhoneData.success) {
                         throw new Error('Không thể lấy area_phone: ' + areaPhoneData.error);
                     }
@@ -1711,7 +1738,10 @@
                     if (areaPhones.length !== quantity) {
                         throw new Error('Số lượng area_phone không khớp với số lượng mail đã mua');
                     }
-
+                    const phoneMessage = phoneData.data;
+                    if (areaPhones.length !== quantity) {
+                        throw new Error('Số lượng phone không khớp với số lượng mail đã mua');
+                    }
                     const newEmails = listData.map((item, index) => {
                         const [email, password, refreshToken, clientId] = item.split('|');
                         return {
@@ -1727,7 +1757,7 @@
                             is_provided: false,
                             supplier: "Dong Van",
                             area_phone: areaPhones[index]['code_area_phone'],
-                            main_area: areaPhones[index]['main_area']
+                            phone_number: phoneMessage[index]['phone_number']
                              // Thêm area_phone vào mỗi email
                         };
                     });

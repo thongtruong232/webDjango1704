@@ -43,6 +43,10 @@ urlpatterns = [
     path('api/get-employee-passwords/', get_employee_passwords, name='get_employee_passwords'),
     path('api/create-area-phone/', views.create_area_phone_api, name='create_area_phone_api'),
     path('api/get-random-area-phones/', get_random_area_phones, name='get_random_area_phones'),
+    path('api/create-phone-message/', views.create__phone_message_api, name='create_area_phone_api'),
+    path('api/get-random-phones-message/', views.get_random_phones_message, name='get_random_phones_message'),
+
+
     # admin manager
     path('manager-admin-sale/', manager_textnow_view, name='manager_textnow_view'),
     path('delete-employee/', delete_employee, name='delete_employee'),

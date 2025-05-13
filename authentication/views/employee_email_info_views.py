@@ -135,4 +135,5 @@ def get_random_area_phones(request):
     finally:
         # Đóng kết nối MongoDB
         if 'client' in locals():
-            client.close() 
+            client.close()
+
