@@ -3016,3 +3016,6 @@ INFO 2025-05-13 13:18:07,936 basehttp 10576 16028 "POST /api/save-worksession/ H
 INFO 2025-05-13 13:23:05,923 basehttp 10576 16028 "POST /api/save-worksession/ HTTP/1.1" 200 104
 INFO 2025-05-13 13:23:17,151 basehttp 10576 16028 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
 INFO 2025-05-13 13:23:21,856 basehttp 10576 16028 "GET /api/check-employee-password-today/ HTTP/1.1" 200 112
+WARNING 2025-05-13 14:54:46,958 log 14032 12652 Not Found: /favicon.ico
+WARNING 2025-05-13 14:56:38,659 log 14032 12652 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 14:56:38,717 log 14032 12652 Not Found: /.well-known/appspecific/com.chrome.devtools.json

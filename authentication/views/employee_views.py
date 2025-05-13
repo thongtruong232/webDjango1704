@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
+from .mongodb import get_collection_handle
 from django.conf import settings
 from datetime import datetime
 import random
@@ -89,10 +90,13 @@ def email_info_view(request):
         for email in created_textnow_emails:
             if 'is_reg_acc' in email:
                 email['is_reg_acc'] = 'true' if email['is_reg_acc'] else 'false'
-
+        # Get user_data
+        users_collection, client = get_collection_handle('users')
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
         # Prepare context data
-        print(created_textnow_emails)
+        # print(created_textnow_emails)
         context = {
+            'user_data': user_data,
             'emails': json.dumps(created_textnow_emails),  # Convert to JSON string
             'total_accounts': total_accounts,
             'worksession': current_worksession
