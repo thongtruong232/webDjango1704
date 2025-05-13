@@ -2529,3 +2529,4 @@ WARNING 2025-05-13 12:47:06,504 log 4856 22356 Not Found: /favicon.ico
 WARNING 2025-05-13 12:47:27,269 log 4856 22356 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-13 12:47:30,079 log 4856 22356 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-13 12:47:32,212 log 4856 22356 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 16:19:15,913 log 16636 9040 Not Found: /favicon.ico
