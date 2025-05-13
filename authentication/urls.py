@@ -43,6 +43,7 @@ urlpatterns = [
     path('api/search-textnow/', views.search_textnow_api, name='search_textnow_api'),
     path('api/check-employee-password-today/', check_employee_password_today, name='check_employee_password_today'),
     path('api/get-employee-passwords/', get_employee_passwords, name='get_employee_passwords'),
+    
     # admin manager
     path('manager-admin-sale/', manager_textnow_view, name='manager_textnow_view'),
     path('delete-employee/', delete_employee, name='delete_employee'),

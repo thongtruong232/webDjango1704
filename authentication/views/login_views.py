@@ -60,6 +60,7 @@ def login_view(request):
                 elif user_role in ['admin', 'quanly']:
                     return redirect('manager_textnow_view')
                 else:
+                    return redirect('manager_textnow_view')
                     return redirect('login')
             else:
                 # Nếu không tìm thấy user trong MongoDB, đăng xuất và chuyển về trang login
@@ -300,6 +301,7 @@ def verify_otp_view(request):
                 if user_role == 'nhanvien':
                     return JsonResponse({
                         'success': True,
+                        'redirect_url': '/manager-admin-sale/',
                         'redirect_url': '/employee_email_info/',
                         'message': 'Đăng nhập thành công'
                     })

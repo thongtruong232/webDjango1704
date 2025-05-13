@@ -1,4 +1,5 @@
 {% extends "authentication/base.html" %}
+{% load custom_filters %}
 
 {% block title %}Quản lý Employee Textnow{% endblock %}
 
@@ -1042,6 +1043,42 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            
+            <!-- Phân trang -->
+            {% if total_pages > 1 %}
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if current_page > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ current_page|add:'-1' }}{% if search_query %}&search={{ search_query }}{% endif %}{% if status_tn %}&status_tn={{ status_tn }}{% endif %}{% if status_tf %}&status_tf={{ status_tf }}{% endif %}{% if created_by %}&created_by={{ created_by }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}{% if date_type %}&date_type={{ date_type }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for i in total_pages|get_range %}
+                    <li class="page-item {% if i == current_page %}active{% endif %}">
+                        <a class="page-link" href="?page={{ i }}{% if search_query %}&search={{ search_query }}{% endif %}{% if status_tn %}&status_tn={{ status_tn }}{% endif %}{% if status_tf %}&status_tf={{ status_tf }}{% endif %}{% if created_by %}&created_by={{ created_by }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}{% if date_type %}&date_type={{ date_type }}{% endif %}">{{ i }}</a>
+                    </li>
+                    {% endfor %}
+                    
+                    {% if current_page < total_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ current_page|add:'1' }}{% if search_query %}&search={{ search_query }}{% endif %}{% if status_tn %}&status_tn={{ status_tn }}{% endif %}{% if status_tf %}&status_tf={{ status_tf }}{% endif %}{% if created_by %}&created_by={{ created_by }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}{% if date_type %}&date_type={{ date_type }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            
+            <!-- Hiển thị thông tin phân trang -->
+            <div class="text-center mt-2">
+                <small class="text-muted">
+                    Hiển thị {{ employees|length }} / {{ total_documents }} kết quả
+                </small>
             </div>
         </div>
     </div>

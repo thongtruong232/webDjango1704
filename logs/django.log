@@ -886,6 +886,7 @@ Traceback (most recent call last):
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
     raise SessionInterrupted(
 django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+<<<<<<< HEAD
 INFO 2025-05-08 14:04:22,497 basehttp 4732 7628 "POST /api/save-worksession/ HTTP/1.1" 200 104
 INFO 2025-05-08 14:09:22,053 basehttp 4732 7628 "POST /api/save-worksession/ HTTP/1.1" 200 104
 INFO 2025-05-08 14:14:22,159 basehttp 4732 2256 "POST /api/save-worksession/ HTTP/1.1" 200 104
@@ -2308,6 +2309,55 @@ Traceback (most recent call last):
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 505, in parse
     compile_func = self.tags[command]
 KeyError: 'endblock'
+=======
+WARNING 2025-05-08 20:39:22,289 log 10768 4904 Not Found: /
+WARNING 2025-05-08 20:39:24,789 log 10768 4904 Not Found: /
+ERROR 2025-05-08 20:40:46,992 log 18840 14312 Internal Server Error: /manager-admin-sale
+Traceback (most recent call last):
+  File ".\authentication\views\home_views.py", line 331, in home_view
+    return render(request, 'authentication/home.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'manager-admin-sale' not found. 'manager-admin-sale' is not a valid view function or pattern name.
+>>>>>>> ab8f3fb (Update home)
 
 During handling of the above exception, another exception occurred:
 
@@ -2326,10 +2376,98 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
+<<<<<<< HEAD
   File ".\authentication\permissions.py", line 54, in _wrapped_view
     return view_func(request, *args, **kwargs)
   File ".\authentication\views\manage_users_views.py", line 56, in manage_users
     return render(request, 'authentication/manage_users.html', context)
+=======
+  File ".\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 20:42:03,387 log 16548 18380 Internal Server Error: /manager-admin-sale
+Traceback (most recent call last):
+  File ".\authentication\views\home_views.py", line 331, in home_view
+    return render(request, 'authentication/home.html', {
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'manager-admin-sale' not found. 'manager-admin-sale' is not a valid view function or pattern name.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File ".\authentication\views\home_views.py", line 347, in home_view
+    return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: authentication/error.html
+ERROR 2025-05-08 21:10:32,471 log 12156 18316 Internal Server Error: /manager-admin-sale/
+Traceback (most recent call last):
+  File ".\authentication\views\manger_admin_sale_views.py", line 158, in manager_textnow_view
+    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
+>>>>>>> ab8f3fb (Update home)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
@@ -2356,6 +2494,7 @@ Traceback (most recent call last):
     compiled_result = compile_func(self, token)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
     nodelist = parser.parse()
+<<<<<<< HEAD
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 507, in parse
     self.invalid_block_tag(token, command, parse_until)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
@@ -2367,6 +2506,33 @@ Traceback (most recent call last):
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 505, in parse
     compile_func = self.tags[command]
 KeyError: 'endblock'
+=======
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 953, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 852, in do_for
+    sequence = parser.compile_filter(bits[in_index + 1])
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 698, in __init__
+    filter_func = parser.find_filter(filter_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 606, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'get_range'
+>>>>>>> ab8f3fb (Update home)
 
 During handling of the above exception, another exception occurred:
 
@@ -2385,10 +2551,15 @@ Traceback (most recent call last):
     return func(*args, **kwargs)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
     return view_func(request, *args, **kwargs)
+<<<<<<< HEAD
   File ".\authentication\permissions.py", line 54, in _wrapped_view
     return view_func(request, *args, **kwargs)
   File ".\authentication\views\manage_users_views.py", line 56, in manage_users
     return render(request, 'authentication/manage_users.html', context)
+=======
+  File ".\authentication\views\manger_admin_sale_views.py", line 165, in manager_textnow_view
+    return render(request, 'authentication/manager_textnow_admin_sale.html', context)
+>>>>>>> ab8f3fb (Update home)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\shortcuts.py", line 24, in render
     content = loader.render_to_string(template_name, context, request, using=using)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader.py", line 61, in render_to_string
@@ -2415,6 +2586,7 @@ Traceback (most recent call last):
     compiled_result = compile_func(self, token)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
     nodelist = parser.parse()
+<<<<<<< HEAD
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 507, in parse
     self.invalid_block_tag(token, command, parse_until)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
@@ -2470,10 +2642,13 @@ Traceback (most recent call last):
     self.nodelist = self.compile_nodelist()
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
     return parser.parse()
+=======
+>>>>>>> ab8f3fb (Update home)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
     raise self.error(token, e)
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
     compiled_result = compile_func(self, token)
+<<<<<<< HEAD
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 293, in do_extends
     nodelist = parser.parse()
   File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 507, in parse
@@ -3480,3 +3655,26 @@ WARNING 2025-05-13 15:45:10,250 log 17364 23424 Not Found: /.well-known/appspeci
 WARNING 2025-05-13 15:45:20,122 log 17364 23424 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 >>>>>>> thong
 WARNING 2025-05-13 16:47:24,997 log 11744 17512 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+=======
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 953, in do_if
+    nodelist = parser.parse(("elif", "else", "endif"))
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\defaulttags.py", line 852, in do_for
+    sequence = parser.compile_filter(bits[in_index + 1])
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 600, in compile_filter
+    return FilterExpression(token, self)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 698, in __init__
+    filter_func = parser.find_filter(filter_name)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\template\base.py", line 606, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'get_range'
+>>>>>>> ab8f3fb (Update home)
