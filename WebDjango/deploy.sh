@@ -17,20 +17,32 @@ trap 'echo "Error occurred at line $LINENO. Command: $BASH_COMMAND"' ERR
 # === DEPLOY PROCESS ===
 echo "Bắt đầu quá trình deploy..."
 
-# 1. Kiểm tra thư mục dự án
+# 1. Kiểm tra Docker và Docker Compose
+echo "Kiểm tra Docker và Docker Compose..."
+if ! command -v docker &> /dev/null; then
+    echo "Lỗi: Docker chưa được cài đặt"
+    exit 1
+fi
+
+if ! command -v docker-compose &> /dev/null; then
+    echo "Lỗi: Docker Compose chưa được cài đặt"
+    exit 1
+fi
+
+# 2. Kiểm tra thư mục dự án
 if [ ! -d "$PROJECT_DIR" ]; then
     echo "Lỗi: Thư mục dự án không tồn tại: $PROJECT_DIR"
     exit 1
 fi
 
-# 2. Chuyển đến thư mục dự án
+# 3. Chuyển đến thư mục dự án
 cd $PROJECT_DIR || exit
 
-
-# 4. Kiểm tra phiên bản Python và các package
-echo "Kiểm tra phiên bản Python và các package..."
-python --version
-pip list | grep -E "Django|djangorestframework"
+# 4. Kiểm tra file docker-compose.yml
+if [ ! -f "docker-compose.yml" ]; then
+    echo "Lỗi: Không tìm thấy file docker-compose.yml"
+    exit 1
+fi
 
 # 5. Xử lý log file
 if [ -f "$LOG_FILE" ]; then
@@ -81,7 +93,7 @@ docker compose up -d
 
 # 11. Chờ container sẵn sàng
 echo "Chờ container sẵn sàng..."
-sleep 10  # Tăng thời gian chờ lên 10 giây
+sleep 10
 
 # 12. Kiểm tra container đã chạy
 if ! docker compose ps | grep -q "Up"; then
@@ -90,11 +102,7 @@ if ! docker compose ps | grep -q "Up"; then
     exit 1
 fi
 
-# 13. Cài đặt các gói mới
-echo "Cài đặt dependencies mới..."
-pip install --no-cache-dir -r requirements.txt
-
-# 14. Chạy migrate & collectstatic trong container
+# 13. Chạy migrate & collectstatic trong container
 echo "Chạy migrate và thu thập static files..."
 docker compose exec $PROJECT_NAME bash -c "
     python manage.py check &&
@@ -102,7 +110,7 @@ docker compose exec $PROJECT_NAME bash -c "
     python manage.py collectstatic --noinput --clear
 "
 
-# 15. Kiểm tra kết nối MongoDB
+# 14. Kiểm tra kết nối MongoDB
 echo "Kiểm tra kết nối MongoDB..."
 docker compose exec $PROJECT_NAME python -c "
 import pymongo
@@ -142,7 +150,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# 16. Dừng Daphne nếu đang chạy
+# 15. Dừng Daphne nếu đang chạy
 echo "Dừng Daphne nếu đang chạy..."
 PID=$(ps aux | grep daphne | grep "$DJANGO_MODULE" | grep -v grep | awk '{print $2}')
 if [ -n "$PID" ]; then
@@ -152,11 +160,11 @@ else
     echo "Không tìm thấy Daphne đang chạy."
 fi
 
-# 17. Khởi động lại Daphne
+# 16. Khởi động lại Daphne
 echo "Khởi động lại Daphne..."
 nohup daphne -b 0.0.0.0 -p 8001 $DJANGO_MODULE > "$LOG_FILE" 2>&1 &
 
-# 18. Kiểm tra Daphne đã chạy
+# 17. Kiểm tra Daphne đã chạy
 sleep 5
 if ! ps aux | grep daphne | grep -q "$DJANGO_MODULE"; then
     echo "Lỗi: Daphne không khởi động được"
@@ -164,6 +172,6 @@ if ! ps aux | grep daphne | grep -q "$DJANGO_MODULE"; then
     exit 1
 fi
 
-# 19. Xác nhận quá trình hoàn tất
+# 18. Xác nhận quá trình hoàn tất
 echo "Deploy thành công!"
 echo "Kiểm tra logs tại: $LOG_FILE"
