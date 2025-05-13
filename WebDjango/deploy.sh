@@ -38,9 +38,14 @@ fi
 # 3. Chuyển đến thư mục dự án
 cd $PROJECT_DIR || exit
 
-# 4. Kiểm tra file docker-compose.yml
+# 4. Kiểm tra file docker-compose.yml và requirements.txt
 if [ ! -f "docker-compose.yml" ]; then
     echo "Lỗi: Không tìm thấy file docker-compose.yml"
+    exit 1
+fi
+
+if [ ! -f "requirements.txt" ]; then
+    echo "Lỗi: Không tìm thấy file requirements.txt"
     exit 1
 fi
 
@@ -85,7 +90,7 @@ fi
 
 # 9. Build lại Docker image
 echo "Build lại Docker image..."
-docker compose build
+docker compose build --no-cache
 
 # 10. Khởi động lại toàn bộ hệ thống
 echo "Khởi động lại hệ thống..."

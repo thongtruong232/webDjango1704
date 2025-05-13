@@ -13,17 +13,8 @@ RUN apt-get update && apt-get install -y \
 # Cài đặt pip mới nhất
 RUN pip install --upgrade pip
 
-# Cài đặt các dependencies cơ bản trước
-COPY requirements-base.txt .
-RUN pip install -r requirements-base.txt
-
-# Cài đặt các dependencies Django
-COPY requirements-django.txt .
-RUN pip install -r requirements-django.txt
-
-# Cài đặt các dependencies khác
-COPY requirements-extra.txt .
-RUN pip install -r requirements-extra.txt
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=WebDjango.settings
