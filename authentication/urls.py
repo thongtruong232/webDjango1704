@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views.manger_admin_sale_views import manager_textnow_view, delete_employee, export_employee_textnow_excel, update_sold_status
+from .views.manger_admin_sale_views import manager_textnow_view, delete_employee, export_employee_textnow_excel
 from .views.employee_email_info_views import check_employee_password_today, get_employee_passwords
 from .views.employee_views import email_info_view
 
@@ -47,6 +47,5 @@ urlpatterns = [
     path('manager-admin-sale/', manager_textnow_view, name='manager_textnow_view'),
     path('delete-employee/', delete_employee, name='delete_employee'),
     path('export-employee-textnow-excel/', export_employee_textnow_excel, name='export_employee_textnow_excel'),
-    path('update-sold-status/', update_sold_status, name='update_sold_status'),
 ]
 

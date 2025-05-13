@@ -250,7 +250,7 @@ def get_available_emails_api(request):
             client.close()
 
 @login_required
-@role_required(['admin', 'quanly', 'kiemtra'])
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def create_password_view(request):
     if request.method == 'POST':
         client = None

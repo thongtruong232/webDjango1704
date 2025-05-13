@@ -14,10 +14,12 @@ from django.views.decorators.csrf import csrf_exempt
 from bson import ObjectId
 from pymongo import MongoClient
 from django.conf import settings
+from ..permissions import role_required
 
 
 
 @login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def employee_verified_view(request):
     client = None
     try:

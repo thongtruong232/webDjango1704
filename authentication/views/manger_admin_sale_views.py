@@ -14,25 +14,15 @@ from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
 )
-
 logger = logging.getLogger(__name__)
-
-# Singleton MongoDB client
-_mongo_client = None
-
-def get_mongo_client():
-    global _mongo_client
-    if _mongo_client is None:
-        _mongo_client = MongoClient(settings.MONGODB_URI)
-    return _mongo_client
 
 def get_collection_handle(collection_name):
     """Helper function to get MongoDB collection handle"""
     try:
-        client = get_mongo_client()
+        client = MongoClient(settings.MONGODB_URI)
         db = client[settings.MONGODB_DATABASE]
         collection = db[collection_name]
-        return collection
+        return collection, client
     except Exception as e:
         logger.error(f"Error connecting to MongoDB: {str(e)}")
         raise
@@ -42,7 +32,9 @@ def get_collection_handle(collection_name):
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
-        collection = get_collection_handle('employee_textnow')
+        client = MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['employee_textnow']
 
         # Định nghĩa projection ngay từ đầu
         projection = {
@@ -63,8 +55,6 @@ def manager_textnow_view(request):
         # Lấy tham số tìm kiếm từ request
         status_tn = request.GET.get('status_tn')
         status_tf = request.GET.get('status_tf')
-        sold_status_tn = request.GET.get('sold_status_tn')
-        sold_status_tf = request.GET.get('sold_status_tf')
         date_type = request.GET.get('date_type', 'single')
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
@@ -74,8 +64,6 @@ def manager_textnow_view(request):
         print("Search parameters:", {
             'status_tn': status_tn,
             'status_tf': status_tf,
-            'sold_status_tn': sold_status_tn,
-            'sold_status_tf': sold_status_tf,
             'date_type': date_type,
             'start_date': start_date,
             'end_date': end_date,
@@ -179,7 +167,7 @@ def manager_textnow_view(request):
         ))
         status_list = sorted([status for status in status_list if status])
   
-        users_collection = get_collection_handle('users')
+        users_collection, client = get_collection_handle('users')
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         context = {
             'user_data': user_data,
@@ -189,8 +177,6 @@ def manager_textnow_view(request):
             'end_date': end_date,
             'status_tn': status_tn,
             'status_tf': status_tf,
-            'sold_status_tn': sold_status_tn,
-            'sold_status_tf': sold_status_tf,
             'status_list': status_list,
             'created_by': created_by,
             'search_query': search_query,
@@ -207,13 +193,16 @@ def manager_textnow_view(request):
         }
         return render(request, 'authentication/manager_textnow_admin_sale.html', context)
 
+# Thêm view xử lý xóa
 @login_required
 @role_required(['admin', 'quanly'])
 def delete_employee(request):
     if request.method == 'POST':
         try:
             employee_id = request.POST.get('employee_id')
-            collection = get_collection_handle('employee_textnow')
+            client = MongoClient(settings.MONGODB_URI)
+            db = client[settings.MONGODB_DATABASE]
+            collection = db['employee_textnow']
             
             # Chuyển string ID thành ObjectId
             result = collection.delete_one({'_id': ObjectId(employee_id)})
@@ -239,7 +228,9 @@ def export_employee_textnow_excel(request):
             selected_ids = data.get('selected_ids', [])
 
             # Kết nối MongoDB
-            collection = get_collection_handle('employee_textnow')
+            client = MongoClient(settings.MONGODB_URI)
+            db = client[settings.MONGODB_DATABASE]
+            collection = db['employee_textnow']
 
             # Truy vấn các bản ghi được chọn
             query = {'_id': {'$in': [ObjectId(id) for id in selected_ids]}}

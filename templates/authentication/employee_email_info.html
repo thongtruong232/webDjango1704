@@ -992,43 +992,9 @@
             transform: translateY(1px); /* Hiệu ứng nhấn xuống */
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Giảm đổ bóng khi nhấn */
         }
-
-        /* Thêm style cho loading */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            display: none;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
-    <!-- Thêm div cho loading -->
-    <div class="loading-overlay">
-        <div class="loading-spinner"></div>
-    </div>
-
     <!-- Add Modal HTML -->
     <div id="passwordModal" class="custom-modal">
         <div class="modal-content">
@@ -1097,7 +1063,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn-close-modal" onclick="closePurchaseModal()">Hủy bỏ</button>
-                <button class="btn btn-modal btn-confirm-purchase" onclick="confirmPurchase()">
+                <button class="btn-confirm-purchase" onclick="confirmPurchase()">
                     <i class="fas fa-check"></i> Xác nhận mua
                 </button>
             </div>
@@ -1241,7 +1207,6 @@
                         <td>${email.pass_TF}</td>
                         <td>
                             <select class="form-select status-select" data-email="${email.email}" data-type="tn" ${email.is_reg_acc ? 'disabled' : ''}>
-                                <option value="trống" ${email.status_tn === 'trống' ? 'selected' : ''}>Trống</option>
                                 <option value="chưa tạo acc" ${email.status_tn === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
                                 <option value="tạo acc thành công" ${email.status_tn === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
                                 <option value="acc lỗi" ${email.status_tn === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
@@ -1249,7 +1214,6 @@
                         </td>
                         <td>
                             <select class="form-select status-select" data-email="${email.email}" data-type="tf" ${email.is_reg_acc ? 'disabled' : ''}>
-                                <option value="trống" ${email.status_tf === 'trống' ? 'selected' : ''}>Trống</option>
                                 <option value="chưa tạo acc" ${email.status_tf === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
                                 <option value="tạo acc thành công" ${email.status_tf === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
                                 <option value="acc lỗi" ${email.status_tf === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
@@ -1501,9 +1465,6 @@
 
             // Thêm xử lý sự kiện cho nút Mua Mail Đồng Văn
             buyDongVanBtn.addEventListener('click', async function() {
-                const loadingOverlay = document.querySelector('.loading-overlay');
-                loadingOverlay.style.display = 'flex';
-
                 try {
                     // Kiểm tra bản ghi employee password
                     const checkResponse = await fetch('/api/check-employee-password-today/');
@@ -1530,8 +1491,6 @@
                 } catch (error) {
                     console.error('Error:', error);
                     alert('Có lỗi xảy ra: ' + error.message);
-                } finally {
-                    loadingOverlay.style.display = 'none';
                 }
             });
 
@@ -1723,10 +1682,6 @@
                 return;
             }
 
-            // Hiển thị loading overlay
-            const loadingOverlay = document.querySelector('.loading-overlay');
-            loadingOverlay.style.display = 'flex';
-
             try {
                 // Lấy mật khẩu từ MongoDB thông qua API
                 const passwordResponse = await fetch('/api/get-employee-passwords/');
@@ -1822,9 +1777,6 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('Có lỗi xảy ra khi mua mail');
-            } finally {
-                // Ẩn loading overlay sau khi hoàn thành
-                loadingOverlay.style.display = 'none';
             }
         }
 
