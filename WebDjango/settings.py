@@ -199,6 +199,13 @@ MONGODB_DATABASE = os.getenv('MONGODB_DATABASE', 'mongodbCloud')
 MONGODB_USERNAME = os.getenv('MONGODB_USERNAME', 'admin')
 MONGODB_PASSWORD = os.getenv('MONGODB_PASSWORD', 'admin')
 
+# MongoDB connection settings
+MONGODB_CONNECTION_TIMEOUT = 5000  # 5 seconds
+MONGODB_SOCKET_TIMEOUT = 5000      # 5 seconds
+MONGODB_SERVER_SELECTION_TIMEOUT = 5000  # 5 seconds
+MONGODB_RETRY_WRITES = True
+MONGODB_W = 'majority'
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

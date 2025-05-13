@@ -1,36 +1,52 @@
 #!/bin/bash
 
 # === CONFIGURATION ===
-PROJECT_DIR="/WebDjango"              # Thư mục chứa dự án Django (theo cấu trúc của bạn)
-VENV_DIR="/WebDjango/.venv"            # Thư mục chứa virtualenv (nếu có)
+PROJECT_DIR="/WebDjango"              # Thư mục chứa dự án Django
+VENV_DIR="/WebDjango/.venv"          # Thư mục chứa virtualenv
 DJANGO_MODULE="WebDjango.asgi:application"  # Module ASGI của dự án
-BRANCH="main"                         # Nhánh Git bạn sử dụng (có thể là 'main', 'master' hoặc nhánh khác)
+BRANCH="main"                        # Nhánh Git
 LOG_FILE="daphne.log"
-MAX_LOG_SIZE=10M  # Kích thước tối đa của file log
-BACKUP_DIR="docker_backups"           # Thư mục lưu backup
+MAX_LOG_SIZE=10M                     # Kích thước tối đa của file log
+BACKUP_DIR="docker_backups"          # Thư mục lưu backup
+PROJECT_NAME="webdjango"             # Tên project trong docker-compose
+
+# === ERROR HANDLING ===
+set -e  # Exit on error
+trap 'echo "Error occurred at line $LINENO. Command: $BASH_COMMAND"' ERR
 
 # === DEPLOY PROCESS ===
 echo "Bắt đầu quá trình deploy..."
 
-# 1. Chuyển đến thư mục dự án
+# 1. Kiểm tra thư mục dự án
+if [ ! -d "$PROJECT_DIR" ]; then
+    echo "Lỗi: Thư mục dự án không tồn tại: $PROJECT_DIR"
+    exit 1
+fi
+
+# 2. Chuyển đến thư mục dự án
 cd $PROJECT_DIR || exit
 
-# 2. Kích hoạt virtualenv
+# 3. Kiểm tra và kích hoạt virtualenv
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Lỗi: Virtualenv không tồn tại: $VENV_DIR"
+    exit 1
+fi
 echo "Kích hoạt virtualenv..."
 source $VENV_DIR/bin/activate
 
-# 3. Xử lý log file
+# 4. Kiểm tra phiên bản Python và các package
+echo "Kiểm tra phiên bản Python và các package..."
+python --version
+pip list | grep -E "Django|djangorestframework"
+
+# 5. Xử lý log file
 if [ -f "$LOG_FILE" ]; then
     if [ $(stat -f%z "$LOG_FILE") -gt $MAX_LOG_SIZE ]; then
         mv "$LOG_FILE" "${LOG_FILE}.$(date +%Y%m%d_%H%M%S)"
     fi
 fi
 
-# 4. Build lại Docker image
-echo "Build lại Docker image..."
-docker compose build
-
-# 5. Backup và xóa containers/volumes cũ
+# 6. Backup và xóa containers/volumes cũ
 echo "Xử lý containers và volumes cũ..."
 
 # Tạo thư mục backup nếu chưa tồn tại
@@ -50,11 +66,11 @@ if [ -n "$VOLUMES" ]; then
     done
 fi
 
-# Dừng và xóa containers
+# 7. Dừng và xóa containers
 echo "Dừng containers..."
 docker compose down
 
-# Xóa volumes cụ thể của project
+# 8. Xóa volumes cụ thể của project
 if [ -n "$VOLUMES" ]; then
     for volume in $VOLUMES; do
         echo "Xóa volume: $volume"
@@ -62,48 +78,99 @@ if [ -n "$VOLUMES" ]; then
     done
 fi
 
-# 6. Khởi động lại toàn bộ hệ thống
+# 9. Build lại Docker image
+echo "Build lại Docker image..."
+docker compose build
+
+# 10. Khởi động lại toàn bộ hệ thống
 echo "Khởi động lại hệ thống..."
 docker compose up -d
 
-# 7. Chờ vài giây để Django container sẵn sàng
+# 11. Chờ container sẵn sàng
 echo "Chờ container sẵn sàng..."
-sleep 5
+sleep 10  # Tăng thời gian chờ lên 10 giây
 
-# 8. Cài đặt các gói mới (nếu có thay đổi trong requirements.txt)
+# 12. Kiểm tra container đã chạy
+if ! docker compose ps | grep -q "Up"; then
+    echo "Lỗi: Container không khởi động được"
+    docker compose logs
+    exit 1
+fi
+
+# 13. Cài đặt các gói mới
 echo "Cài đặt dependencies mới..."
 pip install --no-cache-dir -r requirements.txt
 
-# 9. Chạy migrate & collectstatic bên trong container
+# 14. Chạy migrate & collectstatic trong container
 echo "Chạy migrate và thu thập static files..."
 docker compose exec $PROJECT_NAME bash -c "
-  python manage.py migrate &&
-  python manage.py collectstatic --noinput --clear
+    python manage.py check &&
+    python manage.py migrate &&
+    python manage.py collectstatic --noinput --clear
 "
 
-echo "Deploy thành công, giao diện đã được cập nhật!"
+# 15. Kiểm tra kết nối MongoDB
+echo "Kiểm tra kết nối MongoDB..."
+docker compose exec $PROJECT_NAME python -c "
+import pymongo
+from django.conf import settings
+import sys
 
-# 10. Chạy migrate nếu có thay đổi cơ sở dữ liệu
-echo "Chạy database migrations..."
-python manage.py migrate
+def check_mongodb_connection():
+    try:
+        client = pymongo.MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            serverSelectionTimeoutMS=settings.MONGODB_SERVER_SELECTION_TIMEOUT,
+            connectTimeoutMS=settings.MONGODB_CONNECTION_TIMEOUT,
+            socketTimeoutMS=settings.MONGODB_SOCKET_TIMEOUT,
+            retryWrites=settings.MONGODB_RETRY_WRITES,
+            w=settings.MONGODB_W
+        )
+        # Test connection
+        client.server_info()
+        # Test database access
+        db = client[settings.MONGODB_DATABASE]
+        db.command('ping')
+        print('Kết nối MongoDB thành công!')
+        return True
+    except Exception as e:
+        print(f'Lỗi kết nối MongoDB: {str(e)}')
+        return False
 
-# 11. Collect static files (nếu thay đổi trong static files)
-echo "Thu thập static files..."
-python manage.py collectstatic --noinput --clear
+if not check_mongodb_connection():
+    sys.exit(1)
+"
 
-# 12. Dừng Daphne nếu đang chạy
+# Kiểm tra kết quả
+if [ $? -ne 0 ]; then
+    echo "Lỗi: Không thể kết nối đến MongoDB"
+    exit 1
+fi
+
+# 16. Dừng Daphne nếu đang chạy
 echo "Dừng Daphne nếu đang chạy..."
 PID=$(ps aux | grep daphne | grep "$DJANGO_MODULE" | grep -v grep | awk '{print $2}')
 if [ -n "$PID" ]; then
-  kill "$PID"
-  echo "Đã dừng Daphne (PID $PID)"
+    kill "$PID"
+    echo "Đã dừng Daphne (PID $PID)"
 else
-  echo "Không tìm thấy Daphne đang chạy."
+    echo "Không tìm thấy Daphne đang chạy."
 fi
 
-# 13. Khởi động lại Daphne
+# 17. Khởi động lại Daphne
 echo "Khởi động lại Daphne..."
 nohup daphne -b 0.0.0.0 -p 8001 $DJANGO_MODULE > "$LOG_FILE" 2>&1 &
 
-# 14. Xác nhận quá trình hoàn tất
+# 18. Kiểm tra Daphne đã chạy
+sleep 5
+if ! ps aux | grep daphne | grep -q "$DJANGO_MODULE"; then
+    echo "Lỗi: Daphne không khởi động được"
+    cat "$LOG_FILE"
+    exit 1
+fi
+
+# 19. Xác nhận quá trình hoàn tất
 echo "Deploy thành công!"
+echo "Kiểm tra logs tại: $LOG_FILE"
