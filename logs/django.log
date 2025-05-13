@@ -3678,3 +3678,38 @@ WARNING 2025-05-13 16:47:24,997 log 11744 17512 Not Found: /.well-known/appspeci
     raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
 django.template.exceptions.TemplateSyntaxError: Invalid filter: 'get_range'
 >>>>>>> ab8f3fb (Update home)
+WARNING 2025-05-13 19:26:57,036 log 18828 23376 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:27:11,743 log 18828 23376 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:28:04,461 log 14092 22220 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:28:12,701 log 14092 22220 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:28:13,002 log 14092 22220 Not Found: /api/get-sold-status-counts/
+WARNING 2025-05-13 19:28:27,988 log 14092 22220 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:28:33,069 log 14092 22220 Not Found: /favicon.ico
+WARNING 2025-05-13 19:32:16,555 log 18704 5124 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:32:35,767 log 6444 8140 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:32:42,209 log 6444 8140 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:32:48,994 log 6444 8140 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:32:55,840 log 6444 8140 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:33:03,008 log 6444 8140 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:33:09,776 log 6444 8140 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:34:36,426 log 13788 15644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:34:43,330 log 13788 15644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:34:49,921 log 13788 15644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:34:53,889 log 13788 15644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:34:55,784 log 13788 15644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:35:03,871 log 13788 15644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:35:15,402 log 13788 15644 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:36:54,376 log 20676 1896 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:37:00,987 log 20676 1896 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:37:08,696 log 20676 1896 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:37:42,186 log 22552 19056 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:37:48,700 log 22552 19056 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:37:58,658 log 22552 19056 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:38:35,999 log 1364 22904 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:38:42,997 log 1364 22904 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:38:51,242 log 1364 22904 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:39:41,589 log 11728 22712 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:39:48,951 log 11728 22712 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:40:00,076 log 11728 22712 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-13 19:40:00,231 log 11728 22712 Not Found: /api/get-sold-status-counts/
+WARNING 2025-05-13 19:40:30,175 log 11728 22712 Not Found: /api/get-sold-status-counts/

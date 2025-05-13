@@ -28,7 +28,7 @@ def get_collection_handle(collection_name):
         raise
 
 @login_required
-@role_required(['admin', 'quanly'])
+@role_required(['admin', 'quanly', 'kiemtra'])
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
@@ -91,24 +91,7 @@ def manager_textnow_view(request):
             query['status_account_TN'] = status_tn
             
         if status_tf:
-            status_query = {'status_account_TF': status_tf}
-            status_count = collection.count_documents(status_query)
-            print(f"Documents matching TF status {status_tf}:", status_count)
-            query.update(status_query)
-
-        if sold_status_tn:
-            sold_status = sold_status_tn.lower() == 'true'
-            sold_query = {'sold_status_TN': sold_status}
-            sold_count = collection.count_documents(sold_query)
-            print(f"Documents matching TN sold status {sold_status}:", sold_count)
-            query.update(sold_query)
-
-        if sold_status_tf:
-            sold_status = sold_status_tf.lower() == 'true'
-            sold_query = {'sold_status_TF': sold_status}
-            sold_count = collection.count_documents(sold_query)
-            print(f"Documents matching TF sold status {sold_status}:", sold_count)
-            query.update(sold_query)
+            query['status_account_TF'] = status_tf
         
         if created_by and created_by.strip() != "":
             creator_query = {'created_by': created_by}
@@ -187,7 +170,7 @@ def manager_textnow_view(request):
 
 # Thêm view xử lý xóa
 @login_required
-@role_required(['admin', 'quanly'])
+@role_required(['admin', 'quanly', 'kiemtra'])
 def delete_employee(request):
     if request.method == 'POST':
         try:
@@ -211,7 +194,7 @@ def delete_employee(request):
 
 @csrf_exempt
 @login_required
-@role_required(['admin', 'quanly'])
+@role_required(['admin', 'quanly', 'kiemtra'])
 def export_employee_textnow_excel(request):
     if request.method == 'POST':
         try:
@@ -296,7 +279,7 @@ def export_employee_textnow_excel(request):
 
 @csrf_exempt
 @login_required
-@role_required(['admin', 'quanly'])
+@role_required(['admin', 'quanly', 'kiemtra'])
 def update_sold_status(request):
     if request.method == 'POST':
         try:
