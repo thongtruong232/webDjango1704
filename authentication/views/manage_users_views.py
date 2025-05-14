@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .mongodb import get_collection_handle
+from authentication.mongodb import get_collection_handle
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from authentication.permissions import (

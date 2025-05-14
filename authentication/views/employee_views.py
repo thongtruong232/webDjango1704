@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
-from .mongodb import get_collection_handle
+from authentication.mongodb import get_collection_handle
 from django.conf import settings
 from datetime import datetime
 import random

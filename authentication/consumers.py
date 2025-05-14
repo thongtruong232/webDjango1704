@@ -1,7 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from authentication.views.mongodb import get_collection_handle
+from authentication.mongodb import get_collection_handle
 from datetime import datetime
 import pytz
 import logging

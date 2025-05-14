@@ -1,5 +1,5 @@
 from django.contrib import messages
-from .mongodb import get_collection_handle
+from authentication.mongodb import get_collection_handle
 import logging
 import json
 from bson import json_util
