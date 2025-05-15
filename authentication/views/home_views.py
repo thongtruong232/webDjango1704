@@ -149,7 +149,7 @@ def home_view(request):
         if not user_data:
             messages.error(request, 'Không tìm thấy thông tin người dùng')
             return redirect('login')
-            
+
         user_role = user_data.get('role', 'nhanvien')
         
         # Nếu là nhân viên, chuyển hướng về trang verified
@@ -341,7 +341,7 @@ def home_view(request):
             'page_range': page_range,
             'start_index': start_index
         })
-        
+
     except Exception as e:
         logger.error(f"Error in home_view: {str(e)}")
         return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
@@ -520,7 +520,7 @@ def work_management(request):
     stats_type = request.GET.get('stats_type', 'day')
     end_date = request.GET.get('end_date')
     start_date = request.GET.get('start_date')
-     # Get user data from MongoDB
+    # Get user data from MongoDB
     users_collection, _ = get_collection_handle('users')
     user_data = users_collection.find_one({'user_id': str(request.user.id)})
     # Nếu không có ngày được chọn, mặc định lấy 7 ngày gần nhất
@@ -528,19 +528,15 @@ def work_management(request):
         end_date = datetime.now().date()
     else:
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-    
     if not start_date:
         start_date = end_date - timedelta(days=6)
     else:
         start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-
     # Chuyển đổi ngày thành ISO format cho MongoDB
     start_date_iso = datetime.combine(start_date, datetime.min.time()).astimezone(TIMEZONE).isoformat()
     end_date_iso = datetime.combine(end_date, datetime.max.time()).astimezone(TIMEZONE).isoformat()
-
     # Lấy collection từ MongoDB
     excel_data_collection, client = get_collection_handle('employee_textnow')
-
     # Query thống kê cho nhân viên đăng ký
     nhanvien_pipeline = [
         {
@@ -559,7 +555,6 @@ def work_management(request):
             }
         }
     ]
-
     # Query thống kê cho kiểm tra viên
     kiemtra_pipeline = [
         {
@@ -578,15 +573,12 @@ def work_management(request):
             }
         }
     ]
-
     # Thực hiện aggregation
     nhanvien_stats = list(excel_data_collection.aggregate(nhanvien_pipeline))
     kiemtra_stats = list(excel_data_collection.aggregate(kiemtra_pipeline))
-
     # Xử lý kết quả thống kê
     nhanvien_total = sum(stat['count'] for stat in nhanvien_stats)
     kiemtra_total = sum(stat['count'] for stat in kiemtra_stats)
-
     # Format dữ liệu thống kê nhân viên
     nhanvien_stats = [
         {
@@ -596,7 +588,6 @@ def work_management(request):
         }
         for stat in nhanvien_stats if stat['_id']
     ]
-
     # Format dữ liệu thống kê kiểm tra viên
     kiemtra_stats = [
         {
@@ -606,7 +597,6 @@ def work_management(request):
         }
         for stat in kiemtra_stats if stat['_id']
     ]
-
     # Pipeline cho biểu đồ theo thời gian
     if stats_type == 'week':
         # Thống kê theo tuần
@@ -631,7 +621,6 @@ def work_management(request):
             }
         }
         time_format = lambda x: datetime.strptime(x, '%Y-%m-%d').strftime('%d/%m/%Y')
-
     # Pipeline cho thống kê theo thời gian - nhân viên
     nhanvien_time_pipeline = [
         {
@@ -651,7 +640,6 @@ def work_management(request):
         },
         {'$sort': {'_id': 1}}
     ]
-
     # Pipeline cho thống kê theo thời gian - kiểm tra viên
     kiemtra_time_pipeline = [
         {
@@ -671,18 +659,14 @@ def work_management(request):
         },
         {'$sort': {'_id': 1}}
     ]
-
     # Thực hiện aggregation cho dữ liệu biểu đồ
     nhanvien_time_stats = list(excel_data_collection.aggregate(nhanvien_time_pipeline))
     kiemtra_time_stats = list(excel_data_collection.aggregate(kiemtra_time_pipeline))
-
     # Format dữ liệu cho biểu đồ
     chart_labels = [time_format(str(stat['_id'])) for stat in nhanvien_time_stats]
     nhanvien_data = [stat['count'] for stat in nhanvien_time_stats]
     kiemtra_data = [stat['count'] for stat in kiemtra_time_stats]
-
     client.close()
-
     context = {
         'user_data': user_data,
         'stats_type': stats_type,
@@ -694,7 +678,6 @@ def work_management(request):
         'nhanvien_data': nhanvien_data,
         'kiemtra_data': kiemtra_data,
     }
-
     return render(request, 'authentication/work_management.html', context)
 
 

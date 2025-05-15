@@ -84,16 +84,27 @@ def work_time_stats(request):
         # Lấy thống kê từ collection work_time
         stats = []
         for mongo_user in mongo_users:
-            user_query = query.copy()
-            user_query['user_id'] = str(mongo_user['user_id'])
-            
-            # Lấy thống kê của user
-            user_stats = list(work_time_collection.find(user_query).sort('date', -1))
-            
-            if user_stats:
+            try:
+                user_query = query.copy()
+                user_query['user_id'] = str(mongo_user['user_id'])
+                user_stats = list(work_time_collection.find(user_query).sort('date', -1))
+
+                if not user_stats:
+                    stats.append({
+                        'user': {
+                            'id': str(mongo_user['user_id']),
+                            'username': mongo_user['username'],
+                            'is_active': mongo_user['is_active']
+                        },
+                        'total_sessions': 0,
+                        'total_hours': 0,
+                        'average_session': 0,
+                        'activities': []
+                    })
+                    continue
+
                 # Tính tổng số phiên và thời gian
                 total_sessions = len(user_stats)
-                
                 # Tính tổng thời gian làm việc
                 total_duration = 0
                 for stat in user_stats:
@@ -104,47 +115,43 @@ def work_time_stats(request):
                         logout_time = datetime.fromisoformat(stat['logout_time'])
                         duration = (logout_time - login_time).total_seconds()
                         total_duration += duration
-                
                 total_hours = round(total_duration / 3600, 2)
                 average_hours = round(total_hours / total_sessions, 2) if total_sessions > 0 else 0
-                
                 # Format lại các phiên làm việc
                 formatted_activities = []
                 for stat in user_stats:
                     try:
                         login_time = datetime.fromisoformat(stat['login_time'])
                         logout_time = datetime.fromisoformat(stat['logout_time']) if stat.get('logout_time') else None
-                        
                         if 'duration' not in stat and logout_time:
                             duration = (logout_time - login_time).total_seconds()
                             duration_str = str(logout_time - login_time)
                         else:
                             duration = stat.get('duration', 0)
                             duration_str = stat.get('duration_str', '0:00:00')
-                        
                         formatted_activities.append({
                             'login_time': login_time,
                             'logout_time': logout_time,
                             'session_duration': duration_str,
                             'session_id': stat['session_id']
                         })
-
-                        # logger.info(f'login_time: {login_time}, logout_time: {logout_time}')
                     except Exception as e:
-                        logger.error(f"Error formatting activity: {str(e)}", exc_info=True)
+                        logger.error(f"Error formatting activity for user {mongo_user['user_id']}: {str(e)}", exc_info=True)
                         continue
-                
                 stats.append({
                     'user': {
-                        'id': mongo_user['user_id'],
+                        'id': str(mongo_user['user_id']),
                         'username': mongo_user['username'],
-                        'is_active': mongo_user['is_active']
+                        'is_active': mongo_user.get('is_active', False)
                     },
                     'total_sessions': total_sessions,
                     'total_hours': total_hours,
                     'average_session': average_hours,
                     'activities': formatted_activities
                 })
+            except Exception as e:
+                logger.error(f"Error processing user {mongo_user['user_id']}: {str(e)}", exc_info=True)
+                continue
 
         # Nếu yêu cầu xuất Excel
         if export_excel:
