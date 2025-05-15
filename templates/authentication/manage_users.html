@@ -110,39 +110,42 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="button" class="btn btn-primary" id="createUserBtn" >Tạo</button>
+                        <button type="button" class="btn btn-primary" id="createUserBtn" >
+                            Tạo
+                            <span class="spinner-border spinner-border-sm d-none" id="createUserSpinner" role="status" aria-hidden="true"></span>
+                        </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <!-- Modal Nhập OTP -->
-                <div class="modal fade" id="otpModal_register" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Nhập mã OTP</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="POST" id="otpForm">
-                                    {% csrf_token %}
-                                    <div class="mb-3">
-                                        <label for="otpInput" class="form-label">Mã OTP</label>
-                                        <input type="text" id="otpInput" name="otp" class="form-control" placeholder="Nhập mã OTP" required autofocus>
-                                        <div id="otpError" class="alert alert-danger d-none" role="alert">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="error-message"></span>
-                                                <button type="button" class="btn-close" onclick="closeError('otpError')"></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success" id="accept_create">Xác nhận</button>
+<!-- Modal Nhập OTP đặt ngoài modal Thêm người dùng mới -->
+<div class="modal fade" id="otpModal_register" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nhập mã OTP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="otpForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="otpInput" class="form-label">Mã OTP</label>
+                        <input type="text" id="otpInput" name="otp" class="form-control" placeholder="Nhập mã OTP" required autofocus>
+                        <div id="otpError" class="alert alert-danger d-none" role="alert">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="error-message"></span>
+                                <button type="button" class="btn-close" onclick="closeError('otpError')"></button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="accept_create">Xác nhận</button>
             </div>
         </div>
     </div>
@@ -192,6 +195,8 @@
         const errorMessage = errorDiv.querySelector('.error-message');
         errorMessage.textContent = message;
         errorDiv.classList.remove('d-none');
+        // Ẩn spinner trên nút Tạo nếu có
+        document.getElementById("createUserSpinner").classList.add('d-none');
     }
 
     // Hàm đóng loading modal
@@ -204,11 +209,16 @@
 
     // Hàm hiển thị loading modal
     function showLoadingModal() {
+        // Ẩn spinner trên nút Tạo nếu có
+        document.getElementById("createUserSpinner").classList.add('d-none');
         const loadingModal = new bootstrap.Modal(document.getElementById("loadingModal"));
         loadingModal.show();
     }
 
     document.getElementById("createUserBtn").addEventListener("click", function () {
+        const btn = this;
+        const spinner = document.getElementById("createUserSpinner");
+        spinner.classList.remove('d-none');
         const username = document.getElementById("username_register").value.trim();
         const password = document.getElementById("password_register").value.trim();
 
@@ -285,7 +295,11 @@
                         // Nếu OTP được tạo thành công, hiển thị modal nhập OTP
                         const otpModal = new bootstrap.Modal(document.getElementById("otpModal_register"));
                         otpModal.show();
-                        
+                        // Tắt modal Thêm người dùng mới
+                        const createUserModal = bootstrap.Modal.getInstance(document.getElementById("createUserModal"));
+                        if (createUserModal) {
+                            createUserModal.hide();
+                        }
                         // Focus vào input OTP khi modal hiển thị
                         document.getElementById("otpModal_register").addEventListener('shown.bs.modal', function () {
                             const otpInput = document.getElementById("otpInput");
@@ -573,4 +587,13 @@ $(document).ready(function() {
     });
 });
 </script>
-{% endblock %} 
+{% endblock %}
+
+<style>
+.spinner-border.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+</style> 

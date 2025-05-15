@@ -3132,3 +3132,56 @@ WARNING 2025-05-15 14:15:05,643 log 8016 11132 Not Found: /.well-known/appspecif
 WARNING 2025-05-15 14:15:42,647 log 20688 15736 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-15 14:20:36,344 log 628 15436 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-15 14:23:31,550 log 628 15436 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:32:21,491 log 2560 10776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:32:45,582 log 2560 10776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:33:14,947 log 2560 10776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:35:23,323 log 2560 10776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:37:15,335 log 24808 10632 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:39:35,433 log 21680 15408 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:47:58,197 log 18488 18540 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:48:54,410 log 18488 18540 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 14:57:01,010 log 18488 18540 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 15:13:48,760 log 24708 3392 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 15:16:07,769 log 24708 3392 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 15:22:23,891 log 24708 3392 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 15:41:32,372 log 20316 12632 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /manage-users/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 994, in _save_table
+    raise DatabaseError("Forced update did not affect any rows.")
+django.db.utils.DatabaseError: Forced update did not affect any rows.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\utils\deprecation.py", line 152, in __acall__
+    response = await sync_to_async(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+WARNING 2025-05-15 17:21:40,095 log 11828 15768 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 17:29:14,600 log 3096 16120 Not Found: /.well-known/appspecific/com.chrome.devtools.json

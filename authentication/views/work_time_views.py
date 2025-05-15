@@ -68,7 +68,7 @@ def work_time_stats(request):
         mongo_users = list(users_collection.find({}, {'user_id': 1, 'username': 1, 'role': 1, 'is_active': 1}))
         
         # Lấy collection work_time
-        work_time_collection = client['work_time']['stats']
+        stats_collection, client = get_collection_handle('stats')
         
         # Tạo query dựa trên tham số
         query = {
@@ -87,7 +87,7 @@ def work_time_stats(request):
             try:
                 user_query = query.copy()
                 user_query['user_id'] = str(mongo_user['user_id'])
-                user_stats = list(work_time_collection.find(user_query).sort('date', -1))
+                user_stats = list(stats_collection.find(user_query).sort('date', -1))
 
                 if not user_stats:
                     stats.append({
@@ -295,11 +295,11 @@ def user_activity_stream(request):
                 }))
                 
                 # Lấy thông tin phiên làm việc từ work_time collection
-                work_time_collection = client['work_time']['stats']
+                stats_collection, client = get_collection_handle('stats')
                 
                 for user in users:
                     # Lấy phiên làm việc gần nhất
-                    latest_session = work_time_collection.find_one(
+                    latest_session = stats_collection.find_one(
                         {'user_id': user['user_id']},
                         sort=[('login_time', -1)]
                     )
@@ -369,7 +369,7 @@ def user_activity_stream(request):
                                 
                                 if updated_user:
                                     # Lấy phiên làm việc gần nhất cho user đã cập nhật
-                                    latest_session = work_time_collection.find_one(
+                                    latest_session = stats_collection.find_one(
                                         {'user_id': updated_user['user_id']},
                                         sort=[('login_time', -1)]
                                     )
@@ -388,7 +388,7 @@ def user_activity_stream(request):
                                 user = change['fullDocument']
                                 if 'user_id' in user and 'is_active' in user:
                                     # Lấy phiên làm việc gần nhất cho user mới
-                                    latest_session = work_time_collection.find_one(
+                                    latest_session = stats_collection.find_one(
                                         {'user_id': user['user_id']},
                                         sort=[('login_time', -1)]
                                     )

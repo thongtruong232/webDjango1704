@@ -32,21 +32,18 @@ class MongoDBConnection:
             return self.db[collection_name]
         return None
 
-def get_collection_handle(collection_name: str, db_name: str = None):
+def get_collection_handle(collection_name: str):
     """
     Get a MongoDB collection handle and client connection.
     Args:
         collection_name (str): Name of the collection to get
-        db_name (str, optional): Name of the database. If None, use default from settings.
+        db_name (str, optional): Name of the database. If None, use default from settings (mongodbCloud).
     Returns:
         Tuple[Optional[Collection], Optional[MongoClient]]: (collection, client) or (None, None) if connection fails
     """
     try:
         client = MongoClient(settings.MONGODB_URI)
-        if db_name:
-            db = client[db_name]
-        else:
-            db = client[settings.MONGODB_DATABASE]
+        db = client[settings.MONGODB_DATABASE]
         collection = db[collection_name]
         return collection, client
     except Exception as e:

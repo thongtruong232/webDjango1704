@@ -238,25 +238,25 @@ def verify_otp_view(request):
                     }}
                 )
                 
-                # Lưu thông tin đăng nhập vào MongoDB
-                user_activity_collection = client['user_activities']['activities']
-                login_data = {
-                    'user_id': str(user.id),
-                    'username': username,
-                    'login_time': current_time.isoformat(),
-                    'ip_address': request.META.get('REMOTE_ADDR'),
-                    'user_agent': request.META.get('HTTP_USER_AGENT'),
-                    'session_id': session_id,
-                    'is_active': True,
-                    'created_at': current_time.isoformat(),
-                    'updated_at': current_time.isoformat(),
-                    'status': 'active'
-                }
+                # # Lưu thông tin đăng nhập vào MongoDB
+                # user_activity_collection = client['user_activities']['activities']
+                # login_data = {
+                #     'user_id': str(user.id),
+                #     'username': username,
+                #     'login_time': current_time.isoformat(),
+                #     'ip_address': request.META.get('REMOTE_ADDR'),
+                #     'user_agent': request.META.get('HTTP_USER_AGENT'),
+                #     'session_id': session_id,
+                #     'is_active': True,
+                #     'created_at': current_time.isoformat(),
+                #     'updated_at': current_time.isoformat(),
+                #     'status': 'active'
+                # }
                 
-                user_activity_collection.insert_one(login_data)
+                # user_activity_collection.insert_one(login_data)
 
                 # Cập nhật work_time collection
-                work_time_collection = client['work_time']['stats']
+                stats_collection, client = get_collection_handle('stats')
                 work_time_data = {
                     'user_id': str(user.id),
                     'username': username,
@@ -268,7 +268,7 @@ def verify_otp_view(request):
                     'updated_at': current_time.isoformat()
                 }
                 
-                work_time_collection.insert_one(work_time_data)
+                stats_collection.insert_one(work_time_data)
                 
                 # Gửi thông báo WebSocket
                 try:
@@ -390,8 +390,8 @@ def logout_view(request):
                         )
 
                         # Cập nhật work_time collection
-                        work_time_collection = client['work_time']['stats']
-                        work_time_collection.update_one(
+                        stats_collection, client = get_collection_handle('stats')
+                        stats_collection.update_one(
                             {
                                 'user_id': str(user_id),
                                 'session_id': session_id,

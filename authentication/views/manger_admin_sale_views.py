@@ -42,7 +42,7 @@ def get_collection_handle(collection_name):
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
-        collection = get_collection_handle('employee_textnow')
+        text_now_collection ,client = get_collection_handle('employee_textnow')
 
         # Định nghĩa projection ngay từ đầu
         projection = {
@@ -90,7 +90,7 @@ def manager_textnow_view(request):
         if date_type == 'single' and start_date:
             try:
                 date_query = {'created_at': {'$regex': f'^{start_date}'}}
-                date_count = collection.count_documents(date_query)
+                date_count = text_now_collection.count_documents(date_query)
                 print(f"Documents matching single date {start_date}:", date_count)
                 query.update(date_query)
             except ValueError as e:
@@ -105,7 +105,7 @@ def manager_textnow_view(request):
                         '$lt': end.strftime('%Y-%m-%d')
                     }
                 }
-                date_count = collection.count_documents(date_query)
+                date_count = text_now_collection.count_documents(date_query)
                 print(f"Documents matching date range {start_date} to {end_date}:", date_count)
                 query.update(date_query)
             except ValueError as e:
@@ -114,33 +114,33 @@ def manager_textnow_view(request):
         # Xử lý các điều kiện tìm kiếm khác
         if status_tn:
             status_query = {'status_account_TN': status_tn}
-            status_count = collection.count_documents(status_query)
+            status_count = text_now_collection.count_documents(status_query)
             print(f"Documents matching TN status {status_tn}:", status_count)
             query.update(status_query)
             
         if status_tf:
             status_query = {'status_account_TF': status_tf}
-            status_count = collection.count_documents(status_query)
+            status_count = text_now_collection.count_documents(status_query)
             print(f"Documents matching TF status {status_tf}:", status_count)
             query.update(status_query)
 
         if sold_status_tn:
             sold_status = sold_status_tn.lower() == 'true'
             sold_query = {'sold_status_TN': sold_status}
-            sold_count = collection.count_documents(sold_query)
+            sold_count = text_now_collection.count_documents(sold_query)
             print(f"Documents matching TN sold status {sold_status}:", sold_count)
             query.update(sold_query)
 
         if sold_status_tf:
             sold_status = sold_status_tf.lower() == 'true'
             sold_query = {'sold_status_TF': sold_status}
-            sold_count = collection.count_documents(sold_query)
+            sold_count = text_now_collection.count_documents(sold_query)
             print(f"Documents matching TF sold status {sold_status}:", sold_count)
             query.update(sold_query)
         
         if created_by:
             creator_query = {'created_by': created_by}
-            creator_count = collection.count_documents(creator_query)
+            creator_count = text_now_collection.count_documents(creator_query)
             print(f"Documents matching creator {created_by}:", creator_count)
             query.update(creator_query)
             
@@ -151,14 +151,14 @@ def manager_textnow_view(request):
                     {'textnow_username': {'$regex': search_query, '$options': 'i'}}
                 ]
             }
-            text_count = collection.count_documents(text_query)
+            text_count = text_now_collection.count_documents(text_query)
             print(f"Documents matching search text {search_query}:", text_count)
             query.update(text_query)
 
         print("Final query:", query)
         
         # Thực hiện truy vấn
-        employees = list(collection.find(query, projection))
+        employees = list(text_now_collection.find(query, projection))
         print(f"Found {len(employees)} documents with query conditions")
 
         # Format lại ngày
@@ -169,17 +169,17 @@ def manager_textnow_view(request):
                 employee['created_at'] = datetime.strptime(employee['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
         
         # Lấy danh sách người tạo và trạng thái
-        creators = list(collection.distinct('created_by'))
+        creators = list(text_now_collection.distinct('created_by'))
         creators = sorted([creator for creator in creators if creator])
         
         # Lấy danh sách trạng thái từ cả TN và TF
         status_list = list(set(
-            list(collection.distinct('status_account_TN')) + 
-            list(collection.distinct('status_account_TF'))
+            list(text_now_collection.distinct('status_account_TN')) + 
+            list(text_now_collection.distinct('status_account_TF'))
         ))
         status_list = sorted([status for status in status_list if status])
   
-        users_collection = get_collection_handle('users')
+        users_collection, client = get_collection_handle('users')
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         context = {
             'user_data': user_data,
@@ -213,10 +213,10 @@ def delete_employee(request):
     if request.method == 'POST':
         try:
             employee_id = request.POST.get('employee_id')
-            collection = get_collection_handle('employee_textnow')
+            text_now_collection ,client = get_collection_handle('employee_textnow')
             
             # Chuyển string ID thành ObjectId
-            result = collection.delete_one({'_id': ObjectId(employee_id)})
+            result = text_now_collection.delete_one({'_id': ObjectId(employee_id)})
             
             if result.deleted_count > 0:
                 return JsonResponse({'status': 'success'})
@@ -239,7 +239,7 @@ def export_employee_textnow_excel(request):
             selected_ids = data.get('selected_ids', [])
 
             # Kết nối MongoDB
-            collection = get_collection_handle('employee_textnow')
+            text_now_collection ,client = get_collection_handle('employee_textnow')
 
             # Truy vấn các bản ghi được chọn
             query = {'_id': {'$in': [ObjectId(id) for id in selected_ids]}}
@@ -257,7 +257,7 @@ def export_employee_textnow_excel(request):
                 'sold_status_TN': 1,
                 'sold_status_TF': 1
             }
-            employees = list(collection.find(query, projection))
+            employees = list(text_now_collection.find(query, projection))
 
             # Tạo workbook Excel
             wb = openpyxl.Workbook()
@@ -323,13 +323,13 @@ def update_sold_status(request):
             type = data.get('type', 'TN')  # Mặc định là TN nếu không có type
 
             # Kết nối MongoDB
-            collection = get_collection_handle('employee_textnow')
+            text_now_collection ,client = get_collection_handle('employee_textnow')
 
             # Xác định trường cần cập nhật dựa vào type
             update_field = 'sold_status_TF' if type == 'TF' else 'sold_status_TN'
 
             # Cập nhật trạng thái cho các record được chọn
-            result = collection.update_many(
+            result = text_now_collection.update_many(
                 {'_id': {'$in': [ObjectId(id) for id in employee_ids]}},
                 {'$set': {update_field: sold_status}}
             )
@@ -361,13 +361,13 @@ def update_sold_status(request):
 def get_sold_status_counts(request):
     try:
         # Kết nối MongoDB
-        collection = get_collection_handle('employee_textnow')
+        text_now_collection ,client = get_collection_handle('employee_textnow')
         
         # Đếm số lượng record theo sold_status_TN và sold_status_TF
-        tn_sold = collection.count_documents({'sold_status_TN': True})
-        tn_unsold = collection.count_documents({'sold_status_TN': False})
-        tf_sold = collection.count_documents({'sold_status_TF': True})
-        tf_unsold = collection.count_documents({'sold_status_TF': False})
+        tn_sold = text_now_collection.count_documents({'sold_status_TN': True})
+        tn_unsold = text_now_collection.count_documents({'sold_status_TN': False})
+        tf_sold = text_now_collection.count_documents({'sold_status_TF': True})
+        tf_unsold = text_now_collection.count_documents({'sold_status_TF': False})
         
         return JsonResponse({
             'status': 'success',
@@ -392,7 +392,7 @@ def get_total_textnow_status_counts(request):
         type = request.GET.get('type', 'TN').upper()  # Mặc định là TN nếu không có type
         
         # Kết nối MongoDB
-        collection = get_collection_handle('employee_textnow')
+        text_now_collection ,client = get_collection_handle('employee_textnow')
 
         # Lấy ngày hiện tại
         today = datetime.now()
@@ -447,7 +447,7 @@ def get_total_textnow_status_counts(request):
         ]
         
         # Thực hiện aggregation
-        results = list(collection.aggregate(pipeline))
+        results = list(text_now_collection.aggregate(pipeline))
         
         # Xử lý thêm thuộc tính check_add_area_phone
         for result in results:
