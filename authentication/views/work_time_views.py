@@ -502,7 +502,7 @@ def check_user_status(request):
                         continue
                     
                     # Kiểm tra trong collection user_activities
-                    user_activity_collection = client['user_activities']['activities']
+                    user_activity_collection, client = get_collection_handle('user_activities')
                     latest_activity = user_activity_collection.find_one(
                         {'user_id': str(user_id)},
                         sort=[('login_time', -1)]

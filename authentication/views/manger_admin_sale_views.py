@@ -14,6 +14,7 @@ from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
 )
+from authentication.mongodb import get_collection_handle
 
 logger = logging.getLogger(__name__)
 
@@ -26,23 +27,12 @@ def get_mongo_client():
         _mongo_client = MongoClient(settings.MONGODB_URI)
     return _mongo_client
 
-def get_collection_handle(collection_name):
-    """Helper function to get MongoDB collection handle"""
-    try:
-        client = get_mongo_client()
-        db = client[settings.MONGODB_DATABASE]
-        collection = db[collection_name]
-        return collection
-    except Exception as e:
-        logger.error(f"Error connecting to MongoDB: {str(e)}")
-        raise
-
 @login_required
 @role_required('kiemtra')  # Yêu cầu quyền admin
 def manager_textnow_view(request):
     try:
         # Test kết nối MongoDB
-        text_now_collection ,client = get_collection_handle('employee_textnow')
+        text_now_collection, client = get_collection_handle('employee_textnow')
 
         # Định nghĩa projection ngay từ đầu
         projection = {
@@ -213,7 +203,7 @@ def delete_employee(request):
     if request.method == 'POST':
         try:
             employee_id = request.POST.get('employee_id')
-            text_now_collection ,client = get_collection_handle('employee_textnow')
+            text_now_collection, client = get_collection_handle('employee_textnow')
             
             # Chuyển string ID thành ObjectId
             result = text_now_collection.delete_one({'_id': ObjectId(employee_id)})
@@ -239,7 +229,7 @@ def export_employee_textnow_excel(request):
             selected_ids = data.get('selected_ids', [])
 
             # Kết nối MongoDB
-            text_now_collection ,client = get_collection_handle('employee_textnow')
+            text_now_collection, client = get_collection_handle('employee_textnow')
 
             # Truy vấn các bản ghi được chọn
             query = {'_id': {'$in': [ObjectId(id) for id in selected_ids]}}
@@ -323,7 +313,7 @@ def update_sold_status(request):
             type = data.get('type', 'TN')  # Mặc định là TN nếu không có type
 
             # Kết nối MongoDB
-            text_now_collection ,client = get_collection_handle('employee_textnow')
+            text_now_collection, client = get_collection_handle('employee_textnow')
 
             # Xác định trường cần cập nhật dựa vào type
             update_field = 'sold_status_TF' if type == 'TF' else 'sold_status_TN'
@@ -361,7 +351,7 @@ def update_sold_status(request):
 def get_sold_status_counts(request):
     try:
         # Kết nối MongoDB
-        text_now_collection ,client = get_collection_handle('employee_textnow')
+        text_now_collection, client = get_collection_handle('employee_textnow')
         
         # Đếm số lượng record theo sold_status_TN và sold_status_TF
         tn_sold = text_now_collection.count_documents({'sold_status_TN': True})
@@ -392,7 +382,7 @@ def get_total_textnow_status_counts(request):
         type = request.GET.get('type', 'TN').upper()  # Mặc định là TN nếu không có type
         
         # Kết nối MongoDB
-        text_now_collection ,client = get_collection_handle('employee_textnow')
+        text_now_collection, client = get_collection_handle('employee_textnow')
 
         # Lấy ngày hiện tại
         today = datetime.now()

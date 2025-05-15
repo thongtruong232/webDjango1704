@@ -3185,3 +3185,82 @@ Traceback (most recent call last):
 django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
 WARNING 2025-05-15 17:21:40,095 log 11828 15768 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-15 17:29:14,600 log 3096 16120 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 18:57:24,094 log 22868 15008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 18:57:34,890 log 22868 15008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 18:58:02,117 log 22868 15008 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+ERROR 2025-05-15 18:58:08,220 log 22868 15008 Internal Server Error: /api/get-sold-status-counts/
+WARNING 2025-05-15 19:04:03,579 log 16412 15984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:04:37,780 log 16412 15984 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:12:09,548 log 15648 20732 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:12:24,308 log 15648 20732 Not Found: /favicon.ico
+WARNING 2025-05-15 19:14:15,952 log 15648 20732 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:15:31,835 log 15648 20732 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:15:45,524 log 15648 20732 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:16:02,725 log 15648 20732 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:16:37,833 log 15648 20732 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:28:20,246 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:28:32,142 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:29:06,483 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:29:31,533 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:30:06,438 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:35:22,633 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:35:56,513 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:36:24,478 log 22708 17268 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:39:09,881 log 18584 20876 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:42:12,593 log 18584 20876 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:42:32,126 log 24688 12908 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:42:32,206 log 24688 12908 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /login/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 994, in _save_table
+    raise DatabaseError("Forced update did not affect any rows.")
+django.db.utils.DatabaseError: Forced update did not affect any rows.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\utils\deprecation.py", line 152, in __acall__
+    response = await sync_to_async(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+WARNING 2025-05-15 19:43:13,407 log 24688 12908 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:43:48,984 log 24688 12908 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:45:20,847 log 24688 12908 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:45:37,090 log 24688 12908 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:51:40,125 log 11504 11456 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:53:44,695 log 11504 11456 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:54:07,307 log 11504 11456 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:55:23,182 log 11504 11456 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:56:44,076 log 11504 11456 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 19:57:20,702 log 11504 11456 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 20:10:47,336 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 20:12:19,789 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 20:16:53,216 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 20:17:35,914 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 20:17:37,916 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 20:17:57,523 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
