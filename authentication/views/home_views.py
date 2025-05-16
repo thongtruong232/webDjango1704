@@ -88,7 +88,6 @@ def create_user(request):
             }
             
             users_collection.update_one(
-                {'user_id': str(user.id)},
                 {'$set': mongo_user_data},
                 upsert=True
             )
@@ -741,11 +740,11 @@ def handle_browser_close(request):
             session_id = request.session.get('activity_session_id')
             
             # Kết nối MongoDB
-            work_time_collection, client = get_collection_handle('work_time')
+            stats_collection, client = get_collection_handle('stats')
             if client:
                 try:
-                    # Cập nhật trạng thái trong work_time collection
-                    work_time_collection.update_one(
+                    # Cập nhật trạng thái trong stats collection
+                    stats_collection.update_one(
                         {
                             'user_id': str(request.user.id),
                             'session_id': session_id,
