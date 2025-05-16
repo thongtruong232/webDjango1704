@@ -158,7 +158,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'elivibes0124@gmail.com'
-EMAIL_HOST_PASSWORD = 'nxxr dxyg vffc kpjn'  # App Password from Gmail
+EMAIL_HOST_PASSWORD = 'moei jkai xiuz kwvl'  # App Password from Gmail
 DEFAULT_FROM_EMAIL = 'elivibes0124@gmail.com'
 
 # Static files (CSS, JavaScript, Images)

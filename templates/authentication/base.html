@@ -90,6 +90,13 @@
                         </a>
                     </li>
                     {% endif %}
+                    {% if user_data.role == 'admin' or user_data.role == 'quanly' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_password' %}">
+                            <i class="fas fa-key"></i> Tạo mật khẩu
+                        </a>
+                    </li>
+                    {% endif %}
                     {% if user_data.role == 'nhanvien' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'available_emails' %}">

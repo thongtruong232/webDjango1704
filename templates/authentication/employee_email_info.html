@@ -1083,7 +1083,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script>
         function showModal(message) {
             const modal = document.getElementById('passwordModal');
@@ -1659,28 +1659,16 @@
                 return;
             }
 
-            // Hiển thị loading overlay
             const loadingOverlay = document.querySelector('.loading-overlay');
             loadingOverlay.style.display = 'flex';
 
             try {
-                // Lấy mật khẩu từ MongoDB thông qua API
+                // Lấy mật khẩu
                 const passwordResponse = await fetch('/api/get-employee-passwords/');
                 const passwordData = await passwordResponse.json();
-                console.log(passwordData);
+                
                 if (!passwordData.success) {
-                    console.log('hellôp');
-                    const modal = document.getElementById('passwordModal');
-                    const modalMessage = document.getElementById('modalMessage');
-                    modalMessage.innerHTML = `
-                        <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <strong>Không thể mua mail!</strong><br>
-                            ${passwordData.error}
-                        </div>
-                    `;
-                    modal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
+                    showModal('Vui lòng thêm mật khẩu TextNow và TextFree trước khi mua mail!');
                     closePurchaseModal();
                     return;
                 }
@@ -1688,65 +1676,55 @@
                 const defaultPassTN = passwordData.pass_tn;
                 const defaultPassTF = passwordData.pass_tf;
 
-                // Kiểm tra nếu không có mật khẩu
+                // Kiểm tra mật khẩu
                 if (!defaultPassTN || !defaultPassTF || defaultPassTN.trim() === "" || defaultPassTF.trim() === "") {
                     const missingPasswords = [];
                     if (!defaultPassTN || defaultPassTN.trim() === "") missingPasswords.push("TextNow");
                     if (!defaultPassTF || defaultPassTF.trim() === "") missingPasswords.push("TextFree");
 
-                    const modal = document.getElementById('passwordModal');
-                    const modalMessage = document.getElementById('modalMessage');
-                    modalMessage.innerHTML = `
-                        <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <strong>Không thể mua mail!</strong><br>
-                            Vui lòng cung cấp mật khẩu cho các ứng dụng sau:<br>
-                            ${missingPasswords.join(", ")}
-                        </div>
-                    `;
-                    modal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
+                    showModal(`Vui lòng cung cấp mật khẩu cho các ứng dụng sau: ${missingPasswords.join(", ")}`);
                     closePurchaseModal();
                     return;
                 }
 
-                // Tiếp tục với việc mua mail
+                // Mua mail
                 const response = await fetch(`https://api.dongvanfb.net/user/buy?apikey=GfeXobVqUdD8WTDwvtKE6GBPC&account_type=${currentMailData.id}&quality=${quantity}&type=full`);
                 const data = await response.json();
                 
                 if (data.status && data.error_code === 200) {
-                    // Xử lý dữ liệu trả về
                     const listData = data.data.list_data;
                     const existingData = localStorage.getItem('employee_worksession');
-                    let existingEmails = [];
-                    if (existingData) {
-                        existingEmails = JSON.parse(existingData);
-                    }
+                    let existingEmails = existingData ? JSON.parse(existingData) : [];
 
-                    // Lấy area_phone ngẫu nhiên
-                    const areaPhoneResponse = await fetch(`/api/get-random-area-phones/?quantity=${quantity}`);
-                    const areaPhoneData = await areaPhoneResponse.json();
-                    const phoneMessageResponse = await fetch(`/api/get-random-phones-message/?quantity=${quantity}`);
-                    const phoneData = await phoneMessageResponse.json();
-                    console.log(phoneData);
-                    console.log(areaPhoneData);
-                    if (!areaPhoneData.success) {
-                        throw new Error('Không thể lấy area_phone: ' + areaPhoneData.error);
+                    // Tạm thời comment phần lấy area_phone và phone_number
+                    // Lấy area_phone và phone_number
+                    const [areaPhoneResponse, phoneMessageResponse] = await Promise.all([
+                        fetch(`/api/get-random-area-phones/?quantity=${quantity}`),
+                        fetch(`/api/get-random-phones-message/?quantity=${quantity}`)
+                    ]);
+
+                    const [areaPhoneData, phoneData] = await Promise.all([
+                        areaPhoneResponse.json(),
+                        phoneMessageResponse.json()
+                    ]);
+
+                    if (!areaPhoneData.success || !phoneData.success) {
+                        throw new Error('Không thể lấy thông tin area_phone hoặc phone_number');
                     }
 
                     const areaPhones = areaPhoneData.data;
-                    if (areaPhones.length !== quantity) {
-                        throw new Error('Số lượng area_phone không khớp với số lượng mail đã mua');
+                    const phoneMessages = phoneData.data;
+
+                    if (areaPhones.length !== quantity || phoneMessages.length !== quantity) {
+                        throw new Error('Số lượng area_phone hoặc phone_number không khớp với số lượng mail đã mua');
                     }
-                    const phoneMessage = phoneData.data;
-                    if (areaPhones.length !== quantity) {
-                        throw new Error('Số lượng phone không khớp với số lượng mail đã mua');
-                    }
+                   
+                    // Tạo danh sách email mới với giá trị thực tế
                     const newEmails = listData.map((item, index) => {
                         const [email, password, refreshToken, clientId] = item.split('|');
                         return {
-                            email: email,
-                            password: password,
+                            email,
+                            password,
                             refresh_token: refreshToken,
                             client_id: clientId,
                             status: "mail mua đồng văn",
@@ -1756,32 +1734,25 @@
                             status_tf: "chưa tạo acc",
                             is_provided: false,
                             supplier: "Dong Van",
-                            area_phone: areaPhones[index]['code_area_phone'],
-                            phone_number: phoneMessage[index]['phone_number']
-                             // Thêm area_phone vào mỗi email
+                            area_phone: areaPhones[index]?.area_code || "000",
+                            phone_number: phoneMessages[index]?.phone_number || "0000000000"
                         };
                     });
 
-                    // Kết hợp email mới và email hiện có
+                    // Cập nhật localStorage và giao diện
                     const updatedEmails = [...existingEmails, ...newEmails];
                     localStorage.setItem('employee_worksession', JSON.stringify(updatedEmails));
-
-                    // Cập nhật giao diện
                     displayEmails(updatedEmails);
                     
-                    // Hiển thị thông báo thành công
                     alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.data.order_code}\nSố dư còn lại: ${data.data.balance.toLocaleString('vi-VN')} VNĐ`);
-                    
-                    // Đóng tất cả modal
                     closeAllModals();
                 } else {
-                    alert('Có lỗi khi mua mail: ' + data.message);
+                    throw new Error(data.message || 'Có lỗi khi mua mail');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Có lỗi xảy ra khi mua mail');
+                alert(error.message || 'Có lỗi xảy ra khi mua mail');
             } finally {
-                // Ẩn loading overlay sau khi hoàn thành
                 loadingOverlay.style.display = 'none';
             }
         }

@@ -54,7 +54,7 @@ def login_view(request):
                 user_role = user_data.get('role')
                 print(f'Role của user: {user_role}')
                 if user_role == 'nhanvien':
-                    return redirect('employee_verified')
+                    return redirect('available-emails')
                 elif user_role in ['admin', 'quanly', 'kiemtra']:
                     return redirect('manager_textnow_view')
                 else:
@@ -242,7 +242,7 @@ def verify_otp_view(request):
                 # Lưu thông tin đăng nhập vào MongoDB
                 user_activity_collection, client = get_collection_handle('user_activities')
                 user_activity_collection.create_index(
-                    [('created_at', 1)],
+                    [('exprite', 1)],
                     expireAfterSeconds=60  # Tự động xóa sau 1 phút
                 )
                 login_data = {
@@ -316,7 +316,7 @@ def verify_otp_view(request):
                 elif user_role == 'nhanvien':
                     return JsonResponse({
                         'success': True,
-                        'redirect_url': '/verified/',
+                        'redirect_url': '/available-emails/',
                         'message': 'Đăng nhập thành công'
                     })
                 else:
@@ -394,7 +394,7 @@ def logout_view(request):
                         logger.info(f"[LOGOUT] user_activities update modified_count: {update_result.modified_count}")
                         # Cập nhật work_time collection
                         stats_collection, client = get_collection_handle('stats')
-                        stats_collection.create_index([('created_at', 1)], expireAfterSeconds=259200)
+                        stats_collection.create_index([('exprite', 1)], expireAfterSeconds=259200)
                         stats_update_result = stats_collection.update_one(
                             {
                                 'user_id': str(user_id),

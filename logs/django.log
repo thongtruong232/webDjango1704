@@ -3264,3 +3264,57 @@ WARNING 2025-05-15 20:16:53,216 log 11408 12324 Not Found: /.well-known/appspeci
 WARNING 2025-05-15 20:17:35,914 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-15 20:17:37,916 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-15 20:17:57,523 log 11408 12324 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 21:25:23,515 log 25548 12584 Not Found: /favicon.ico
+WARNING 2025-05-15 21:42:49,417 log 17288 9496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 21:46:37,897 log 2960 8120 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 21:48:14,471 log 2912 15260 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 21:50:36,707 log 2912 15260 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-15 21:56:56,471 log 17160 21216 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-16 13:30:12,114 log 14588 2436 Not Found: /favicon.ico
+WARNING 2025-05-16 13:47:40,709 log 4368 10072 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-16 13:47:44,930 log 4368 10072 The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.: /api/save-worksession/
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 86, in save
+    obj.save(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\db\models\base.py", line 994, in _save_table
+    raise DatabaseError("Forced update did not affect any rows.")
+django.db.utils.DatabaseError: Forced update did not affect any rows.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 59, in process_response
+    request.session.save()
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\backends\db.py", line 95, in save
+    raise UpdateError
+django.contrib.sessions.backends.base.UpdateError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\utils\deprecation.py", line 152, in __acall__
+    response = await sync_to_async(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\concurrent\futures\thread.py", line 57, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "c:\users\mt gaming\appdata\local\programs\python\python38\lib\site-packages\django\contrib\sessions\middleware.py", line 61, in process_response
+    raise SessionInterrupted(
+django.contrib.sessions.exceptions.SessionInterrupted: The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example.
+WARNING 2025-05-16 13:47:52,840 log 4368 10072 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-16 13:48:03,856 log 4368 10072 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-16 13:48:40,490 log 4368 10072 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-16 13:48:57,599 log 4368 10072 Not Found: /favicon.ico
+WARNING 2025-05-16 14:01:47,005 log 4368 10072 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-16 14:01:58,920 log 4368 10072 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-16 14:02:15,996 log 4368 10072 Not Found: /.well-known/appspecific/com.chrome.devtools.json
