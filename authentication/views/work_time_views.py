@@ -136,7 +136,7 @@ def work_time_stats(request):
                             'session_id': stat['session_id']
                         })
                     except Exception as e:
-                        logger.error(f"Error formatting activity for user {mongo_user['user_id']}: {str(e)}", exc_info=True)
+                        # Đã bỏ log lỗi không cần thiết khi thiếu key hoặc lỗi user
                         continue
                 stats.append({
                     'user': {
@@ -150,7 +150,7 @@ def work_time_stats(request):
                     'activities': formatted_activities
                 })
             except Exception as e:
-                logger.error(f"Error processing user {mongo_user['user_id']}: {str(e)}", exc_info=True)
+                # Đã bỏ log lỗi không cần thiết khi thiếu key hoặc lỗi user
                 continue
 
         # Nếu yêu cầu xuất Excel

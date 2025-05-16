@@ -217,6 +217,7 @@
 
     document.getElementById("createUserBtn").addEventListener("click", function () {
         const btn = this;
+        btn.disabled = true; // Khóa nút ngay khi click
         const spinner = document.getElementById("createUserSpinner");
         spinner.classList.remove('d-none');
         const username = document.getElementById("username_register").value.trim();
@@ -312,6 +313,7 @@
             })
             .catch(error => {
                 closeLoadingModal();
+                btn.disabled = false; // Mở lại nút nếu có lỗi
                 console.error('Error:', error);
                 showError('usernameError', error.message || 'Có lỗi xảy ra');
             });
@@ -470,6 +472,20 @@
 
     // Biến cờ để reload lại trang sau khi tạo user thành công
     let shouldReloadAfterLoading = false;
+
+    // Thêm sự kiện lắng nghe phím Enter trong modal Thêm người dùng mới
+    const createUserModalEl = document.getElementById('createUserModal');
+    if (createUserModalEl) {
+        createUserModalEl.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const createUserBtn = document.getElementById('createUserBtn');
+                if (createUserBtn && !createUserBtn.disabled) {
+                    createUserBtn.click();
+                }
+            }
+        });
+    }
 </script>
 
 
