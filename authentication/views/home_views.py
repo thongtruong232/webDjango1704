@@ -78,6 +78,10 @@ def create_user(request):
             
             # Lưu thông tin user trong MongoDB
             users_collection, client = get_collection_handle('users')
+            
+            # Tạo unique index cho user_id nếu chưa tồn tại
+            users_collection.create_index('user_id', unique=True)
+            
             mongo_user_data = {
                 'user_id': str(user.id),
                 'username': username,
@@ -87,7 +91,9 @@ def create_user(request):
                 'created_at': get_current_time().isoformat()
             }
             
+            # Sử dụng user_id làm filter để đảm bảo không trùng lặp
             users_collection.update_one(
+                {'user_id': str(user.id)},  # Filter theo user_id
                 {'$set': mongo_user_data},
                 upsert=True
             )
