@@ -709,6 +709,11 @@
     .datepicker-dropdown:before {
         border-bottom-color: #e2e8f0;
     }
+
+    .btn-copy.copied-effect {
+        background-color: #10b981 !important;
+        transition: background-color 0.2s;
+    }
 </style>
 {% endblock %}
 
@@ -1387,32 +1392,26 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const text = this.getAttribute('data-info');
             // Copy text
+            const showCopyEffect = (btn) => {
+                btn.classList.add('copied-effect');
+                setTimeout(() => {
+                    btn.classList.remove('copied-effect');
+                }, 500);
+            };
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
-                    // Thành công: Thay đổi icon và text
-                    const icon = this.querySelector('i');
-                    const span = this.querySelector('span');
-                    const oldIconClass = icon.className;
-                    const oldText = span.textContent;
-                    icon.className = 'fas fa-check';
-                    span.textContent = 'Đã copy';
-                    this.classList.add('copied');
-                    setTimeout(() => {
-                        icon.className = oldIconClass;
-                        span.textContent = oldText;
-                        this.classList.remove('copied');
-                    }, 2000);
+                    showCopyEffect(this);
                 }).catch(err => {
-                    fallbackCopyTextToClipboard(text, this);
+                    fallbackCopyTextToClipboard(text, this, showCopyEffect);
                 });
             } else {
-                fallbackCopyTextToClipboard(text, this);
+                fallbackCopyTextToClipboard(text, this, showCopyEffect);
             }
         });
     });
 
     // Fallback cho copy clipboard
-    function fallbackCopyTextToClipboard(text, btn) {
+    function fallbackCopyTextToClipboard(text, btn, effectCb) {
         var textArea = document.createElement("textarea");
         textArea.value = text;
         document.body.appendChild(textArea);
@@ -1420,21 +1419,10 @@ document.addEventListener('DOMContentLoaded', function() {
         textArea.select();
         try {
             var successful = document.execCommand('copy');
-            if (successful) {
-                // Thành công: Thay đổi icon và text
-                const icon = btn.querySelector('i');
-                const span = btn.querySelector('span');
-                const oldIconClass = icon.className;
-                const oldText = span.textContent;
-                icon.className = 'fas fa-check';
-                span.textContent = 'Đã copy';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    icon.className = oldIconClass;
-                    span.textContent = oldText;
-                    btn.classList.remove('copied');
-                }, 2000);
-            } else {
+            if (successful && effectCb) {
+                effectCb(btn);
+            }
+            if (!successful) {
                 alert('Không thể copy thông tin. Vui lòng thử lại.');
             }
         } catch (err) {
