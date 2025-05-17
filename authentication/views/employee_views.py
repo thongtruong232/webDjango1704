@@ -1453,28 +1453,28 @@ def read_mail(email, refresh_token, client_id, email_index, request):
             if not isinstance(item, dict):
                 continue
                 
-            if item.get('from') == 'noreply@notifications.textnow.com':
-                try:
-                    link = parse_beautifulshop_tn(item.get('body', ''))
-                    tn_from = item.get('from', '')
-                    tn_data = item.get('date', '')
-                    result = {'from': tn_from, 'link': link, 'date': tn_data}
-                    results.append(result)
+            # if item.get('from') == 'noreply@notifications.textnow.com':
+            #     try:
+            #         link = parse_beautifulshop_tn(item.get('body', ''))
+            #         tn_from = item.get('from', '')
+            #         tn_data = item.get('date', '')
+            #         result = {'from': tn_from, 'link': link, 'date': tn_data}
+            #         results.append(result)
                     
-                    # Send WebSocket update
-                    channel_layer = get_channel_layer()
-                    async_to_sync(channel_layer.group_send)(
-                        f"client_{socket_id}",
-                        {
-                            'type': 'email_update',
-                            'email': email,
-                            'result': result,
-                            'email_index': email_index,
-                            'result_index': len(results)
-                        }
-                    )
-                except Exception as e:
-                    continue
+            #         # Send WebSocket update
+            #         channel_layer = get_channel_layer()
+            #         async_to_sync(channel_layer.group_send)(
+            #             f"client_{socket_id}",
+            #             {
+            #                 'type': 'email_update',
+            #                 'email': email,
+            #                 'result': result,
+            #                 'email_index': email_index,
+            #                 'result_index': len(results)
+            #             }
+            #         )
+            #     except Exception as e:
+            #         continue
 
             if item.get('from') == 'info@info.textfree.us':
                 try:

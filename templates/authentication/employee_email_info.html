@@ -1021,7 +1021,7 @@
                         <th style="width: 90px;">Trạng thái Tn</th>
                         <th style="width: 90px;">Trạng thái Tf</th>
                         <th style="width: 70px;">Sao chép</th>
-                        <th style="width: 180px;">Đọc mail</th>
+                        <th style="width: 180px;">Lấy code TF</th>
                     </tr>
                 </thead>
                 <tbody id="emailsTableBody">
@@ -1632,7 +1632,7 @@
                             }
                         }
                     } catch (err) {
-                        alert('Lỗi khi gọi API đọc mail!');
+                        console.error('Lỗi khi gọi API đọc mail!', err);
                     } finally {
                         btn.disabled = false;
                         btn.innerHTML = '<i class="fas fa-envelope-open-text"></i>';
