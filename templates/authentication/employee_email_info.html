@@ -372,7 +372,7 @@
         #mailListModal .modal-header {
             position: sticky;
             top: 0;
-            background: linear-gradient(145deg, #3498db, #2980b9);
+            background: linear-gradient(145deg, #0a2131, #2980b9);
             z-index: 1000;
             padding: 20px 30px;
             border-radius: 15px;
@@ -422,219 +422,95 @@
         }
 
         #mailListModal .modal-body {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
             justify-content: center;
-            padding: 20px;
+            padding: 18px;  
             overflow-y: auto;
             max-height: calc(90vh - 120px);
         }
-
         .mail-card-parent {
-            width: 320px;
-            height: 380px;
-            perspective: 1000px;
-            margin: 15px;
+            width: 240px;
+            height: 320px;
+            perspective: 900px;
+            margin: 0 auto;
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+            transition: box-shadow 0.3s, transform 0.3s;
+            background: rgba(255,255,255,0.03);
+            position: relative;
         }
-
+        .mail-card-parent:hover {
+            box-shadow: 0 8px 32px 0 rgba(52, 152, 219, 0.18), 0 2px 8px 0 rgba(0,0,0,0.08);
+            transform: scale(1.04);
+            z-index: 3;
+        }
         .mail-card {
             height: 100%;
-            border-radius: 25px;
-            background: linear-gradient(145deg, #00e1ff, #00c853);
+            border-radius: 18px;
+            background: linear-gradient(130deg, #67dbb0, #b4d3c5);
             transition: all 0.5s ease-in-out;
             transform-style: preserve-3d;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             position: relative;
             overflow: hidden;
         }
-
         .mail-card .glass {
-            transform-style: preserve-3d;
-            position: absolute;
-            inset: 8px;
-            border-radius: 22px;
-            border-top-right-radius: 100px;
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
-            transform: translate3d(0px, 0px, 25px);
-            border-left: 1px solid rgba(255, 255, 255, 0.3);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            transition: all 0.5s ease-in-out;
+            border-radius: 15px;
+            border-top-right-radius: 60px;
         }
-
         .mail-card .content {
-            padding: 35px 30px 0px 30px;
-            transform: translate3d(0, 0, 26px);
-            height: calc(100% - 100px);
             display: flex;
             flex-direction: column;
-        }
-
-        .mail-card .content .title {
-            color: white;
-            font-weight: 800;
-            font-size: 24px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
-            line-height: 1.2;
-            word-wrap: break-word;
-        }
-
-        .mail-card .content .text {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 15px;
-            line-height: 1.6;
-            margin: 15px 0;
-            font-weight: 500;
-        }
-
-        .mail-card .content .details {
-            display: flex !important;
             justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
+            height: calc(100% - 70px);
+            padding: 20px 15px 0px 15px;
+        }
+        .mail-card .content .title {
+            font-size: 18px;
             margin-bottom: 10px;
         }
-
-        .mail-card .price, .mail-card .quantity {
-            display: inline-block;
-            white-space: nowrap;
-        }
-
         .mail-card .price {
-            font-size: 28px;
-            font-weight: 800;
-            color: white;
-            margin-top: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            margin-top: 10px;
         }
-
-        /* .mail-card .quantity {
-            position: static !important;
-            top: unset !important;
-            right: unset !important;
-            background: unset !important;
-            padding: unset !important;
-            border-radius: unset !important;
-            color: unset !important;
-            font-weight: unset !important;
-            transform: unset !important;
-            box-shadow: unset !important;
-            z-index: unset !important;
-        } */
-
         .mail-card .bottom {
-            padding: 25px;
-            transform-style: preserve-3d;
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: translate3d(0, 0, 26px);
+            padding: 12px;
+            left: 10px;
+            right: 10px;
         }
-
         .mail-card .buy-button {
-            background: white;
+            background: linear-gradient(150deg, #01080E 80%, #ffffff 200%);
             border: none;
-            padding: 12px 35px;
-            border-radius: 25px;
-            color: #00894d;
-            font-weight: bold;
-            font-size: 16px;
+            padding: 10px 0;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            transform: translate3d(0, 0, 10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 2px 8px rgba(0, 201, 83, 0.10);
             width: 100%;
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-
-        .mail-card .buy-button:hover {
-            background: #00894d;
-            color: white;
-            transform: translate3d(0, -5px, 10px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-
+        /* .mail-card .buy-button:hover:not(:disabled) { */
+            /* background: linear-gradient(135deg, #00e1ff 60%, #00c853 100%); */
+            /* color: #fff; */
+            /* transform: scale(1.06) translateY(-2px); */
+            /* box-shadow: 0 6px 18px rgba(0, 201, 83, 0.18); */
+        /* } */
         .mail-card .buy-button:disabled {
             background: #e0e0e0;
             color: #999;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
-        }
-
-        .mail-card-parent:hover .mail-card {
-            transform: scale(1.12) translateY(-10px);
-            box-shadow: 0 30px 60px 0 rgba(52, 152, 219, 0.25), 0 8px 20px 0 rgba(0,0,0,0.10);
-            z-index: 2;
-            transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        /* Style cho các ô trong bảng */
-        .table td {
-            padding: 12px;
-            vertical-align: middle;
-            border-bottom: 1px solid var(--border-color);
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Style cho bảng trong modal danh sách mail */
-        #mailListModal .table th:nth-child(1), /* ID */
-        #mailListModal .table td:nth-child(1) {
-            width: 80px;
-            min-width: 80px;
-        }
-
-        #mailListModal .table th:nth-child(2), /* Loại Mail */
-        #mailListModal .table td:nth-child(2) {
-            width: 200px;
-            min-width: 200px;
-        }
-
-        #mailListModal .table th:nth-child(3), /* Số Lượng */
-        #mailListModal .table td:nth-child(3) {
-            width: 120px;
-            min-width: 120px;
-        }
-
-        #mailListModal .table th:nth-child(4), /* Giá */
-        #mailListModal .table td:nth-child(4) {
-            width: 150px;
-            min-width: 150px;
-        }
-
-        #mailListModal .table th:nth-child(5), /* Thao Tác */
-        #mailListModal .table td:nth-child(5) {
-            width: 120px;
-            min-width: 120px;
-        }
-
-        /* Điều chỉnh chiều rộng tổng thể của modal */
-        #mailListModal .modal-content {
-            max-width: 1300px;
-            width: 100%;
-           
-        }
-
-        #mailListModal .table-responsive {
-            overflow-x: auto;
-            margin: 0;
-            padding: 0;
-        }
-
-        #mailListModal .table {
-            width: 100%;
-            margin-bottom: 0;
         }
 
         #purchaseModal .modal-content {
