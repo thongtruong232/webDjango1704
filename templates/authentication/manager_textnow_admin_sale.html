@@ -49,10 +49,14 @@
 
     .search-form .row {
         margin: 0 -0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
     }
 
     .search-form [class*="col-"] {
         padding: 0 0.75rem;
+        margin-bottom: 1rem;
     }
 
     /* Form groups */
@@ -60,9 +64,12 @@
         background: #f8f9fa;
         border: 1px solid #e9ecef;
         border-radius: 8px;
-        padding: 10px 10px 10px 10px;
+        padding: 1rem;
         height: 100%;
         transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
     }
 
     .form-group:hover {
@@ -75,7 +82,14 @@
         font-size: 0.875rem;
         font-weight: 600;
         color: #4a5568;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-label i {
+        color: #4a5568;
+        width: 16px;
     }
 
     /* Inputs và Selects */
@@ -89,6 +103,7 @@
         color: #2d3748;
         background-color: #ffffff;
         transition: all 0.2s ease;
+        width: 100%;
     }
 
     .form-control:focus,
@@ -102,6 +117,7 @@
         display: flex;
         gap: 0.75rem;
         align-items: center;
+        flex: 1;
     }
 
     #date_type {
@@ -109,20 +125,122 @@
         flex-shrink: 0;
     }
 
+    #date_range_container {
+        flex: 1;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
     #date_separator {
         color: #64748b;
         font-weight: 500;
-        margin: 0 0.5rem;
+        white-space: nowrap;
     }
 
     /* Button container styles */
     .search-button-container {
         display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1.5rem 0;
+        padding: 0 1rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #4361ee, #3730a3);
+        border: none;
+        border-radius: 8px;
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        padding: 0.875rem 2.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
         align-items: center;
         justify-content: center;
-        height: 100%;
-        padding: 0;
+        gap: 10px;
+        min-width: 200px;
+        box-shadow: 0 4px 6px rgba(67, 97, 238, 0.1);
     }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.2);
+        background: linear-gradient(45deg, #3730a3, #4361ee);
+    }
+
+    .btn-primary:active {
+        transform: translateY(1px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.15);
+    }
+
+    .btn-primary i {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-primary:hover i {
+        transform: scale(1.1);
+    }
+
+    .btn-primary span {
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 992px) {
+        .search-form [class*="col-"] {
+        }
+    }
+
+    @media (max-width: 991px) {
+        .search-button-container {
+            margin-top: 0;
+        }
+        
+        .btn-primary {
+            margin-top: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .date-range-wrapper {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        #date_type {
+            width: 100% !important;
+        }
+
+        #date_range_container {
+            flex-direction: column;
+        }
+
+        #date_separator {
+            margin: 0.5rem 0;
+        }
+
+        .search-button-container {
+            margin: 1rem 0;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+        }
+    }
+
+    /* Button styles */
     .btn-copy {
         padding: 0.5rem 0.75rem;
         border-radius: 6px;
@@ -152,50 +270,6 @@
         border-radius: 4px;
         font-size: 12px;
         display: none;
-    }
-    /* Button styles */
-    .btn-primary {
-        width: 70%;
-        height: 42px;
-        background: linear-gradient(45deg, #4361ee, #3730a3);
-        border: none;
-        border-radius: 8px;
-        color: #ffffff;
-        font-weight: 600;
-        font-size: 0.95rem;
-        letter-spacing: 0.3px;
-        padding: 0.75rem 1.5rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        margin: auto 0;
-    }
-
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
-        background: linear-gradient(45deg, #3730a3, #4361ee);
-    }
-
-    .btn-primary:active {
-        transform: translateY(1px);
-        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
-    }
-
-    .btn-primary:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
-    }
-
-    /* Thêm icon cho nút */
-    .btn-primary:before {
-        font-family: "Font Awesome 5 Free";
-        content: "\f002"; /* Search icon */
-        margin-right: 8px;
     }
 
     /* Table styles */
@@ -262,41 +336,6 @@
     .btn-info:hover {
         background-color: #2563eb;
         transform: translateY(-1px);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 992px) {
-        .container-fluid {
-            padding: 1rem;
-        }
-
-        .search-form {
-            padding: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .date-range-wrapper {
-            flex-direction: column;
-        }
-
-        #date_type {
-            width: 100% !important;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .search-button-container {
-            padding-bottom: 0;
-            margin-top: 1rem;
-        }
-
-        .btn-primary {
-            height: 46px; /* Làm nút to hơn trên mobile */
-            font-size: 1rem;
-        }
     }
 
     /* Thêm CSS cho nút xóa */
@@ -405,6 +444,31 @@
         gap: 0.7em;
         cursor: pointer;
     }
+
+    /* Thêm CSS cho loading state của nút Excel */
+    .container-btn-file.loading {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    .container-btn-file .loading-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ffffff;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: none;
+    }
+
+    .container-btn-file.loading .loading-spinner {
+        display: block;
+    }
+
+    .container-btn-file.loading svg {
+        display: none;
+    }
+
     .container-btn-file > svg {
         margin-right: 0.7em;
         
@@ -495,15 +559,181 @@
         min-height: var(--sizer);
         max-height: var(--sizer);
     }
+
+    /* Loading overlay styles */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Disable form elements while loading */
+    .loading .form-control,
+    .loading .form-select,
+    .loading .btn {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    /* Thêm CSS cho nút chọn ngẫu nhiên */
+    .btn-info {
+        background: linear-gradient(45deg, #0ea5e9, #0284c7);
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-info:hover {
+        background: linear-gradient(45deg, #0284c7, #0ea5e9);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+        color: white;
+    }
+
+    .btn-info i {
+        font-size: 1rem;
+    }
+
+    .gap-2 {
+        gap: 0.5rem;
+    }
+
+    /* Date picker styles */
+    .datepicker {
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+
+    .datepicker-dropdown {
+        padding-top: 0.5rem;
+    }
+
+    .datepicker table tr td.active,
+    .datepicker table tr td.active:hover,
+    .datepicker table tr td.active.disabled,
+    .datepicker table tr td.active.disabled:hover {
+        background-color: #4361ee !important;
+        background-image: none;
+    }
+
+    .datepicker table tr td.today {
+        background-color: #e9ecef !important;
+        background-image: none;
+    }
+
+    .datepicker table tr td.today:hover,
+    .datepicker table tr td.today.disabled,
+    .datepicker table tr td.today.disabled:hover {
+        background-color: #4361ee !important;
+        background-image: none;
+    }
+
+    .datepicker .datepicker-switch {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .datepicker .prev,
+    .datepicker .next {
+        color: #4a5568;
+    }
+
+    .datepicker .prev:hover,
+    .datepicker .next:hover {
+        background: #e9ecef;
+        border-radius: 4px;
+    }
+
+    .datepicker table tr td,
+    .datepicker table tr th {
+        border-radius: 4px;
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    .datepicker table tr td:hover {
+        background: #e9ecef;
+    }
+
+    .datepicker table tr td span {
+        border-radius: 4px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .datepicker table tr td span:hover {
+        background: #e9ecef;
+    }
+
+    .datepicker table tr td span.active {
+        background-color: #4361ee !important;
+        background-image: none;
+    }
+
+    .datepicker-dropdown:after {
+        border-bottom-color: #fff;
+    }
+
+    .datepicker-dropdown:before {
+        border-bottom-color: #e2e8f0;
+    }
+
+    .btn-copy.copied-effect {
+        background-color: #10b981 !important;
+        transition: background-color 0.2s;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
+    <!-- Loading overlay -->
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">Quản lý dánh sách hàng hoá</h2>
-        <div class="d-flex justify-content-end">
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#randomSelectModalTN">
+                <i class="fas fa-random"></i> Chọn ngẫu nhiên TextNow
+            </button>
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#randomSelectModalTF">
+                <i class="fas fa-random"></i> Chọn ngẫu nhiên TextFree
+            </button>
             <button id="exportSelected" class="container-btn-file" style="text-decoration: none;">
+                <div class="loading-spinner"></div>
                 <svg
                     fill="#fff"
                     xmlns="http://www.w3.org/2000/svg"
@@ -540,15 +770,17 @@
     <div class="card mb-4">
         <div class="card-body search-form">
             <form method="GET" class="row">
+                <!-- Thời gian -->
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="form-label">Tìm kiếm theo thời gian</label>
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            Tìm kiếm theo thời gian
+                        </label>
                         <div class="date-range-wrapper">
                             <select class="form-select" id="date_type" name="date_type">
                                 <option value="single" {% if date_type == 'single' %}selected{% endif %}>Ngày cụ thể</option>
-                                <option value="range" {% if date_type == 'range' %}selected{% endif %}>Khoảng
-                                    
-                                </option>
+                                <option value="range" {% if date_type == 'range' %}selected{% endif %}>Khoảng</option>
                             </select>
                             <div id="date_range_container" class="d-flex gap-1 align-items-center">
                                 <input type="date" class="form-control" id="start_date" name="start_date" 
@@ -560,27 +792,80 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Trạng thái TN -->
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="status_tn" class="form-label">Trạng thái TN</label>
+                        <label for="status_tn" class="form-label">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Trạng thái TN
+                        </label>
                         <select class="form-select status-select" id="status_tn" name="status_tn">
                             <option value="">Tất cả</option>
                             {% for status in status_list %}
                             <option value="{{ status }}" {% if status_tn == status %}selected{% endif %}>
-                                {% if status == 'active' %}Hoạt động
-                                {% elif status == 'inactive' %}Không hoạt động
-                                {% elif status == 'lỗi' %}Lỗi
-                                {% else %}{{ status|title }}{% endif %}
+                                {{ status }}
                             </option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
 
+                <!-- Trạng thái TF -->
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="created_by" class="form-label">Người tạo</label>
+                        <label for="status_tf" class="form-label">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Trạng thái TF
+                        </label>
+                        <select class="form-select status-select" id="status_tf" name="status_tf">
+                            <option value="">Tất cả</option>
+                            {% for status in status_list %}
+                            <option value="{{ status }}" {% if status_tf == status %}selected{% endif %}>
+                                {{ status }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Trạng thái bán TN -->
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="sold_status_tn" class="form-label">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            Trạng thái bán TN
+                        </label>
+                        <select class="form-select" id="sold_status_tn" name="sold_status_tn">
+                            <option value="">Tất cả</option>
+                            <option value="true" {% if sold_status_tn == 'true' %}selected{% endif %}>Đã bán</option>
+                            <option value="false" {% if sold_status_tn == 'false' %}selected{% endif %}>Chưa bán</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Trạng thái bán TF -->
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="sold_status_tf" class="form-label">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            Trạng thái bán TF
+                        </label>
+                        <select class="form-select" id="sold_status_tf" name="sold_status_tf">
+                            <option value="">Tất cả</option>
+                            <option value="true" {% if sold_status_tf == 'true' %}selected{% endif %}>Đã bán</option>
+                            <option value="false" {% if sold_status_tf == 'false' %}selected{% endif %}>Chưa bán</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Người tạo -->
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="created_by" class="form-label">
+                            <i class="fas fa-user me-2"></i>
+                            Người tạo
+                        </label>
                         <select class="form-select" id="created_by" name="created_by">
                             <option value="">Tất cả</option>
                             {% for creator in creators %}
@@ -592,18 +877,23 @@
                     </div>
                 </div>
 
-                <div class="col-md-2">
+                <!-- Tìm kiếm -->
+                <div class="col-md-4">
                     <div class="form-group">
-                        <label for="search" class="form-label">Tìm kiếm</label>
+                        <label for="search" class="form-label">
+                            <i class="fas fa-search me-2"></i>
+                            Tìm kiếm
+                        </label>
                         <input type="text" class="form-control" id="search" name="search" 
                                placeholder="Email, username..." value="{{ search_query }}">
                     </div>
                 </div>
 
-                <div class="col-md-2">
-                    <div class="form-group search-button-container">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i>
+                <!-- Nút tìm kiếm -->
+                <div class="col-md-6">
+                    <div class="search-button-container">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-search me-2"></i>
                             <span>Tìm kiếm</span>
                         </button>
                     </div>
@@ -615,6 +905,90 @@
     <!-- Bảng kết quả -->
     <div class="card">
         <div class="card-body">
+            <!-- Thêm phần thống kê -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="alert alert-success d-flex align-items-center gap-2">
+                        <i class="fas fa-check-circle me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextNow đã bán:</strong>
+                            <span id="totalTNSold" class="ms-2 badge bg-primary">0</span>
+                            <div id="dateRangeInfoTN" class="small text-muted mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-success d-flex align-items-center gap-2">
+                        <i class="fas fa-check-circle me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextFree đã bán:</strong>
+                            <span id="totalTFSold" class="ms-2 badge bg-primary">0</span>
+                            <div id="dateRangeInfoTF" class="small text-muted mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-warning d-flex align-items-center gap-2">
+                        <i class="fas fa-clock me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextNow chưa bán:</strong>
+                            <span id="totalTNUnsold" class="ms-2 badge bg-warning">0</span>
+                            <div id="dateRangeInfoTNUnsold" class="small text-muted mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-warning d-flex align-items-center gap-2">
+                        <i class="fas fa-clock me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextFree chưa bán:</strong>
+                            <span id="totalTFUnsold" class="ms-2 badge bg-warning">0</span>
+                            <div id="dateRangeInfoTFUnsold" class="small text-muted mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thêm hàng mới cho thống kê theo sold_status -->
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <div class="alert alert-info d-flex align-items-center gap-2">
+                        <i class="fas fa-shopping-cart me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextNow đã bán:</strong>
+                            <span id="totalTNSoldStatus" class="ms-2 badge bg-info">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-info d-flex align-items-center gap-2">
+                        <i class="fas fa-shopping-cart me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextFree đã bán:</strong>
+                            <span id="totalTFSoldStatus" class="ms-2 badge bg-info">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-secondary d-flex align-items-center gap-2" style="cursor: pointer;" id="unsoldTextNowStats">
+                        <i class="fas fa-box me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextNow hàng tồn:</strong>
+                            <span id="totalTNUnsoldStatus" class="ms-2 badge bg-secondary">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="alert alert-secondary d-flex align-items-center gap-2" style="cursor: pointer;" id="unsoldTextFreeStats">
+                        <i class="fas fa-box me-2" style="font-size: 30px;"></i>
+                        <div>
+                            <strong>Tổng số TextFree hàng tồn:</strong>
+                            <span id="totalTFUnsoldStatus" class="ms-2 badge bg-secondary">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -683,11 +1057,30 @@
                                 </button>
                             </td>
                             <td>
+                                <style>
+                                    .trash-container {
+                                        width: 40px;
+                                        height: 40px;
+                                        cursor: pointer;
+                                        background: none;
+                                        border: none;
+                                        padding: 0;
+                                    }
+                                    .trash-body, .trash-lid {
+                                        transition: transform 0.3s ease;
+                                    }
+                                    .trash-lid {
+                                        transform-origin: 30% 100%; /* Gốc xoay của nắp */
+                                    }
+                                    .trash-container:hover .trash-lid {
+                                        transform: rotate(-30deg); /* Xoay nắp khi hover */
+                                    }
+                                    </style>
                                 <button class="button btn-delete"
                                         data-id="{{ employee.id }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteModal"
-                                        title="Xóa bản ghi">
+                                        title="Xóa">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -726,15 +1119,199 @@
         </div>
     </div>
 </div>
+
+<!-- Thêm Modal chọn ngẫu nhiên TextNow -->
+<div class="modal fade" id="randomSelectModalTN" tabindex="-1" aria-labelledby="randomSelectModalTNLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="randomSelectModalTNLabel">Chọn ngẫu nhiên TextNow</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="randomSelectFormTN">
+                    <div class="mb-3">
+                        <label for="randomCountTN" class="form-label">Số lượng record</label>
+                        <input type="number" class="form-control" id="randomCountTN" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="randomStatusTN" class="form-label">Trạng thái TN</label>
+                        <select class="form-select status-select" id="randomStatusTN">
+                            <option value="">Tất cả</option>
+                            {% for status in status_list %}
+                            <option value="{{ status }}">{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="confirmRandomSelectTN">Chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm Modal chọn ngẫu nhiên TextFree -->
+<div class="modal fade" id="randomSelectModalTF" tabindex="-1" aria-labelledby="randomSelectModalTFLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="randomSelectModalTFLabel">Chọn ngẫu nhiên TextFree</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="randomSelectFormTF">
+                    <div class="mb-3">
+                        <label for="randomCountTF" class="form-label">Số lượng record</label>
+                        <input type="number" class="form-control" id="randomCountTF" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="randomStatusTF" class="form-label">Trạng thái TF</label>
+                        <select class="form-select status-select" id="randomStatusTF">
+                            <option value="">Tất cả</option>
+                            {% for status in status_list %}
+                            <option value="{{ status }}">{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="confirmRandomSelectTF">Chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm phần hiển thị log -->
+<div class="card mt-4" id="selectionLog" style="display: none;">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Kết quả chọn ngẫu nhiên</h5>
+        <button type="button" class="btn-close" onclick="document.getElementById('selectionLog').style.display = 'none'"></button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Password Email</th>
+                        <th>Password</th>
+                        <th>Password TF</th>
+                        <th>TN Status</th>
+                        <th>TF Status</th>
+                        <th>Người tạo</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody id="selectedRecordsBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm Modal hiển thị danh sách ngày TextNow hàng tồn -->
+<div class="modal fade" id="unsoldTextNowModal" tabindex="-1" aria-labelledby="unsoldTextNowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unsoldTextNowModalLabel">Danh sách TextNow hàng tồn theo ngày</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Số lượng</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unsoldTextNowTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thêm Modal hiển thị danh sách ngày TextNow/TextFree hàng tồn -->
+<div class="modal fade" id="unsoldStatsModal" tabindex="-1" aria-labelledby="unsoldStatsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unsoldStatsModalLabel">Danh sách hàng tồn theo ngày</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Số lượng</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unsoldStatsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Khởi tạo popovers
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
+    });
+
+    // Khởi tạo date picker cho các input date
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(input => {
+        // Chuyển đổi input type="date" thành input type="text"
+        input.type = 'text';
+        
+        // Khởi tạo datepicker
+        $(input).datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'vi',
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+            orientation: 'bottom auto',
+            templates: {
+                leftArrow: '<i class="fas fa-chevron-left"></i>',
+                rightArrow: '<i class="fas fa-chevron-right"></i>'
+            }
+        });
+
+        // Xử lý khi ngày thay đổi
+        $(input).on('changeDate', function(e) {
+            if (dateType.value === 'single') {
+                endDate.value = e.date.toISOString().split('T')[0];
+            }
+        });
     });
 
     // Xử lý hiển thị form tìm kiếm theo thời gian
@@ -779,28 +1356,30 @@ document.addEventListener('DOMContentLoaded', function() {
     handleDateTypeChange();
 
     // Khởi tạo tooltips cho select options
-    const statusSelect = document.getElementById('status_tn');
-    const options = statusSelect.options;
+    const statusSelects = document.querySelectorAll('.status-select');
     
-    for (let option of options) {
-        if (option.value) {
-            let tooltip = '';
-            switch(option.value) {
-                case 'active':
-                    tooltip = 'Tài khoản đang hoạt động bình thường';
-                    break;
-                case 'inactive':
-                    tooltip = 'Tài khoản đã bị vô hiệu hóa';
-                    break;
-                case 'lỗi':
-                    tooltip = 'Tài khoản đang gặp sự cố';
-                    break;
-                default:
-                    tooltip = `Trạng thái: ${option.value}`;
+    statusSelects.forEach(select => {
+        const options = select.options;
+        for (let option of options) {
+            if (option.value) {
+                let tooltip = '';
+                switch(option.value) {
+                    case 'active':
+                        tooltip = 'Tài khoản đang hoạt động bình thường';
+                        break;
+                    case 'inactive':
+                        tooltip = 'Tài khoản đã bị vô hiệu hóa';
+                        break;
+                    case 'lỗi':
+                        tooltip = 'Tài khoản đang gặp sự cố';
+                        break;
+                    default:
+                        tooltip = `Trạng thái: ${option.value}`;
+                }
+                option.setAttribute('title', tooltip);
             }
-            option.setAttribute('title', tooltip);
         }
-    }
+    });
     
     // Khởi tạo Bootstrap tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'))
@@ -813,32 +1392,44 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const text = this.getAttribute('data-info');
             // Copy text
-            navigator.clipboard.writeText(text).then(() => {
-                // Thay đổi icon và text
-                const icon = this.querySelector('i');
-                const span = this.querySelector('span');
-                
-                // Lưu trữ class cũ
-                const oldIconClass = icon.className;
-                const oldText = span.textContent;
-                
-                // Thay đổi thành icon check và text "Đã copy"
-                icon.className = 'fas fa-check';
-                span.textContent = 'Đã copy';
-                this.classList.add('copied');
-                
-                // Sau 2 giây, đổi lại như cũ
+            const showCopyEffect = (btn) => {
+                btn.classList.add('copied-effect');
                 setTimeout(() => {
-                    icon.className = oldIconClass;
-                    span.textContent = oldText;
-                    this.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                console.error('Không thể copy: ', err);
-                alert('Không thể copy thông tin. Vui lòng thử lại.');
-            });
+                    btn.classList.remove('copied-effect');
+                }, 500);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyEffect(this);
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(text, this, showCopyEffect);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text, this, showCopyEffect);
+            }
         });
     });
+
+    // Fallback cho copy clipboard
+    function fallbackCopyTextToClipboard(text, btn, effectCb) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            var successful = document.execCommand('copy');
+            if (successful && effectCb) {
+                effectCb(btn);
+            }
+            if (!successful) {
+                alert('Không thể copy thông tin. Vui lòng thử lại.');
+            }
+        } catch (err) {
+            alert('Không thể copy thông tin. Vui lòng thử lại.');
+        }
+        document.body.removeChild(textArea);
+    }
 
     // Xử lý xóa record
     let employeeIdToDelete = null;
@@ -917,6 +1508,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Thêm class loading và vô hiệu hóa nút
+        this.classList.add('loading');
+
         // Gửi danh sách ID đến server
         fetch('/export-employee-textnow-excel/', {
             method: 'POST',
@@ -945,6 +1539,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error(error);
             alert('Đã xảy ra lỗi khi xuất Excel.');
+        })
+        .finally(() => {
+            // Xóa class loading và kích hoạt lại nút
+            this.classList.remove('loading');
         });
     });
 
@@ -960,6 +1558,504 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Loading overlay handling
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    const searchForm = document.querySelector('form[method="GET"]');
+    const container = document.querySelector('.container-fluid');
+
+    searchForm.addEventListener('submit', function(e) {
+        // Show loading overlay
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+    });
+
+    // Show loading when form is submitted
+    document.querySelectorAll('.form-control, .form-select').forEach(element => {
+        element.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loadingOverlay.style.display = 'flex';
+                container.classList.add('loading');
+            }
+        });
+    });
+
+    // Xử lý chọn ngẫu nhiên TextNow
+    document.getElementById('confirmRandomSelectTN').addEventListener('click', function() {
+        const count = parseInt(document.getElementById('randomCountTN').value);
+        const statusTN = document.getElementById('randomStatusTN').value;
+
+        if (!count || count < 1) {
+            alert('Vui lòng nhập số lượng record hợp lệ');
+            return;
+        }
+
+        // Hiển thị loading overlay
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const container = document.querySelector('.container-fluid');
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+
+        // Lấy tất cả các checkbox
+        const checkboxes = document.querySelectorAll('.record-checkbox');
+        let filteredCheckboxes = Array.from(checkboxes);
+
+        // Lọc theo trạng thái TN và sold_status_TN
+        filteredCheckboxes = filteredCheckboxes.filter(checkbox => {
+            const row = checkbox.closest('tr');
+            const statusCell = row.querySelector('td:nth-child(6) .badge');
+            const soldStatusCell = row.querySelector('td:nth-child(8) .badge');
+            const statusText = statusCell ? statusCell.textContent.trim().toLowerCase() : '';
+            const soldStatusText = soldStatusCell ? soldStatusCell.textContent.trim().toLowerCase() : '';
+            
+            return statusText === statusTN && soldStatusText === 'chưa bán';
+        });
+
+        // Kiểm tra số lượng record khả dụng
+        if (filteredCheckboxes.length === 0) {
+            loadingOverlay.style.display = 'none';
+            container.classList.remove('loading');
+            alert('Không tìm thấy record nào phù hợp với điều kiện đã chọn');
+            return;
+        }
+
+        if (count > filteredCheckboxes.length) {
+            loadingOverlay.style.display = 'none';
+            container.classList.remove('loading');
+            alert(`Chỉ có ${filteredCheckboxes.length} record phù hợp với điều kiện`);
+            return;
+        }
+
+        // Bỏ chọn tất cả checkbox
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+
+        // Chọn ngẫu nhiên
+        const selectedCount = Math.min(count, filteredCheckboxes.length);
+        const shuffled = filteredCheckboxes.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, selectedCount);
+
+        // Thu thập ID của các record được chọn
+        const selectedIds = selected.map(checkbox => checkbox.value);
+
+        // Gửi request cập nhật trạng thái
+        fetch('/update-sold-status/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                employee_ids: selectedIds,
+                sold_status: true,
+                type: 'TN'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Chọn các checkbox
+                selected.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+                
+                // Đóng modal
+                bootstrap.Modal.getInstance(document.getElementById('randomSelectModalTN')).hide();
+
+                // Xuất Excel với các record đã chọn
+                return fetch('/export-employee-textnow-excel/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({ selected_ids: selectedIds })
+                });
+            } else {
+                throw new Error(data.message || 'Có lỗi xảy ra khi cập nhật trạng thái');
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Lỗi khi xuất Excel.');
+            }
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'employee_textnow_selected.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .then(() => {
+            // Reload trang sau khi xuất Excel
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message || 'Có lỗi xảy ra');
+            // Ẩn loading overlay
+            loadingOverlay.style.display = 'none';
+            container.classList.remove('loading');
+        });
+    });
+
+    // Xử lý chọn ngẫu nhiên TextFree
+    document.getElementById('confirmRandomSelectTF').addEventListener('click', function() {
+        const count = parseInt(document.getElementById('randomCountTF').value);
+        const statusTF = document.getElementById('randomStatusTF').value;
+
+        if (!count || count < 1) {
+            alert('Vui lòng nhập số lượng record hợp lệ');
+            return;
+        }
+
+        // Hiển thị loading overlay
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const container = document.querySelector('.container-fluid');
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+
+        // Lấy tất cả các checkbox
+        const checkboxes = document.querySelectorAll('.record-checkbox');
+        let filteredCheckboxes = Array.from(checkboxes);
+
+        // Lọc theo trạng thái TF và sold_status_TF
+        filteredCheckboxes = filteredCheckboxes.filter(checkbox => {
+            const row = checkbox.closest('tr');
+            const statusCell = row.querySelector('td:nth-child(7) .badge');
+            const soldStatusCell = row.querySelector('td:nth-child(9) .badge');
+            
+            // Lấy text từ các cell
+            const statusText = statusCell ? statusCell.textContent.trim() : '';
+            const soldStatusText = soldStatusCell ? soldStatusCell.textContent.trim() : '';
+            
+            // Kiểm tra điều kiện
+            const statusMatch = statusTF === '' || statusText.toLowerCase() === statusTF.toLowerCase();
+            const soldStatusMatch = soldStatusText === 'Chưa bán';
+            
+            // Log để debug
+            // console.log('Record:', {
+            //     id: checkbox.value,
+            //     statusText: statusText,
+            //     soldStatusText: soldStatusText,
+            //     statusMatch: statusMatch,
+            //     soldStatusMatch: soldStatusMatch
+            // });
+            
+            return statusMatch && soldStatusMatch;
+        });
+
+        // Log số lượng records đã lọc
+        // console.log('Số records phù hợp:', filteredCheckboxes.length);
+
+        // Kiểm tra số lượng record khả dụng
+        if (filteredCheckboxes.length === 0) {
+            loadingOverlay.style.display = 'none';
+            container.classList.remove('loading');
+            alert('Không tìm thấy record nào phù hợp với điều kiện đã chọn');
+            return;
+        }
+
+        if (count > filteredCheckboxes.length) {
+            loadingOverlay.style.display = 'none';
+            container.classList.remove('loading');
+            alert(`Chỉ có ${filteredCheckboxes.length} record phù hợp với điều kiện`);
+            return;
+        }
+
+        // Bỏ chọn tất cả checkbox
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+
+        // Chọn ngẫu nhiên
+        const selectedCount = Math.min(count, filteredCheckboxes.length);
+        const shuffled = filteredCheckboxes.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, selectedCount);
+
+        // Thu thập ID của các record được chọn
+        const selectedIds = selected.map(checkbox => checkbox.value);
+
+        // Log các ID được chọn
+        // console.log('Selected IDs:', selectedIds);
+
+        // Gửi request cập nhật trạng thái
+        fetch('/update-sold-status/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                employee_ids: selectedIds,
+                sold_status: true,
+                type: 'TF'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // console.log('Update response:', data); // Log response từ server
+            if (data.status === 'success') {
+                // Chọn các checkbox
+                selected.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+                
+                // Đóng modal
+                bootstrap.Modal.getInstance(document.getElementById('randomSelectModalTF')).hide();
+
+                // Xuất Excel với các record đã chọn
+                return fetch('/export-employee-textnow-excel/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({ selected_ids: selectedIds })
+                });
+            } else {
+                throw new Error(data.message || 'Có lỗi xảy ra khi cập nhật trạng thái');
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Lỗi khi xuất Excel.');
+            }
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'employee_textfree_selected.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        })
+        .then(() => {
+            // Reload trang sau khi xuất Excel
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message || 'Có lỗi xảy ra');
+            // Ẩn loading overlay
+            loadingOverlay.style.display = 'none';
+            container.classList.remove('loading');
+        });
+    });
+
+    // Hàm lấy số liệu thống kê từ server
+    function fetchSoldStatusCounts() {
+        // Hiển thị loading overlay
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const container = document.querySelector('.container-fluid');
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+
+        // Gọi API để lấy số liệu thống kê
+        fetch('/api/get-sold-status-counts/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Cập nhật hiển thị cho các ô thống kê mới
+                    document.getElementById('totalTNSoldStatus').textContent = data.counts.tn_sold;
+                    document.getElementById('totalTFSoldStatus').textContent = data.counts.tf_sold;
+                    document.getElementById('totalTNUnsoldStatus').textContent = data.counts.tn_unsold;
+                    document.getElementById('totalTFUnsoldStatus').textContent = data.counts.tf_unsold;
+                } else {
+                    console.error('Error fetching sold status counts:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // Ẩn loading overlay
+                loadingOverlay.style.display = 'none';
+                container.classList.remove('loading');
+            });
+    }
+
+    // Gọi hàm lấy số liệu khi trang được tải
+    fetchSoldStatusCounts();
+
+    // Gọi lại hàm khi form tìm kiếm được submit
+    document.querySelector('form[method="GET"]').addEventListener('submit', function() {
+        // Đợi trang reload xong
+        window.addEventListener('load', fetchSoldStatusCounts);
+    });
+
+    // Hàm cập nhật số liệu hiển thị (chỉ cho các ô thống kê cũ)
+    function updateDisplayCounts() {
+        const rows = document.querySelectorAll('tbody tr');
+        let tnSoldCount = 0;
+        let tfSoldCount = 0;
+        let tnUnsoldCount = 0;
+        let tfUnsoldCount = 0;
+
+        rows.forEach(row => {
+            const tnSoldCell = row.querySelector('td:nth-child(8) .badge');
+            const tfSoldCell = row.querySelector('td:nth-child(9) .badge');
+
+            if (tnSoldCell) {
+                if (tnSoldCell.textContent.trim() === 'Đã bán') {
+                    tnSoldCount++;
+                } else {
+                    tnUnsoldCount++;
+                }
+            }
+            if (tfSoldCell) {
+                if (tfSoldCell.textContent.trim() === 'Đã bán') {
+                    tfSoldCount++;
+                } else {
+                    tfUnsoldCount++;
+                }
+            }
+        });
+
+        // Chỉ cập nhật các ô thống kê cũ
+        document.getElementById('totalTNSold').textContent = tnSoldCount;
+        document.getElementById('totalTFSold').textContent = tfSoldCount;
+        document.getElementById('totalTNUnsold').textContent = tnUnsoldCount;
+        document.getElementById('totalTFUnsold').textContent = tfUnsoldCount;
+    }
+
+    // Gọi hàm cập nhật số liệu hiển thị khi trang được tải
+    updateDisplayCounts();
+
+    // Thêm hàm cập nhật thông tin ngày tháng
+    function updateDateRangeInfo() {
+        const dateType = document.getElementById('date_type').value;
+        const startDate = document.getElementById('start_date').value;
+        const endDate = document.getElementById('end_date').value;
+        
+        // Format date function
+        function formatDate(date) {
+            return date.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Get date range text
+        let dateRangeText;
+        if (dateType === 'single' && startDate) {
+            const date = new Date(startDate);
+            dateRangeText = `Ngày: ${formatDate(date)}`;
+        } else if (dateType === 'range' && startDate && endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            dateRangeText = `Từ ${formatDate(start)} đến ${formatDate(end)}`;
+        } else {
+            dateRangeText = 'Tất cả thời gian';
+        }
+
+        // Update all date range info elements
+        const dateRangeElements = [
+            'dateRangeInfoTN',
+            'dateRangeInfoTF',
+            'dateRangeInfoTNUnsold',
+            'dateRangeInfoTFUnsold'
+        ];
+
+        dateRangeElements.forEach(elementId => {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = dateRangeText;
+            }
+        });
+    }
+
+    // Cập nhật thông tin ngày tháng khi trang được tải
+    updateDateRangeInfo();
+
+    // Cập nhật thông tin ngày tháng khi thay đổi loại ngày
+    document.getElementById('date_type').addEventListener('change', updateDateRangeInfo);
+
+    // Cập nhật thông tin ngày tháng khi thay đổi ngày
+    document.getElementById('start_date').addEventListener('change', updateDateRangeInfo);
+    document.getElementById('end_date').addEventListener('change', updateDateRangeInfo);
+
+    // Xử lý click vào thống kê TextNow hàng tồn
+    document.getElementById('unsoldTextNowStats').addEventListener('click', function() {
+        fetchUnsoldStats('TN');
+    });
+
+    // Xử lý click vào thống kê TextFree hàng tồn
+    document.getElementById('unsoldTextFreeStats').addEventListener('click', function() {
+        fetchUnsoldStats('TF');
+    });
+
+    // Hàm chung để lấy và hiển thị thống kê hàng tồn
+    function fetchUnsoldStats(type) {
+        // Hiển thị loading overlay
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        const container = document.querySelector('.container-fluid');
+        loadingOverlay.style.display = 'flex';
+        container.classList.add('loading');
+
+        // Gọi API lấy danh sách ngày với type tương ứng
+        fetch(`/api/get-textnow-unsold-dates/?type=${type}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const tbody = document.getElementById('unsoldStatsTableBody');
+                    tbody.innerHTML = ''; // Xóa nội dung cũ
+
+                    // Cập nhật tiêu đề modal dựa vào type
+                    const modalTitle = document.getElementById('unsoldStatsModalLabel');
+                    modalTitle.textContent = `Danh sách ${data.type} hàng tồn theo ngày`;
+
+                    data.dates.forEach(item => {
+                        const row = document.createElement('tr');
+                        
+                        // Tạo cell ngày
+                        const dateCell = document.createElement('td');
+                        dateCell.textContent = item.date;
+                        
+                        // Tạo cell số lượng
+                        const countCell = document.createElement('td');
+                        countCell.textContent = item.count;
+                        
+                        // Tạo cell trạng thái
+                        const statusCell = document.createElement('td');
+                        if (item.check_add_area_phone) {
+                            statusCell.innerHTML = '<span class="badge bg-warning">Cần thêm mã vùng</span>';
+                        } else {
+                            statusCell.innerHTML = '<span class="badge bg-success">Bình thường</span>';
+                        }
+                        
+                        // Thêm các cell vào row
+                        row.appendChild(dateCell);
+                        row.appendChild(countCell);
+                        row.appendChild(statusCell);
+                        
+                        // Thêm row vào tbody
+                        tbody.appendChild(row);
+                    });
+
+                    // Hiển thị modal
+                    const modal = new bootstrap.Modal(document.getElementById('unsoldStatsModal'));
+                    modal.show();
+                } else {
+                    alert('Có lỗi xảy ra khi lấy dữ liệu: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra khi lấy dữ liệu');
+            })
+            .finally(() => {
+                // Ẩn loading overlay
+                loadingOverlay.style.display = 'none';
+                container.classList.remove('loading');
+            });
+    }
 });
 </script>
 {% endblock %}

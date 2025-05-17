@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'authentication.apps.AuthenticationConfig',
     'channels',
 ]
@@ -157,7 +158,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'elivibes0124@gmail.com'
-EMAIL_HOST_PASSWORD = 'nxxr dxyg vffc kpjn'  # App Password from Gmail
+EMAIL_HOST_PASSWORD = 'moei jkai xiuz kwvl'  # App Password from Gmail
 DEFAULT_FROM_EMAIL = 'elivibes0124@gmail.com'
 
 # Static files (CSS, JavaScript, Images)
@@ -249,7 +250,7 @@ CACHES = {
             },
             'MAX_CONNECTIONS': 1000,
             'RETRY_ON_TIMEOUT': True,
-            'IGNORE_EXCEPTIONS': True,  # Bỏ qua lỗi kết nối tạm thời
+            'IGNORE_EXCEPTIONS': True,
         }
     }
 }
@@ -272,7 +273,7 @@ CHANNEL_LAYERS = {
                 'http.response*': 200,
                 'websocket.send*': 200,
             },
-            'symmetric_encryption_keys': [SECRET_KEY],  # Mã hóa dữ liệu WebSocket
+            'symmetric_encryption_keys': [SECRET_KEY],
         },
     },
 }
@@ -280,13 +281,27 @@ CHANNEL_LAYERS = {
 # Channels Configuration
 ASGI_APPLICATION = 'WebDjango.asgi.application'
 
+# WebSocket settings
+CHANNELS_WS_PROTOCOLS = ['websocket']
+CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1', '*']
+CHANNELS_WS_HEARTBEAT = 30  # seconds
+CHANNELS_WS_PING_INTERVAL = 20  # seconds
+CHANNELS_WS_PING_TIMEOUT = 10  # seconds
+
+# Uvicorn settings
+UVICORN_WS_PING_INTERVAL = 20
+UVICORN_WS_PING_TIMEOUT = 10
+UVICORN_TIMEOUT_KEEP_ALIVE = 86400
+UVICORN_WORKERS = 4
+UVICORN_LOG_LEVEL = 'info'
+
 # Logging settings
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
     },
@@ -294,37 +309,19 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
-            'level': 'ERROR',  # Chỉ hiển thị lỗi
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': 'django_error.log',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
             'formatter': 'verbose',
-            'level': 'ERROR',  # Chỉ ghi lỗi
+            'encoding': 'utf-8',
         },
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'ERROR',  # Tắt log database operations
-            'propagate': False,
-        },
-        'authentication': {
-            'handlers': ['console', 'file'],
-            'level': 'ERROR',
+            'level': 'INFO',
             'propagate': True,
         },
     },
 }
-
-# WebSocket settings
-CHANNELS_WS_PROTOCOLS = ['websocket']
-CHANNELS_WS_ALLOWED_HOSTS = ['207.148.69.229', 'localhost', '127.0.0.1']
-CHANNELS_WS_HEARTBEAT = 30  # seconds
-CHANNELS_WS_PING_INTERVAL = 20  # seconds
-CHANNELS_WS_PING_TIMEOUT = 10  # seconds

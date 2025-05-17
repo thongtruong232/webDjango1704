@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .mongodb import get_collection_handle
+from authentication.mongodb import get_collection_handle
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from authentication.permissions import (
@@ -68,7 +68,7 @@ def work_time_stats(request):
         mongo_users = list(users_collection.find({}, {'user_id': 1, 'username': 1, 'role': 1, 'is_active': 1}))
         
         # Lấy collection work_time
-        work_time_collection = client['work_time']['stats']
+        stats_collection, client = get_collection_handle('stats')
         
         # Tạo query dựa trên tham số
         query = {
@@ -84,16 +84,27 @@ def work_time_stats(request):
         # Lấy thống kê từ collection work_time
         stats = []
         for mongo_user in mongo_users:
-            user_query = query.copy()
-            user_query['user_id'] = str(mongo_user['user_id'])
-            
-            # Lấy thống kê của user
-            user_stats = list(work_time_collection.find(user_query).sort('date', -1))
-            
-            if user_stats:
+            try:
+                user_query = query.copy()
+                user_query['user_id'] = str(mongo_user['user_id'])
+                user_stats = list(stats_collection.find(user_query).sort('date', -1))
+
+                if not user_stats:
+                    stats.append({
+                        'user': {
+                            'id': str(mongo_user['user_id']),
+                            'username': mongo_user['username'],
+                            'is_active': mongo_user['is_active']
+                        },
+                        'total_sessions': 0,
+                        'total_hours': 0,
+                        'average_session': 0,
+                        'activities': []
+                    })
+                    continue
+
                 # Tính tổng số phiên và thời gian
                 total_sessions = len(user_stats)
-                
                 # Tính tổng thời gian làm việc
                 total_duration = 0
                 for stat in user_stats:
@@ -104,47 +115,43 @@ def work_time_stats(request):
                         logout_time = datetime.fromisoformat(stat['logout_time'])
                         duration = (logout_time - login_time).total_seconds()
                         total_duration += duration
-                
                 total_hours = round(total_duration / 3600, 2)
                 average_hours = round(total_hours / total_sessions, 2) if total_sessions > 0 else 0
-                
                 # Format lại các phiên làm việc
                 formatted_activities = []
                 for stat in user_stats:
                     try:
                         login_time = datetime.fromisoformat(stat['login_time'])
                         logout_time = datetime.fromisoformat(stat['logout_time']) if stat.get('logout_time') else None
-                        
                         if 'duration' not in stat and logout_time:
                             duration = (logout_time - login_time).total_seconds()
                             duration_str = str(logout_time - login_time)
                         else:
                             duration = stat.get('duration', 0)
                             duration_str = stat.get('duration_str', '0:00:00')
-                        
                         formatted_activities.append({
                             'login_time': login_time,
                             'logout_time': logout_time,
                             'session_duration': duration_str,
                             'session_id': stat['session_id']
                         })
-
-                        # logger.info(f'login_time: {login_time}, logout_time: {logout_time}')
                     except Exception as e:
-                        logger.error(f"Error formatting activity: {str(e)}", exc_info=True)
+                        # Đã bỏ log lỗi không cần thiết khi thiếu key hoặc lỗi user
                         continue
-                
                 stats.append({
                     'user': {
-                        'id': mongo_user['user_id'],
+                        'id': str(mongo_user['user_id']),
                         'username': mongo_user['username'],
-                        'is_active': mongo_user['is_active']
+                        'is_active': mongo_user.get('is_active', False)
                     },
                     'total_sessions': total_sessions,
                     'total_hours': total_hours,
                     'average_session': average_hours,
                     'activities': formatted_activities
                 })
+            except Exception as e:
+                # Đã bỏ log lỗi không cần thiết khi thiếu key hoặc lỗi user
+                continue
 
         # Nếu yêu cầu xuất Excel
         if export_excel:
@@ -288,11 +295,11 @@ def user_activity_stream(request):
                 }))
                 
                 # Lấy thông tin phiên làm việc từ work_time collection
-                work_time_collection = client['work_time']['stats']
+                stats_collection, client = get_collection_handle('stats')
                 
                 for user in users:
                     # Lấy phiên làm việc gần nhất
-                    latest_session = work_time_collection.find_one(
+                    latest_session = stats_collection.find_one(
                         {'user_id': user['user_id']},
                         sort=[('login_time', -1)]
                     )
@@ -362,7 +369,7 @@ def user_activity_stream(request):
                                 
                                 if updated_user:
                                     # Lấy phiên làm việc gần nhất cho user đã cập nhật
-                                    latest_session = work_time_collection.find_one(
+                                    latest_session = stats_collection.find_one(
                                         {'user_id': updated_user['user_id']},
                                         sort=[('login_time', -1)]
                                     )
@@ -381,7 +388,7 @@ def user_activity_stream(request):
                                 user = change['fullDocument']
                                 if 'user_id' in user and 'is_active' in user:
                                     # Lấy phiên làm việc gần nhất cho user mới
-                                    latest_session = work_time_collection.find_one(
+                                    latest_session = stats_collection.find_one(
                                         {'user_id': user['user_id']},
                                         sort=[('login_time', -1)]
                                     )
@@ -495,7 +502,7 @@ def check_user_status(request):
                         continue
                     
                     # Kiểm tra trong collection user_activities
-                    user_activity_collection = client['user_activities']['activities']
+                    user_activity_collection, client = get_collection_handle('user_activities')
                     latest_activity = user_activity_collection.find_one(
                         {'user_id': str(user_id)},
                         sort=[('login_time', -1)]

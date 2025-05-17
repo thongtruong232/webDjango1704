@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .mongodb import get_collection_handle
+from authentication.mongodb import get_collection_handle
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from authentication.permissions import (
@@ -179,12 +179,6 @@ def register_otp(request):
                     'message': 'Vui lòng nhập username'
                 })
             
-            # Kiểm tra username đã tồn tại trong Django không
-            if User.objects.filter(username=username_register).exists():
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác'
-                })
             
             # Kiểm tra username đã tồn tại trong MongoDB không
             users_collection, client = get_collection_handle('users')
@@ -193,15 +187,21 @@ def register_otp(request):
                     'success': False,
                     'message': 'Không thể kết nối đến cơ sở dữ liệu'
                 })
-                
             try:
                 mongo_user = users_collection.find_one({'username': username_register})
                 if mongo_user is not None:
                     return JsonResponse({
                         'success': False,
-                        'message': 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác'
+                        'message': 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác (register)'
                     })
-                
+                # Kiểm tra username đã tồn tại trong Django không
+                if User.objects.filter(username=username_register).exists():
+                    # Nếu tồn tại, xóa user trong Django trước khi tiếp tục
+                    try:
+                        User.objects.filter(username=username_register).delete()
+                    except Exception:
+                        pass  # Nếu xóa không thành công thì bỏ qua, tiếp tục
+                    # Sau đó tiếp tục tạo user mới như bình thường
                 # Nếu username chưa tồn tại, gửi OTP
                 otp_code = send_otp_email(username_register)
                 if not otp_code:
@@ -272,21 +272,8 @@ def verify_otp_view_register(request):
                 })
 
             # Kiểm tra username đã tồn tại trong MongoDB không
-            users_collection, client = get_collection_handle('users')
-            if users_collection is None:
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Không thể kết nối đến cơ sở dữ liệu'
-                })
-                
             try:
-                mongo_user = users_collection.find_one({'username': username})
-                if mongo_user is not None:
-                    return JsonResponse({
-                        'success': False,
-                        'message': 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác'
-                    })
-                
+                users_collection, client = get_collection_handle('users')
                 # Tạo unique email
                 timestamp = int(timezone.now().timestamp())
                 unique_email = f"{username}_{timestamp}@example.com"
@@ -297,7 +284,6 @@ def verify_otp_view_register(request):
                     email=unique_email,
                     password=password
                 )
-                
                 # Tạo user trong MongoDB với user_id từ Django
                 mongo_user_data = {
                     'user_id': str(user.id),
@@ -409,6 +395,15 @@ def delete_user(request):
             
             mongo_result = users_collection.delete_one({'user_id': user_id})
             
+            # Xóa tất cả bản ghi work_time theo user_id
+            work_time_collection, work_time_client = get_collection_handle('stats')
+            # Lấy collection 'stats' trong database 'work_time'
+            if work_time_collection is not None:
+                print(f'Delete work_time for user {user_id}')
+                # stats_collection = work_time_collection['stats']
+                work_time_collection.delete_many({'user_id': user_id})
+                work_time_client.close()
+            
             # Nếu xóa thành công trong MongoDB, xóa trong Django
             if mongo_result.deleted_count > 0:
                 try:
@@ -420,19 +415,10 @@ def delete_user(request):
                         'message': 'Xóa user thành công'
                     })
                 except User.DoesNotExist:
-                    # Nếu không tìm thấy user trong Django, rollback MongoDB
-                    users_collection.insert_one({
-                        'user_id': user_id,
-                        'username': user.username,
-                        'email': user.email,
-                        'password': user.password,
-                        'role': user.role,
-                        'created_at': user.created_at
-                    })
                     client.close()
                     return JsonResponse({
-                        'success': False,
-                        'message': 'Không tìm thấy user trong Django'
+                        'success': True,
+                        'message': 'Xóa user thành công'
                     })
             else:
                 client.close()

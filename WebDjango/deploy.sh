@@ -2,7 +2,7 @@
 
 # === CONFIGURATION ===
 PROJECT_DIR="/WebDjango"              # Thư mục chứa dự án Django (theo cấu trúc của bạn)
-VENV_DIR="/WebDjango/venv"            # Thư mục chứa virtualenv (nếu có)
+VENV_DIR="/WebDjango/.venv"            # Thư mục chứa virtualenv (nếu có)
 DJANGO_MODULE="WebDjango.asgi:application"  # Module ASGI của dự án
 BRANCH="main"                         # Nhánh Git bạn sử dụng (có thể là 'main', 'master' hoặc nhánh khác)
 
@@ -16,10 +16,10 @@ cd $PROJECT_DIR || exit
 echo "Kích hoạt virtualenv..."
 source $VENV_DIR/bin/activate
 
-# 3. Lấy mã nguồn mới nhất từ Git repository
-echo "Cập nhật mã nguồn từ Git repository..."
-git fetch origin
-git reset --hard origin/$BRANCH
+# # 3. Lấy mã nguồn mới nhất từ Git repository
+# echo "Cập nhật mã nguồn từ Git repository..."
+# git fetch origin
+# git reset --hard origin/$BRANCH
 
 #  Build lại Docker image
 echo "Build lại Docker image..."

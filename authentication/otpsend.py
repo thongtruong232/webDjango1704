@@ -27,7 +27,7 @@ def send_otp_email(username):
     try:
         # Generate OTP
         otp_code = generate_otp()
-        now = datetime.now(timezone.utc)
+        # now = datetime.now(timezone.utc)
         # expires_at = now + timedelta(minutes=5)  # OTP hết hạn sau 5 phút
         
         # Prepare email content

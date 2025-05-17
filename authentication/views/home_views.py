@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .mongodb import get_collection_handle
+from authentication.mongodb import get_collection_handle
 from django.utils import timezone
 import pandas as pd
 from django.core.files.storage import FileSystemStorage
@@ -78,6 +78,10 @@ def create_user(request):
             
             # Lưu thông tin user trong MongoDB
             users_collection, client = get_collection_handle('users')
+            
+            # Tạo unique index cho user_id nếu chưa tồn tại
+            users_collection.create_index('user_id', unique=True)
+            
             mongo_user_data = {
                 'user_id': str(user.id),
                 'username': username,
@@ -87,8 +91,9 @@ def create_user(request):
                 'created_at': get_current_time().isoformat()
             }
             
+            # Sử dụng user_id làm filter để đảm bảo không trùng lặp
             users_collection.update_one(
-                {'user_id': str(user.id)},
+                {'user_id': str(user.id)},  # Filter theo user_id
                 {'$set': mongo_user_data},
                 upsert=True
             )
@@ -142,14 +147,14 @@ def home_view(request):
             'start_index': 0,
             'name': request.user.username
         })
-        
+
     try:
         # Lấy user data một lần và sử dụng lại
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         if not user_data:
             messages.error(request, 'Không tìm thấy thông tin người dùng')
             return redirect('login')
-            
+
         user_role = user_data.get('role', 'nhanvien')
         
         # Nếu là nhân viên, chuyển hướng về trang verified
@@ -341,7 +346,7 @@ def home_view(request):
             'page_range': page_range,
             'start_index': start_index
         })
-        
+
     except Exception as e:
         logger.error(f"Error in home_view: {str(e)}")
         return render(request, 'authentication/error.html', {'error_message': 'Có lỗi xảy ra'})
@@ -516,186 +521,169 @@ def export_emails(request):
 @login_required
 @role_required(['admin', 'quanly'])
 def work_management(request):
-    # Lấy thông tin filter từ request
-    stats_type = request.GET.get('stats_type', 'day')
-    end_date = request.GET.get('end_date')
-    start_date = request.GET.get('start_date')
-     # Get user data from MongoDB
-    users_collection, _ = get_collection_handle('users')
-    user_data = users_collection.find_one({'user_id': str(request.user.id)})
-    # Nếu không có ngày được chọn, mặc định lấy 7 ngày gần nhất
-    if not end_date:
-        end_date = datetime.now().date()
-    else:
-        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-    
-    if not start_date:
-        start_date = end_date - timedelta(days=6)
-    else:
-        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-
-    # Chuyển đổi ngày thành ISO format cho MongoDB
-    start_date_iso = datetime.combine(start_date, datetime.min.time()).astimezone(TIMEZONE).isoformat()
-    end_date_iso = datetime.combine(end_date, datetime.max.time()).astimezone(TIMEZONE).isoformat()
-
-    # Lấy collection từ MongoDB
-    excel_data_collection, client = get_collection_handle('employee_textnow')
-
-    # Query thống kê cho nhân viên đăng ký
-    nhanvien_pipeline = [
-        {
-            '$match': {
-                'status': 'Đã đăng ký',
-                'nhanvien_assigned_at': {
-                    '$gte': start_date_iso,
-                    '$lte': end_date_iso
+        # Lấy thông tin filter từ request
+        stats_type = request.GET.get('stats_type', 'day')
+        end_date = request.GET.get('end_date')
+        start_date = request.GET.get('start_date')
+        # Get user data from MongoDB
+        users_collection, _ = get_collection_handle('users')
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        # Nếu không có ngày được chọn, mặc định lấy 7 ngày gần nhất
+        if not end_date:
+            end_date = datetime.now().date()
+        else:
+            end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+        if not start_date:
+            start_date = end_date - timedelta(days=6)
+        else:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        # Chuyển đổi ngày thành ISO format cho MongoDB
+        start_date_iso = datetime.combine(start_date, datetime.min.time()).astimezone(TIMEZONE).isoformat()
+        end_date_iso = datetime.combine(end_date, datetime.max.time()).astimezone(TIMEZONE).isoformat()
+        # Lấy collection từ MongoDB
+        excel_data_collection, client = get_collection_handle('employee_textnow')
+        # Query thống kê cho nhân viên đăng ký
+        nhanvien_pipeline = [
+            {
+                '$match': {
+                    'status': 'Đã đăng ký',
+                    'nhanvien_assigned_at': {
+                        '$gte': start_date_iso,
+                        '$lte': end_date_iso
+                    }
+                }
+            },
+            {
+                '$group': {
+                    '_id': '$nhanvien_assigned_to',
+                    'count': {'$sum': 1}
                 }
             }
-        },
-        {
-            '$group': {
-                '_id': '$nhanvien_assigned_to',
-                'count': {'$sum': 1}
-            }
-        }
-    ]
-
-    # Query thống kê cho kiểm tra viên
-    kiemtra_pipeline = [
-        {
-            '$match': {
-                'status': 'Đã kiểm tra',
-                'kiemtra_assigned_at': {
-                    '$gte': start_date_iso,
-                    '$lte': end_date_iso
+        ]
+        # Query thống kê cho kiểm tra viên
+        kiemtra_pipeline = [
+            {
+                '$match': {
+                    'status': 'Đã kiểm tra',
+                    'kiemtra_assigned_at': {
+                        '$gte': start_date_iso,
+                        '$lte': end_date_iso
+                    }
+                }
+            },
+            {
+                '$group': {
+                    '_id': '$kiemtra_assigned_to',
+                    'count': {'$sum': 1}
                 }
             }
-        },
-        {
-            '$group': {
-                '_id': '$kiemtra_assigned_to',
-                'count': {'$sum': 1}
+        ]
+        # Thực hiện aggregation
+        nhanvien_stats = list(excel_data_collection.aggregate(nhanvien_pipeline))
+        kiemtra_stats = list(excel_data_collection.aggregate(kiemtra_pipeline))
+        # Xử lý kết quả thống kê
+        nhanvien_total = sum(stat['count'] for stat in nhanvien_stats)
+        kiemtra_total = sum(stat['count'] for stat in kiemtra_stats)
+        # Format dữ liệu thống kê nhân viên
+        nhanvien_stats = [
+            {
+                'username': stat['_id'],
+                'count': stat['count'],
+                'percentage': round((stat['count'] / nhanvien_total * 100) if nhanvien_total > 0 else 0, 1)
             }
-        }
-    ]
-
-    # Thực hiện aggregation
-    nhanvien_stats = list(excel_data_collection.aggregate(nhanvien_pipeline))
-    kiemtra_stats = list(excel_data_collection.aggregate(kiemtra_pipeline))
-
-    # Xử lý kết quả thống kê
-    nhanvien_total = sum(stat['count'] for stat in nhanvien_stats)
-    kiemtra_total = sum(stat['count'] for stat in kiemtra_stats)
-
-    # Format dữ liệu thống kê nhân viên
-    nhanvien_stats = [
-        {
-            'username': stat['_id'],
-            'count': stat['count'],
-            'percentage': round((stat['count'] / nhanvien_total * 100) if nhanvien_total > 0 else 0, 1)
-        }
-        for stat in nhanvien_stats if stat['_id']
-    ]
-
-    # Format dữ liệu thống kê kiểm tra viên
-    kiemtra_stats = [
-        {
-            'username': stat['_id'],
-            'count': stat['count'],
-            'percentage': round((stat['count'] / kiemtra_total * 100) if kiemtra_total > 0 else 0, 1)
-        }
-        for stat in kiemtra_stats if stat['_id']
-    ]
-
-    # Pipeline cho biểu đồ theo thời gian
-    if stats_type == 'week':
-        # Thống kê theo tuần
-        time_group_stage = {
-            '$week': {
-                '$dateFromString': {
-                    'dateString': '$nhanvien_assigned_at'
-                }
+            for stat in nhanvien_stats if stat['_id']
+        ]
+        # Format dữ liệu thống kê kiểm tra viên
+        kiemtra_stats = [
+            {
+                'username': stat['_id'],
+                'count': stat['count'],
+                'percentage': round((stat['count'] / kiemtra_total * 100) if kiemtra_total > 0 else 0, 1)
             }
-        }
-        time_format = lambda x: f"Tuần {x}"
-    else:
-        # Thống kê theo ngày
-        time_group_stage = {
-            '$dateToString': {
-                'format': '%Y-%m-%d',
-                'date': {
+            for stat in kiemtra_stats if stat['_id']
+        ]
+        # Pipeline cho biểu đồ theo thời gian
+        if stats_type == 'week':
+            # Thống kê theo tuần
+            time_group_stage = {
+                '$week': {
                     '$dateFromString': {
                         'dateString': '$nhanvien_assigned_at'
                     }
                 }
             }
+            time_format = lambda x: f"Tuần {x}"
+        else:
+            # Thống kê theo ngày
+            time_group_stage = {
+                '$dateToString': {
+                    'format': '%Y-%m-%d',
+                    'date': {
+                        '$dateFromString': {
+                            'dateString': '$nhanvien_assigned_at'
+                        }
+                    }
+                }
+            }
+            time_format = lambda x: datetime.strptime(x, '%Y-%m-%d').strftime('%d/%m/%Y')
+        # Pipeline cho thống kê theo thời gian - nhân viên
+        nhanvien_time_pipeline = [
+            {
+                '$match': {
+                    'status': 'Đã đăng ký',
+                    'nhanvien_assigned_at': {
+                        '$gte': start_date_iso,
+                        '$lte': end_date_iso
+                    }
+                }
+            },
+            {
+                '$group': {
+                    '_id': time_group_stage,
+                    'count': {'$sum': 1}
+                }
+            },
+            {'$sort': {'_id': 1}}
+        ]
+        # Pipeline cho thống kê theo thời gian - kiểm tra viên
+        kiemtra_time_pipeline = [
+            {
+                '$match': {
+                    'status': 'Đã kiểm tra',
+                    'kiemtra_assigned_at': {
+                        '$gte': start_date_iso,
+                        '$lte': end_date_iso
+                    }
+                }
+            },
+            {
+                '$group': {
+                    '_id': time_group_stage,
+                    'count': {'$sum': 1}
+                }
+            },
+            {'$sort': {'_id': 1}}
+        ]
+        # Thực hiện aggregation cho dữ liệu biểu đồ
+        nhanvien_time_stats = list(excel_data_collection.aggregate(nhanvien_time_pipeline))
+        kiemtra_time_stats = list(excel_data_collection.aggregate(kiemtra_time_pipeline))
+        # Format dữ liệu cho biểu đồ
+        chart_labels = [time_format(str(stat['_id'])) for stat in nhanvien_time_stats]
+        nhanvien_data = [stat['count'] for stat in nhanvien_time_stats]
+        kiemtra_data = [stat['count'] for stat in kiemtra_time_stats]
+        client.close()
+        context = {
+            'user_data': user_data,
+            'stats_type': stats_type,
+            'start_date': start_date,
+            'end_date': end_date,
+            'nhanvien_stats': nhanvien_stats,
+            'kiemtra_stats': kiemtra_stats,
+            'chart_labels': chart_labels,
+            'nhanvien_data': nhanvien_data,
+            'kiemtra_data': kiemtra_data,
         }
-        time_format = lambda x: datetime.strptime(x, '%Y-%m-%d').strftime('%d/%m/%Y')
-
-    # Pipeline cho thống kê theo thời gian - nhân viên
-    nhanvien_time_pipeline = [
-        {
-            '$match': {
-                'status': 'Đã đăng ký',
-                'nhanvien_assigned_at': {
-                    '$gte': start_date_iso,
-                    '$lte': end_date_iso
-                }
-            }
-        },
-        {
-            '$group': {
-                '_id': time_group_stage,
-                'count': {'$sum': 1}
-            }
-        },
-        {'$sort': {'_id': 1}}
-    ]
-
-    # Pipeline cho thống kê theo thời gian - kiểm tra viên
-    kiemtra_time_pipeline = [
-        {
-            '$match': {
-                'status': 'Đã kiểm tra',
-                'kiemtra_assigned_at': {
-                    '$gte': start_date_iso,
-                    '$lte': end_date_iso
-                }
-            }
-        },
-        {
-            '$group': {
-                '_id': time_group_stage,
-                'count': {'$sum': 1}
-            }
-        },
-        {'$sort': {'_id': 1}}
-    ]
-
-    # Thực hiện aggregation cho dữ liệu biểu đồ
-    nhanvien_time_stats = list(excel_data_collection.aggregate(nhanvien_time_pipeline))
-    kiemtra_time_stats = list(excel_data_collection.aggregate(kiemtra_time_pipeline))
-
-    # Format dữ liệu cho biểu đồ
-    chart_labels = [time_format(str(stat['_id'])) for stat in nhanvien_time_stats]
-    nhanvien_data = [stat['count'] for stat in nhanvien_time_stats]
-    kiemtra_data = [stat['count'] for stat in kiemtra_time_stats]
-
-    client.close()
-
-    context = {
-        'user_data': user_data,
-        'stats_type': stats_type,
-        'start_date': start_date,
-        'end_date': end_date,
-        'nhanvien_stats': nhanvien_stats,
-        'kiemtra_stats': kiemtra_stats,
-        'chart_labels': chart_labels,
-        'nhanvien_data': nhanvien_data,
-        'kiemtra_data': kiemtra_data,
-    }
-
-    return render(request, 'authentication/work_management.html', context)
+        return render(request, 'authentication/work_management.html', context)
 
 
 
@@ -758,11 +746,11 @@ def handle_browser_close(request):
             session_id = request.session.get('activity_session_id')
             
             # Kết nối MongoDB
-            work_time_collection, client = get_collection_handle('work_time')
+            stats_collection, client = get_collection_handle('stats')
             if client:
                 try:
-                    # Cập nhật trạng thái trong work_time collection
-                    work_time_collection.update_one(
+                    # Cập nhật trạng thái trong stats collection
+                    stats_collection.update_one(
                         {
                             'user_id': str(request.user.id),
                             'session_id': session_id,

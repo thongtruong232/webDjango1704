@@ -114,14 +114,14 @@
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-info" type="button" data-bs-toggle="collapse" 
-                                        data-bs-target="#details-{{ stat.user.id }}">
+                                        data-bs-target="#details-{{ stat.user.id }}-{{ forloop.counter }}">
                                     Xem chi tiết
                                 </button>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="6">
-                                <div class="collapse" id="details-{{ stat.user.id }}">
+                                <div class="collapse" id="details-{{ stat.user.id }}-{{ forloop.counter }}">
                                     <div class="card card-body">
                                         <div class="table-responsive">
                                             <table class="table table-sm">
@@ -289,7 +289,6 @@
 
         // Nếu không tìm thấy container, bỏ qua
         if (!statusContainer) {
-            console.warn(`Status container not found for user ${data.user_id}`);
             return;
         }
 

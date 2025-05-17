@@ -1,8 +1,7 @@
 from functools import wraps
 from django.shortcuts import redirect
 from django.contrib import messages
-from .views.mongodb import get_collection_handle
-
+from authentication.mongodb import get_collection_handle
 # Define user roles
 ROLES = {
     'admin': ['admin', 'quanly', 'kiemtra', 'nhanvien'],
@@ -22,13 +21,10 @@ ALLOWED_STATUS_UPDATES = {
 def get_user_role(user_id):
     """Get user role from MongoDB"""
     try:
-        users_collection, client = get_collection_handle('users')
-        if users_collection is None or client is None:
+        users_collection, _ = get_collection_handle('users')
+        if users_collection is None:
             return 'nhanvien'
-            
         user_data = users_collection.find_one({'user_id': str(user_id)})
-        if client is not None:
-            client.close()
         return user_data.get('role', 'nhanvien') if user_data else 'nhanvien'
     except Exception as e:
         print(f"Error getting user role: {e}")

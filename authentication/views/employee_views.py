@@ -1,17 +1,34 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 from django.shortcuts import render, redirect
-from .mongodb import get_collection_handle
+from pymongo import MongoClient
+from authentication.mongodb import get_collection_handle
+from django.conf import settings
 from datetime import datetime
+import random
+from rest_framework.response import Response
 from django.utils import timezone
 import logging
 import json
 from django.contrib import messages
-from pymongo import MongoClient
-from django.conf import settings
 from datetime import datetime, time
+import pymongo
+from rest_framework.decorators import api_view
+import requests
+import requests
+from imap_tools import MailBox
+import json
+# from config import CLIENT_ID, CLIENT_SECRET, TENANT_ID
+import re
+from lxml import html
+from bs4 import BeautifulSoup
+from django.http import HttpResponse
+import subprocess
+import concurrent.futures
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
@@ -19,29 +36,35 @@ from authentication.permissions import (
 logger = logging.getLogger(__name__)
 
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def email_info_view(request):
+    client = None
     try:
-        # Get MongoDB collection handle
-        worksession_collection = get_collection_handle('employee_worksession')
-        checkPass_Today = get_collection_handle('employee_passwordregproduct')
-
-        if worksession_collection is None:
-            return JsonResponse({
-                'success': False,
-                'error': 'Không thể kết nối đến cơ sở dữ liệu'
-            }, status=500)
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        
+        worksession_collection = db['employee_worksession']
+        checkPass_Today = db['employee_passwordregproduct']
         
         # Get today's date in YYYY-MM-DD format
         today = datetime.now().strftime('%Y-%m-%d')
         todayDmY = datetime.now().strftime('%d/%m/%Y')
-        print(todayDmY)
+        # print(todayDmY)
+        
         # Check if there are any records with today's date and matching owner
         current_worksession = worksession_collection.find_one({
             'created_at': {'$regex': f'^{today}'},
             'owner': request.user.username
         })
-        print(current_worksession)
+        # print(current_worksession)
+        
         checkPass_TodayTn = checkPass_Today.find_one({
             'created_at': {'$regex': f'^{todayDmY}'},
             'type': 'TextNow'
@@ -50,6 +73,7 @@ def email_info_view(request):
             'created_at': {'$regex': f'^{todayDmY}'},
             'type': 'TextFree'
         })
+        
         if checkPass_TodayTn is None:
             pass_Tn = None
         else:
@@ -58,6 +82,7 @@ def email_info_view(request):
             pass_Tf = None
         else:
             pass_Tf = checkPass_TodayTf.get('password')
+            
         if not current_worksession:
             # If no records exist for today, create a new one
             new_worksession = {
@@ -77,10 +102,13 @@ def email_info_view(request):
         for email in created_textnow_emails:
             if 'is_reg_acc' in email:
                 email['is_reg_acc'] = 'true' if email['is_reg_acc'] else 'false'
-
+        # Get user_data
+        users_collection, client = get_collection_handle('users')
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
         # Prepare context data
-        print(created_textnow_emails)
+        # print(created_textnow_emails)
         context = {
+            'user_data': user_data,
             'emails': json.dumps(created_textnow_emails),  # Convert to JSON string
             'total_accounts': total_accounts,
             'worksession': current_worksession
@@ -94,22 +122,31 @@ def email_info_view(request):
             'success': False,
             'error': str(e)
         }, status=500)
+    finally:
+        if client:
+            client.close()
 
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 @csrf_exempt
 @require_http_methods(["GET"])
 def get_available_emails_api(request):
+    client = None
     try:
-        # Get MongoDB collection handles
-        email_collection = get_collection_handle('employee_email')
-        pass_Tn = get_collection_handle('employee_passwordregproduct')
-        worksession_collection = get_collection_handle('employee_worksession')
-
-        if email_collection is None or pass_Tn is None or worksession_collection is None:
-            return JsonResponse({
-                'success': False,
-                'error': 'Không thể kết nối đến cơ sở dữ liệu'
-            }, status=500)
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        
+        email_collection = db['employee_email']
+        pass_Tn = db['employee_passwordregproduct']
+        worksession_collection = db['employee_worksession']
+        area_phone_collection = db['area_phone']  # Add area_phone collection
+        phone_message_collection = db['phone_message']
 
         try:
             # Get current user and datetime
@@ -132,10 +169,6 @@ def get_available_emails_api(request):
                     'total_accounts': 0
                 }
                 worksession_collection.insert_one(current_worksession)
-
-            # Check for missing passwords
-          
-           
 
             # Query emails with status='chưa sử dụng' and is_provided=false, limit to 5 records
             available_emails = list(email_collection.find({
@@ -167,8 +200,13 @@ def get_available_emails_api(request):
                     'missing_passwords': True
                 })
             processed_emails = []
-
-            for email in available_emails:
+            random_area_phones = list(area_phone_collection.aggregate([
+                {'$sample': {'size': 5}}  # Get 5 random records
+            ]))
+            random_phones_message = list(phone_message_collection.aggregate([
+                {'$sample': {'size': 5}}  # Get 5 random records
+            ]))
+            for email, area_phone, phone_message in zip(available_emails, random_area_phones,random_phones_message):
                 # Update the record in MongoDB
                 email_collection.update_one(
                     {'_id': email['_id']},
@@ -181,24 +219,26 @@ def get_available_emails_api(request):
                         }
                     }
                 )
-
+                # print(random_area_phones[0]['code_area_phone'])
                 # Create new email record
                 new_email = {
-                    'email': email.get('email'),
-                    'password': email.get('password'),
-                    'refresh_token': email.get('refresh_token'),
-                    'client_id': email.get('client_id'),
-                    'status': 'đã được cấp phát',
-                    'status_tn': 'chưa tạo acc',
-                    'status_tf': 'chưa tạo acc',
-                    'sub_status': email.get('sub_status'),
-                    'supplier': email.get('supplier'),
-                    'created_at': email.get('created_at'),
-                    'is_provided': True,
-                    'date_get': current_datetime,
-                    'pass_TN': pass_Tn_today.get('password') if pass_Tn_today else None,
-                    'pass_TF': pass_Tf_today.get('password') if pass_Tf_today else None,
-                }
+                                'email': email.get('email'),
+                                'password': email.get('password'),
+                                'refresh_token': email.get('refresh_token'),
+                                'client_id': email.get('client_id'),
+                                'status': 'đã được cấp phát',
+                                'status_tn': 'chưa tạo acc',
+                                'status_tf': 'chưa tạo acc',
+                                'sub_status': email.get('sub_status'),
+                                'supplier': email.get('supplier'),
+                                'created_at': email.get('created_at'),
+                                'is_provided': True,
+                                'date_get': current_datetime,
+                                'pass_TN': pass_Tn_today.get('password') if pass_Tn_today else None,
+                                'pass_TF': pass_Tf_today.get('password') if pass_Tf_today else None,
+                                'area_phone': area_phone.get('code_area_phone') if area_phone else None,
+                                'phone_number': phone_message.get('phone_number') if area_phone else None
+                            }
 
                 # Add to processed emails list
                 processed_emails.append(new_email)
@@ -230,25 +270,31 @@ def get_available_emails_api(request):
             'success': False,
             'error': str(e)
         }, status=500)
+    finally:
+        if client:
+            client.close()
 
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def create_password_view(request):
     if request.method == 'POST':
+        client = None
         try:
             password = request.POST.get('password')
             type = request.POST.get('type')
             create_by = request.POST.get('create_by')
             use_at = datetime.strptime(request.POST.get('use_at'), '%Y-%m-%d').strftime('%d/%m/%Y')
             
-            # Get MongoDB collection handle
-            collection = get_collection_handle('employee_passwordregproduct')
-            
-            if collection is None:
-                return JsonResponse({
-                    'success': False,
-                    'error': 'Không thể kết nối đến cơ sở dữ liệu'
-                }, status=500)
+            # Kết nối trực tiếp đến MongoDB
+            client = MongoClient(
+                settings.MONGODB_URI,
+                username=settings.MONGODB_USERNAME,
+                password=settings.MONGODB_PASSWORD,
+                retryWrites=True,
+                w='majority'
+            )
+            db = client[settings.MONGODB_DATABASE]
+            collection = db['employee_passwordregproduct']
             
             # Create new password document
             new_password = {
@@ -275,17 +321,27 @@ def create_password_view(request):
                 'success': False,
                 'error': str(e)
             }, status=500)
+        finally:
+            if client:
+                client.close()
                     
     return render(request, 'authentication/create_password.html')
 
 @csrf_exempt
 @require_http_methods(["GET"])
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def search_textnow_api(request):
+    client = None
     try:
-        # Kết nối MongoDB
-        client = MongoClient(settings.MONGODB_URI)
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
         db = client[settings.MONGODB_DATABASE]
         collection = db['employee_textnow']
         
@@ -354,23 +410,26 @@ def search_textnow_api(request):
             'error': str(e)
         }, status=500)
     finally:
-        if 'client' in locals():
+        if client:
             client.close()
 
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def verified_view(request):
+    client = None
     try:
         print('Đã vào trang verified')
-        # Lấy thông tin user từ MongoDB
-        users_collection, client = get_collection_handle('users')
-        if users_collection is None:
-            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-            return render(request, 'authentication/verified.html', {
-                'textnow_accounts': [],
-                'current_page': 1,
-                'total_pages': 1
-            })
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        users_collection = db['users']
+        textnow_collection = db['employee_textnow']
 
         try:
             # Lấy thông tin user
@@ -378,25 +437,7 @@ def verified_view(request):
             if not user_data:
                 messages.error(request, 'Không tìm thấy thông tin người dùng')
                 return redirect('login')
-
-            # Lấy dữ liệu TextNow accounts
-            textnow_collection, client = get_collection_handle('employee_textnow')
-            # query = {'assigned_to': str(request.user.id)}
-            
-            # # Phân trang
-            # page = int(request.GET.get('page', 1))
-            # per_page = 10
-            # skip = (page - 1) * per_page
-
-            # # Đếm tổng số bản ghi
-            # total_records = textnow_collection.count_documents(query)
-            # total_pages = (total_records + per_page - 1) // per_page
-
-            # # Lấy dữ liệu phân trang
-            # accounts = list(textnow_collection.find(query)
-            #               .sort('created_at', -1)
-            #               .skip(skip)
-            #               .limit(per_page))
+                
             accounts = textnow_collection.find()
 
             # Xử lý dữ liệu
@@ -437,19 +478,19 @@ def verified_view(request):
 
             context = {
                 'textnow_accounts': processed_accounts,
-                # 'current_page': page,
-                # 'total_pages': total_pages,
                 'user_data': user_data
             }
 
             return render(request, 'authentication/verified.html', context)
 
-        finally:
-            if client:
-                try:
-                    client.close()
-                except Exception as e:
-                    logger.error(f"Error closing MongoDB connection: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error in verified_view: {str(e)}", exc_info=True)
+            messages.error(request, 'Có lỗi xảy ra khi tải dữ liệu')
+            return render(request, 'authentication/verified.html', {
+                'textnow_accounts': [],
+                'current_page': 1,
+                'total_pages': 1
+            })
 
     except Exception as e:
         logger.error(f"Error in verified_view: {str(e)}", exc_info=True)
@@ -459,20 +500,25 @@ def verified_view(request):
             'current_page': 1,
             'total_pages': 1
         })
-
+    finally:
+        if client:
+            client.close()
 
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def create_email_view(request):
+    client = None
     try:
-        # Get MongoDB collection handle
-        email_collection = get_collection_handle('employee_email')
-        
-        if email_collection is None:
-            return JsonResponse({
-                'success': False,
-                'error': 'Không thể kết nối đến cơ sở dữ liệu'
-            }, status=500)
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        email_collection = db['employee_email']
 
         if request.method == 'POST':
             try:
@@ -582,12 +628,16 @@ def create_email_view(request):
             'success': False,
             'error': str(e)
         }, status=500)
+    finally:
+        if client:
+            client.close()
 
 @csrf_exempt
 @require_http_methods(["POST"])
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def create_textnow_api(request):
+    client = None
     try:
         # Get data from request
         data = request.POST.get('data')
@@ -611,20 +661,23 @@ def create_textnow_api(request):
                 'error': 'Dữ liệu phải là một mảng'
             }, status=400)
 
-        # Get MongoDB collection handle
-        collection = get_collection_handle('employee_textnow')
-        if collection is None:
-            return JsonResponse({
-                'success': False,
-                'error': 'Không thể kết nối đến cơ sở dữ liệu'
-            }, status=500)
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['employee_textnow']
         
         # Process each account
         created_accounts = []
         for account in accounts:
             # Validate required fields
             required_fields = ['email', 'password', 'pass_TN', 'pass_TF', 'status_tn', 
-                             'status_tf', 'supplier']
+                             'status_tf', 'supplier','area_phone']
             if not all(field in account for field in required_fields):
                 continue
 
@@ -635,6 +688,7 @@ def create_textnow_api(request):
                 'password': account['pass_TN'],
                 'password_TF': account['pass_TF'],
                 'supplier': account['supplier'],
+                'area_phone': account['area_phone'],
                 'status_account_TN': account['status_tn'],
                 'status_account_TF': account['status_tf'],
                 'refresh_token': account.get('refresh_token', ''),
@@ -675,12 +729,16 @@ def create_textnow_api(request):
             'success': False,
             'error': str(e)
         }, status=500)
+    finally:
+        if client:
+            client.close()
 
 @csrf_exempt
 @require_http_methods(["POST"])
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def save_worksession_api(request):
+    client = None
     try:
         # Get data from request
         data = request.POST.get('data')
@@ -692,7 +750,7 @@ def save_worksession_api(request):
             
         try:
             worksession_data = json.loads(data)
-            print(worksession_data)
+            # print(worksession_data)
         except json.JSONDecodeError:
             return JsonResponse({
                 'success': False,
@@ -705,13 +763,16 @@ def save_worksession_api(request):
                 'error': 'Dữ liệu phải là một mảng'
             }, status=400)
 
-        # Get MongoDB collection handle
-        collection = get_collection_handle('employee_worksession')
-        if collection is None:
-            return JsonResponse({
-                'success': False,
-                'error': 'Không thể kết nối đến cơ sở dữ liệu'
-            }, status=500)
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['employee_worksession']
 
         # Get current date
         current_date = datetime.now().strftime('%Y-%m-%d')
@@ -756,16 +817,25 @@ def save_worksession_api(request):
             'success': False,
             'error': str(e)
         }, status=500)
+    finally:
+        if client:
+            client.close()
 
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def employee_dashboard_view(request):
+    client = None
     try:
-        # Get user data from MongoDB
-        users_collection, client = get_collection_handle('users')
-        if users_collection is None or client is None:
-            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-            return redirect('login')
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        users_collection = db['users']
             
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         if not user_data:
@@ -782,16 +852,25 @@ def employee_dashboard_view(request):
         logger.error(f"Error in employee_dashboard_view: {str(e)}")
         messages.error(request, 'Đã xảy ra lỗi. Vui lòng thử lại sau.')
         return redirect('login')
+    finally:
+        if client:
+            client.close()
 
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def employee_work_view(request):
+    client = None
     try:
-        # Get user data from MongoDB
-        users_collection, client = get_collection_handle('users')
-        if users_collection is None or client is None:
-            messages.error(request, 'Không thể kết nối đến cơ sở dữ liệu')
-            return redirect('login')
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        users_collection = db['users']
             
         user_data = users_collection.find_one({'user_id': str(request.user.id)})
         if not user_data:
@@ -808,30 +887,48 @@ def employee_work_view(request):
         logger.error(f"Error in employee_work_view: {str(e)}")
         messages.error(request, 'Đã xảy ra lỗi. Vui lòng thử lại sau.')
         return redirect('login')
+    finally:
+        if client:
+            client.close()
 
 @csrf_exempt
 @require_http_methods(["POST"])
 @login_required
-@role_required('admin','quanly','kiemtra','nhanvien')
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
 def update_textnow_status_api(request):
+    client = None
     try:
         # Lấy dữ liệu từ request
         data = json.loads(request.body)
         email = data.get('email')
         status_tn = data.get('status_tn')
         status_tf = data.get('status_tf')
-
+        # print(email, status_tn, status_tf)
         if not email:
             return JsonResponse({
                 'success': False,
                 'error': 'Email không được để trống'
             }, status=400)
 
-        # Kết nối MongoDB
-        client = MongoClient(settings.MONGODB_URI)
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
         db = client[settings.MONGODB_DATABASE]
-        collection = db['employee_textnow']
-
+        users_collection = db['users']
+        textnow_collection = db['employee_textnow']
+        
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        if not user_data:
+            return JsonResponse({'success': False, 'message': 'Không tìm thấy thông tin người dùng'})
+        
+        user_role = user_data.get('role')
+        
+    
         # Tạo update query
         update_query = {'$set': {}}
         
@@ -844,7 +941,7 @@ def update_textnow_status_api(request):
         update_query['$set']['updated_at'] = datetime.now().isoformat()
 
         # Thực hiện update
-        result = collection.update_one(
+        result = textnow_collection.update_one(
             {'email': email},
             update_query
         )
@@ -872,5 +969,560 @@ def update_textnow_status_api(request):
             'error': str(e)
         }, status=500)
     finally:
+        if client:
+            client.close()
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_area_phone_api(request):
+    client = None
+    try:
+        # Lấy dữ liệu từ request (danh sách các đối tượng)
+        data_list = json.loads(request.body)
+
+        if not isinstance(data_list, list):
+            return JsonResponse({
+                'success': False,
+                'error': 'Dữ liệu phải là một danh sách các đối tượng JSON'
+            }, status=400)
+
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        area_phone_collection = db['area_phone']
+
+        inserted_items = []
+        errors = []
+
+        for item in data_list:
+            codeAreaPhone = item.get('code_area_phone')
+            country = item.get('country')
+            state = item.get('state')
+            main_area = item.get('main_area')
+            # print(codeAreaPhone, country, state, main_area)
+            if not codeAreaPhone or not country or not state or not main_area:
+                errors.append({
+                    'codeAreaPhone': codeAreaPhone,
+                    'error': 'Thiếu trường bắt buộc'
+                })
+                continue
+
+            if area_phone_collection.find_one({'code_area_phone': codeAreaPhone}):
+                errors.append({
+                    'codeAreaPhone': codeAreaPhone,
+                    'error': 'Code đã tồn tại'
+                })
+                continue
+
+            current_time = datetime.now().isoformat()
+            new_area_phone = {
+                'code_area_phone': codeAreaPhone,
+                'country': country,
+                'state': state,
+                'main_area': main_area,
+                'created_at': current_time,
+                'updated_at': current_time
+            }
+
+            result = area_phone_collection.insert_one(new_area_phone)
+
+            inserted_items.append({
+                'id': str(result.inserted_id),
+                'code': codeAreaPhone,
+                'country': country,
+                'state': state,
+                'main_area': main_area,
+                'created_at': current_time,
+                'updated_at': current_time
+            })
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Xử lý xong danh sách area phone',
+            'inserted': inserted_items,
+            'errors': errors
+        }, status=207 if errors else 201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Dữ liệu không hợp lệ'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Error in create_area_phone_api: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+    finally:
+        if client:
+            client.close()
+
+@api_view(['POST'])
+def create__phone_message_api(request):
+    client = None
+    try:
+        # Lấy dữ liệu từ request (danh sách các đối tượng)
+        data_list = json.loads(request.body)
+
+        if not isinstance(data_list, list):
+            return JsonResponse({
+                'success': False,
+                'error': 'Dữ liệu phải là một danh sách các đối tượng JSON'
+            }, status=400)
+
+        # Kết nối trực tiếp đến MongoDB
+        client = MongoClient(
+            settings.MONGODB_URI,
+            username=settings.MONGODB_USERNAME,
+            password=settings.MONGODB_PASSWORD,
+            retryWrites=True,
+            w='majority'
+        )
+        db = client[settings.MONGODB_DATABASE]
+        phone_message_collection = db['phone_message']
+
+        inserted_items = []
+        errors = []
+
+        for item in data_list:
+            phoneNumber = item.get('phone_number')
+            country = item.get('country')
+            # print(phoneNumber, country)
+            if not phoneNumber or not country :
+                errors.append({
+                    'phoneNumber': phoneNumber,
+                    'error': 'Thiếu trường bắt buộc'
+                })
+                continue
+
+            if phone_message_collection.find_one({'phone_number': phoneNumber}):
+                errors.append({
+                    'phoneNumber': phoneNumber,
+                    'error': 'số điện thoại đã được thêm vào database'
+                })
+                continue
+
+            current_time = datetime.now().isoformat()
+            new_area_phone = {
+                'phone_number': phoneNumber,
+                'country': country,
+                'created_at': current_time,
+                'updated_at': current_time
+            }
+
+            result = phone_message_collection.insert_one(new_area_phone)
+
+            inserted_items.append({
+                'id': str(result.inserted_id),
+                'phone_number': phoneNumber,
+                'country': country,
+                'created_at': current_time,
+                'updated_at': current_time
+            })
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Xử lý xong danh sách area phone',
+            'inserted': inserted_items,
+            'errors': errors
+        }, status=207 if errors else 201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Dữ liệu không hợp lệ'
+        }, status=400)
+    except Exception as e:
+        logger.error(f"Error in create_area_phone_api: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+    finally:
+        if client:
+            client.close()
+
+@api_view(['GET'])
+def get_random_phones_message(request):
+    """
+    API endpoint để lấy ngẫu nhiên một số lượng area phone
+    """
+    try:
+        # Lấy số lượng cần lấy từ query params
+        quantity = int(request.GET.get('quantity', 5))  # Mặc định là 5 nếu không có
+
+        # Validate quantity
+        if quantity <= 0:
+            return JsonResponse({
+                'success': False,
+                'error': 'Số lượng phải lớn hơn 0'
+            })
+
+        # Kết nối MongoDB
+        client = pymongo.MongoClient(settings.MONGODB_URI)
+        db = client[settings.MONGODB_DATABASE]
+        collection = db['phone_message']
+
+        # Lấy tất cả area phones
+        all_phones = list(collection.find())
+        
+        if not all_phones:
+            return JsonResponse({
+                'success': False,
+                'error': 'Không có area phone nào trong database'
+            })
+
+        # Chọn ngẫu nhiên quantity số lượng phones
+        if quantity > len(all_phones):
+            quantity = len(all_phones)  # Giới hạn số lượng nếu yêu cầu nhiều hơn số có sẵn
+
+        random_phones = random.sample(all_phones, quantity)
+
+        # Chuyển đổi ObjectId thành string
+        for phone in random_phones:
+            phone['_id'] = str(phone['_id'])
+
+        return JsonResponse({
+            'success': True,
+            'data': random_phones,
+            'message': f'Đã lấy {len(random_phones)} area phone ngẫu nhiên'
+        })
+
+    except ValueError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Số lượng không hợp lệ'
+        })
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
+    finally:
         if 'client' in locals():
-            client.close() 
+            client.close()
+
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+@require_http_methods(['GET'])
+def fmail_list(request):
+    try:
+        # Gọi API fMail mới
+        response = requests.get(
+            'https://fmail1s.com/api/products.php',
+            params={
+                'api_key': '78c4ce0997187485dbd445e3b59980c1',
+            },
+            headers={
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        )
+        
+        if response.status_code != 200:
+            return JsonResponse({
+                'success': False,
+                'error': f'API error: {response.status_code}'
+            })
+        data = response.json()
+        # Lấy tất cả sản phẩm từ các category
+        formatted_data = []
+        if data and 'categories' in data:
+            for category in data['categories']:
+                for product in category.get('products', []):
+                    formatted_data.append({
+                        'id': product.get('id'),
+                        'name': product.get('name'),
+                        'price': int(product.get('price', 0)),
+                        'quality': int(product.get('amount', 0))
+                    })
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid response format (no categories)'
+            })
+        return JsonResponse({
+            'success': True,
+            'data': formatted_data
+        })
+    except Exception as e:
+        logger.error(f"Error in fmail_list: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
+
+@csrf_exempt
+@require_POST
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def fmail_buy(request):
+    try:
+        product_id = request.POST.get('id')
+        amount = request.POST.get('amount')
+        if not product_id or not amount:
+            return JsonResponse({'success': False, 'error': 'Thiếu tham số'})
+        api_url = 'https://fmail1s.com/api/buy_product'
+        params = {
+            'action': 'buyProduct',
+            'api_key': '78c4ce0997187485dbd445e3b59980c1',
+            'id': product_id,
+            'amount': amount
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def fmail_balance(request):
+    import requests
+    try:
+        api_url = 'https://fmail1s.com/api/profile.php'
+        params = {
+            'api_key': '78c4ce0997187485dbd445e3b59980c1'
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def phapsu_list(request):
+    import requests
+    try:
+        api_url = 'https://phapsummo.net/api/products.php'
+        params = {
+            'api_key': '07b9a6610227f43f93233fd2d839a42e'
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        # Chuẩn hóa response
+        if data.get('status') == 'success' and 'categories' in data:
+            formatted_data = []
+            for category in data['categories']:
+                for product in category.get('products', []):
+                    formatted_data.append({
+                        'id': product.get('id'),
+                        'name': product.get('name'),
+                        'price': int(product.get('price', 0)),
+                        'quality': int(product.get('amount', 0))
+                    })
+            return JsonResponse({'success': True, 'data': formatted_data})
+        else:
+            return JsonResponse({'success': False, 'error': data.get('msg', 'API error')})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@require_POST
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def phapsu_buy(request):
+    import requests
+    try:
+        product_id = request.POST.get('id')
+        amount = request.POST.get('amount')
+        if not product_id or not amount:
+            return JsonResponse({'success': False, 'error': 'Thiếu tham số'})
+        # TODO: Thay thế API URL và params thực tế cho Pháp Sư
+        api_url = 'https://phapsummo.net/api/buy_product'  # placeholder, bạn thay sau
+        params = {
+            'action': 'buyProduct',
+            'api_key': '07b9a6610227f43f93233fd2d839a42e',  # placeholder
+            'id': product_id,
+            'amount': amount
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def phapsu_balance(request):
+    import requests
+    try:
+        # TODO: Thay thế API URL và params thực tế cho Pháp Sư
+        api_url = 'https://phapsummo.net/api/profile.php'  # placeholder, bạn thay sau
+        params = {
+            'api_key': '07b9a6610227f43f93233fd2d839a42e'  # placeholder
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+
+# Read mail api
+@csrf_exempt
+def get_code_view(request):
+    try:
+        if request.method == 'POST':
+            email_data = request.POST.get('email_data', '')
+            if not email_data:
+                return JsonResponse({'success': False, 'error': 'Thiếu dữ liệu email'})
+            # Parse email_data: email|password|refresh_token|client_id
+            parts = email_data.split('|')
+            if len(parts) < 4:
+                return JsonResponse({'success': False, 'error': 'Dữ liệu email không hợp lệ'})
+            email = parts[0].strip()
+            refresh_token = parts[2].strip()
+            client_id = parts[3].strip()
+            # Gọi hàm đọc mail
+            results = read_mail(email, refresh_token, client_id, 1, request)
+            # print("DEBUG: Kết quả đọc mail:", results)
+            return JsonResponse({
+                'success': True,
+                'email_user': {'address': email, 'index': 1},
+                'results': results
+            })
+        return JsonResponse({'success': False, 'error': 'Chỉ hỗ trợ POST'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+def parse_multiple_data(input_string):
+    try:
+        # Tách chuỗi theo dấu '\n' để lấy từng dòng
+        lines = [line.strip() for line in input_string.split("\n") if line.strip()]  # Loại bỏ dòng trống
+        
+        result = []
+        for index, line in enumerate(lines, 1):  # Bắt đầu đếm từ 1
+            # Tách mỗi dòng theo dấu '|'
+            attributes = line.split("|")
+            
+            # Kiểm tra đủ thông tin
+            if len(attributes) >= 4:
+                # Tạo dictionary cho mỗi đối tượng
+                data_object = {
+                    "index": index,  # Thêm số thứ tự
+                    "email": attributes[0].strip(),
+                    "password": attributes[1].strip(),
+                    "additional_info": attributes[2].strip(),
+                    "id": attributes[3].strip()
+                }
+                result.append(data_object)
+
+        return result
+    except Exception as e:
+        return None
+
+def read_mail(email, refresh_token, client_id, email_index, request):
+    try:
+        url = "http://207.148.69.229:5000/api/mail/read"
+        payload = {
+            "Email": email,
+            "RefreshToken": refresh_token,
+            "ClientId": client_id
+        }
+        socket_id = request.POST.get('socket_id')
+        
+        response = requests.post(url, json=payload)
+        
+        # Kiểm tra response status
+        if response.status_code != 200:
+            return f"API error: {response.status_code}"
+            
+        try:
+            data = response.json()
+        except ValueError as e:
+            return f"Invalid response format: {e}"
+            
+        if not isinstance(data, list):
+            return f"Invalid data format: expected list"
+            
+        results = []  # List để chứa tất cả kết quả
+
+        for item in data:
+            if not isinstance(item, dict):
+                continue
+                
+            # if item.get('from') == 'noreply@notifications.textnow.com':
+            #     try:
+            #         link = parse_beautifulshop_tn(item.get('body', ''))
+            #         tn_from = item.get('from', '')
+            #         tn_data = item.get('date', '')
+            #         result = {'from': tn_from, 'link': link, 'date': tn_data}
+            #         results.append(result)
+                    
+            #         # Send WebSocket update
+            #         channel_layer = get_channel_layer()
+            #         async_to_sync(channel_layer.group_send)(
+            #             f"client_{socket_id}",
+            #             {
+            #                 'type': 'email_update',
+            #                 'email': email,
+            #                 'result': result,
+            #                 'email_index': email_index,
+            #                 'result_index': len(results)
+            #             }
+            #         )
+            #     except Exception as e:
+            #         continue
+
+            if item.get('from') == 'info@info.textfree.us':
+                try:
+                    code = parse_html_tf(item.get('body', ''))
+                    tf_from = item.get('from', '')
+                    tf_data = item.get('date', '')
+                    result = {'from': tf_from, 'code': code, 'date': tf_data}
+                    results.append(result)
+                    
+                    # Send WebSocket update
+                    channel_layer = get_channel_layer()
+                    async_to_sync(channel_layer.group_send)(
+                        f"client_{socket_id}",
+                        {
+                            'type': 'email_update',
+                            'email': email,
+                            'result': result,
+                            'email_index': email_index,
+                            'result_index': len(results)
+                        }
+                    )
+                except Exception as e:
+                    continue
+                    
+        return results
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+def parse_html_tf(html_content):
+    try:
+        # Sử dụng biểu thức chính quy để tìm 6 chữ số liên tiếp và loại trừ "000000"
+        match = re.search(r'\b(?!000000\b)\d{6}\b', html_content)
+        if match:
+            return match.group()
+        else:
+            return None
+    except Exception as e:
+        return None
+
+def parse_beautifulshop_tn(html_content):
+    # Phân tích cú pháp HTML với BeautifulSoup
+    soup = BeautifulSoup(html_content, 'html.parser')
+    # Tìm tất cả các thẻ <a> có href chứa "https://94lr.adj.st/email_verification"
+    links = soup.find_all('a', href=True)
+
+    # Lọc các link có href đúng với mẫu cần tìm
+    target_links = [link['href'] for link in links if 'https://94lr.adj.st/email_verification' in link['href']]
+
+    # In tất cả các link tìm được
+    for link in target_links:
+        return link   

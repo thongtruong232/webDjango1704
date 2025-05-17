@@ -54,7 +54,9 @@ def login_view(request):
                 user_role = user_data.get('role')
                 print(f'Role của user: {user_role}')
                 if user_role == 'nhanvien':
-                    return redirect('employee_verified')
+                    return redirect('available-emails')
+                elif user_role in ['admin', 'quanly', 'kiemtra']:
+                    return redirect('manager_textnow_view')
                 else:
                     return redirect('home')
             else:
@@ -209,7 +211,7 @@ def verify_otp_view(request):
                     logger.error(f"User not found in Django: {username}")
                     user = User.objects.create_user(
                         username=username,
-                        email=mongo_user.get('email', f"{username}@example.com"),
+                        # email=mongo_user.get('email', f"{username}@example.com"),
                         password=mongo_user.get('password', '')
                     )
                 
@@ -232,12 +234,17 @@ def verify_otp_view(request):
                         'is_active': True,
                         'last_activity': current_time.isoformat(),
                         'last_login': current_time.isoformat(),
-                        'current_session_id': session_id
+                        'current_session_id': session_id,
+                        'login_time': current_time.isoformat()
                     }}
                 )
                 
                 # Lưu thông tin đăng nhập vào MongoDB
-                user_activity_collection = client['user_activities']['activities']
+                user_activity_collection, client = get_collection_handle('user_activities')
+                user_activity_collection.create_index(
+                    [('exprite', 1)],
+                    expireAfterSeconds=60  # Tự động xóa sau 1 phút
+                )
                 login_data = {
                     'user_id': str(user.id),
                     'username': username,
@@ -254,7 +261,7 @@ def verify_otp_view(request):
                 user_activity_collection.insert_one(login_data)
 
                 # Cập nhật work_time collection
-                work_time_collection = client['work_time']['stats']
+                stats_collection, client = get_collection_handle('stats')
                 work_time_data = {
                     'user_id': str(user.id),
                     'username': username,
@@ -266,7 +273,7 @@ def verify_otp_view(request):
                     'updated_at': current_time.isoformat()
                 }
                 
-                work_time_collection.insert_one(work_time_data)
+                stats_collection.insert_one(work_time_data)
                 
                 # Gửi thông báo WebSocket
                 try:
@@ -293,10 +300,11 @@ def verify_otp_view(request):
                 )
                 
                 user_role = mongo_user.get('role')
-                if user_role in ['admin', 'quanly']:
+                # Sử dụng ROLES để xác định trang chuyển hướng
+                if user_role == 'admin' or user_role == 'quanly':
                     return JsonResponse({
                         'success': True,
-                        'redirect_url': '/home/',
+                        'redirect_url': '/manager-admin-sale/',
                         'message': 'Đăng nhập thành công'
                     })
                 elif user_role == 'kiemtra':
@@ -305,10 +313,17 @@ def verify_otp_view(request):
                         'redirect_url': '/manager-admin-sale/',
                         'message': 'Đăng nhập thành công'
                     })
-                else:
+                elif user_role == 'nhanvien':
                     return JsonResponse({
                         'success': True,
-                        'redirect_url': '/verified/',
+                        'redirect_url': '/available-emails/',
+                        'message': 'Đăng nhập thành công'
+                    })
+                else:
+                    # Fallback về trang home nếu role không xác định
+                    return JsonResponse({
+                        'success': True,
+                        'redirect_url': '/home/',
                         'message': 'Đăng nhập thành công'
                     })
                     
@@ -331,7 +346,7 @@ def logout_view(request):
             user_id = request.user.id
             current_time = timezone.now().astimezone(TIMEZONE)
             session_id = request.session.get('activity_session_id')
-            
+            logger.info(f"[LOGOUT] user_id={user_id}, username={username}, session_id={session_id}")
             # Kết nối MongoDB
             users_collection, client = get_collection_handle('users')
             if client:
@@ -347,29 +362,27 @@ def logout_view(request):
                             }
                         }
                     )
-                    
                     # Lấy phiên hoạt động mới nhất của user
-                    user_activity_collection = client['user_activities']['activities']
+                    user_activity_collection, client = get_collection_handle('user_activities')
                     query = {'user_id': str(user_id)}
                     if session_id:
                         query['session_id'] = session_id
                     else:
                         query['logout_time'] = {'$exists': False}
-                    
+                    logger.info(f"[LOGOUT] user_activities query: {query}")
                     latest_activity = user_activity_collection.find_one(
                         query,
                         sort=[('login_time', -1)]
                     )
-
+                    logger.info(f"[LOGOUT] latest_activity: {latest_activity}")
                     if latest_activity:
                         # Cập nhật logout_time và các thông tin khác cho phiên hoạt động
-                        user_activity_collection.update_one(
+                        update_result = user_activity_collection.update_one(
                             {'_id': latest_activity['_id']},
                             {
                                 '$set': {
                                     'logout_time': current_time.isoformat(),
                                     'is_active': False,
-                                    'status': 'inactive',
                                     'updated_at': current_time.isoformat(),
                                     'session_duration': {
                                         'seconds': (current_time - datetime.fromisoformat(latest_activity['login_time'])).total_seconds(),
@@ -378,10 +391,11 @@ def logout_view(request):
                                 }
                             }
                         )
-
+                        logger.info(f"[LOGOUT] user_activities update modified_count: {update_result.modified_count}")
                         # Cập nhật work_time collection
-                        work_time_collection = client['work_time']['stats']
-                        work_time_collection.update_one(
+                        stats_collection, client = get_collection_handle('stats')
+                        stats_collection.create_index([('exprite', 1)], expireAfterSeconds=259200)
+                        stats_update_result = stats_collection.update_one(
                             {
                                 'user_id': str(user_id),
                                 'session_id': session_id,
@@ -397,7 +411,7 @@ def logout_view(request):
                                 }
                             }
                         )
-                        
+                        logger.info(f"[LOGOUT] stats update modified_count: {stats_update_result.modified_count}")
                         # Gửi thông báo WebSocket
                         try:
                             channel_layer = get_channel_layer()
@@ -418,18 +432,16 @@ def logout_view(request):
                                 )
                         except Exception as e:
                             logger.error(f"Error sending WebSocket notification: {str(e)}")
-                            
+                    else:
+                        logger.warning(f"[LOGOUT] No latest_activity found for user_id={user_id}, session_id={session_id}")
                 finally:
                     client.close()
-            
             # Xóa session_id
             if 'activity_session_id' in request.session:
                 del request.session['activity_session_id']
-    
         # Đăng xuất người dùng
         logout(request)
         return redirect('login')
-        
     except Exception as e:
         logger.error(f"Error in logout_view: {str(e)}")
         messages.error(request, 'Có lỗi xảy ra khi đăng xuất. Vui lòng thử lại.')

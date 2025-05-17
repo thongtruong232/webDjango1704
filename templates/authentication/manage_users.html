@@ -110,11 +110,18 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="button" class="btn btn-primary" id="createUserBtn" >Tạo</button>
+                        <button type="button" class="btn btn-primary" id="createUserBtn" >
+                            Tạo
+                            <span class="spinner-border spinner-border-sm d-none" id="createUserSpinner" role="status" aria-hidden="true"></span>
+                        </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <!-- Modal Nhập OTP -->
+<!-- Modal Nhập OTP đặt ngoài modal Thêm người dùng mới -->
                 <div class="modal fade" id="otpModal_register" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -139,10 +146,6 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-success" id="accept_create">Xác nhận</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -192,6 +195,8 @@
         const errorMessage = errorDiv.querySelector('.error-message');
         errorMessage.textContent = message;
         errorDiv.classList.remove('d-none');
+        // Ẩn spinner trên nút Tạo nếu có
+        document.getElementById("createUserSpinner").classList.add('d-none');
     }
 
     // Hàm đóng loading modal
@@ -204,11 +209,17 @@
 
     // Hàm hiển thị loading modal
     function showLoadingModal() {
+        // Ẩn spinner trên nút Tạo nếu có
+        document.getElementById("createUserSpinner").classList.add('d-none');
         const loadingModal = new bootstrap.Modal(document.getElementById("loadingModal"));
         loadingModal.show();
     }
 
     document.getElementById("createUserBtn").addEventListener("click", function () {
+        const btn = this;
+        btn.disabled = true; // Khóa nút ngay khi click
+        const spinner = document.getElementById("createUserSpinner");
+        spinner.classList.remove('d-none');
         const username = document.getElementById("username_register").value.trim();
         const password = document.getElementById("password_register").value.trim();
 
@@ -258,6 +269,11 @@
                 if (data.exists) {
                     showError('usernameError', 'Username đã tồn tại trong hệ thống, vui lòng chọn username khác');
                 } else {
+                    // Đóng modal Thêm người dùng mới trước khi hiện loading
+                    const createUserModal = bootstrap.Modal.getInstance(document.getElementById("createUserModal"));
+                    if (createUserModal) {
+                        createUserModal.hide();
+                    }
                     // Nếu username chưa tồn tại, hiển thị loading và gửi OTP
                     showLoadingModal();
                     
@@ -280,12 +296,10 @@
             .then(data => {
                 if (data) {
                     closeLoadingModal();
-                    
                     if (data.success) {
                         // Nếu OTP được tạo thành công, hiển thị modal nhập OTP
                         const otpModal = new bootstrap.Modal(document.getElementById("otpModal_register"));
                         otpModal.show();
-                        
                         // Focus vào input OTP khi modal hiển thị
                         document.getElementById("otpModal_register").addEventListener('shown.bs.modal', function () {
                             const otpInput = document.getElementById("otpInput");
@@ -299,6 +313,7 @@
             })
             .catch(error => {
                 closeLoadingModal();
+                btn.disabled = false; // Mở lại nút nếu có lỗi
                 console.error('Error:', error);
                 showError('usernameError', error.message || 'Có lỗi xảy ra');
             });
@@ -309,9 +324,6 @@
     document.getElementById('accept_create').addEventListener('click', function() {
         const otpInput = document.getElementById('otpInput');
         
-        // Reset error message
-        closeError('otpError');
-        
         // Validate OTP
         if (!otpInput.value.trim()) {
             showError('otpError', 'Vui lòng nhập mã OTP');
@@ -319,6 +331,11 @@
             return;
         }
         
+        // Đóng modal Nhập mã OTP trước khi hiện loading
+        const otpModal = bootstrap.Modal.getInstance(document.getElementById('otpModal_register'));
+        if (otpModal) {
+            otpModal.hide();
+        }
         showLoadingModal();
         
         // Get form data
@@ -340,28 +357,48 @@
         .then(response => response.json())
         .then(data => {
             closeLoadingModal();
-            
             if (data.success) {
-                // Close OTP modal
-                const otpModal = bootstrap.Modal.getInstance(document.getElementById('otpModal_register'));
-                if (otpModal) {
+                // Đóng các modal đúng cách bằng Bootstrap API
+                const otpModalEl = document.getElementById('otpModal_register');
+                const createUserModalEl = document.getElementById('createUserModal');
+
+                // Đóng modal OTP nếu đang mở
+                const otpModal = bootstrap.Modal.getInstance(otpModalEl);
+                if (otpModal && otpModalEl.classList.contains('show')) {
+                    otpModalEl.addEventListener('hidden.bs.modal', function handler() {
+                        otpModalEl.removeEventListener('hidden.bs.modal', handler);
+                        // Đóng tiếp modal tạo user nếu đang mở
+                        const createUserModal = bootstrap.Modal.getInstance(createUserModalEl);
+                        if (createUserModal && createUserModalEl.classList.contains('show')) {
+                            createUserModalEl.addEventListener('hidden.bs.modal', function handler2() {
+                                createUserModalEl.removeEventListener('hidden.bs.modal', handler2);
+                                showAlert('success', 'Tạo user thành công!');
+                            });
+                            createUserModal.hide();
+                        } else {
+                            showAlert('success', 'Tạo user thành công!');
+                        }
+                    });
                     otpModal.hide();
-                }
-                
-                // Close create user modal
-                const createUserModal = bootstrap.Modal.getInstance(document.getElementById('createUserModal'));
-                if (createUserModal) {
+                } else if (createUserModalEl.classList.contains('show')) {
+                    // Nếu chỉ còn modal tạo user đang mở
+                    const createUserModal = bootstrap.Modal.getInstance(createUserModalEl);
+                    createUserModalEl.addEventListener('hidden.bs.modal', function handler2() {
+                        createUserModalEl.removeEventListener('hidden.bs.modal', handler2);
+                        showAlert('success', 'Tạo user thành công!');
+                    });
                     createUserModal.hide();
-                }
-                
-                // Show success message and redirect
-                showAlert('success', data.message || 'Tạo user thành công!');
-                if (data.redirect_url) {
-                    setTimeout(() => window.location.href = data.redirect_url, 1000);
+                } else {
+                    // Nếu không còn modal nào mở, show alert luôn
+                    showAlert('success', 'Tạo user thành công!');
                 }
             } else {
                 showError('otpError', data.message || 'Mã OTP không đúng');
                 otpInput.focus();
+                setTimeout(function() {
+                    document.body.classList.remove('modal-open');
+                    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                }, 200);
             }
         })
         .catch(error => {
@@ -369,16 +406,37 @@
             console.error('Error:', error);
             showError('otpError', 'Có lỗi xảy ra khi xác thực OTP');
             otpInput.focus();
+            // Đảm bảo xóa backdrop sau khi tắt loading nếu có lỗi
+            setTimeout(function() {
+                document.body.classList.remove('modal-open');
+                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            }, 200);
         });
     });
 
-    // Hàm hiển thị thông báo
-    function showAlert(type, message, reload = true) {
-        const alertModal = new bootstrap.Modal(document.getElementById("alertModal"));
+    // Thêm xử lý phím Enter cho ô nhập OTP
+    document.getElementById('otpInput').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+            document.getElementById('accept_create').click(); // Kích hoạt nút Xác nhận
+        }
+    });
+
+    // Khởi tạo alertModalInstance duy nhất khi trang load
+    let alertModalInstance = null;
+    document.addEventListener('DOMContentLoaded', function() {
+        const alertModalEl = document.getElementById("alertModal");
+        if (alertModalEl) {
+            alertModalInstance = new bootstrap.Modal(alertModalEl);
+        }
+    });
+
+    function showAlert(type, message) {
+        const alertModalEl = document.getElementById("alertModal");
         const alertIcon = document.querySelector('.alert-icon i');
         const alertMessage = document.querySelector('.alert-message');
         
-        // Set icon and message based on type
+        // Set icon and message
         if (type === 'success') {
             alertIcon.className = 'fas fa-check-circle text-success';
             alertIcon.style.fontSize = '3rem';
@@ -388,17 +446,45 @@
         }
         
         alertMessage.textContent = message;
-        alertModal.show();
-        
-        // Auto close after 2 seconds for success messages
+
+        // Nếu modal đang mở, đóng lại rồi mới show
+        if (alertModalEl.classList.contains('show')) {
+            alertModalEl.addEventListener('hidden.bs.modal', function handler() {
+                alertModalEl.removeEventListener('hidden.bs.modal', handler);
+                alertModalInstance.show();
+            });
+            alertModalInstance.hide();
+        } else {
+            alertModalInstance.show();
+        }
+
         if (type === 'success') {
+            alertModalEl.addEventListener('hidden.bs.modal', function reloadHandler() {
+                alertModalEl.removeEventListener('hidden.bs.modal', reloadHandler);
+                window.location.reload();
+            });
             setTimeout(() => {
-                alertModal.hide();
-                if (reload) {
-                    window.location.reload();
-                }
+                alertModalInstance.hide();
             }, 2000);
         }
+    }
+
+
+    // Biến cờ để reload lại trang sau khi tạo user thành công
+    let shouldReloadAfterLoading = false;
+
+    // Thêm sự kiện lắng nghe phím Enter trong modal Thêm người dùng mới
+    const createUserModalEl = document.getElementById('createUserModal');
+    if (createUserModalEl) {
+        createUserModalEl.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const createUserBtn = document.getElementById('createUserBtn');
+                if (createUserBtn && !createUserBtn.disabled) {
+                    createUserBtn.click();
+                }
+            }
+        });
     }
 </script>
 
@@ -546,7 +632,11 @@ $(document).ready(function() {
     $('#confirmDeleteBtn').click(function() {
         const userId = $('#deleteUserId').val();
         
-        showLoadingModal();
+        // Đóng modal xác nhận xóa user trước khi hiện loading
+        $('#deleteUserModal').modal('hide');
+        
+        // Hiện popup loading
+        // showLoadingModal();
         
         $.ajax({
             url: '{% url "delete_user" %}',
@@ -574,3 +664,12 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %} 
+
+<style>
+.spinner-border.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+</style> 
