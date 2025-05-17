@@ -147,7 +147,7 @@ def home_view(request):
             'start_index': 0,
             'name': request.user.username
         })
-        
+
     try:
         # Lấy user data một lần và sử dụng lại
         user_data = users_collection.find_one({'user_id': str(request.user.id)})

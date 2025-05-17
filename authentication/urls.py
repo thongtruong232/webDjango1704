@@ -45,7 +45,12 @@ urlpatterns = [
     path('api/get-random-area-phones/', get_random_area_phones, name='get_random_area_phones'),
     path('api/create-phone-message/', views.create__phone_message_api, name='create_area_phone_api'),
     path('api/get-random-phones-message/', views.get_random_phones_message, name='get_random_phones_message'),
-
+    path('api/fmail-list/', views.fmail_list, name='fmail_list'),
+    path('api/fmail-buy/', views.fmail_buy, name='fmail_buy'),
+    path('api/fmail-balance/', views.fmail_balance, name='fmail_balance'),
+    path('api/phapsu-buy/', views.phapsu_buy, name='phapsu_buy'),
+    path('api/phapsu-balance/', views.phapsu_balance, name='phapsu_balance'),
+    path('api/phapsu-list/', views.phapsu_list, name='phapsu_list'),
 
     # admin manager
     path('manager-admin-sale/', manager_textnow_view, name='manager_textnow_view'),

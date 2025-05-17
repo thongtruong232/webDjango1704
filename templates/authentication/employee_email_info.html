@@ -486,8 +486,17 @@
         }
 
         .mail-card .content .details {
-            margin-top: auto;
-            padding: 15px 0;
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .mail-card .price, .mail-card .quantity {
+            display: inline-block;
+            white-space: nowrap;
         }
 
         .mail-card .price {
@@ -498,19 +507,19 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .mail-card .quantity {
-            position: absolute;
-            top: 85px;
-            right: 10px;
-            background: rgba(255, 255, 255,1);
-            padding: 8px 20px;
-            border-radius: 20px;
-            color: #00894d;
-            font-weight: bold;
-            transform: translate3d(0, 0, 30px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
+        /* .mail-card .quantity {
+            position: static !important;
+            top: unset !important;
+            right: unset !important;
+            background: unset !important;
+            padding: unset !important;
+            border-radius: unset !important;
+            color: unset !important;
+            font-weight: unset !important;
+            transform: unset !important;
+            box-shadow: unset !important;
+            z-index: unset !important;
+        } */
 
         .mail-card .bottom {
             padding: 25px;
@@ -946,6 +955,31 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .mail-details-flex {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 10px 0 18px 0;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .mail-price-highlight {
+            font-size: 22px;
+            font-weight: bold;
+            color: #e74c3c;
+            letter-spacing: 1px;
+        }
+        .mail-quantity {
+            font-size: 15px;
+            color: #00894d;
+            font-weight: 500;
+            background: #eafaf1;
+            border-radius: 12px;
+            padding: 2px 12px;
+        }
     </style>
 </head>
 <body>
@@ -975,7 +1009,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <i class="fas fa-envelope"></i>
-                <h4 class="modal-title">Danh Sách Mail Đồng Văn</h4>
+                <h4 class="modal-title">Danh Sách Mail</h4>
                 <button type="button" class="btn-close" onclick="closeMailListModal()"></button>
             </div>
             <div class="modal-body" id="mailListCards">
@@ -990,9 +1024,7 @@
             <div class="modal-header">
                 <i class="fas fa-shopping-cart"></i>
                 <h4 class="modal-title">Xác nhận mua Mail</h4>
-                <button type="button" class="btn-close" onclick="closePurchaseModal()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button type="button" class="btn-close" onclick="closePurchaseModal()"></button>
             </div>
             <div class="modal-body">
                 <div class="purchase-info">
@@ -1054,6 +1086,9 @@
 
                 <button id="fetchEmailsBtn" class="btn btn-primary">Lấy Email Dự Trữ</button>
                 <button id="buyDongVanBtn" class="btn btn-success">Mua Mail Đồng Văn</button>
+                <button id="buyFMailBtn" class="btn btn-success">Mua Mail fMail</button>
+                <button id="buyPhapSuBtn" class="btn btn-success">Mua Mail Pháp sư</button>
+
                 <!-- <a href="{% url 'work_management' %}" class="btn btn-primary">Quay lại</a> -->
             </div>
         </div>
@@ -1307,6 +1342,8 @@
 
             const regAccBtn = document.getElementById('regAccBtn');
             const buyDongVanBtn = document.getElementById('buyDongVanBtn');
+            const buyFMailBtn = document.getElementById('buyFMailBtn');
+            const buyPhapSuBtn = document.getElementById('buyPhapSuBtn');
             const selectAllCheckbox = document.getElementById('selectAll');
             const emailsTableBody = document.getElementById('emailsTableBody');
 
@@ -1438,6 +1475,7 @@
             // Thêm xử lý sự kiện cho nút Mua Mail Đồng Văn
             buyDongVanBtn.addEventListener('click', async function() {
                 const loadingOverlay = document.querySelector('.loading-overlay');
+                const supplier = 'dongvan';
                 loadingOverlay.style.display = 'flex';
 
                 try {
@@ -1459,9 +1497,106 @@
                     const data = await response.json();
                     
                     if (data.status && data.error_code === 200) {
-                        showMailListModal(data.data);
+                        showMailListModal(data.data, supplier);
                     } else {
                         alert('Có lỗi khi lấy danh sách mail: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra: ' + error.message);
+                } finally {
+                    loadingOverlay.style.display = 'none';
+                }
+            });
+
+            // Thêm xử lý sự kiện cho nút Mua Mail fMail
+            buyFMailBtn.addEventListener('click', async function() {
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                const supplier = 'fmail';
+                loadingOverlay.style.display = 'flex';
+
+                try {
+                    // Kiểm tra bản ghi employee password
+                    const checkResponse = await fetch('/api/check-employee-password-today/');
+                    const checkData = await checkResponse.json();
+                    
+                    if (!checkData.success) {
+                        throw new Error(checkData.error);
+                    }
+                    
+                    if (!checkData.has_record) {
+                        showModal('Vui lòng thêm mật khẩu TextNow và TextFree trước khi mua mail!');
+                        return;
+                    }
+
+                    // Nếu đã có bản ghi, tiếp tục lấy danh sách mail
+                    const response = await fetch('/api/fmail-list/', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMailListModal(data.data, supplier);
+                    } else {
+                        throw new Error(data.error || 'Có lỗi khi lấy danh sách mail');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra: ' + error.message);
+                } finally {
+                    loadingOverlay.style.display = 'none';
+                }
+            });
+
+            // Thêm xử lý sự kiện cho nút Mua Mail Pháp Sư
+            buyPhapSuBtn.addEventListener('click', async function() {
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                const supplier = 'phapsu';
+                loadingOverlay.style.display = 'flex';
+
+                try {
+                    // Kiểm tra bản ghi employee password
+                    const checkResponse = await fetch('/api/check-employee-password-today/');
+                    const checkData = await checkResponse.json();
+                    
+                    if (!checkData.success) {
+                        throw new Error(checkData.error);
+                    }
+                    
+                    if (!checkData.has_record) {
+                        showModal('Vui lòng thêm mật khẩu TextNow và TextFree trước khi mua mail!');
+                        return;
+                    }
+
+                    // Nếu đã có bản ghi, tiếp tục lấy danh sách mail
+                    // TODO: Thay API URL này bằng API thực tế cho Pháp Sư
+                    const response = await fetch('/api/phapsu-list/', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMailListModal(data.data, supplier);
+                    } else {
+                        throw new Error(data.error || 'Có lỗi khi lấy danh sách mail');
                     }
                 } catch (error) {
                     console.error('Error:', error);
@@ -1500,7 +1635,7 @@
             }).format(price);
         }
 
-        function showMailListModal(mailList) {
+        function showMailListModal(mailList, supplier) {
             const modal = document.getElementById('mailListModal');
             const cardsContainer = document.getElementById('mailListCards');
             cardsContainer.innerHTML = '';
@@ -1512,22 +1647,16 @@
                     <div class="mail-card-parent">
                         <div class="mail-card" data-mail-id="${mail.id}">
                             <div class="glass"></div>
-                            <div class="quantity">${mail.quality} mail</div>
                             <div class="content">
                                 <span class="title">${mail.name}</span>
-                                <div class="details">
-                                    <div class="price">${formatPrice(mail.price)}</div>
-                                    <span class="text                                   
-                                        ✓ Mail chất lượng cao<br>
-                                        ✓ Bảo hành 24h<br>
-                                        ✓ Hỗ trợ tận tình<br>
-                                        ✓ Giao mail ngay
-                                    </span>
+                                <div class="details mail-details-flex">
+                                    <span class="price mail-price-highlight">${formatPrice(mail.price)}</span>
+                                    <span class="quantity mail-quantity">${mail.quality} mail</span>
                                 </div>
                             </div>
                             <div class="bottom">
                                 <button class="buy-button" 
-                                        onclick="buyMail(${mail.id})" 
+                                        onclick="buyMail(${mail.id}, '${supplier}')" 
                                         ${mail.quality === 0 ? 'disabled' : ''}>
                                     ${mail.quality === 0 ? 'Hết hàng' : 'Mua ngay'}
                                 </button>
@@ -1544,7 +1673,7 @@
 
         let currentMailData = null;
 
-        async function buyMail(mailId) {
+        async function buyMail(mailId, supplier) {
             try {
                 const mailCard = document.querySelector(`.mail-card[data-mail-id="${mailId}"]`);
                 if (!mailCard) {
@@ -1561,14 +1690,14 @@
                     throw new Error('Dữ liệu không hợp lệ');
                 }
 
-                showPurchaseModal(mailId, mailName, price, maxQuantity);
+                showPurchaseModal(mailId, mailName, price, maxQuantity, supplier);
             } catch (error) {
                 console.error('Error:', error);
                 alert('Có lỗi xảy ra khi mở form mua mail: ' + error.message);
             }
         }
 
-        function showPurchaseModal(mailId, mailName, mailPrice, maxQuantity) {
+        function showPurchaseModal(mailId, mailName, mailPrice, maxQuantity, supplier) {
             const modal = document.getElementById('purchaseModal');
             if (!modal) {
                 console.error('Không tìm thấy modal');
@@ -1622,7 +1751,8 @@
                 id: mailId,
                 name: mailName,
                 price: mailPrice,
-                maxQuantity: actualMaxQuantity
+                maxQuantity: actualMaxQuantity,
+                supplier: supplier
             };
             
             modal.style.display = 'block';
@@ -1688,11 +1818,49 @@
                 }
 
                 // Mua mail
-                const response = await fetch(`https://api.dongvanfb.net/user/buy?apikey=GfeXobVqUdD8WTDwvtKE6GBPC&account_type=${currentMailData.id}&quality=${quantity}&type=full`);
+                let response;
+                if (currentMailData.supplier === 'dongvan') {
+                    response = await fetch(`https://api.dongvanfb.net/user/buy?apikey=GfeXobVqUdD8WTDwvtKE6GBPC&account_type=${currentMailData.id}&quality=${quantity}&type=full`);
+                } else if (currentMailData.supplier === 'fmail') {
+                    response = await fetch('/api/fmail-buy/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `id=${currentMailData.id}&amount=${quantity}`
+                    });
+                } else if (currentMailData.supplier === 'phapsu') {
+                    response = await fetch('/api/phapsu-buy/', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: `id=${currentMailData.id}&amount=${quantity}`
+                    });
+                } else {
+                    throw new Error('Không xác định được nhà cung cấp mail');
+                }
+                console.log('response', response);
                 const data = await response.json();
                 
-                if (data.status && data.error_code === 200) {
-                    const listData = data.data.list_data;
+                if (data.status && data.error_code === 200 || data.status == 'success') {
+                    let listData;
+                    let account_balance = null;
+                    if (currentMailData.supplier === 'dongvan') {
+                        listData = data.data.list_data;
+                    } else if (currentMailData.supplier === 'fmail') {
+                        listData = data.data;
+                        // Gọi backend để lấy số dư tài khoản fMail
+                        const response_info = await fetch('/api/fmail-balance/');
+                        const data_info = await response_info.json();
+                        console.log('data_info', data_info);
+                        account_balance = data_info.data.money;
+                        console.log('account_balance', account_balance);
+                    } else if (currentMailData.supplier === 'phapsu') {
+                        listData = data.data;
+                        // Gọi backend để lấy số dư tài khoản Pháp Sư
+                        const response_info = await fetch('/api/phapsu-balance/');
+                        const data_info = await response_info.json();
+                        account_balance = data_info.data.money;
+                    }
+
+                    
                     const existingData = localStorage.getItem('employee_worksession');
                     let existingEmails = existingData ? JSON.parse(existingData) : [];
 
@@ -1733,7 +1901,7 @@
                             status_tn: "chưa tạo acc",
                             status_tf: "chưa tạo acc",
                             is_provided: false,
-                            supplier: "Dong Van",
+                            supplier: currentMailData.supplier,
                             area_phone: areaPhones[index]?.area_code || "000",
                             phone_number: phoneMessages[index]?.phone_number || "0000000000"
                         };
@@ -1744,7 +1912,15 @@
                     localStorage.setItem('employee_worksession', JSON.stringify(updatedEmails));
                     displayEmails(updatedEmails);
                     
-                    alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.data.order_code}\nSố dư còn lại: ${data.data.balance.toLocaleString('vi-VN')} VNĐ`);
+                    if (currentMailData.supplier === 'dongvan') {
+                        alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.data.order_code}\nSố dư còn lại: ${data.data.balance ? data.data.balance.toLocaleString('vi-VN') + ' VNĐ' : ''}`);
+                    } else if (currentMailData.supplier === 'fmail') {
+                        let balanceMsg = account_balance !== undefined && account_balance !== null ? `\nSố dư còn lại: ${account_balance.toLocaleString('vi-VN')} VNĐ` : '';
+                        alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.trans_id || ''}${balanceMsg}`);
+                    } else if (currentMailData.supplier === 'phapsu') {
+                        let balanceMsg = account_balance !== undefined && account_balance !== null ? `\nSố dư còn lại: ${account_balance.toLocaleString('vi-VN')} VNĐ` : '';
+                        alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.trans_id || ''}${balanceMsg}`);
+                    }
                     closeAllModals();
                 } else {
                     throw new Error(data.message || 'Có lỗi khi mua mail');

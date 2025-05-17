@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 from django.shortcuts import render, redirect
 from pymongo import MongoClient
 from authentication.mongodb import get_collection_handle
@@ -16,6 +16,7 @@ from django.contrib import messages
 from datetime import datetime, time
 import pymongo
 from rest_framework.decorators import api_view
+import requests
 
 from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
@@ -1195,4 +1196,166 @@ def get_random_phones_message(request):
         })
     finally:
         if 'client' in locals():
-            client.close() 
+            client.close()
+
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+@require_http_methods(['GET'])
+def fmail_list(request):
+    try:
+        # Gọi API fMail mới
+        response = requests.get(
+            'https://fmail1s.com/api/products.php',
+            params={
+                'api_key': '78c4ce0997187485dbd445e3b59980c1',
+            },
+            headers={
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        )
+        
+        if response.status_code != 200:
+            return JsonResponse({
+                'success': False,
+                'error': f'API error: {response.status_code}'
+            })
+        data = response.json()
+        # Lấy tất cả sản phẩm từ các category
+        formatted_data = []
+        if data and 'categories' in data:
+            for category in data['categories']:
+                for product in category.get('products', []):
+                    formatted_data.append({
+                        'id': product.get('id'),
+                        'name': product.get('name'),
+                        'price': int(product.get('price', 0)),
+                        'quality': int(product.get('amount', 0))
+                    })
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid response format (no categories)'
+            })
+        return JsonResponse({
+            'success': True,
+            'data': formatted_data
+        })
+    except Exception as e:
+        logger.error(f"Error in fmail_list: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        })
+
+@csrf_exempt
+@require_POST
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def fmail_buy(request):
+    try:
+        product_id = request.POST.get('id')
+        amount = request.POST.get('amount')
+        if not product_id or not amount:
+            return JsonResponse({'success': False, 'error': 'Thiếu tham số'})
+        api_url = 'https://fmail1s.com/api/buy_product'
+        params = {
+            'action': 'buyProduct',
+            'api_key': '78c4ce0997187485dbd445e3b59980c1',
+            'id': product_id,
+            'amount': amount
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def fmail_balance(request):
+    import requests
+    try:
+        api_url = 'https://fmail1s.com/api/profile.php'
+        params = {
+            'api_key': '78c4ce0997187485dbd445e3b59980c1'
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def phapsu_list(request):
+    import requests
+    try:
+        api_url = 'https://phapsummo.net/api/products.php'
+        params = {
+            'api_key': '07b9a6610227f43f93233fd2d839a42e'
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        # Chuẩn hóa response
+        if data.get('status') == 'success' and 'categories' in data:
+            formatted_data = []
+            for category in data['categories']:
+                for product in category.get('products', []):
+                    formatted_data.append({
+                        'id': product.get('id'),
+                        'name': product.get('name'),
+                        'price': int(product.get('price', 0)),
+                        'quality': int(product.get('amount', 0))
+                    })
+            return JsonResponse({'success': True, 'data': formatted_data})
+        else:
+            return JsonResponse({'success': False, 'error': data.get('msg', 'API error')})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@require_POST
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def phapsu_buy(request):
+    import requests
+    try:
+        product_id = request.POST.get('id')
+        amount = request.POST.get('amount')
+        if not product_id or not amount:
+            return JsonResponse({'success': False, 'error': 'Thiếu tham số'})
+        # TODO: Thay thế API URL và params thực tế cho Pháp Sư
+        api_url = 'https://phapsummo.net/api/buy_product'  # placeholder, bạn thay sau
+        params = {
+            'action': 'buyProduct',
+            'api_key': '07b9a6610227f43f93233fd2d839a42e',  # placeholder
+            'id': product_id,
+            'amount': amount
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@login_required
+@role_required(['admin', 'quanly', 'kiemtra', 'nhanvien'])
+def phapsu_balance(request):
+    import requests
+    try:
+        # TODO: Thay thế API URL và params thực tế cho Pháp Sư
+        api_url = 'https://phapsummo.net/api/profile.php'  # placeholder, bạn thay sau
+        params = {
+            'api_key': '07b9a6610227f43f93233fd2d839a42e'  # placeholder
+        }
+        response = requests.get(api_url, params=params)
+        data = response.json()
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+    
