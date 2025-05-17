@@ -1187,7 +1187,7 @@
         function displayEmailsFromStorage() {
             // Lấy dữ liệu từ server nếu có
             const serverEmails = JSON.parse('{{ emails|safe }}');
-            console.log('Server emails:', serverEmails);
+            // console.log('Server emails:', serverEmails);
             localStorage.setItem('employee_worksession', JSON.stringify(serverEmails));
             displayEmails(serverEmails);
         }
@@ -1592,7 +1592,7 @@
                             body: formData
                         });
 
-                        console.log('response', response);
+                        // console.log('response', response);
 
                         if (response.ok) {
                             const data = await response.json();
@@ -1611,6 +1611,7 @@
                                 validCodes.sort((a, b) => new Date(b.date) - new Date(a.date));
                                 const codeResult = validCodes[0];
                                 if (codeResult) {
+                                    console.log('codeResult', codeResult);
                                     // Tìm <td> chứa nút đọc mail
                                     const readMailTd = targetRow.querySelector('.read-mail-btn').parentElement;
                                     // Xóa code cũ nếu có
@@ -1849,7 +1850,7 @@
                 } else {
                     throw new Error('Không xác định được nhà cung cấp mail');
                 }
-                console.log('response', response);
+                // console.log('response', response);
                 const data = await response.json();
                 
                 if (data.status && data.error_code === 200 || data.status == 'success') {
@@ -1862,9 +1863,9 @@
                         // Gọi backend để lấy số dư tài khoản fMail
                         const response_info = await fetch('/api/fmail-balance/');
                         const data_info = await response_info.json();
-                        console.log('data_info', data_info);
+                        // console.log('data_info', data_info);
                         account_balance = data_info.data.money;
-                        console.log('account_balance', account_balance);
+                        // console.log('account_balance', account_balance);
                     } else if (currentMailData.supplier === 'phapsu') {
                         listData = data.data;
                         // Gọi backend để lấy số dư tài khoản Pháp Sư
