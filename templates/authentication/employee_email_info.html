@@ -387,6 +387,7 @@
             color: white;
             font-size: 24px;
             font-weight: 600;
+            padding-left: 20px;
             margin: 0;
             display: flex;
             align-items: center;
@@ -399,22 +400,25 @@
         }
 
         #mailListModal .btn-close {
-            background: rgba(255, 255, 255, 0.2);
+            background: #ffffff;
             border: none;
-            padding: 8px;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            padding: 0;
+            border-radius: 35%;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 28px;
+            color: #333;
+            line-height: 1;
+            margin-top: -4px;
         }
-
-        #mailListModal .btn-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
+        #mailListModal .btn-close:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3498db33;
         }
 
         #mailListModal .modal-body {
@@ -567,8 +571,10 @@
         }
 
         .mail-card-parent:hover .mail-card {
-            transform: rotate3d(1, 1, 0, 25deg);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transform: scale(1.12) translateY(-10px);
+            box-shadow: 0 30px 60px 0 rgba(52, 152, 219, 0.25), 0 8px 20px 0 rgba(0,0,0,0.10);
+            z-index: 2;
+            transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.35s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         /* Style cho các ô trong bảng */
@@ -980,6 +986,11 @@
             border-radius: 12px;
             padding: 2px 12px;
         }
+        #mailListModal .btn-close:hover {
+            background: #e74c3c;
+            color: #fff;
+            transform: scale(1.15);
+        }
     </style>
 </head>
 <body>
@@ -1010,7 +1021,7 @@
             <div class="modal-header">
                 <i class="fas fa-envelope"></i>
                 <h4 class="modal-title">Danh Sách Mail</h4>
-                <button type="button" class="btn-close" onclick="closeMailListModal()"></button>
+                <button type="button" class="btn-close" onclick="closeMailListModal()">&times;</button>
             </div>
             <div class="modal-body" id="mailListCards">
                 <!-- Cards sẽ được thêm vào đây bằng JavaScript -->
