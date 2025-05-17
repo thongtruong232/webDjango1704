@@ -17,7 +17,18 @@ from datetime import datetime, time
 import pymongo
 from rest_framework.decorators import api_view
 import requests
-
+import requests
+from imap_tools import MailBox
+import json
+# from config import CLIENT_ID, CLIENT_SECRET, TENANT_ID
+import re
+from lxml import html
+from bs4 import BeautifulSoup
+from django.http import HttpResponse
+import subprocess
+import concurrent.futures
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from authentication.permissions import (
     role_required, can_manage_users, can_update_status, 
     ROLES, get_allowed_status_updates
@@ -45,14 +56,14 @@ def email_info_view(request):
         # Get today's date in YYYY-MM-DD format
         today = datetime.now().strftime('%Y-%m-%d')
         todayDmY = datetime.now().strftime('%d/%m/%Y')
-        print(todayDmY)
+        # print(todayDmY)
         
         # Check if there are any records with today's date and matching owner
         current_worksession = worksession_collection.find_one({
             'created_at': {'$regex': f'^{today}'},
             'owner': request.user.username
         })
-        print(current_worksession)
+        # print(current_worksession)
         
         checkPass_TodayTn = checkPass_Today.find_one({
             'created_at': {'$regex': f'^{todayDmY}'},
@@ -208,7 +219,7 @@ def get_available_emails_api(request):
                         }
                     }
                 )
-                print(random_area_phones[0]['code_area_phone'])
+                # print(random_area_phones[0]['code_area_phone'])
                 # Create new email record
                 new_email = {
                                 'email': email.get('email'),
@@ -739,7 +750,7 @@ def save_worksession_api(request):
             
         try:
             worksession_data = json.loads(data)
-            print(worksession_data)
+            # print(worksession_data)
         except json.JSONDecodeError:
             return JsonResponse({
                 'success': False,
@@ -892,7 +903,7 @@ def update_textnow_status_api(request):
         email = data.get('email')
         status_tn = data.get('status_tn')
         status_tf = data.get('status_tf')
-        print(email, status_tn, status_tf)
+        # print(email, status_tn, status_tf)
         if not email:
             return JsonResponse({
                 'success': False,
@@ -994,7 +1005,7 @@ def create_area_phone_api(request):
             country = item.get('country')
             state = item.get('state')
             main_area = item.get('main_area')
-            print(codeAreaPhone, country, state, main_area)
+            # print(codeAreaPhone, country, state, main_area)
             if not codeAreaPhone or not country or not state or not main_area:
                 errors.append({
                     'codeAreaPhone': codeAreaPhone,
@@ -1083,7 +1094,7 @@ def create__phone_message_api(request):
         for item in data_list:
             phoneNumber = item.get('phone_number')
             country = item.get('country')
-            print(phoneNumber, country)
+            # print(phoneNumber, country)
             if not phoneNumber or not country :
                 errors.append({
                     'phoneNumber': phoneNumber,
@@ -1358,4 +1369,160 @@ def phapsu_balance(request):
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
 
-    
+
+# Read mail api
+@csrf_exempt
+def get_code_view(request):
+    try:
+        if request.method == 'POST':
+            email_data = request.POST.get('email_data', '')
+            if not email_data:
+                return JsonResponse({'success': False, 'error': 'Thiếu dữ liệu email'})
+            # Parse email_data: email|password|refresh_token|client_id
+            parts = email_data.split('|')
+            if len(parts) < 4:
+                return JsonResponse({'success': False, 'error': 'Dữ liệu email không hợp lệ'})
+            email = parts[0].strip()
+            refresh_token = parts[2].strip()
+            client_id = parts[3].strip()
+            # Gọi hàm đọc mail
+            results = read_mail(email, refresh_token, client_id, 1, request)
+            # print("DEBUG: Kết quả đọc mail:", results)
+            return JsonResponse({
+                'success': True,
+                'email_user': {'address': email, 'index': 1},
+                'results': results
+            })
+        return JsonResponse({'success': False, 'error': 'Chỉ hỗ trợ POST'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+def parse_multiple_data(input_string):
+    try:
+        # Tách chuỗi theo dấu '\n' để lấy từng dòng
+        lines = [line.strip() for line in input_string.split("\n") if line.strip()]  # Loại bỏ dòng trống
+        
+        result = []
+        for index, line in enumerate(lines, 1):  # Bắt đầu đếm từ 1
+            # Tách mỗi dòng theo dấu '|'
+            attributes = line.split("|")
+            
+            # Kiểm tra đủ thông tin
+            if len(attributes) >= 4:
+                # Tạo dictionary cho mỗi đối tượng
+                data_object = {
+                    "index": index,  # Thêm số thứ tự
+                    "email": attributes[0].strip(),
+                    "password": attributes[1].strip(),
+                    "additional_info": attributes[2].strip(),
+                    "id": attributes[3].strip()
+                }
+                result.append(data_object)
+
+        return result
+    except Exception as e:
+        return None
+
+def read_mail(email, refresh_token, client_id, email_index, request):
+    try:
+        url = "http://207.148.69.229:5000/api/mail/read"
+        payload = {
+            "Email": email,
+            "RefreshToken": refresh_token,
+            "ClientId": client_id
+        }
+        socket_id = request.POST.get('socket_id')
+        
+        response = requests.post(url, json=payload)
+        
+        # Kiểm tra response status
+        if response.status_code != 200:
+            return f"API error: {response.status_code}"
+            
+        try:
+            data = response.json()
+        except ValueError as e:
+            return f"Invalid response format: {e}"
+            
+        if not isinstance(data, list):
+            return f"Invalid data format: expected list"
+            
+        results = []  # List để chứa tất cả kết quả
+
+        for item in data:
+            if not isinstance(item, dict):
+                continue
+                
+            if item.get('from') == 'noreply@notifications.textnow.com':
+                try:
+                    link = parse_beautifulshop_tn(item.get('body', ''))
+                    tn_from = item.get('from', '')
+                    tn_data = item.get('date', '')
+                    result = {'from': tn_from, 'link': link, 'date': tn_data}
+                    results.append(result)
+                    
+                    # Send WebSocket update
+                    channel_layer = get_channel_layer()
+                    async_to_sync(channel_layer.group_send)(
+                        f"client_{socket_id}",
+                        {
+                            'type': 'email_update',
+                            'email': email,
+                            'result': result,
+                            'email_index': email_index,
+                            'result_index': len(results)
+                        }
+                    )
+                except Exception as e:
+                    continue
+
+            if item.get('from') == 'info@info.textfree.us':
+                try:
+                    code = parse_html_tf(item.get('body', ''))
+                    tf_from = item.get('from', '')
+                    tf_data = item.get('date', '')
+                    result = {'from': tf_from, 'code': code, 'date': tf_data}
+                    results.append(result)
+                    
+                    # Send WebSocket update
+                    channel_layer = get_channel_layer()
+                    async_to_sync(channel_layer.group_send)(
+                        f"client_{socket_id}",
+                        {
+                            'type': 'email_update',
+                            'email': email,
+                            'result': result,
+                            'email_index': email_index,
+                            'result_index': len(results)
+                        }
+                    )
+                except Exception as e:
+                    continue
+                    
+        return results
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+def parse_html_tf(html_content):
+    try:
+        # Sử dụng biểu thức chính quy để tìm 6 chữ số liên tiếp và loại trừ "000000"
+        match = re.search(r'\b(?!000000\b)\d{6}\b', html_content)
+        if match:
+            return match.group()
+        else:
+            return None
+    except Exception as e:
+        return None
+
+def parse_beautifulshop_tn(html_content):
+    # Phân tích cú pháp HTML với BeautifulSoup
+    soup = BeautifulSoup(html_content, 'html.parser')
+    # Tìm tất cả các thẻ <a> có href chứa "https://94lr.adj.st/email_verification"
+    links = soup.find_all('a', href=True)
+
+    # Lọc các link có href đúng với mẫu cần tìm
+    target_links = [link['href'] for link in links if 'https://94lr.adj.st/email_verification' in link['href']]
+
+    # In tất cả các link tìm được
+    for link in target_links:
+        return link   

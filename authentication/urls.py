@@ -51,6 +51,7 @@ urlpatterns = [
     path('api/phapsu-buy/', views.phapsu_buy, name='phapsu_buy'),
     path('api/phapsu-balance/', views.phapsu_balance, name='phapsu_balance'),
     path('api/phapsu-list/', views.phapsu_list, name='phapsu_list'),
+    path('api/get-code/', views.get_code_view, name='get_code'),
 
     # admin manager
     path('manager-admin-sale/', manager_textnow_view, name='manager_textnow_view'),
@@ -59,5 +60,6 @@ urlpatterns = [
     path('update-sold-status/', update_sold_status, name='update_sold_status'),
     path('api/get-sold-status-counts/', get_sold_status_counts, name='get_sold_status_counts'),
     path('api/get-textnow-unsold-dates/', get_total_textnow_status_counts, name='get_total_textnow_status_counts'),
+    
 ]
 

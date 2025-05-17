@@ -3415,3 +3415,38 @@ WARNING 2025-05-17 13:19:47,383 log 10004 18052 Not Found: /.well-known/appspeci
 WARNING 2025-05-17 13:23:57,915 log 10004 18052 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-17 13:25:46,760 log 16620 16348 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-17 13:29:16,223 log 10708 15500 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 13:50:18,975 log 17440 14784 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 13:52:56,482 log 17752 16144 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 13:57:10,274 log 10340 19064 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 13:58:12,270 log 20852 9040 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:00:02,534 log 20720 15220 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:01:41,011 log 4564 19400 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:04:14,092 log 21876 4776 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:21:37,347 log 19620 19884 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:38:18,545 log 22792 22988 Not Found: /api/get-code/
+WARNING 2025-05-17 14:38:21,614 log 22792 22988 Not Found: /api/get-code/
+WARNING 2025-05-17 14:38:47,839 log 22792 22988 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:38:59,730 log 22792 22988 Not Found: /api/get-code/
+WARNING 2025-05-17 14:39:04,266 log 22792 22988 Not Found: /api/get-code/
+WARNING 2025-05-17 14:40:08,100 log 4064 23648 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:40:09,831 log 4064 23736 Forbidden (CSRF token missing.): /api/get-code/
+WARNING 2025-05-17 14:41:44,368 log 1836 24192 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:41:53,586 log 1836 23360 Forbidden (CSRF token missing.): /api/get-code/
+WARNING 2025-05-17 14:43:02,813 log 24272 25160 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:43:06,263 log 24272 25588 Forbidden (CSRF token missing.): /api/get-code/
+WARNING 2025-05-17 14:43:36,252 log 24272 23888 Forbidden (CSRF token missing.): /api/get-code/
+WARNING 2025-05-17 14:43:39,078 log 24272 6432 Forbidden (CSRF token missing.): /api/get-code/
+WARNING 2025-05-17 14:46:24,775 log 23272 25296 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 14:53:18,412 log 25136 23800 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:05:07,472 log 15956 2912 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:06:48,904 log 15956 2912 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:16:31,210 log 1888 25304 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:27:21,999 log 1836 25216 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:38:38,943 log 1836 25216 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:39:52,626 log 25436 11272 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:41:27,517 log 25436 11272 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:41:30,396 log 25436 11272 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:42:03,148 log 25436 11272 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:43:16,993 log 13568 23616 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:45:55,974 log 21836 24440 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-17 15:48:39,534 log 21944 9404 Not Found: /.well-known/appspecific/com.chrome.devtools.json

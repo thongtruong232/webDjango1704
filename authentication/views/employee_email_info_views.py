@@ -5,6 +5,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.conf import settings
 import pymongo
+from django.shortcuts import render
+
+
 
 @api_view(['GET'])
 def check_employee_password_today(request):
@@ -136,4 +139,3 @@ def get_random_area_phones(request):
         # Đóng kết nối MongoDB
         if 'client' in locals():
             client.close()
-

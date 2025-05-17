@@ -867,6 +867,32 @@
             color: #fff;
             transform: scale(1.15);
         }
+
+        /* Thêm style cho loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+
+        /* Hiển thị đầy đủ code trong cột Đọc mail */
+        .mail-code-info {
+            white-space: normal !important;
+            overflow: visible !important;
+            text-overflow: unset !important;
+            display: inline-block;
+            min-width: 120px;
+            max-width: 300px;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -984,17 +1010,18 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th style="width: 70px;"><input type="checkbox" id="selectAll"></th>
-                        <th style="width: 50px;">STT</th>
-                        <th style="width: 250px;">Email</th>
-                        <th>Mật khẩu Mail</th>
-                        <th style="width: 80px;">Mã vùng</th>
-                        <th>Số điện thoại</th>
-                        <th>Mật khẩu Tn</th>
-                        <th>Mật khẩu TF</th>
-                        <th>Trạng thái Tn</th>
-                        <th>Trạng thái Tf</th>
-                        <th style="width: 100px;">Sao chép</th>
+                        <th style="width: 40px;"><input type="checkbox" id="selectAll"></th>
+                        <th style="width: 40px;">STT</th>
+                        <th style="width: 180px;">Email</th>
+                        <th style="width: 120px;">Mật khẩu Mail</th>
+                        <th style="width: 60px;">Mã vùng</th>
+                        <th style="width: 110px;">Số điện thoại</th>
+                        <th style="width: 90px;">Mật khẩu Tn</th>
+                        <th style="width: 90px;">Mật khẩu TF</th>
+                        <th style="width: 90px;">Trạng thái Tn</th>
+                        <th style="width: 90px;">Trạng thái Tf</th>
+                        <th style="width: 70px;">Sao chép</th>
+                        <th style="width: 180px;">Đọc mail</th>
                     </tr>
                 </thead>
                 <tbody id="emailsTableBody">
@@ -1103,9 +1130,14 @@
                         </td>
                         <td>
                             <button class="btn btn-sm btn-primary copy-btn" 
-                                    onclick="copyEmailInfo('${email.email}', '${email.password}', '${email.refresh_token || ''}', '${email.client_id || ''}')"
+                                    data-clipboard-text="${email.email}|${email.password}|${email.refresh_token || ''}|${email.client_id || ''}"
                                     title="Sao chép thông tin">
                                 <i class="fas fa-copy"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info read-mail-btn" title="Đọc mail" data-email="${email.email}" data-password="${email.password}" data-refresh-token="${email.refresh_token || ''}" data-client-id="${email.client_id || ''}">
+                                <i class="fas fa-envelope-open-text"></i>
                             </button>
                         </td>
                     `;
@@ -1513,6 +1545,100 @@
 
             // Hiển thị dữ liệu từ localStorage khi trang được tải
             displayEmailsFromStorage();
+
+            var clipboard = new ClipboardJS('.copy-btn');
+            clipboard.on('success', function(e) {
+                var triggerBtn = e.trigger;
+                try {
+                    if (triggerBtn && triggerBtn.classList) {
+                        triggerBtn.classList.remove('btn-primary');
+                        triggerBtn.classList.add('btn-success');
+                        setTimeout(() => {
+                            try {
+                                if (triggerBtn && triggerBtn.classList) {
+                                    triggerBtn.classList.remove('btn-success');
+                                    triggerBtn.classList.add('btn-primary');
+                                }
+                            } catch (err) {
+                                // Nếu phần tử đã bị xóa, bỏ qua
+                            }
+                        }, 1000);
+                    }
+                } catch (err) {
+                    // Nếu phần tử đã bị xóa, bỏ qua
+                }
+                e.clearSelection();
+            });
+            clipboard.on('error', function(e) {
+                alert('Copy failed');
+            });
+
+            // Thêm JS xử lý sự kiện click cho .read-mail-btn
+            document.getElementById('emailsTableBody').addEventListener('click', async function(e) {
+                if (e.target.closest('.read-mail-btn')) {
+                    const btn = e.target.closest('.read-mail-btn');
+                    const email = btn.getAttribute('data-email');
+                    const password = btn.getAttribute('data-password');
+                    const refreshToken = btn.getAttribute('data-refresh-token');
+                    const clientId = btn.getAttribute('data-client-id');
+                    try {
+                        btn.disabled = true;
+                        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+                        // Gọi API Django đọc mail
+                        const formData = new FormData();
+                        formData.append('email_data', `${email}|${password}|${refreshToken}|${clientId}`);
+                        const response = await fetch('/api/get-code/', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        console.log('response', response);
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            // Tìm đúng tr.email-row theo email
+                            const rows = document.querySelectorAll('#emailsTableBody .email-row');
+                            let targetRow = null;
+                            rows.forEach(row => {
+                                if (row.innerHTML.includes(email)) {
+                                    targetRow = row;
+                                }
+                            });
+
+                            if (targetRow && Array.isArray(data.results) && data.results.length > 0) {
+                                // Lọc các code hợp lệ và sắp xếp theo date giảm dần để lấy code mới nhất
+                                const validCodes = data.results.filter(r => r.code && /^\d{6}$/.test(r.code) && r.date);
+                                validCodes.sort((a, b) => new Date(b.date) - new Date(a.date));
+                                const codeResult = validCodes[0];
+                                if (codeResult) {
+                                    // Tìm <td> chứa nút đọc mail
+                                    const readMailTd = targetRow.querySelector('.read-mail-btn').parentElement;
+                                    // Xóa code cũ nếu có
+                                    const oldCodeSpan = readMailTd.querySelector('.mail-code-info');
+                                    if (oldCodeSpan) oldCodeSpan.remove();
+                                    // Thêm code mới nhất
+                                    const codeSpan = document.createElement('span');
+                                    codeSpan.className = 'mail-code-info';
+                                    codeSpan.style.marginLeft = '8px';
+                                    codeSpan.style.fontWeight = 'bold';
+                                    codeSpan.style.color = '#e67e22';
+                                    codeSpan.style.minWidth = '150px';
+                                    codeSpan.style.display = 'inline-block';
+                                    codeSpan.style.whiteSpace = 'nowrap';
+                                    codeSpan.style.overflow = 'visible';
+                                    codeSpan.textContent = `${codeResult.code}`;
+                                    readMailTd.appendChild(codeSpan);
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        alert('Lỗi khi gọi API đọc mail!');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-envelope-open-text"></i>';
+                    }
+                }
+            });
         });
 
         function formatPrice(price) {
@@ -1820,34 +1946,24 @@
             }
         }
 
-        function copyEmailInfo(email, password, refreshToken, clientId) {
-            const textToCopy = `${email}|${password}|${refreshToken}|${clientId}`;
-            
-            // Tạo một element tạm thời để copy
-            const tempInput = document.createElement('textarea');
-            tempInput.value = textToCopy;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            // Hiển thị tooltip thông báo
-            const tooltip = document.createElement('div');
-            tooltip.className = 'copy-tooltip';
-            tooltip.textContent = 'Đã sao chép!';
-            
-            // Lấy vị trí chuột
-            const event = window.event;
-            tooltip.style.left = (event.clientX + 10) + 'px';
-            tooltip.style.top = (event.clientY - 25) + 'px';
-            
-            document.body.appendChild(tooltip);
-            tooltip.style.display = 'block';
-
-            // Xóa tooltip sau 1 giây
-            setTimeout(() => {
-                document.body.removeChild(tooltip);
-            }, 1000);
+        // Thêm hàm copyText vào script
+        function copyText(text, btn) {
+            if (!text) return;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(function() {
+                    btn.textContent = 'Đã copy';
+                    setTimeout(() => { btn.textContent = 'Copy'; }, 1000);
+                });
+            } else {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                btn.textContent = 'Đã copy';
+                setTimeout(() => { btn.textContent = 'Copy'; }, 1000);
+            }
         }
     </script>
 </body>
