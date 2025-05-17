@@ -1387,32 +1387,61 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const text = this.getAttribute('data-info');
             // Copy text
-            navigator.clipboard.writeText(text).then(() => {
-                // Thay đổi icon và text
-                const icon = this.querySelector('i');
-                const span = this.querySelector('span');
-                
-                // Lưu trữ class cũ
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // Thành công: Thay đổi icon và text
+                    const icon = this.querySelector('i');
+                    const span = this.querySelector('span');
+                    const oldIconClass = icon.className;
+                    const oldText = span.textContent;
+                    icon.className = 'fas fa-check';
+                    span.textContent = 'Đã copy';
+                    this.classList.add('copied');
+                    setTimeout(() => {
+                        icon.className = oldIconClass;
+                        span.textContent = oldText;
+                        this.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(text, this);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text, this);
+            }
+        });
+    });
+
+    // Fallback cho copy clipboard
+    function fallbackCopyTextToClipboard(text, btn) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            var successful = document.execCommand('copy');
+            if (successful) {
+                // Thành công: Thay đổi icon và text
+                const icon = btn.querySelector('i');
+                const span = btn.querySelector('span');
                 const oldIconClass = icon.className;
                 const oldText = span.textContent;
-                
-                // Thay đổi thành icon check và text "Đã copy"
                 icon.className = 'fas fa-check';
                 span.textContent = 'Đã copy';
-                this.classList.add('copied');
-                
-                // Sau 2 giây, đổi lại như cũ
+                btn.classList.add('copied');
                 setTimeout(() => {
                     icon.className = oldIconClass;
                     span.textContent = oldText;
-                    this.classList.remove('copied');
+                    btn.classList.remove('copied');
                 }, 2000);
-            }).catch(err => {
-                console.error('Không thể copy: ', err);
+            } else {
                 alert('Không thể copy thông tin. Vui lòng thử lại.');
-            });
-        });
-    });
+            }
+        } catch (err) {
+            alert('Không thể copy thông tin. Vui lòng thử lại.');
+        }
+        document.body.removeChild(textArea);
+    }
 
     // Xử lý xóa record
     let employeeIdToDelete = null;
@@ -1721,19 +1750,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const soldStatusMatch = soldStatusText === 'Chưa bán';
             
             // Log để debug
-            console.log('Record:', {
-                id: checkbox.value,
-                statusText: statusText,
-                soldStatusText: soldStatusText,
-                statusMatch: statusMatch,
-                soldStatusMatch: soldStatusMatch
-            });
+            // console.log('Record:', {
+            //     id: checkbox.value,
+            //     statusText: statusText,
+            //     soldStatusText: soldStatusText,
+            //     statusMatch: statusMatch,
+            //     soldStatusMatch: soldStatusMatch
+            // });
             
             return statusMatch && soldStatusMatch;
         });
 
         // Log số lượng records đã lọc
-        console.log('Số records phù hợp:', filteredCheckboxes.length);
+        // console.log('Số records phù hợp:', filteredCheckboxes.length);
 
         // Kiểm tra số lượng record khả dụng
         if (filteredCheckboxes.length === 0) {
@@ -1762,7 +1791,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedIds = selected.map(checkbox => checkbox.value);
 
         // Log các ID được chọn
-        console.log('Selected IDs:', selectedIds);
+        // console.log('Selected IDs:', selectedIds);
 
         // Gửi request cập nhật trạng thái
         fetch('/update-sold-status/', {
@@ -1779,7 +1808,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Update response:', data); // Log response từ server
+            // console.log('Update response:', data); // Log response từ server
             if (data.status === 'success') {
                 // Chọn các checkbox
                 selected.forEach(checkbox => {
