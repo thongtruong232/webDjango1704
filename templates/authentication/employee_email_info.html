@@ -899,6 +899,22 @@
             word-break: break-word;
             white-space: normal;
         }
+
+        #passwordInfo {
+            align-items: flex-start !important;
+            margin-left: 24px;
+        }
+        #passwordInfo span {
+            font-size: 1rem;
+            color: #2c3e50;
+            font-weight: 500;
+            background: #f1f8ff;
+            border-radius: 6px;
+            padding: 4px 14px;
+            margin-bottom: 2px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -1000,6 +1016,10 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Danh sách Email Khả Dụng</h2>
+            <div id="passwordInfo" class="d-flex flex-column align-items-end" style="gap: 2px;">
+                <span id="passTnInfo" style="font-size: 1rem; color: #2c3e50;"></span>
+                <span id="passTfInfo" style="font-size: 1rem; color: #2c3e50;"></span>
+            </div>
             <div class="action-buttons">
                 <button id="regAccBtn" class="btn btn-success" style="display: none;">Reg Acc</button>
 
@@ -1017,13 +1037,11 @@
                 <thead>
                     <tr>
                         <th style="width: 40px;"><input type="checkbox" id="selectAll"></th>
-                        <th style="width: 40px;">STT</th>
-                        <th>Email</th>
+                        <th style="width: 60px;">STT</th>
+                        <th style="width: 250px;">Email</th>
                         <th>Sao chép</th>
-                        <th>Mã vùng</th>
+                        <th style="width: 60px;">Mã vùng</th>
                         <th>Số điện thoại</th>
-                        <th>Mật khẩu Tn</th>
-                        <th>Mật khẩu TF</th>
                         <th>Trạng thái Tn</th>
                         <th>Trạng thái Tf</th>
                         <th>Lấy code TF</th>
@@ -1131,8 +1149,6 @@
                         </td>
                         <td>${email.area_phone}</td>
                         <td>${email.phone_number}</td>
-                        <td>${email.pass_TN}</td>
-                        <td>${email.pass_TF}</td>
                         <td>
                             <select class="form-select status-select" data-email="${email.email}" data-type="tn" ${email.is_reg_acc ? 'disabled' : ''}>
                                 <option value="trống" ${email.status_tn === 'trống' ? 'selected' : ''}>Trống</option>
@@ -1676,6 +1692,23 @@
                     }
                 });
             });
+
+            // Lấy mật khẩu Tn và TF và hiển thị lên cạnh tiêu đề
+            fetch('/api/get-employee-passwords/')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('passTnInfo').textContent = 'Mật khẩu Tn: ' + (data.pass_tn || '[Chưa có]');
+                        document.getElementById('passTfInfo').textContent = 'Mật khẩu TF: ' + (data.pass_tf || '[Chưa có]');
+                    } else {
+                        document.getElementById('passTnInfo').textContent = 'Mật khẩu Tn: [Chưa có]';
+                        document.getElementById('passTfInfo').textContent = 'Mật khẩu TF: [Chưa có]';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('passTnInfo').textContent = 'Mật khẩu Tn: [Lỗi]';
+                    document.getElementById('passTfInfo').textContent = 'Mật khẩu TF: [Lỗi]';
+                });
         });
 
         function formatPrice(price) {
