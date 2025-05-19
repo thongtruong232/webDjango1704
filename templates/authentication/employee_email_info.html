@@ -893,6 +893,12 @@
             max-width: 300px;
             word-break: break-all;
         }
+
+        .table td, .table th {
+            max-width: 350px;
+            word-break: break-word;
+            white-space: normal;
+        }
     </style>
 </head>
 <body>
@@ -1012,16 +1018,15 @@
                     <tr>
                         <th style="width: 40px;"><input type="checkbox" id="selectAll"></th>
                         <th style="width: 40px;">STT</th>
-                        <th style="width: 180px;">Email</th>
-                        <th style="width: 120px;">Mật khẩu Mail</th>
-                        <th style="width: 60px;">Mã vùng</th>
-                        <th style="width: 110px;">Số điện thoại</th>
-                        <th style="width: 90px;">Mật khẩu Tn</th>
-                        <th style="width: 90px;">Mật khẩu TF</th>
-                        <th style="width: 90px;">Trạng thái Tn</th>
-                        <th style="width: 90px;">Trạng thái Tf</th>
-                        <th style="width: 70px;">Sao chép</th>
-                        <th style="width: 180px;">Lấy code TF</th>
+                        <th>Email</th>
+                        <th>Sao chép</th>
+                        <th>Mã vùng</th>
+                        <th>Số điện thoại</th>
+                        <th>Mật khẩu Tn</th>
+                        <th>Mật khẩu TF</th>
+                        <th>Trạng thái Tn</th>
+                        <th>Trạng thái Tf</th>
+                        <th>Lấy code TF</th>
                     </tr>
                 </thead>
                 <tbody id="emailsTableBody">
@@ -1107,7 +1112,23 @@
                         </td>
                         <td>${index + 1}</td>
                         <td>${email.email}</td>
-                        <td>${email.password}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary copy-btn" 
+                                    data-clipboard-text="${email.email}|${email.password}|${email.refresh_token || ''}|${email.client_id || ''}"
+                                    title="Sao chép thông tin tổng hợp">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn btn-sm btn-secondary copy-email-btn" 
+                                    data-clipboard-text="${email.email}"
+                                    title="Sao chép tên email">
+                                <i class="fas fa-at"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning copy-password-btn" 
+                                    data-clipboard-text="${email.password}"
+                                    title="Sao chép mật khẩu email">
+                                <i class="fas fa-key"></i>
+                            </button>
+                        </td>
                         <td>${email.area_phone}</td>
                         <td>${email.phone_number}</td>
                         <td>${email.pass_TN}</td>
@@ -1127,13 +1148,6 @@
                                 <option value="tạo acc thành công" ${email.status_tf === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
                                 <option value="acc lỗi" ${email.status_tf === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
                             </select>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-primary copy-btn" 
-                                    data-clipboard-text="${email.email}|${email.password}|${email.refresh_token || ''}|${email.client_id || ''}"
-                                    title="Sao chép thông tin">
-                                <i class="fas fa-copy"></i>
-                            </button>
                         </td>
                         <td>
                             <button class="btn btn-sm btn-info read-mail-btn" title="Đọc mail" data-email="${email.email}" data-password="${email.password}" data-refresh-token="${email.refresh_token || ''}" data-client-id="${email.client_id || ''}">
@@ -1611,7 +1625,7 @@
                                 validCodes.sort((a, b) => new Date(b.date) - new Date(a.date));
                                 const codeResult = validCodes[0];
                                 if (codeResult) {
-                                    console.log('codeResult', codeResult);
+                                    // console.log('codeResult', codeResult);
                                     // Tìm <td> chứa nút đọc mail
                                     const readMailTd = targetRow.querySelector('.read-mail-btn').parentElement;
                                     // Xóa code cũ nếu có
@@ -1639,6 +1653,28 @@
                         btn.innerHTML = '<i class="fas fa-envelope-open-text"></i>';
                     }
                 }
+            });
+
+            // Thêm JS xử lý sự kiện cho .copy-email-btn và .copy-password-btn
+            document.querySelectorAll('.copy-email-btn, .copy-password-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const text = this.getAttribute('data-clipboard-text');
+                    const showCopyEffect = (btn) => {
+                        btn.classList.add('copied-effect');
+                        setTimeout(() => {
+                            btn.classList.remove('copied-effect');
+                        }, 500);
+                    };
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(() => {
+                            showCopyEffect(this);
+                        }).catch(err => {
+                            fallbackCopyTextToClipboard(text, this, showCopyEffect);
+                        });
+                    } else {
+                        fallbackCopyTextToClipboard(text, this, showCopyEffect);
+                    }
+                });
             });
         });
 

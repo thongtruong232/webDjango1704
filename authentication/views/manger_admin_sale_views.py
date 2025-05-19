@@ -198,7 +198,7 @@ def manager_textnow_view(request):
         return render(request, 'authentication/manager_textnow_admin_sale.html', context)
 
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required('quanly')  # Yêu cầu quyền admin
 def delete_employee(request):
     if request.method == 'POST':
         try:
@@ -220,7 +220,7 @@ def delete_employee(request):
 
 @csrf_exempt
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required('quanly')  # Yêu cầu quyền admin
 def export_employee_textnow_excel(request):
     if request.method == 'POST':
         try:
@@ -302,7 +302,7 @@ def export_employee_textnow_excel(request):
 
 @csrf_exempt
 @login_required
-@role_required('admin')  # Yêu cầu quyền admin
+@role_required('quanly')  # Yêu cầu quyền admin
 def update_sold_status(request):
     if request.method == 'POST':
         try:
