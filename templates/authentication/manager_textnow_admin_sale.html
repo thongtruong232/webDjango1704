@@ -802,11 +802,10 @@
                         </label>
                         <select class="form-select status-select" id="status_tn" name="status_tn">
                             <option value="">Tất cả</option>
-                            {% for status in status_list %}
-                            <option value="{{ status }}" {% if status_tn == status %}selected{% endif %}>
-                                {{ status }}
-                            </option>
-                            {% endfor %}
+                            <option value="moi" {% if status_tn == 'moi' %}selected{% endif %}>Mới</option>
+                            <option value="reg ok" {% if status_tn == 'reg ok' %}selected{% endif %}>Reg ok</option>
+                            <option value="lỗi" {% if status_tn == 'lỗi' %}selected{% endif %}>Lỗi</option>
+                            <option value="mật khẩu khác" {% if status_tn == 'mật khẩu khác' %}selected{% endif %}>Mật khẩu khác</option>
                         </select>
                     </div>
                 </div>
@@ -820,11 +819,10 @@
                         </label>
                         <select class="form-select status-select" id="status_tf" name="status_tf">
                             <option value="">Tất cả</option>
-                            {% for status in status_list %}
-                            <option value="{{ status }}" {% if status_tf == status %}selected{% endif %}>
-                                {{ status }}
-                            </option>
-                            {% endfor %}
+                            <option value="moi" {% if status_tf == 'moi' %}selected{% endif %}>Mới</option>
+                            <option value="reg ok" {% if status_tf == 'reg ok' %}selected{% endif %}>Reg ok</option>
+                            <option value="lỗi" {% if status_tf == 'lỗi' %}selected{% endif %}>Lỗi</option>
+                            <option value="mật khẩu khác" {% if status_tf == 'mật khẩu khác' %}selected{% endif %}>Mật khẩu khác</option>
                         </select>
                     </div>
                 </div>
@@ -1027,12 +1025,20 @@
                             <td>{{ employee.password }}</td>
                             <td>{{ employee.password_TF }}</td>
                             <td>
-                                <span class="badge {% if employee.status_account_TN == 'active' %}bg-success{% else %}bg-danger{% endif %}">
+                                <span class="badge
+                                    {% if employee.status_account_TN == 'reg ok' %}bg-success
+                                    {% elif employee.status_account_TN == 'lỗi' %}bg-danger
+                                    {% elif employee.status_account_TN == 'mật khẩu khác' %}bg-warning
+                                    {% else %}bg-secondary{% endif %}">
                                     {{ employee.status_account_TN|default:"N/A"|title }}
                                 </span>
                             </td>
                             <td>
-                                <span class="badge {% if employee.status_account_TF == 'active' %}bg-success{% else %}bg-danger{% endif %}">
+                                <span class="badge
+                                    {% if employee.status_account_TF == 'reg ok' %}bg-success
+                                    {% elif employee.status_account_TF == 'lỗi' %}bg-danger
+                                    {% elif employee.status_account_TF == 'mật khẩu khác' %}bg-warning
+                                    {% else %}bg-secondary{% endif %}">
                                     {{ employee.status_account_TF|default:"N/A"|title }}
                                 </span>
                             </td>
@@ -1138,9 +1144,10 @@
                         <label for="randomStatusTN" class="form-label">Trạng thái TN</label>
                         <select class="form-select status-select" id="randomStatusTN">
                             <option value="">Tất cả</option>
-                            {% for status in status_list %}
-                            <option value="{{ status }}">{{ status }}</option>
-                            {% endfor %}
+                            <option value="moi">Mới</option>
+                            <option value="reg ok">Reg ok</option>
+                            <option value="lỗi">Lỗi</option>
+                            <option value="mật khẩu khác">Mật khẩu khác</option>
                         </select>
                     </div>
                 </form>
@@ -1171,9 +1178,10 @@
                         <label for="randomStatusTF" class="form-label">Trạng thái TF</label>
                         <select class="form-select status-select" id="randomStatusTF">
                             <option value="">Tất cả</option>
-                            {% for status in status_list %}
-                            <option value="{{ status }}">{{ status }}</option>
-                            {% endfor %}
+                            <option value="moi">Mới</option>
+                            <option value="reg ok">Reg ok</option>
+                            <option value="lỗi">Lỗi</option>
+                            <option value="mật khẩu khác">Mật khẩu khác</option>
                         </select>
                     </div>
                 </form>
@@ -1272,6 +1280,27 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal nhập mật khẩu mới -->
+<div class="modal fade" id="customPasswordModal" tabindex="-1" aria-labelledby="customPasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customPasswordModalLabel">Nhập mật khẩu mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="password" class="form-control" id="customPasswordInput" placeholder="Nhập mật khẩu mới">
+        <input type="hidden" id="customPasswordRowIndex">
+        <input type="hidden" id="customPasswordType"> <!-- tn hoặc tf -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-primary" id="confirmCustomPasswordBtn">Xác nhận</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
@@ -1607,8 +1636,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const soldStatusCell = row.querySelector('td:nth-child(8) .badge');
             const statusText = statusCell ? statusCell.textContent.trim().toLowerCase() : '';
             const soldStatusText = soldStatusCell ? soldStatusCell.textContent.trim().toLowerCase() : '';
-            
-            return statusText === statusTN && soldStatusText === 'chưa bán';
+            return (statusTN === '' || statusText === statusTN.toLowerCase()) && soldStatusText === 'chưa bán';
         });
 
         // Kiểm tra số lượng record khả dụng
@@ -1728,24 +1756,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = checkbox.closest('tr');
             const statusCell = row.querySelector('td:nth-child(7) .badge');
             const soldStatusCell = row.querySelector('td:nth-child(9) .badge');
-            
-            // Lấy text từ các cell
-            const statusText = statusCell ? statusCell.textContent.trim() : '';
-            const soldStatusText = soldStatusCell ? soldStatusCell.textContent.trim() : '';
-            
-            // Kiểm tra điều kiện
-            const statusMatch = statusTF === '' || statusText.toLowerCase() === statusTF.toLowerCase();
-            const soldStatusMatch = soldStatusText === 'Chưa bán';
-            
-            // Log để debug
-            // console.log('Record:', {
-            //     id: checkbox.value,
-            //     statusText: statusText,
-            //     soldStatusText: soldStatusText,
-            //     statusMatch: statusMatch,
-            //     soldStatusMatch: soldStatusMatch
-            // });
-            
+            const statusText = statusCell ? statusCell.textContent.trim().toLowerCase() : '';
+            const soldStatusText = soldStatusCell ? soldStatusCell.textContent.trim().toLowerCase() : '';
+            const statusMatch = statusTF === '' || statusText === statusTF.toLowerCase();
+            const soldStatusMatch = soldStatusText === 'chưa bán';
             return statusMatch && soldStatusMatch;
         });
 
@@ -2056,6 +2070,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 container.classList.remove('loading');
             });
     }
+
 });
 </script>
 {% endblock %}

@@ -1052,6 +1052,14 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Input nhập mật khẩu mới cho option 'Mật khẩu khác' -->
+        <div id="customPasswordInputArea" style="display:none; margin-bottom: 16px;">
+            <label for="customPasswordInputBox" style="font-weight:500;">Nhập mật khẩu mới:</label>
+            <input type="text" id="customPasswordInputBox" class="form-control d-inline-block" style="width:220px; margin:0 8px; display:inline-block;" placeholder="Nhập mật khẩu mới">
+            <button id="customPasswordConfirmBtn" class="btn btn-primary btn-sm">Xác nhận</button>
+            <button id="customPasswordCancelBtn" class="btn btn-secondary btn-sm">Hủy</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -1121,9 +1129,34 @@
                     const showTNX = email.status_tn === 'chưa tạo acc';
                     const showTFX = email.status_tf === 'chưa tạo acc';
                     
+                    // Danh sách option mặc định
+                    const defaultOptions = [
+                        { value: 'moi', text: 'Mới' },
+                        { value: 'reg ok', text: 'Reg ok' },
+                        { value: 'lỗi', text: 'Lỗi' },
+                        { value: 'mật khẩu khác', text: 'Mật khẩu khác' }
+                    ];
+                    // Xử lý option cho TN
+                    let tnOptionsHtml = '';
+                    let tnHasCustom = !defaultOptions.some(opt => opt.value === email.status_tn);
+                    defaultOptions.forEach(opt => {
+                        tnOptionsHtml += `<option value="${opt.value}"${email.status_tn === opt.value ? ' selected' : ''}>${opt.text}</option>`;
+                    });
+                    if (tnHasCustom && email.status_tn) {
+                        tnOptionsHtml = `<option value="${email.status_tn}" selected>${email.status_tn}</option>` + tnOptionsHtml;
+                    }
+                    // Xử lý option cho TF
+                    let tfOptionsHtml = '';
+                    let tfHasCustom = !defaultOptions.some(opt => opt.value === email.status_tf);
+                    defaultOptions.forEach(opt => {
+                        tfOptionsHtml += `<option value="${opt.value}"${email.status_tf === opt.value ? ' selected' : ''}>${opt.text}</option>`;
+                    });
+                    if (tfHasCustom && email.status_tf) {
+                        tfOptionsHtml = `<option value="${email.status_tf}" selected>${email.status_tf}</option>` + tfOptionsHtml;
+                    }
                     row.innerHTML = `
                         <td>
-                            ${showTNX || showTFX ? 
+                            ${email.status_tn === 'chưa tạo acc' || email.status_tf === 'chưa tạo acc' ? 
                                 '<span class="status-x">✕</span>' : 
                                 '<input type="checkbox" class="email-checkbox" data-email="' + email.email + '" ' + (email.is_reg_acc ? 'disabled' : '') + '>'
                             }
@@ -1151,18 +1184,12 @@
                         <td>${email.phone_number}</td>
                         <td>
                             <select class="form-select status-select" data-email="${email.email}" data-type="tn" ${email.is_reg_acc ? 'disabled' : ''}>
-                                <option value="trống" ${email.status_tn === 'trống' ? 'selected' : ''}>Trống</option>
-                                <option value="chưa tạo acc" ${email.status_tn === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
-                                <option value="tạo acc thành công" ${email.status_tn === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
-                                <option value="acc lỗi" ${email.status_tn === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
+                                ${tnOptionsHtml}
                             </select>
                         </td>
                         <td>
                             <select class="form-select status-select" data-email="${email.email}" data-type="tf" ${email.is_reg_acc ? 'disabled' : ''}>
-                                <option value="trống" ${email.status_tf === 'trống' ? 'selected' : ''}>Trống</option>
-                                <option value="chưa tạo acc" ${email.status_tf === 'chưa tạo acc' ? 'selected' : ''}>Chưa tạo acc</option>
-                                <option value="tạo acc thành công" ${email.status_tf === 'tạo acc thành công' ? 'selected' : ''}>Tạo acc thành công</option>
-                                <option value="acc lỗi" ${email.status_tf === 'acc lỗi' ? 'selected' : ''}>Acc lỗi</option>
+                                ${tfOptionsHtml}
                             </select>
                         </td>
                         <td>
@@ -1709,6 +1736,74 @@
                     document.getElementById('passTnInfo').textContent = 'Mật khẩu Tn: [Lỗi]';
                     document.getElementById('passTfInfo').textContent = 'Mật khẩu TF: [Lỗi]';
                 });
+
+            // Logic cho option 'Mật khẩu khác' với input public
+            let currentPasswordSelect = null;
+
+            function attachPasswordKhacHandler() {
+                document.querySelectorAll('.status-select').forEach(function(select) {
+                    // Tránh gán trùng sự kiện
+                    if (!select._passwordKhacHandlerAttached) {
+                        select.addEventListener('change', function() {
+                            if (this.value === 'mật khẩu khác') {
+                                currentPasswordSelect = this;
+                                document.getElementById('customPasswordInputArea').style.display = 'block';
+                                document.getElementById('customPasswordInputBox').value = '';
+                                document.getElementById('customPasswordInputBox').focus();
+                            }
+                        });
+                        select.addEventListener('focus', function() {
+                            this.setAttribute('data-previous-value', this.value);
+                        });
+                        select._passwordKhacHandlerAttached = true;
+                    }
+                });
+            }
+
+            // Gọi khi trang load lần đầu
+            attachPasswordKhacHandler();
+
+            // Nếu có hàm render lại bảng, hãy gọi attachPasswordKhacHandler() sau khi render
+            // Ví dụ: sau displayEmails(emails) => attachPasswordKhacHandler();
+            // Nếu bạn có nhiều nơi render lại bảng, hãy đảm bảo gọi lại hàm này
+
+            document.getElementById('customPasswordConfirmBtn').addEventListener('click', function() {
+                const value = document.getElementById('customPasswordInputBox').value;
+                if (!value) {
+                    alert('Vui lòng nhập mật khẩu mới!');
+                    return;
+                }
+                if (!currentPasswordSelect) return;
+                // Xác định email và type
+                const email = currentPasswordSelect.getAttribute('data-email');
+                const type = currentPasswordSelect.getAttribute('data-type');
+                // Cập nhật vào localStorage
+                let storedData = localStorage.getItem('employee_worksession');
+                if (storedData) {
+                    let emails = JSON.parse(storedData);
+                    const idx = emails.findIndex(e => e.email === email);
+                    if (idx !== -1) {
+                        if (type === 'tn') {
+                            emails[idx].status_tn = value;
+                        } else if (type === 'tf') {
+                            emails[idx].status_tf = value;
+                        }
+                        localStorage.setItem('employee_worksession', JSON.stringify(emails));
+                        displayEmails(emails);
+                        attachPasswordKhacHandler();
+                    }
+                }
+                // Ẩn input
+                document.getElementById('customPasswordInputArea').style.display = 'none';
+                currentPasswordSelect = null;
+            });
+            document.getElementById('customPasswordCancelBtn').addEventListener('click', function() {
+                if (currentPasswordSelect) {
+                    currentPasswordSelect.value = currentPasswordSelect.getAttribute('data-previous-value') || '';
+                }
+                document.getElementById('customPasswordInputArea').style.display = 'none';
+                currentPasswordSelect = null;
+            });
         });
 
         function formatPrice(price) {
