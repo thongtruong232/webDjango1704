@@ -3627,3 +3627,6 @@ WARNING 2025-05-22 17:18:14,622 log 17420 17080 Not Found: /.well-known/appspeci
 WARNING 2025-05-22 17:20:15,096 log 17420 17080 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-22 17:43:43,333 log 15976 13328 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-22 17:48:44,853 log 13896 14552 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 17:51:50,829 log 14832 15280 Not Found: /favicon.ico
+WARNING 2025-05-22 17:57:24,006 log 4148 8212 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 18:03:49,060 log 15628 20116 Not Found: /.well-known/appspecific/com.chrome.devtools.json

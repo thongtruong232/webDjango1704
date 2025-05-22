@@ -212,7 +212,7 @@
         /* Thêm style cho biểu tượng X */
         .status-x {
             color: #e74c3c;
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             display: inline-block;
             margin: 0 5px;
@@ -881,22 +881,45 @@
             background-size: 1rem;
         }
 
-        /* Màu sắc cho từng trạng thái */
-        .form-select option[value="mới"] {
-            background-color: #f8d7da; /* Màu đỏ nhạt */
+
+
+        /* Style cho select khi được chọn */
+        .form-select[value="mới"] {
+            background-color: #f8d7da;
             color: #721c24;
         }
 
-        .form-select option[value="tạo acc thành công"] {
-            background-color: #d4edda; /* Màu xanh nhạt */
+        .form-select[value="reg ok"] {
+            background-color: #d4edda;
             color: #155724;
         }
 
-        .form-select option[value="acc lỗi"] {
-            background-color: #fff3cd; /* Màu vàng nhạt */
+        .form-select[value="lỗi"] {
+            background-color: #fff3cd;
             color: #856404;
         }
-        
+
+        .form-select[value="mật khẩu khác"] {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+
+        /* Style cho dropdown options */
+        .form-select option {
+            background-color: white !important;
+            color: #000000 !important;
+            /* font-weight: bold !important; */
+        }
+
+        /* Xóa các style màu chữ riêng cho từng option */
+        .form-select option[value="mới"],
+        .form-select option[value="reg ok"],
+        .form-select option[value="lỗi"],
+        .form-select option[value="mật khẩu khác"] {
+            color: #000000 !important;
+            /* font-weight: bold !important; */
+        }
+
         /* Responsive: Điều chỉnh kích thước trên màn hình nhỏ */
         @media (max-width: 768px) {
             .form-select {
@@ -1159,7 +1182,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-bottom: 100px;">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Danh sách Email Khả Dụng</h2>
             <div id="passwordInfo" class="d-flex flex-column align-items-end" style="gap: 2px;">
@@ -1186,7 +1209,7 @@
                         <th style="width: 60px;">STT</th>
                         <th style="width: 250px;">Email</th>
                         <th>Sao chép</th>
-                        <th style="width: 70px;">Mã vùng</th>
+                        <th style="width: 80px;">Mã vùng</th>
                         <th>Số điện thoại</th>
                         <th>Trạng thái Tn</th>
                         <th>Trạng thái Tf</th>
@@ -1348,19 +1371,27 @@
             selects.forEach(select => {
                 const selectedValue = select.value;
 
-                if (selectedValue === 'tạo acc thành công') {
-                    select.style.backgroundColor = '#2ecc71'; // Nền xanh
-                    select.style.color = 'white'; // Chữ trắng
-                } else if (selectedValue === 'acc lỗi') {
-                    select.style.backgroundColor = '#e74c3c'; // Nền đỏ
-                    select.style.color = 'white'; // Chữ trắng
-                } else {
-                    select.style.backgroundColor = '#f8f9fa'; // Nền mặc định
-                    select.style.color = '#333'; // Chữ mặc định
+                // Reset styles
+                select.style.backgroundColor = '';
+                select.style.color = '';
+
+                // Apply styles based on value
+                if (selectedValue === 'mới') {
+                    select.style.backgroundColor = '#f8d7da';
+                    select.style.color = '#721c24';
+                } else if (selectedValue === 'reg ok') {
+                    select.style.backgroundColor = '#d4edda';
+                    select.style.color = '#155724';
+                } else if (selectedValue === 'lỗi') {
+                    select.style.backgroundColor = '#fff3cd';
+                    select.style.color = '#856404';
+                } else if (selectedValue === 'mật khẩu khác') {
+                    select.style.backgroundColor = '#e2e3e5';
+                    select.style.color = '#383d41';
                 }
 
                 // Lắng nghe sự kiện thay đổi giá trị
-                select.addEventListener('change', function () {
+                select.addEventListener('change', function() {
                     updateSelectStyles(); // Cập nhật lại màu sắc khi giá trị thay đổi
                 });
             });
