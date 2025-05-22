@@ -17,10 +17,52 @@
     .mt-4 {
         margin-top: 0.1rem !important;
     }
+    .mb-4 {
+        margin-bottom: 0.5rem !important;
+    }
+    .alert {
+        margin-bottom: 0.5rem !important;
+    }
     .container-fluid {
         padding: 1rem 3rem;
         max-width: 1800px;
         margin: 0 auto;
+    }
+
+    /* Input group styles */
+    .input-group {
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .input-group .form-control {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: none;
+    }
+
+    .input-group .btn {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(45deg, #4361ee, #3730a3);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .input-group .btn:hover {
+        background: linear-gradient(45deg, #3730a3, #4361ee);
+        transform: translateY(-1px);
+    }
+
+    .input-group .btn i {
+        font-size: 1rem;
+        color: white;
     }
 
     /* Tiêu đề trang */
@@ -44,7 +86,7 @@
 
     /* Form tìm kiếm */
     .search-form {
-        padding: 1.5rem;
+        padding: 1.0rem;
     }
 
     .search-form .row {
@@ -56,7 +98,6 @@
 
     .search-form [class*="col-"] {
         padding: 0 0.75rem;
-        margin-bottom: 1rem;
     }
 
     /* Form groups */
@@ -69,7 +110,7 @@
         transition: all 0.2s ease;
         display: flex;
         flex-direction: column;
-        margin-bottom: 1rem;
+        /* margin-bottom: 1rem; */
     }
 
     .form-group:hover {
@@ -714,6 +755,29 @@
         background-color: #10b981 !important;
         transition: background-color 0.2s;
     }
+
+    /* Thêm styles cho header có thể click */
+    .sortable {
+        cursor: pointer;
+        position: relative;
+    }
+    .sortable:hover {
+        background-color: #e9ecef;
+    }
+    .sortable::after {
+        content: '↕';
+        position: absolute;
+        right: 8px;
+        color: #999;
+    }
+    .sortable.asc::after {
+        content: '↑';
+        color: #333;
+    }
+    .sortable.desc::after {
+        content: '↓';
+        color: #333;
+    }
 </style>
 {% endblock %}
 
@@ -770,130 +834,119 @@
     <div class="card mb-4">
         <div class="card-body search-form">
             <form method="GET" class="row">
-                <!-- Thời gian -->
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-calendar-alt me-2"></i>
-                            Tìm kiếm theo thời gian
-                        </label>
-                        <div class="date-range-wrapper">
-                            <select class="form-select" id="date_type" name="date_type">
-                                <option value="single" {% if date_type == 'single' %}selected{% endif %}>Ngày cụ thể</option>
-                                <option value="range" {% if date_type == 'range' %}selected{% endif %}>Khoảng</option>
-                            </select>
-                            <div id="date_range_container" class="d-flex gap-1 align-items-center">
-                                <input type="date" class="form-control" id="start_date" name="start_date" 
-                                       value="{{ start_date }}">
-                                <span id="date_separator" style="display: none;">đến</span>
-                                <input type="date" class="form-control" id="end_date" name="end_date" 
-                                       value="{{ end_date }}" style="display: none;">
+                <!-- Cột 1: Form Thời gian, Người tạo, Tìm kiếm -->
+                <div class="col-md-8">
+                    <!-- Hàng 1: Form Thời gian và Form Người tạo -->
+                    <div class="row">
+                        <!-- Form Thời gian -->
+                        <div class="col-md-8">
+                            <div class="form-group" style="min-height: auto;">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar-alt me-2"></i>
+                                    Tìm kiếm theo thời gian
+                                </label>
+                                <div class="date-range-wrapper">
+                                    <select class="form-select" id="date_type" name="date_type">
+                                        <option value="single" {% if date_type == 'single' %}selected{% endif %}>Ngày cụ thể</option>
+                                        <option value="range" {% if date_type == 'range' %}selected{% endif %}>Khoảng</option>
+                                    </select>
+                                    <div id="date_range_container" class="d-flex gap-1 align-items-center">
+                                        <input type="date" class="form-control" id="start_date" name="start_date" 
+                                               value="{{ start_date }}">
+                                        <span id="date_separator" style="display: none;">đến</span>
+                                        <input type="date" class="form-control" id="end_date" name="end_date" 
+                                               value="{{ end_date }}" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Người tạo -->
+                        <div class="col-md-4">
+                            <div class="form-group" style="min-height: auto;">
+                                <label for="created_by" class="form-label">
+                                    <i class="fas fa-user me-2"></i>
+                                    Người tạo
+                                </label>
+                                <select class="form-select" id="created_by" name="created_by">
+                                    <option value="">Tất cả</option>
+                                    {% for creator in creators %}
+                                    <option value="{{ creator }}" {% if created_by == creator %}selected{% endif %}>
+                                        {{ creator }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hàng 2: Form Tìm kiếm -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group" style="min-height: auto; margin-top: 10px;">
+                                <label for="search" class="form-label">
+                                    <i class="fas fa-search me-2"></i>
+                                    Tìm kiếm
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="search" name="search" 
+                                           placeholder="Email, username..." value="{{ search_query }}">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Trạng thái TN -->
+                <!-- Cột 2: Form Trạng thái TN & Bán TN -->
                 <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="status_tn" class="form-label">
+                    <div class="form-group" style="min-height: auto;">
+                        <label class="form-label" style="margin-bottom: 25px;">
                             <i class="fas fa-check-circle me-2"></i>
-                            Trạng thái TN
+                            Trạng thái TN & Bán TN
                         </label>
-                        <select class="form-select status-select" id="status_tn" name="status_tn">
-                            <option value="">Tất cả</option>
-                            <option value="moi" {% if status_tn == 'moi' %}selected{% endif %}>Mới</option>
-                            <option value="reg ok" {% if status_tn == 'reg ok' %}selected{% endif %}>Reg ok</option>
-                            <option value="lỗi" {% if status_tn == 'lỗi' %}selected{% endif %}>Lỗi</option>
-                            <option value="mật khẩu khác" {% if status_tn == 'mật khẩu khác' %}selected{% endif %}>Mật khẩu khác</option>
-                        </select>
+                        <div class="d-flex flex-column gap-2">
+                            <select class="form-select status-select" id="status_tn" name="status_tn" style="margin-bottom: 30px;">
+                                <option value="" disabled selected>Chọn trạng thái TN</option>
+                                <option value="">Tất cả</option>
+                                <option value="reg ok" {% if status_tn == 'reg ok' %}selected{% endif %}>Reg ok</option>
+                                <option value="lỗi" {% if status_tn == 'lỗi' %}selected{% endif %}>Lỗi</option>
+                                <option value="mật khẩu khác" {% if status_tn == 'mật khẩu khác' %}selected{% endif %}>Mật khẩu khác</option>
+                            </select>
+                            <select class="form-select" id="sold_status_tn" name="sold_status_tn">
+                                <option value="" disabled selected>Chọn trạng thái bán TN</option>
+                                <option value="">Tất cả</option>
+                                <option value="true" {% if sold_status_tn == 'true' %}selected{% endif %}>Đã bán</option>
+                                <option value="false" {% if sold_status_tn == 'false' %}selected{% endif %}>Chưa bán</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Trạng thái TF -->
+                <!-- Cột 3: Form Trạng thái TF & Bán TF -->
                 <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="status_tf" class="form-label">
+                    <div class="form-group" style="min-height: auto;">
+                        <label class="form-label" style="margin-bottom: 25px;">
                             <i class="fas fa-check-circle me-2"></i>
-                            Trạng thái TF
+                            Trạng thái TF & Bán TF
                         </label>
-                        <select class="form-select status-select" id="status_tf" name="status_tf">
-                            <option value="">Tất cả</option>
-                            <option value="moi" {% if status_tf == 'moi' %}selected{% endif %}>Mới</option>
-                            <option value="reg ok" {% if status_tf == 'reg ok' %}selected{% endif %}>Reg ok</option>
-                            <option value="lỗi" {% if status_tf == 'lỗi' %}selected{% endif %}>Lỗi</option>
-                            <option value="mật khẩu khác" {% if status_tf == 'mật khẩu khác' %}selected{% endif %}>Mật khẩu khác</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Trạng thái bán TN -->
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="sold_status_tn" class="form-label">
-                            <i class="fas fa-shopping-cart me-2"></i>
-                            Trạng thái bán TN
-                        </label>
-                        <select class="form-select" id="sold_status_tn" name="sold_status_tn">
-                            <option value="">Tất cả</option>
-                            <option value="true" {% if sold_status_tn == 'true' %}selected{% endif %}>Đã bán</option>
-                            <option value="false" {% if sold_status_tn == 'false' %}selected{% endif %}>Chưa bán</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Trạng thái bán TF -->
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="sold_status_tf" class="form-label">
-                            <i class="fas fa-shopping-cart me-2"></i>
-                            Trạng thái bán TF
-                        </label>
-                        <select class="form-select" id="sold_status_tf" name="sold_status_tf">
-                            <option value="">Tất cả</option>
-                            <option value="true" {% if sold_status_tf == 'true' %}selected{% endif %}>Đã bán</option>
-                            <option value="false" {% if sold_status_tf == 'false' %}selected{% endif %}>Chưa bán</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Người tạo -->
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label for="created_by" class="form-label">
-                            <i class="fas fa-user me-2"></i>
-                            Người tạo
-                        </label>
-                        <select class="form-select" id="created_by" name="created_by">
-                            <option value="">Tất cả</option>
-                            {% for creator in creators %}
-                            <option value="{{ creator }}" {% if created_by == creator %}selected{% endif %}>
-                                {{ creator }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Tìm kiếm -->
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="search" class="form-label">
-                            <i class="fas fa-search me-2"></i>
-                            Tìm kiếm
-                        </label>
-                        <input type="text" class="form-control" id="search" name="search" 
-                               placeholder="Email, username..." value="{{ search_query }}">
-                    </div>
-                </div>
-
-                <!-- Nút tìm kiếm -->
-                <div class="col-md-6">
-                    <div class="search-button-container">
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">
-                            <i class="fas fa-search me-2"></i>
-                            <span>Tìm kiếm</span>
-                        </button>
+                        <div class="d-flex flex-column gap-2">
+                            <select class="form-select status-select" id="status_tf" name="status_tf" style="margin-bottom: 30px;">
+                                <option value="" disabled selected>Chọn trạng thái TF</option>
+                                <option value="">Tất cả</option>
+                                <option value="reg ok" {% if status_tf == 'reg ok' %}selected{% endif %}>Reg ok</option>
+                                <option value="lỗi" {% if status_tf == 'lỗi' %}selected{% endif %}>Lỗi</option>
+                                <option value="mật khẩu khác" {% if status_tf == 'mật khẩu khác' %}selected{% endif %}>Mật khẩu khác</option>
+                            </select>
+                            <select class="form-select" id="sold_status_tf" name="sold_status_tf">
+                                <option value="" disabled selected>Chọn trạng thái bán TF</option>
+                                <option value="">Tất cả</option>
+                                <option value="true" {% if sold_status_tf == 'true' %}selected{% endif %}>Đã bán</option>
+                                <option value="false" {% if sold_status_tf == 'false' %}selected{% endif %}>Chưa bán</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -1282,26 +1335,7 @@
     </div>
 </div>
 
-<!-- Modal nhập mật khẩu mới -->
-<div class="modal fade" id="customPasswordModal" tabindex="-1" aria-labelledby="customPasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="customPasswordModalLabel">Nhập mật khẩu mới</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <input type="password" class="form-control" id="customPasswordInput" placeholder="Nhập mật khẩu mới">
-        <input type="hidden" id="customPasswordRowIndex">
-        <input type="hidden" id="customPasswordType"> <!-- tn hoặc tf -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-primary" id="confirmCustomPasswordBtn">Xác nhận</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -1309,6 +1343,128 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Khai báo các biến cần thiết trước
+    const dateType = document.getElementById('date_type');
+    const startDate = document.getElementById('start_date');
+    const endDate = document.getElementById('end_date');
+    const dateSeparator = document.getElementById('date_separator');
+
+    // Hàm xử lý hiển thị container và cập nhật giá trị
+    function handleDateTypeChange() {
+        if (dateType.value === 'single') {
+            // Ẩn end_date và separator
+            endDate.style.display = 'none';
+            dateSeparator.style.display = 'none';
+            // Gán giá trị của end_date bằng start_date
+            endDate.value = startDate.value;
+        } else {
+            // Hiện end_date và separator
+            endDate.style.display = 'block';
+            dateSeparator.style.display = 'block';
+        }
+    }
+
+    // Kiểm tra xem form đã được submit chưa
+    const urlParams = new URLSearchParams(window.location.search);
+    const isFormSubmitted = urlParams.has('start_date') || urlParams.has('end_date');
+
+    // Chỉ set ngày hiện tại và submit form nếu form chưa được submit
+    if (!isFormSubmitted) {
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        
+        // Cập nhật giá trị ngày
+        startDate.value = formattedDate;
+        endDate.value = formattedDate;
+        
+        // Đặt loại tìm kiếm là single
+        dateType.value = 'single';
+        handleDateTypeChange();
+        
+        // Thêm tham số để đánh dấu đã submit
+        const form = document.querySelector('form[method="GET"]');
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'initial_load';
+        input.value = 'true';
+        form.appendChild(input);
+        
+        // Submit form
+        form.submit();
+    }
+
+    // Hàm sắp xếp danh sách email
+    function sortEmailList() {
+        const tbody = document.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        
+        // Bỏ qua hàng "Không có dữ liệu" nếu có
+        if (rows.length === 1 && rows[0].querySelector('td').colSpan > 1) {
+            return;
+        }
+
+        rows.sort((a, b) => {
+            // Lấy trạng thái bán của TN và TF
+            const aTNSold = a.querySelector('td:nth-child(8) .badge').textContent.trim();
+            const bTNSold = b.querySelector('td:nth-child(8) .badge').textContent.trim();
+            const aTFSold = a.querySelector('td:nth-child(9) .badge').textContent.trim();
+            const bTFSold = b.querySelector('td:nth-child(9) .badge').textContent.trim();
+
+            // Lấy trạng thái reg ok của TN và TF
+            const aTNStatus = a.querySelector('td:nth-child(6) .badge').textContent.trim();
+            const bTNStatus = b.querySelector('td:nth-child(6) .badge').textContent.trim();
+            const aTFStatus = a.querySelector('td:nth-child(7) .badge').textContent.trim();
+            const bTFStatus = b.querySelector('td:nth-child(7) .badge').textContent.trim();
+
+            // Lấy ngày tạo
+            const aDate = new Date(a.querySelector('td:nth-child(11)').textContent.split('/').reverse().join('-'));
+            const bDate = new Date(b.querySelector('td:nth-child(11)').textContent.split('/').reverse().join('-'));
+
+            // So sánh trạng thái bán (ưu tiên chưa bán)
+            const aUnsold = aTNSold === 'Chưa bán' || aTFSold === 'Chưa bán';
+            const bUnsold = bTNSold === 'Chưa bán' || bTFSold === 'Chưa bán';
+            if (aUnsold !== bUnsold) {
+                return aUnsold ? -1 : 1;
+            }
+
+            // So sánh trạng thái reg ok
+            const aRegOk = aTNStatus === 'Reg ok' || aTFStatus === 'Reg ok';
+            const bRegOk = bTNStatus === 'Reg ok' || bTFStatus === 'Reg ok';
+            if (aRegOk !== bRegOk) {
+                return aRegOk ? -1 : 1;
+            }
+
+            // So sánh theo thời gian (mới nhất lên đầu)
+            return bDate - aDate;
+        });
+
+        // Xóa tất cả các hàng hiện tại
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+
+        // Thêm lại các hàng đã sắp xếp
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // Hàm kiểm tra và sắp xếp khi dữ liệu đã sẵn sàng
+    function checkAndSort() {
+        const tbody = document.querySelector('tbody');
+        if (tbody && tbody.children.length > 0) {
+            sortEmailList();
+        } else {
+            setTimeout(checkAndSort, 500);
+        }
+    }
+
+    // Bắt đầu kiểm tra và sắp xếp
+    checkAndSort();
+
+    // Thêm sự kiện để sắp xếp lại khi form được submit
+    document.querySelector('form[method="GET"]').addEventListener('submit', function() {
+        setTimeout(checkAndSort, 1000);
+    });
+
     // Khởi tạo popovers
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -1342,27 +1498,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Xử lý hiển thị form tìm kiếm theo thời gian
-    const dateType = document.getElementById('date_type');
-    const startDate = document.getElementById('start_date');
-    const endDate = document.getElementById('end_date');
-    const dateSeparator = document.getElementById('date_separator');
-    
-    // Hàm xử lý hiển thị container và cập nhật giá trị
-    function handleDateTypeChange() {
-        if (dateType.value === 'single') {
-            // Ẩn end_date và separator
-            endDate.style.display = 'none';
-            dateSeparator.style.display = 'none';
-            // Gán giá trị của end_date bằng start_date
-            endDate.value = startDate.value;
-        } else {
-            // Hiện end_date và separator
-            endDate.style.display = 'block';
-            dateSeparator.style.display = 'block';
-        }
-    }
 
     // Xử lý khi thay đổi giá trị start_date
     startDate.addEventListener('change', function() {
@@ -2070,6 +2205,78 @@ document.addEventListener('DOMContentLoaded', function() {
                 container.classList.remove('loading');
             });
     }
+
+    // Thêm hàm sắp xếp theo cột
+    function sortTable(columnIndex, type = 'string') {
+        const tbody = document.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        
+        // Bỏ qua hàng "Không có dữ liệu" nếu có
+        if (rows.length === 1 && rows[0].querySelector('td').colSpan > 1) {
+            return;
+        }
+
+        // Lấy header đang được click
+        const header = document.querySelector(`th:nth-child(${columnIndex + 1})`);
+        const currentDirection = header.classList.contains('asc') ? 'desc' : 'asc';
+
+        // Xóa class sort của tất cả header
+        document.querySelectorAll('th').forEach(th => {
+            th.classList.remove('asc', 'desc');
+        });
+
+        // Thêm class sort cho header hiện tại
+        header.classList.add(currentDirection);
+
+        // Sắp xếp rows
+        rows.sort((a, b) => {
+            let aValue = a.querySelector(`td:nth-child(${columnIndex + 1})`).textContent.trim();
+            let bValue = b.querySelector(`td:nth-child(${columnIndex + 1})`).textContent.trim();
+
+            // Xử lý đặc biệt cho các cột có badge
+            if (aValue.includes('badge')) {
+                aValue = a.querySelector(`td:nth-child(${columnIndex + 1}) .badge`).textContent.trim();
+                bValue = b.querySelector(`td:nth-child(${columnIndex + 1}) .badge`).textContent.trim();
+            }
+
+            // Xử lý theo loại dữ liệu
+            if (type === 'date') {
+                aValue = new Date(aValue.split('/').reverse().join('-'));
+                bValue = new Date(bValue.split('/').reverse().join('-'));
+            }
+
+            // So sánh giá trị
+            if (currentDirection === 'asc') {
+                return aValue > bValue ? 1 : -1;
+            } else {
+                return aValue < bValue ? 1 : -1;
+            }
+        });
+
+        // Xóa tất cả các hàng hiện tại
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+
+        // Thêm lại các hàng đã sắp xếp
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // Thêm sự kiện click cho các header
+    document.querySelectorAll('th').forEach((header, index) => {
+        // Bỏ qua cột checkbox
+        if (index === 0) return;
+
+        header.classList.add('sortable');
+        header.addEventListener('click', () => {
+            // Xác định loại dữ liệu của cột
+            let type = 'string';
+            if (index === 10) { // Cột ngày tạo
+                type = 'date';
+            }
+            sortTable(index, type);
+        });
+    });
 
 });
 </script>
