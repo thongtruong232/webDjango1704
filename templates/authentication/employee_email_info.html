@@ -835,32 +835,54 @@
             }
         }
 
-        /* Cải tiến nút Reg Acc */
+        /* Thêm style cho nút Reg Acc */
         #regAccBtn {
-            display: none; /* Ẩn mặc định */
-            background-color:rgb(104, 71, 224); /* Màu xanh lá */
-            color: white; /* Màu chữ trắng */
-            border: none; /* Loại bỏ viền */
-            padding: 10px 20px; /* Khoảng cách bên trong */
-            border-radius: 8px; /* Bo góc mềm mại */
-            font-size: 1rem; /* Kích thước chữ */
-            font-weight: bold; /* Chữ đậm */
-            text-transform: uppercase; /* Chữ in hoa */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
-            transition: all 0.3s ease; /* Hiệu ứng mượt */
-            cursor: pointer; /* Con trỏ chuột */
+            display: none;
+            background-color: rgb(104, 71, 224);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            min-width: 140px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #regAccBtn:hover {
-            background-color: #218838; /* Màu xanh đậm hơn khi hover */
-            transform: translateY(-2px); /* Hiệu ứng nổi lên */
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Tăng đổ bóng khi hover */
+        #regAccBtn:hover:not(:disabled) {
+            background-color: #8a6fd6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
         }
 
-        #regAccBtn:active {
-            background-color: #1e7e34; /* Màu xanh đậm hơn khi nhấn */
-            transform: translateY(1px); /* Hiệu ứng nhấn xuống */
-            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Giảm đổ bóng khi nhấn */
+        #regAccBtn:disabled {
+            background-color: #8a6fd6;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        #regAccBtn .spinner-border {
+            display: none;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-width: 0.2em;
+            margin-left: 8px;
+        }
+
+        #regAccBtn.loading .spinner-border {
+            display: inline-block;
+        }
+
+        #regAccBtn.loading .btn-text {
+            margin-right: 8px;
         }
 
         /* Thêm style cho loading */
@@ -1094,7 +1116,7 @@
                         <th style="width: 60px;">STT</th>
                         <th style="width: 250px;">Email</th>
                         <th>Sao chép</th>
-                        <th style="width: 60px;">Mã vùng</th>
+                        <th style="width: 70px;">Mã vùng</th>
                         <th>Số điện thoại</th>
                         <th>Trạng thái Tn</th>
                         <th>Trạng thái Tf</th>
@@ -1282,6 +1304,23 @@
         }
 
         // Các hàm xử lý modal
+        function closeAllModals() {
+            const modals = [
+                'mailListModal',
+                'purchaseModal',
+                'passwordModal',
+                'confirmFetchModal',
+                'passwordInputModal'
+            ];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            document.body.style.overflow = 'auto';
+        }
+
         function showPasswordInputModal() {
             const modal = document.getElementById('passwordInputModal');
             modal.style.display = 'block';
@@ -1505,6 +1544,11 @@
 
                 if (selectedEmails.length > 0) {
                     try {
+                        // Thêm class loading và disable nút
+                        regAccBtn.classList.add('loading');
+                        regAccBtn.disabled = true;
+                        regAccBtn.innerHTML = '<span class="btn-text">Reg Acc</span><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+
                         const response = await fetch('/api/create-textnow/', {
                             method: 'POST',
                             headers: {
@@ -1536,6 +1580,11 @@
                     } catch (error) {
                         console.error('Error:', error);
                         alert('Có lỗi xảy ra khi gọi API');
+                    } finally {
+                        // Xóa class loading và enable lại nút
+                        regAccBtn.classList.remove('loading');
+                        regAccBtn.disabled = false;
+                        regAccBtn.innerHTML = 'Reg Acc';
                     }
                 }
             });
@@ -1695,18 +1744,24 @@
             // Hiển thị dữ liệu từ localStorage khi trang được tải
             displayEmailsFromStorage();
 
-            var clipboard = new ClipboardJS('.copy-btn');
+            var clipboard = new ClipboardJS('.copy-btn, .copy-email-btn, .copy-password-btn');
             clipboard.on('success', function(e) {
                 var triggerBtn = e.trigger;
                 try {
                     if (triggerBtn && triggerBtn.classList) {
-                        triggerBtn.classList.remove('btn-primary');
+                        triggerBtn.classList.remove('btn-primary', 'btn-secondary', 'btn-warning');
                         triggerBtn.classList.add('btn-success');
                         setTimeout(() => {
                             try {
                                 if (triggerBtn && triggerBtn.classList) {
                                     triggerBtn.classList.remove('btn-success');
-                                    triggerBtn.classList.add('btn-primary');
+                                    if (triggerBtn.classList.contains('copy-email-btn')) {
+                                        triggerBtn.classList.add('btn-secondary');
+                                    } else if (triggerBtn.classList.contains('copy-password-btn')) {
+                                        triggerBtn.classList.add('btn-warning');
+                                    } else {
+                                        triggerBtn.classList.add('btn-primary');
+                                    }
                                 }
                             } catch (err) {
                                 // Nếu phần tử đã bị xóa, bỏ qua
@@ -1816,7 +1871,7 @@
             fetch('/api/get-employee-passwords/')
                 .then(res => res.json())
                 .then(data => {
-                    if (data.success) {
+                        if (data.success) {
                         document.getElementById('passTnInfo').textContent = 'Mật khẩu Tn: ' + (data.pass_tn || '[Chưa có]');
                         document.getElementById('passTfInfo').textContent = 'Mật khẩu TF: ' + (data.pass_tf || '[Chưa có]');
                     } else {
@@ -1903,8 +1958,8 @@
             const modal = document.getElementById('purchaseModal');
             if (!modal) {
                 console.error('Không tìm thấy modal');
-                return;
-            }
+                        return;
+                    }
 
             // Giới hạn số lượng tối đa là 20
             const actualMaxQuantity = Math.min(maxQuantity, 20);
@@ -1991,10 +2046,10 @@
                 return;
             }
 
-            const loadingOverlay = document.querySelector('.loading-overlay');
-            loadingOverlay.style.display = 'flex';
+                const loadingOverlay = document.querySelector('.loading-overlay');
+                loadingOverlay.style.display = 'flex';
 
-            try {
+                try {
                 // Lấy mật khẩu
                 const passwordResponse = await fetch('/api/get-employee-passwords/');
                 const passwordData = await passwordResponse.json();
@@ -2016,8 +2071,8 @@
 
                     showModal(`Vui lòng cung cấp mật khẩu cho các ứng dụng sau: ${missingPasswords.join(", ")}`);
                     closePurchaseModal();
-                    return;
-                }
+                        return;
+                    }
 
                 // Mua mail
                 let response;
@@ -2039,8 +2094,8 @@
                     throw new Error('Không xác định được nhà cung cấp mail');
                 }
                 // console.log('response', response);
-                const data = await response.json();
-                
+                    const data = await response.json();
+                    
                 if (data.status && data.error_code === 200 || data.status == 'success') {
                     let listData;
                     let account_balance = null;
@@ -2124,15 +2179,15 @@
                         alert(`Mua thành công ${quantity} mail!\nMã đơn hàng: ${data.trans_id || ''}${balanceMsg}`);
                     }
                     closeAllModals();
-                } else {
+                    } else {
                     throw new Error(data.message || 'Có lỗi khi mua mail');
-                }
-            } catch (error) {
-                console.error('Error:', error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
                 alert(error.message || 'Có lỗi xảy ra khi mua mail');
-            } finally {
-                loadingOverlay.style.display = 'none';
-            }
+                } finally {
+                    loadingOverlay.style.display = 'none';
+                }
         }
 
         // Thêm hàm copyText vào script
@@ -2153,6 +2208,27 @@
                 btn.textContent = 'Đã copy';
                 setTimeout(() => { btn.textContent = 'Copy'; }, 1000);
             }
+        }
+
+        function closePurchaseModal() {
+            document.getElementById('purchaseModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            currentMailData = null;
+        }
+
+        function closeMailListModal() {
+            document.getElementById('mailListModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeConfirmFetchModal() {
+            document.getElementById('confirmFetchModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
     </script>
 </body>

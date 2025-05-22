@@ -72,25 +72,21 @@ def create_sample_users(request):
             {
                 'username': 'admin_user',
                 'password': '123123',
-                'email': 'admin@example.com',
                 'role': 'admin'
             },
             {
                 'username': 'quanly_user',
                 'password': '123123',
-                'email': 'quanly@example.com',
                 'role': 'quanly'
             },
             {
                 'username': 'kiemtra_user',
                 'password': '123123',
-                'email': 'kiemtra@example.com',
                 'role': 'kiemtra'
             },
             {
                 'username': 'nhanvien_user',
                 'password': '123123',
-                'email': 'nhanvien@example.com',
                 'role': 'nhanvien'
             }
         ]
