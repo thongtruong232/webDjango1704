@@ -3625,3 +3625,5 @@ WARNING 2025-05-22 17:05:17,004 log 20196 18348 Not Found: /.well-known/appspeci
 WARNING 2025-05-22 17:06:11,889 log 20196 18348 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-22 17:18:14,622 log 17420 17080 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-22 17:20:15,096 log 17420 17080 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 17:43:43,333 log 15976 13328 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 17:48:44,853 log 13896 14552 Not Found: /.well-known/appspecific/com.chrome.devtools.json

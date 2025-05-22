@@ -1281,7 +1281,8 @@
                     }
                     row.innerHTML = `
                         <td>
-                            ${email.status_tn === 'mới' || email.status_tf === 'mới' ? 
+                            ${email.status_tn === 'mới' || email.status_tf === 'mới' || 
+                              email.status_tn === 'mật khẩu khác' || email.status_tf === 'mật khẩu khác' ? 
                                 '<span class="status-x">✕</span>' : 
                                 '<input type="checkbox" class="email-checkbox" data-email="' + email.email + '" ' + (email.is_reg_acc ? 'disabled' : '') + '>'
                             }
