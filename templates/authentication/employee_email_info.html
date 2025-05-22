@@ -572,56 +572,92 @@
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             border: none;
+            max-width: 400px;
+            width: 90%;
+            margin: 0 auto;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: purchaseModalSlideIn 0.3s ease;
         }
 
         #purchaseModal .modal-header {
             background: linear-gradient(145deg, #3498db, #2980b9);
             color: white;
-            padding: 15px 20px;
+            padding: 12px 15px;
             border-radius: 15px 15px 0 0;
             border: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         #purchaseModal .modal-title {
-            font-size: 17px;
+            padding-left: 16px;
+            font-size: 16px;
             font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         #purchaseModal .modal-body {
-            padding: 20px;
+            padding: 15px;
         }
 
         #purchaseModal .purchase-info {
             background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
 
         #purchaseModal .info-row {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #purchaseModal .info-row:last-child {
+            margin-bottom: 0;
         }
 
         #purchaseModal .label {
             color: #666;
             font-weight: 500;
+            font-size: 0.9rem;
         }
 
         #purchaseModal .value {
             color: #2c3e50;
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
         #purchaseModal .price-highlight {
             color: #e74c3c;
-            font-size: 18px;
+            font-size: 1.1rem;
             font-weight: 700;
+        }
+
+        #purchaseModal .form-group {
+            margin-bottom: 0;
+        }
+
+        #purchaseModal .form-label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #666;
         }
 
         #purchaseModal .form-control {
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             padding: 8px 12px;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
         }
 
@@ -632,22 +668,34 @@
 
         #purchaseModal .total-price {
             background: #f1f8ff;
-            padding: 12px 15px;
+            padding: 10px 12px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         #purchaseModal .modal-footer {
             border-top: 1px solid #eee;
-            padding: 15px 20px;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        #purchaseModal .btn {
+            padding: 6px 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
 
         #purchaseModal .btn-confirm-purchase {
             background: linear-gradient(145deg, #27ae60, #219a52);
             border: none;
-            padding: 8px 20px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            color: white;
         }
 
         #purchaseModal .btn-confirm-purchase:hover {
@@ -659,14 +707,36 @@
             background: #f5f6f7;
             border: none;
             color: #666;
-            padding: 8px 20px;
-            font-weight: 600;
-            transition: all 0.3s ease;
         }
 
         #purchaseModal .btn-close-modal:hover {
             background: #e8e9ea;
             transform: translateY(-1px);
+        }
+
+        #purchaseModal .btn-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #purchaseModal .btn-close:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes purchaseModalSlideIn {
+            from {
+                transform: translate(-50%, -60%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
         }
 
         /* Modal styles */
@@ -1034,7 +1104,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <i class="fas fa-shopping-cart"></i>
-                <h4 class="modal-title">Xác nhận mua Mail</h4>
+                <h4 class="modal-title">Xác nhận mua mail từ ${supplier === 'dongvan' ? 'Đồng Văn' : supplier === 'fmail' ? 'fMail' : 'Pháp Sư'}</h4>
                 <button type="button" class="btn-close" onclick="closePurchaseModal()"></button>
             </div>
             <div class="modal-body">
@@ -1968,7 +2038,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <i class="fas fa-shopping-cart"></i>
-                        <h4 class="modal-title">Xác nhận mua Mail</h4>
+                        <h4 class="modal-title">Xác nhận mua mail từ ${supplier === 'dongvan' ? 'Đồng Văn' : supplier === 'fmail' ? 'fMail' : 'Pháp Sư'}</h4>
                         <button type="button" class="btn-close" onclick="closePurchaseModal()"></button>
                     </div>
                     <div class="modal-body">
