@@ -42,18 +42,21 @@ def get_current_time():
 @login_required
 @role_required('admin')
 def manage_users(request):
-    users_collection, client = get_collection_handle('users')
-    users = list(users_collection.find())
-    client.close()
-    # Get user data from MongoDB
-    user_data = users_collection.find_one({'user_id': str(request.user.id)})
-    context = {
-        'user_data': user_data,
-        'users': users,
-        'roles': ROLES.keys(),
-    }
-
-    return render(request, 'authentication/manage_users.html', context)
+    client = None
+    try:
+        users_collection, client = get_collection_handle('users')
+        users = list(users_collection.find())
+        # Get user data from MongoDB
+        user_data = users_collection.find_one({'user_id': str(request.user.id)})
+        context = {
+            'user_data': user_data,
+            'users': users,
+            'roles': ROLES.keys(),
+        }
+        return render(request, 'authentication/manage_users.html', context)
+    finally:
+        if client:
+            client.close()
 
 @login_required
 @role_required('admin')

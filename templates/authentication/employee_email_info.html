@@ -246,74 +246,128 @@
             z-index: 1050;
         }
 
-        #passwordModal .modal-content {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-            border: none;
-            max-width: 500px;
+        /* Styles cho modal nhập mật khẩu */
+        #passwordInputModal {
+            z-index: 1200;
+        }
+
+        #passwordInputModal .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f0f2f5);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
             width: 90%;
             position: fixed;
-            top: 45%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 0;
             animation: modalSlideIn 0.3s ease;
         }
 
-        #passwordModal .modal-header {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        #passwordInputModal .modal-header {
+            background: linear-gradient(145deg, #3498db, #2980b9);
             color: white;
-            border-radius: 12px 12px 0 0;
-            padding: 20px;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
         }
 
-        #passwordModal .modal-title {
+        #passwordInputModal .modal-title {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
 
-        #passwordModal .alert {
-            margin: 0;
-            border: none;
+        #passwordInputModal .modal-body {
+            padding: 20px;
+        }
+
+        #passwordInputModal .form-group {
+            margin-bottom: 0;
+        }
+
+        #passwordInputModal .form-control {
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            padding: 20px;
-            font-size: 1.1rem;
+            padding: 10px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        #passwordModal .alert i {
-            font-size: 24px;
-            margin-right: 10px;
-            color: #f39c12;
+        #passwordInputModal .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
-        #passwordModal .modal-body {
-            padding: 25px;
-        }
-
-        #passwordModal .modal-footer {
-            padding: 20px;
+        #passwordInputModal .modal-footer {
+            padding: 15px 20px;
             border-top: 1px solid #eee;
             display: flex;
             justify-content: flex-end;
             gap: 10px;
         }
 
+        #passwordInputModal .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        #passwordInputModal .btn-primary {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            border: none;
+            color: white;
+        }
+
+        #passwordInputModal .btn-primary:hover {
+            background: linear-gradient(145deg, #2980b9, #2573a7);
+            transform: translateY(-1px);
+        }
+
+        #passwordInputModal .btn-secondary {
+            background: #f5f6f7;
+            border: none;
+            color: #333;
+        }
+
+        #passwordInputModal .btn-secondary:hover {
+            background: #e8e9ea;
+            transform: translateY(-1px);
+        }
+
+        #passwordInputModal .btn-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #passwordInputModal .btn-close:hover {
+            transform: scale(1.1);
+        }
+
         @keyframes modalSlideIn {
             from {
-                transform: translate(-50%, -40%);
+                transform: translate(-50%, -60%);
                 opacity: 0;
             }
-            50% {
-                transform: translate(-50%, -50%) scale(1.05);
-                opacity: 0.8;
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
             to {
-                transform: translate(-50%, -50%) scale(1);
                 opacity: 1;
             }
         }
@@ -758,7 +812,7 @@
         }
 
         /* Màu sắc cho từng trạng thái */
-        .form-select option[value="chưa tạo acc"] {
+        .form-select option[value="mới"] {
             background-color: #f8d7da; /* Màu đỏ nhạt */
             color: #721c24;
         }
@@ -1062,52 +1116,31 @@
         </div>
     </div>
 
+    <!-- Thêm modal nhỏ cho nhập mật khẩu -->
+    <div id="passwordInputModal" class="custom-modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h4 class="modal-title">Nhập mật khẩu mới</h4>
+                <button type="button" class="btn-close" onclick="closePasswordInputModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newPasswordInput">Mật khẩu mới:</label>
+                    <input type="text" class="form-control" id="newPasswordInput" placeholder="Nhập mật khẩu mới">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePasswordInputModal()">Hủy</button>
+                <button class="btn btn-primary" onclick="confirmNewPassword()">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script>
-        function showModal(message) {
-            const modal = document.getElementById('passwordModal');
-            const modalMessage = document.getElementById('modalMessage');
-            modalMessage.textContent = message;
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('passwordModal');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function closeMailListModal() {
-            const modal = document.getElementById('mailListModal');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function closePurchaseModal() {
-            const modal = document.getElementById('purchaseModal');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function closeConfirmFetchModal() {
-            const modal = document.getElementById('confirmFetchModal');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function closeAllModals() {
-            // Đóng tất cả các modal
-            const mailListModal = document.getElementById('mailListModal');
-            const purchaseModal = document.getElementById('purchaseModal');
-            
-            mailListModal.style.display = 'none';
-            purchaseModal.style.display = 'none';
-            
-            // Cho phép cuộn trang trở lại
-            document.body.style.overflow = 'auto';
-        }
+        // Biến toàn cục
+        let currentSelect = null;
 
         // Hàm để hiển thị/ẩn nút Reg Acc
         function toggleRegAccButton() {
@@ -1126,12 +1159,12 @@
                     row.className = 'email-row';
                     
                     // Kiểm tra trạng thái TN và TF
-                    const showTNX = email.status_tn === 'chưa tạo acc';
-                    const showTFX = email.status_tf === 'chưa tạo acc';
+                    const showTNX = email.status_tn === 'mới';
+                    const showTFX = email.status_tf === 'mới';
                     
                     // Danh sách option mặc định
                     const defaultOptions = [
-                        { value: 'moi', text: 'Mới' },
+                        { value: 'mới', text: 'Mới' },
                         { value: 'reg ok', text: 'Reg ok' },
                         { value: 'lỗi', text: 'Lỗi' },
                         { value: 'mật khẩu khác', text: 'Mật khẩu khác' }
@@ -1156,7 +1189,7 @@
                     }
                     row.innerHTML = `
                         <td>
-                            ${email.status_tn === 'chưa tạo acc' || email.status_tf === 'chưa tạo acc' ? 
+                            ${email.status_tn === 'mới' || email.status_tf === 'mới' ? 
                                 '<span class="status-x">✕</span>' : 
                                 '<input type="checkbox" class="email-checkbox" data-email="' + email.email + '" ' + (email.is_reg_acc ? 'disabled' : '') + '>'
                             }
@@ -1244,12 +1277,71 @@
         function displayEmailsFromStorage() {
             // Lấy dữ liệu từ server nếu có
             const serverEmails = JSON.parse('{{ emails|safe }}');
-            // console.log('Server emails:', serverEmails);
             localStorage.setItem('employee_worksession', JSON.stringify(serverEmails));
             displayEmails(serverEmails);
         }
 
+        // Các hàm xử lý modal
+        function showPasswordInputModal() {
+            const modal = document.getElementById('passwordInputModal');
+            modal.style.display = 'block';
+            document.getElementById('newPasswordInput').value = '';
+            document.getElementById('newPasswordInput').focus();
+        }
+
+        function closePasswordInputModal() {
+            const modal = document.getElementById('passwordInputModal');
+            modal.style.display = 'none';
+            if (currentSelect) {
+                currentSelect.value = currentSelect.getAttribute('data-previous-value') || '';
+            }
+            currentSelect = null;
+        }
+
+        function confirmNewPassword() {
+            const newPassword = document.getElementById('newPasswordInput').value;
+            if (!newPassword) {
+                alert('Vui lòng nhập mật khẩu mới!');
+                return;
+            }
+
+            if (currentSelect) {
+                const email = currentSelect.getAttribute('data-email');
+                const type = currentSelect.getAttribute('data-type');
+                let storedData = localStorage.getItem('employee_worksession');
+                if (storedData) {
+                    let emails = JSON.parse(storedData);
+                    const idx = emails.findIndex(e => e.email === email);
+                    if (idx !== -1) {
+                        if (type === 'tn') {
+                            emails[idx].status_tn = newPassword;
+                        } else if (type === 'tf') {
+                            emails[idx].status_tf = newPassword;
+                        }
+                        localStorage.setItem('employee_worksession', JSON.stringify(emails));
+                        displayEmails(emails);
+                    }
+                }
+            }
+            closePasswordInputModal();
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
+            // Logic cho option 'Mật khẩu khác'
+            function attachPasswordKhacHandler() {
+                // Gắn event listener vào bảng thay vì từng select
+                document.getElementById('emailsTableBody').addEventListener('change', function(e) {
+                    if (e.target.classList.contains('status-select') && e.target.value === 'mật khẩu khác') {
+                        currentSelect = e.target;
+                        showPasswordInputModal();
+                    }
+                });
+            }
+
+            // Gọi khi trang load lần đầu
+            attachPasswordKhacHandler();
+            displayEmailsFromStorage();
+
             const fetchEmailsBtn = document.getElementById('fetchEmailsBtn');
             const confirmFetchModal = document.getElementById('confirmFetchModal');
 
@@ -1736,74 +1828,6 @@
                     document.getElementById('passTnInfo').textContent = 'Mật khẩu Tn: [Lỗi]';
                     document.getElementById('passTfInfo').textContent = 'Mật khẩu TF: [Lỗi]';
                 });
-
-            // Logic cho option 'Mật khẩu khác' với input public
-            let currentPasswordSelect = null;
-
-            function attachPasswordKhacHandler() {
-                document.querySelectorAll('.status-select').forEach(function(select) {
-                    // Tránh gán trùng sự kiện
-                    if (!select._passwordKhacHandlerAttached) {
-                        select.addEventListener('change', function() {
-                            if (this.value === 'mật khẩu khác') {
-                                currentPasswordSelect = this;
-                                document.getElementById('customPasswordInputArea').style.display = 'block';
-                                document.getElementById('customPasswordInputBox').value = '';
-                                document.getElementById('customPasswordInputBox').focus();
-                            }
-                        });
-                        select.addEventListener('focus', function() {
-                            this.setAttribute('data-previous-value', this.value);
-                        });
-                        select._passwordKhacHandlerAttached = true;
-                    }
-                });
-            }
-
-            // Gọi khi trang load lần đầu
-            attachPasswordKhacHandler();
-
-            // Nếu có hàm render lại bảng, hãy gọi attachPasswordKhacHandler() sau khi render
-            // Ví dụ: sau displayEmails(emails) => attachPasswordKhacHandler();
-            // Nếu bạn có nhiều nơi render lại bảng, hãy đảm bảo gọi lại hàm này
-
-            document.getElementById('customPasswordConfirmBtn').addEventListener('click', function() {
-                const value = document.getElementById('customPasswordInputBox').value;
-                if (!value) {
-                    alert('Vui lòng nhập mật khẩu mới!');
-                    return;
-                }
-                if (!currentPasswordSelect) return;
-                // Xác định email và type
-                const email = currentPasswordSelect.getAttribute('data-email');
-                const type = currentPasswordSelect.getAttribute('data-type');
-                // Cập nhật vào localStorage
-                let storedData = localStorage.getItem('employee_worksession');
-                if (storedData) {
-                    let emails = JSON.parse(storedData);
-                    const idx = emails.findIndex(e => e.email === email);
-                    if (idx !== -1) {
-                        if (type === 'tn') {
-                            emails[idx].status_tn = value;
-                        } else if (type === 'tf') {
-                            emails[idx].status_tf = value;
-                        }
-                        localStorage.setItem('employee_worksession', JSON.stringify(emails));
-                        displayEmails(emails);
-                        attachPasswordKhacHandler();
-                    }
-                }
-                // Ẩn input
-                document.getElementById('customPasswordInputArea').style.display = 'none';
-                currentPasswordSelect = null;
-            });
-            document.getElementById('customPasswordCancelBtn').addEventListener('click', function() {
-                if (currentPasswordSelect) {
-                    currentPasswordSelect.value = currentPasswordSelect.getAttribute('data-previous-value') || '';
-                }
-                document.getElementById('customPasswordInputArea').style.display = 'none';
-                currentPasswordSelect = null;
-            });
         });
 
         function formatPrice(price) {
@@ -2073,11 +2097,11 @@
                             password,
                             refresh_token: refreshToken,
                             client_id: clientId,
-                            status: "mail mua đồng văn",
+                            status: currentMailData.supplier,
                             pass_TN: defaultPassTN,
                             pass_TF: defaultPassTF,
-                            status_tn: "chưa tạo acc",
-                            status_tf: "chưa tạo acc",
+                            status_tn: "mới",
+                            status_tf: "mới",
                             is_provided: false,
                             supplier: currentMailData.supplier,
                             area_phone: areaPhones[index]?.area_code || "000",

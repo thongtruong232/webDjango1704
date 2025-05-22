@@ -3475,3 +3475,144 @@ WARNING 2025-05-19 18:09:56,660 log 12320 18404 Not Found: /.well-known/appspeci
 WARNING 2025-05-19 18:13:59,768 log 14288 21868 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-19 18:15:19,750 log 14288 21868 Not Found: /.well-known/appspecific/com.chrome.devtools.json
 WARNING 2025-05-19 18:18:19,770 log 8056 24972 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 15:49:26,299 log 9524 13496 Not Found: /favicon.ico
+ERROR 2025-05-22 15:50:07,447 log 9524 13496 Internal Server Error: /manage-users/
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\asgiref\sync.py", line 518, in thread_handler
+    raise exc_info[1]
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\asgiref\sync.py", line 468, in __call__
+    ret = await asyncio.shield(exec_coro)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\asgiref\sync.py", line 522, in thread_handler
+    return func(*args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\python file\hethong\webDjango1704\.\authentication\permissions.py", line 53, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\python file\hethong\webDjango1704\.\authentication\views\manage_users_views.py", line 49, in manage_users
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 1993, in _retry_internal
+    ).run()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+WARNING 2025-05-22 15:54:19,893 log 9524 13496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 15:54:41,829 log 9524 13496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 15:54:42,225 log 9524 13496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 15:54:55,018 log 9524 13496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+ERROR 2025-05-22 15:55:02,810 log 9524 13496 Internal Server Error: /manage-users/
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\asgiref\sync.py", line 518, in thread_handler
+    raise exc_info[1]
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\asgiref\sync.py", line 468, in __call__
+    ret = await asyncio.shield(exec_coro)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\asgiref\sync.py", line 522, in thread_handler
+    return func(*args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\python file\hethong\webDjango1704\.\authentication\permissions.py", line 53, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "D:\python file\hethong\webDjango1704\.\authentication\views\manage_users_views.py", line 49, in manage_users
+    user_data = users_collection.find_one({'user_id': str(request.user.id)})
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\collection.py", line 1755, in find_one
+    for result in cursor.limit(-1):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1284, in __next__
+    return self.next()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1260, in next
+    if len(self._data) or self._refresh():
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1208, in _refresh
+    self._send_message(q)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\cursor.py", line 1102, in _send_message
+    response = client._run_operation(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 1917, in _run_operation
+    return self._retryable_read(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2026, in _retryable_read
+    return self._retry_internal(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 1993, in _retry_internal
+    ).run()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2730, in run
+    return self._read() if self._is_read else self._write()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2875, in _read
+    self._server = self._get_server()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 2823, in _get_server
+    return self._client._select_server(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 361, in _select_servers_loop
+    self._ensure_opened()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\pymongo\synchronous\topology.py", line 789, in _ensure_opened
+    raise InvalidOperation("Cannot use MongoClient after close")
+pymongo.errors.InvalidOperation: Cannot use MongoClient after close
+WARNING 2025-05-22 15:55:14,956 log 9524 13496 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 15:59:20,095 log 13044 18692 Not Found: /favicon.ico
+WARNING 2025-05-22 16:04:57,565 log 13044 18692 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:19:41,976 log 16152 17256 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:20:13,692 log 16152 17256 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:20:56,790 log 16152 17256 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:23:11,594 log 4764 15880 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:29:04,562 log 11984 17432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:29:45,939 log 11984 17432 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:31:50,294 log 15984 13052 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:32:22,755 log 15984 13052 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:33:46,835 log 10060 19724 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:36:28,508 log 14544 19004 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:37:44,645 log 5260 16696 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:38:03,873 log 5260 16696 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:39:37,656 log 9056 17564 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:40:33,594 log 9056 17564 Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2025-05-22 16:41:07,903 log 9056 17564 Not Found: /.well-known/appspecific/com.chrome.devtools.json
